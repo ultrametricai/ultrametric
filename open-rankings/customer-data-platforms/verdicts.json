@@ -1509,7 +1509,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Jitsu documents an official MCP server that lets agents create destinations, wire up streams, inspect Live Events and edit Functions, with OAuth for interactive clients and API keys for headless use. A Management HTTP API also covers workspaces, sites, destinations, connections, syncs and functions, and Live Events shows streaming delivery results. Missing for 10: independent or hands-on corroboration of agent-driven pipeline management, explicit MCP-side mention of creating sources (only destinations and streams are named), and a machine-readable OpenAPI spec reachable at the standard paths the probe checked.",
+    "rationale": "Jitsu documents an official MCP server that lets AI agents create destinations, wire up streams, inspect Live Events (which include streaming delivery results), and edit Functions. It supports OAuth 2.1 for interactive clients and API keys for headless use. A public Management HTTP API also covers sites, destinations, connections, syncs and functions. missing for 10: independent or hands-on corroboration of agent-driven pipeline management, explicit MCP-level source creation (sites are only listed for the HTTP API), and a reachable machine-readable OpenAPI spec (probed paths returned 404).",
     "evidenceIds": [
       "jitsu-docs-19",
       "jitsu-docs-46",
@@ -1535,10 +1535,6 @@
           "quote": "Jitsu exposes an HTTP API for managing workspaces, sites, destinations, connections, syncs and functions."
         },
         {
-          "evidenceId": "jitsu-docs-47",
-          "quote": "A public Management API for every Jitsu instance, with a full OpenAPI 3.0 reference at docs.jitsu.com/api."
-        },
-        {
           "evidenceId": "jitsu-docs-36",
           "quote": "Everything you can see in Live Events — function logs, warehouse batch statuses, streaming delivery results, and dead-lettered events"
         },
@@ -1555,7 +1551,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jitsu's MCP server and Management API let an agent manage the pipeline: create destinations, wire streams, inspect Live Events, and edit Functions. Nothing in the evidence shows an agent querying customer or profile data, or creating and activating audiences or segments, through these interfaces. Warehouse querying appears only as a Functions-internal building block (ctx.getWarehouse), and Profile Builder writes profiles to the warehouse with no documented audience creation or activation API, so both are adjacent capabilities rather than the story itself.",
+    "rationale": "Jitsu documents an MCP server and a Management API, but they cover pipeline configuration (destinations, streams, connections, Functions) and inspecting Live Events. Nothing in the evidence shows an agent querying customer or profile data, or creating or activating audiences, through an API or MCP. The in-function warehouse API (ctx.getWarehouse) and Profile Builder are developer building blocks and adjacent features, not the end-to-end audience capability the story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1570,7 +1566,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms an llms.txt served at docs.jitsu.com/llms.txt (HTTP 200) with a product summary. Several docs pages are also served as raw markdown (.md), such as the MCP, API and CLI docs, which an agent can ingest directly. missing for 10: first-party documentation describing the llms.txt and its coverage, evidence of a full-content variant (e.g. llms-full.txt) or independent hands-on use by an agent.",
+    "rationale": "A live probe confirms Jitsu serves an llms.txt at docs.jitsu.com/llms.txt (HTTP 200), which opens with a product summary aimed at LLMs. Several doc pages are also served as raw .md files (mcp.md, api.md, jitsu-cli.md), so an agent can ingest them directly. Missing for 10: first-party documentation describing the llms.txt and its coverage, and evidence of an llms-full.txt or full-corpus variant (the probe content is truncated).",
     "evidenceIds": [
       "jitsu-probe-1",
       "jitsu-docs-48",
@@ -1584,15 +1580,11 @@
       "citations": [
         {
           "evidenceId": "jitsu-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.jitsu.com/llms.txt # Jitsu"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.jitsu.com/llms.txt"
         },
         {
-          "evidenceId": "jitsu-docs-61",
-          "quote": "Jitsu exposes an HTTP API for managing workspaces, sites, destinations, connections, syncs and functions."
-        },
-        {
-          "evidenceId": "jitsu-docs-48",
-          "quote": "For interactive clients, authentication is OAuth 2.1 — you don't paste an API key."
+          "evidenceId": "jitsu-probe-1",
+          "quote": "Jitsu is an open-source data integration platform and a self-hostable alternative to Segment."
         }
       ]
     }
@@ -1603,7 +1595,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jitsu is a data collection and pipeline platform, so in-product AI insights are a fair question to ask of it. The evidence pack documents no AI-generated insights or suggestions inside the product. The MCP server lets external AI agents configure the pipeline and inspect Live Events, which is an adjacent agent-integration capability, not built-in AI insights from user data.",
+    "rationale": "Jitsu is an event-collection and warehouse-delivery pipeline, and a data platform could plausibly ship in-product AI insights, so this axis applies. The evidence documents no in-product AI-generated insights or suggestions about the user's data. The MCP server lets external AI agents configure the pipeline and inspect Live Events, which is an adjacent capability rather than AI insights delivered inside the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1618,10 +1610,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu documents pipeline processing that runs unattended in the background. Functions transform events automatically before delivery, connector syncs run as Kubernetes CronJobs (a recurring schedule), a reprocessing worker replays dead-lettered events, and alerts fire when syncs or batches fail. These are automations inside a data pipeline rather than general user-defined background automations, and the schedule configuration itself is not documented. Missing for 10: documented user-configurable schedules or triggers for syncs and jobs, general-purpose autonomous automation beyond event processing, and independent or hands-on corroboration.",
+    "rationale": "Jitsu runs its own pipeline work unattended in the background. Functions execute on every incoming event to filter, transform, or enrich it, and can call external services via the Fetch API and keep state in persistent storage. Connector syncs run on a recurring schedule as Kubernetes CronJobs, and a dead-letter reprocessing worker replays failed events. These are data-pipeline automations, not general-purpose autonomous automations, and the recurring-schedule evidence comes only from self-hosting docs. Missing for 10: user-facing docs for configuring schedules or triggers, general-purpose automation beyond event processing and syncs, and independent or hands-on corroboration of unattended operation.",
     "evidenceIds": [
-      "jitsu-docs-3",
       "jitsu-docs-41",
+      "jitsu-docs-3",
+      "jitsu-docs-55",
       "jitsu-docs-16",
       "jitsu-docs-65",
       "jitsu-gh-3"
@@ -1640,6 +1633,10 @@
           "quote": "Functions are designed to process data in Jitsu before it is sent to the destination"
         },
         {
+          "evidenceId": "jitsu-docs-55",
+          "quote": "Fetch API - Perform HTTP requests to third-party services."
+        },
+        {
           "evidenceId": "jitsu-docs-16",
           "quote": "Dead-letter queue with a reprocessing worker: failed events can be replayed instead of lost."
         },
@@ -1655,8 +1652,8 @@
     "storyId": "agentic-builtin-assistant",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Jitsu is a SaaS data-pipeline platform that could plausibly ship an in-product AI assistant, so this axis applies. The evidence shows no built-in assistant. What it does document is an MCP server that lets external AI agents manage the pipeline; that is a separate capability (serving tools to outside agents) and earns no credit for a built-in assistant users delegate tasks to.",
+    "confidence": "medium",
+    "rationale": "A data-pipeline SaaS could plausibly ship an in-product AI assistant, so the axis applies. The evidence shows no built-in assistant. What Jitsu documents instead is an MCP server that lets external AI agents manage the pipeline, which is a different capability and earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1670,13 +1667,15 @@
     "storyId": "agentic-headless",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Jitsu ships headless automation surfaces of its own: jitsu-cli, described as 'a real command-line interface that does everything the UI does', with init/deploy for Functions from your own repo. It also has a Management HTTP API and named API tokens with expiration, and the docs explicitly cover CI and headless environments authenticating with a personal API key instead of the browser flow. missing for 10: a documented CI pipeline recipe for jitsu-cli (e.g. GitHub Actions example or non-interactive flags), independent or hands-on corroboration of CI usage, and confirmation of the OpenAPI reference (the probe found no openapi.json at the candidate paths).",
+    "confidence": "high",
+    "rationale": "Jitsu documents headless operation directly. The docs say that in CI and other headless environments you authenticate with a personal API key instead of the browser flow. jitsu-cli \"does everything the UI does\" and accepts `-h`/`-k` credential flags, alongside a programmatic Management API and a repo-based `jitsu-cli deploy` workflow for Functions. Missing for 10: a documented end-to-end CI pipeline recipe (e.g., GitHub Actions example) for the CLI, and independent or hands-on corroboration of CI usage; the OpenAPI spec probe also returned 404 at standard paths.",
     "evidenceIds": [
-      "jitsu-docs-47",
       "jitsu-docs-20",
-      "jitsu-gh-6",
+      "jitsu-docs-47",
+      "jitsu-docs-84",
+      "jitsu-docs-86",
       "jitsu-docs-13",
+      "jitsu-gh-6",
       "jitsu-docs-61",
       "jitsu-docs-17"
     ],
@@ -1686,12 +1685,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "jitsu-docs-47",
-          "quote": "jitsu-cli — a real command-line interface that does everything the UI does."
-        },
-        {
           "evidenceId": "jitsu-docs-20",
           "quote": "In CI and other headless environments the browser flow can't run. There you authenticate with a personal API key instead"
+        },
+        {
+          "evidenceId": "jitsu-docs-84",
+          "quote": "**`jitsu-cli`** — a real command-line interface that does everything the UI does."
+        },
+        {
+          "evidenceId": "jitsu-docs-86",
+          "quote": "Saves credentials so subsequent commands don't need `-h` / `-k`."
         },
         {
           "evidenceId": "jitsu-gh-6",
@@ -1700,10 +1703,6 @@
         {
           "evidenceId": "jitsu-docs-61",
           "quote": "Jitsu exposes an HTTP API for managing workspaces, sites, destinations, connections, syncs and functions."
-        },
-        {
-          "evidenceId": "jitsu-docs-17",
-          "quote": "named user API tokens with expiration"
         }
       ]
     }
@@ -1729,13 +1728,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Jitsu documents an official MCP server at https://use.jitsu.com/mcp that lets AI agents create destinations, wire up streams, inspect Live Events and edit Functions. It supports OAuth 2.1 browser approval for interactive clients and personal API keys for headless/CI use, and a probe confirms the dedicated MCP docs page. Missing for 10: independent or hands-on community corroboration of the MCP server working in practice.",
+    "rationale": "Jitsu documents an official hosted MCP server at https://use.jitsu.com/mcp that lets AI agents create destinations, wire up streams, inspect Live Events and edit Functions. Interactive clients authenticate via OAuth 2.1 and receive scoped, revocable tokens, while headless and CI environments use a personal API key. A probe confirms the MCP docs page exists. missing for 10: independent or hands-on corroboration that agents successfully connect and operate via the MCP server.",
     "evidenceIds": [
       "jitsu-docs-19",
       "jitsu-docs-63",
       "jitsu-docs-46",
       "jitsu-docs-48",
       "jitsu-docs-20",
+      "jitsu-docs-83",
       "jitsu-probe-3"
     ],
     "support": {
@@ -1758,6 +1758,10 @@
         {
           "evidenceId": "jitsu-docs-20",
           "quote": "In CI and other headless environments the browser flow can't run. There you authenticate with a personal API key instead"
+        },
+        {
+          "evidenceId": "jitsu-docs-83",
+          "quote": "Approve it once and the client gets a scoped, revocable token."
         }
       ]
     }
@@ -1768,12 +1772,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu ships a first-party MCP server so an AI agent can manage the pipeline on the user's behalf: creating destinations, wiring streams, inspecting Live Events and editing Functions. That gives users an official path to operate the product through an agent. However, the natural-language layer comes from the user's external agent, not from Jitsu itself. missing for 10: a built-in natural-language command interface within Jitsu, hands-on or independent corroboration that agent-driven operation works reliably, documented examples of natural-language prompts or workflows.",
+    "rationale": "Jitsu does not document a built-in natural-language interface, but it ships its own official MCP server. That server is explicitly built so a user's AI agent can operate the product: configure the pipeline, create destinations, wire up streams, inspect Live Events and fix Functions. Natural-language operation therefore works only through an external agent client the user brings. missing for 10: a native in-product natural-language command interface, hands-on or independent corroboration that agent-driven operation works in practice, and documentation of which operations are covered beyond the listed examples.",
     "evidenceIds": [
       "jitsu-docs-19",
       "jitsu-docs-46",
       "jitsu-docs-63",
-      "jitsu-docs-48",
       "jitsu-probe-3"
     ],
     "support": {
@@ -1802,13 +1805,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Jitsu ships an official, documented `jitsu-cli` that manages workspace configuration objects (destinations, streams, connections) and runs the Functions dev workflow, including `init` scaffolding and `deploy`. The vendor describes it as doing everything the UI does, the GitHub repo corroborates it, and a probe confirms the official CLI docs page exists. missing for 10: independent hands-on or community corroboration of CLI use, especially in agent-driven workflows.",
+    "rationale": "Jitsu ships an official `jitsu-cli` that manages workspace configuration objects (destinations, streams, connections) and runs the Functions dev workflow, including `init` scaffolding and `deploy`. It saves credentials for non-interactive use and is described as doing everything the UI does; a probe confirms its official docs page. Missing for 10: independent or hands-on corroboration of the CLI in practice, and documentation of agent-friendly specifics such as machine-readable output.",
     "evidenceIds": [
       "jitsu-docs-13",
-      "jitsu-docs-47",
+      "jitsu-docs-84",
       "jitsu-gh-6",
-      "jitsu-docs-49",
-      "jitsu-probe-4"
+      "jitsu-docs-86",
+      "jitsu-probe-4",
+      "jitsu-docs-49"
     ],
     "support": {
       "relation": "direct",
@@ -1820,16 +1824,16 @@
           "quote": "`jitsu-cli` is the command-line interface for Jitsu. It manages workspace configuration objects (destinations, streams, connections, …) and runs the Functions dev workflow."
         },
         {
-          "evidenceId": "jitsu-docs-47",
-          "quote": "jitsu-cli — a real command-line interface that does everything the UI does."
+          "evidenceId": "jitsu-docs-84",
+          "quote": "**`jitsu-cli`** — a real command-line interface that does everything the UI does."
         },
         {
           "evidenceId": "jitsu-gh-6",
           "quote": "`jitsu-cli init` scaffolds a TypeScript project with tests, and `jitsu-cli deploy` ships it to your workspace."
         },
         {
-          "evidenceId": "jitsu-probe-4",
-          "quote": "official CLI documented at https://jitsu.com/docs/jitsu-cli"
+          "evidenceId": "jitsu-docs-86",
+          "quote": "Saves credentials so subsequent commands don't need `-h` / `-k`."
         }
       ]
     }
@@ -1840,13 +1844,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Jitsu documents a public Management API, an HTTP API for managing workspaces, sites, destinations, connections, syncs and functions, with an OpenAPI 3.0 reference at docs.jitsu.com/api. Programmatic access uses personal or named API tokens, and a separate HTTP API handles data ingestion. The probe's 404s were on guessed spec paths, not the documented reference location, so they do not contradict the claim. Missing for 10: independent or hands-on corroboration of the API, and a machine-readable OpenAPI spec verified at a fetchable URL.",
+    "rationale": "Jitsu documents a public Management API with an OpenAPI 3.0 reference. It covers managing workspaces, sites, destinations, connections, syncs and functions programmatically, and named API tokens or personal API keys support headless authentication. The probe's 404s on common OpenAPI file paths do not contradict the claimed reference at docs.jitsu.com/api, so this is not a dispute. Missing for 10: independent or hands-on corroboration of the Management API, and a machine-readable OpenAPI spec confirmed at a reachable URL (the probe found none at standard paths).",
     "evidenceIds": [
       "jitsu-docs-47",
       "jitsu-docs-61",
-      "jitsu-docs-2",
+      "jitsu-docs-77",
+      "jitsu-docs-17",
       "jitsu-docs-20",
-      "jitsu-docs-17"
+      "jitsu-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -1862,8 +1867,8 @@
           "quote": "Jitsu exposes an HTTP API for managing workspaces, sites, destinations, connections, syncs and functions."
         },
         {
-          "evidenceId": "jitsu-docs-2",
-          "quote": "You can use HTTP API to send data to Jitsu."
+          "evidenceId": "jitsu-docs-77",
+          "quote": "Manage workspaces, destinations, and connections programmatically."
         },
         {
           "evidenceId": "jitsu-docs-17",
@@ -1910,12 +1915,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu documents its own JavaScript integration (Segment-API compatible) and a React integration for sending events, which are first-party client SDKs. Functions development goes through a CLI/SDK page that scaffolds TypeScript projects. Evidence on SDK breadth and depth is thin. Missing for 10: named SDK packages with reference docs, backend or multi-language SDKs (backends are pointed to the raw HTTP API), a typed SDK for the Management API (OpenAPI spec paths returned 404 when probed), and independent hands-on corroboration.",
+    "rationale": "Jitsu ships its own official client-side SDK: a JavaScript integration with a documented JS reference, based on Analytics.js and Segment-compatible, plus a React integration. Beyond the frontend, the evidence shows only a raw HTTP API for backend sending and a Management HTTP API, with no official SDKs. missing for 10: official backend/server-language SDKs, an SDK wrapping the Management API, explicit SDK coverage beyond JavaScript/React, independent hands-on corroboration of SDK use.",
     "evidenceIds": [
       "jitsu-docs-26",
-      "jitsu-docs-5",
-      "jitsu-docs-49",
-      "jitsu-gh-6",
+      "jitsu-docs-95",
+      "jitsu-docs-79",
       "jitsu-docs-2"
     ],
     "support": {
@@ -1928,12 +1932,12 @@
           "quote": "Jitsu javascript integration is 100% compatible with Segment API. In addition to that we have React integration"
         },
         {
-          "evidenceId": "jitsu-docs-49",
-          "quote": "Functions CLI is a tool that allows to develop and deploy Functions to Jitsu."
+          "evidenceId": "jitsu-docs-95",
+          "quote": "The API is based on [Analytics.js](https://getanalytics.io/api/), and is compatible with it."
         },
         {
-          "evidenceId": "jitsu-gh-6",
-          "quote": "`jitsu-cli init` scaffolds a TypeScript project with tests, and `jitsu-cli deploy` ships it to your workspace."
+          "evidenceId": "jitsu-docs-79",
+          "quote": "On frontend, Jitsu uses open-source analytics.js library, which is Segment-compatible."
         }
       ]
     }
@@ -1967,7 +1971,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Jitsu is an event-collection and warehouse-streaming CDP, so AI decisioning is a fair axis for it. However, the evidence shows no agent that autonomously picks messages, timing or channels per customer, no guardrail configuration, and no lift measurement. Its MCP server lets external AI agents manage pipeline configuration, which is a different capability and earns no credit here.",
+    "rationale": "Jitsu is a CDP and event pipeline, so autonomous AI decisioning (per-customer next-best message, timing and channel within guardrails, with measured lift) is a fair question for this kind of product. The evidence documents only data collection, transformation Functions, profile building and warehouse delivery. Its MCP server lets AI agents manage pipeline configuration, which is a different capability from customer-level decisioning and earns no credit here. Nothing in the pack shows decisioning agents, guardrails, orchestration across channels, or lift measurement.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1982,10 +1986,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Jitsu documents a public Management API with a full OpenAPI 3.0 reference at docs.jitsu.com/api, and separately documents its HTTP management API. Nothing in the evidence says the reference is interactive (e.g. a try-it console) or includes runnable examples. The probe found no machine-readable spec at the common paths, but it did not check the /api reference page, so it does not contradict the claim. Missing for 10: evidence the reference is interactive, runnable examples or try-it functionality, a reachable OpenAPI spec file, and independent or hands-on corroboration.",
+    "rationale": "Jitsu documents a public Management API with a full OpenAPI 3.0 reference at docs.jitsu.com/api, covering workspaces, destinations, connections, syncs and functions. Nothing in the evidence shows that reference is interactive or has runnable examples. A probe found no machine-readable OpenAPI spec at the common candidate paths, though it did not test the documented /api path. Missing for 10: evidence of an interactive try-it console, runnable request examples, a reachable OpenAPI spec file, and independent hands-on corroboration.",
     "evidenceIds": [
       "jitsu-docs-47",
       "jitsu-docs-61",
+      "jitsu-docs-77",
       "jitsu-probe-2"
     ],
     "support": {
@@ -2010,10 +2015,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu's own blog says it has a public Management API with a full OpenAPI 3.0 reference at docs.jitsu.com/api, and its docs describe the HTTP management API. However, the evidence never states that the raw spec file can be downloaded. A probe found 404s at the common spec paths, though it did not test docs.jitsu.com/api itself, so this leaves downloadability unconfirmed rather than contradicted. Missing for 10: a confirmed downloadable machine-readable spec file URL, independent or hands-on verification that the spec is retrievable and complete.",
+    "rationale": "Jitsu's blog says there is a public Management API with a full OpenAPI 3.0 reference at docs.jitsu.com/api, and the docs describe an HTTP management API. However, a probe found no downloadable spec file: common paths such as openapi.json and swagger.json all returned 404. That probe checked guessed paths rather than the documented /api location, so it shows the file is hard to find rather than concretely contradicting the claim. Missing for 10: a confirmed downloadable machine-readable spec file URL, independent or hands-on confirmation that the spec can be fetched, first-party docs on downloading the spec.",
     "evidenceIds": [
       "jitsu-docs-47",
       "jitsu-docs-61",
+      "jitsu-docs-77",
       "jitsu-probe-2"
     ],
     "support": {
@@ -2070,7 +2076,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jitsu documents a public Management HTTP API with an OpenAPI 3.0 reference, but nothing in the evidence describes API versioning, version identifiers, or a deprecation policy. An API reference alone is an adjacent capability and does not deliver this story.",
+    "rationale": "Jitsu documents a public Management API with an OpenAPI 3.0 reference and an HTTP ingestion API. Nothing in the evidence describes API versioning (version paths, headers or release channels) or a documented deprecation policy. Having an API is related to this story but does not deliver it, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2085,7 +2091,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack never documents a user-facing bulk operation, such as selecting many destinations, streams, functions or events and acting on them in one step. Nearby items don't count: optional delivery batching, automatic identity-stitching amendments and dead-letter replay are different features. The Management API, CLI and MCP server are building blocks an agent could script against, not a bulk-operations capability.",
+    "rationale": "Nothing in the evidence documents a user-facing bulk operation that acts on many items at once, such as bulk-editing or bulk-deleting destinations, connections or functions. The jitsu-cli, Management API and MCP server manage workspace objects, but no source says they support multi-item batch actions. Warehouse micro-batching, automatic identity-stitching amendments and dead-letter replay are delivery or adjacent behaviors, not user-driven bulk operations, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2100,13 +2106,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu Functions run on every incoming event before delivery. They can filter, transform and enrich events, and they can call third-party services over HTTP via the Fetch API, so code-defined logic can trigger actions automatically per event. A webhook destination can also forward events to any HTTP endpoint, and built-in alerts fire on sync or batch failures. However, these 'rules' are JavaScript/TypeScript code inside a data-processing pipeline rather than a documented rule or trigger-action automation feature. missing for 10: declarative rule/trigger-action builder, documented conditional event-to-action automation beyond in-pipeline processing, independent or hands-on corroboration of event-triggered actions",
+    "rationale": "Jitsu Functions are JavaScript/TypeScript code that runs on every incoming event before delivery. They can filter, transform or enrich the event, and their Fetch API can call third-party services, so code-defined logic can fire actions per event. A webhook destination can also forward events to any HTTP endpoint. This is a data-processing pipeline rather than a dedicated rules or automation engine, so automation depth is only implied. missing for 10: a declarative rule/trigger builder, documented event-to-action automation workflows (conditional actions beyond filter/transform), examples of action-triggering use cases, independent hands-on corroboration.",
     "evidenceIds": [
       "jitsu-docs-3",
-      "jitsu-docs-54",
       "jitsu-docs-55",
+      "jitsu-docs-37",
       "jitsu-docs-70",
-      "jitsu-docs-65"
+      "jitsu-docs-54"
     ],
     "support": {
       "relation": "direct",
@@ -2122,16 +2128,12 @@
           "quote": "Fetch API - Perform HTTP requests to third-party services."
         },
         {
+          "evidenceId": "jitsu-docs-70",
+          "quote": "Send data to any HTTP endpoint. You can use this destination to send data to Slack, Discord, or any other service that accepts HTTP requests."
+        },
+        {
           "evidenceId": "jitsu-docs-54",
           "quote": "Filter - Exclude data that fails to meet your specified criteria."
-        },
-        {
-          "evidenceId": "jitsu-docs-70",
-          "quote": "Send data to any HTTP endpoint."
-        },
-        {
-          "evidenceId": "jitsu-docs-65",
-          "quote": "you’ll receive real-time Email or Slack alerts whenever a Connector Sync task or Data Warehouse Batch job fails or successfully recovers"
         }
       ]
     }
@@ -2142,12 +2144,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "The self-hosting docs say Jitsu's connector syncs run as Kubernetes CronJobs, which implies recurring, scheduled sync jobs inside the product. The Management API also covers managing syncs. Scheduling is shown only as a deployment detail for connector syncs, not as a user-configurable scheduler for arbitrary jobs or workflows. Missing for 10: documented user-facing schedule configuration (cron/interval settings), scheduling of jobs beyond connector syncs (e.g. functions or general workflows), and independent or hands-on corroboration.",
+    "rationale": "Jitsu's own connector syncs run on a recurring basis as Kubernetes CronJobs, and syncs can be managed through its HTTP API. This gives recurring, scheduled data pulls rather than one-off actions. Scheduling is only implied by the CronJob implementation, and it covers connector syncs only, not general workflows. missing for 10: documented user-configurable schedule/cron settings, scheduling of arbitrary jobs or workflows (e.g., Functions or profile builds on a timer), agent/MCP-driven schedule management, independent hands-on corroboration.",
     "evidenceIds": [
       "jitsu-docs-41",
-      "jitsu-docs-57",
       "jitsu-docs-61",
-      "jitsu-gh-3"
+      "jitsu-docs-87"
     ],
     "support": {
       "relation": "direct",
@@ -2159,12 +2160,12 @@
           "quote": "connector syncs run as Kubernetes CronJobs"
         },
         {
-          "evidenceId": "jitsu-docs-57",
-          "quote": "functions, Profile Builder v2, and connector syncs now run as managed Kubernetes workloads"
-        },
-        {
           "evidenceId": "jitsu-docs-61",
           "quote": "Jitsu exposes an HTTP API for managing workspaces, sites, destinations, connections, syncs and functions."
+        },
+        {
+          "evidenceId": "jitsu-docs-87",
+          "quote": "you’ll receive real-time Email or Slack alerts whenever a Connector Sync task or Data Warehouse Batch job fails or successfully recovers"
         }
       ]
     }
@@ -2190,10 +2191,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jitsu's documented flow loads data into the warehouse: event streaming to destinations, plus connector syncs that pull third-party data in. Profiles are built from events sent to Jitsu, not from existing warehouse tables. The `ctx.getWarehouse` Functions API is only a developer building block for querying the warehouse inside event processing, not a reverse-ETL feature for defining models or audiences and activating them.",
+    "rationale": "The evidence shows Jitsu moving data into the warehouse: event streaming, connector syncs that \"pull data into your warehouse\", and Profile Builder records built from events sent to Jitsu. Nothing documents defining models or audiences on existing warehouse tables and syncing them out to destinations (reverse ETL). The Functions Warehouse API (`ctx.getWarehouse`) is only a developer building block for querying inside event processing, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a data engineer, I can run warehouse-native: define models and audiences on tables already in my warehouse and activate them without re-collecting the data (reverse ETL)",
       "citations": []
@@ -2205,7 +2206,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Jitsu's Profile Builder creates customer profiles in the warehouse from identify traits, and lets you define custom JavaScript logic over up to a year of user events, which amounts to code-defined computed traits on profiles. There is no evidence of built-in predictive scores (LTV, churn, purchase propensity) or of using these traits for audience targeting or activation. missing for 10: predictive LTV/churn/propensity scoring, marketer-facing computed-trait definitions, use of traits in audience targeting/activation, independent corroboration",
+    "rationale": "Jitsu's Profile Builder builds customer profiles in the warehouse and lets users define custom JavaScript logic over up to a year of event data, which can produce computed traits. There is no evidence of predictive scores (LTV, churn or propensity) or of using those traits for audience targeting. Missing for 10: no-code computed-trait definitions, built-in predictive LTV/churn/propensity scoring, audience targeting or activation on computed traits, and independent corroboration.",
     "evidenceIds": [
       "jitsu-docs-11",
       "jitsu-docs-12",
@@ -2238,7 +2239,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consent enforcement is a fair question for a Segment-style event pipeline like Jitsu, but the evidence pack never mentions consent capture, consent categories, or automatic opt-out propagation to destinations. The only related evidence is user-written Functions that can filter events, which is a developer building block rather than a built-in consent capability, so it earns no credit.",
+    "rationale": "Consent capture and enforcement is a fair question for an event-collection pipeline like Jitsu, but the evidence pack never mentions consent categories, opt-out signals, or automatic downstream enforcement. The only related material is general-purpose Functions that can filter events. That is a developer building block a user would have to wire up themselves, not a consent-management capability, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2253,7 +2254,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jitsu is a Segment-style event pipeline, so handling GDPR/CCPA deletion and suppression requests and forwarding them to destinations is a fair question for it. The evidence pack documents no user-deletion or suppression workflow and no forwarding of such requests to connected destinations. Event filtering via Functions, the DPA/SCC, and SOC 2 compliance are adjacent features and do not deliver this story.",
+    "rationale": "Jitsu is a Segment-style event pipeline, so handling GDPR/CCPA deletion and suppression requests and forwarding them to destinations is a fair question to ask of it. The evidence pack documents no user-deletion or suppression request feature and no mechanism for propagating such requests to connected destinations. Functions that filter events and an available DPA are adjacent building blocks or legal paperwork, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2268,13 +2269,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Jitsu's Live Events debugger shows function logs, warehouse batch statuses, streaming delivery results and dead-lettered events. These can be exported as OTLP log records to Datadog or Grafana, and email/Slack notifications fire when Connector Sync or warehouse batch jobs fail or recover. That covers live watching and failure diagnosis, with partial alerting. Missing for 10: aggregated per-destination delivery metrics or dashboards, alerting on streaming (non-batch) destination delivery failures, and independent or hands-on corroboration of the debugger views.",
+    "rationale": "Jitsu's Live Events view shows function logs, warehouse batch statuses, streaming delivery results and dead-lettered events, which can be exported over OTLP to external monitoring. A dead-letter queue lets failed events be replayed, and Email/Slack alerts fire on connector sync or warehouse batch failures and recoveries. Alerting does not cover streaming destination failures, and no per-destination delivery metrics or dashboards are documented. missing for 10: per-destination delivery metrics/dashboards, alerting on streaming destination delivery failures, independent or hands-on corroboration of the debugger views",
     "evidenceIds": [
       "jitsu-docs-36",
       "jitsu-docs-18",
+      "jitsu-docs-16",
       "jitsu-docs-65",
       "jitsu-docs-46",
-      "jitsu-docs-16",
       "jitsu-docs-55"
     ],
     "support": {
@@ -2287,12 +2288,16 @@
           "quote": "Everything you can see in Live Events — function logs, warehouse batch statuses, streaming delivery results, and dead-lettered events — can now be exported to your own monitoring stack in near real time."
         },
         {
-          "evidenceId": "jitsu-docs-65",
-          "quote": "you’ll receive real-time Email or Slack alerts whenever a Connector Sync task or Data Warehouse Batch job fails or successfully recovers"
-        },
-        {
           "evidenceId": "jitsu-docs-18",
           "quote": "Records are delivered as OpenTelemetry (OTLP) log records over HTTP, so they work with Datadog, Grafana Cloud, New Relic, Elastic, or any OpenTelemetry Collector."
+        },
+        {
+          "evidenceId": "jitsu-docs-16",
+          "quote": "Dead-letter queue with a reprocessing worker: failed events can be replayed instead of lost."
+        },
+        {
+          "evidenceId": "jitsu-docs-65",
+          "quote": "you’ll receive real-time Email or Slack alerts whenever a Connector Sync task or Data Warehouse Batch job fails or successfully recovers"
         },
         {
           "evidenceId": "jitsu-docs-46",
@@ -2351,10 +2356,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu documents recovery when a pipeline breaks. A dead-letter queue with a reprocessing worker lets failed events be replayed, and Kafka buffers data while a warehouse is offline and delivers it once the warehouse is back. Deduplication makes resending the same data safe. Nothing in the evidence shows replaying archived history into a newly added destination. Missing for 10: replay of archived events into a new destination, backfill of historical data when a tool is added, documented replay controls such as time ranges, independent hands-on corroboration.",
+    "rationale": "Jitsu documents its own recovery for broken pipelines. It has a dead-letter queue with a reprocessing worker so failed events can be replayed, and it buffers data in Kafka during warehouse downtime and delivers it once the warehouse is back. Deduplication also makes resending data safe. Nothing shows replaying archived history into a newly added destination or backfilling a new tool. missing for 10: replay or backfill of archived history into a new destination, documented controls for replay scope and time range, independent or hands-on corroboration of DLQ reprocessing.",
     "evidenceIds": [
       "jitsu-docs-16",
       "jitsu-docs-8",
+      "jitsu-docs-72",
       "jitsu-docs-9"
     ],
     "support": {
@@ -2420,17 +2426,18 @@
     "storyId": "inline-event-transformations",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Jitsu Functions are documented as JavaScript/TypeScript code that runs in the pipeline before delivery to destinations, explicitly covering filter, transform and enrich. Enrichment is backed by the Fetch API, Warehouse API and persistent storage, and development is supported by a debugger on sample data plus a CLI that scaffolds a tested project and deploys it. An old HN comment saying Functions didn't seem present is an impression from launch time, not a concrete hands-on failure, so it does not dispute the docs. missing for 10: independent or hands-on corroboration of Functions working in production.",
+    "confidence": "medium",
+    "rationale": "Jitsu Functions are documented as running in-pipeline before data reaches destinations, with explicit filter, transform and enrich modes. They are written in JavaScript/TypeScript and add a Fetch API, Warehouse API, persistent storage and logging, plus a debugger and a CLI that scaffolds, tests and deploys them. One HN launch-era comment said a Segment Functions equivalent 'doesn't seem present', but that is an impression rather than a concrete hands-on failure, so it lowers confidence without creating a dispute. Missing for 10: independent or hands-on corroboration that Functions work as documented in production.",
     "evidenceIds": [
       "jitsu-docs-3",
       "jitsu-docs-54",
       "jitsu-docs-37",
-      "jitsu-docs-31",
       "jitsu-docs-55",
+      "jitsu-docs-31",
       "jitsu-docs-38",
+      "jitsu-gh-6",
       "jitsu-docs-25",
-      "jitsu-gh-6"
+      "jitsu-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -2438,12 +2445,12 @@
       "subject": "As a data engineer, I can transform, filter, and enrich events in-pipeline with custom code or functions before they reach destinations",
       "citations": [
         {
-          "evidenceId": "jitsu-docs-37",
-          "quote": "Functions are designed to process data in Jitsu before it is sent to the destination. These functions, written in JavaScript, provide various data handling options"
-        },
-        {
           "evidenceId": "jitsu-docs-54",
           "quote": "Filter - Exclude data that fails to meet your specified criteria. Transform - Modify data to fit the schema of your destination. Enrich - Add extra information to the event."
+        },
+        {
+          "evidenceId": "jitsu-docs-37",
+          "quote": "Functions are designed to process data in Jitsu before it is sent to the destination. These functions, written in JavaScript, provide various data handling options"
         },
         {
           "evidenceId": "jitsu-docs-31",
@@ -2454,8 +2461,8 @@
           "quote": "Fetch API - Perform HTTP requests to third-party services. Warehouse API - Query your data warehouses."
         },
         {
-          "evidenceId": "jitsu-docs-38",
-          "quote": "Jitsu comes with a functions debugger/editor that allows to run function on a sample data"
+          "evidenceId": "jitsu-gh-6",
+          "quote": "`jitsu-cli init` scaffolds a TypeScript project with tests, and `jitsu-cli deploy` ships it to your workspace."
         }
       ]
     }
@@ -2466,7 +2473,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jitsu is a Segment-alternative CDP and event pipeline, so an AI-built audience segment is a fair question for it. The evidence shows no audience or segment builder, natural-language or otherwise. Its MCP server lets external agents manage destinations, streams, Live Events and Functions, and Profile Builder creates profile records, but neither is an AI feature that turns a natural-language description into a reviewable segment definition grounded in the schema.",
+    "rationale": "Audience segmentation is a fair question for a Segment-alternative CDP, so the axis applies. The evidence shows no natural-language segment builder. The MCP server lets external agents manage pipeline objects (destinations, streams, Live Events, Functions), and Profile Builder generates profiles from traits or JavaScript. Neither is AI building an audience or segment definition from a description grounded in the user's schema; at most they are adjacent building blocks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2514,14 +2521,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu's core function delivers your event data and profiles into destinations you own: Postgres, S3, GCS, ClickHouse, BigQuery, Snowflake and others. It is also 100% open source and self-hostable, and its Management API covers workspace configuration, so data already lives outside the vendor and leaving is feasible. However, no documented 'export everything' feature or explicit open-format guarantee exists for configuration or other account data. missing for 10: an explicit full-account data export feature, documented open export formats (e.g., Parquet/CSV/JSON) for all data including configs, offboarding/leave documentation, and independent hands-on corroboration of migrating away.",
+    "rationale": "Jitsu's core design streams event data into warehouses and storage you own (BigQuery, Snowflake, Redshift, Postgres, S3, GCS), keeps profiles there, and is 100% open-source and self-hostable. That makes leaving plausible without data being trapped in Jitsu. However, there is no documented explicit 'export all my data' feature or stated open file format, and nothing on exporting data from the Jitsu Cloud-provisioned ClickHouse. The Management API and CLI manage configuration, but no config export or backup is documented. Missing for 10: a documented full-export or offboarding path (including Cloud-provisioned ClickHouse data and workspace configuration), named open export formats, and independent corroboration of migrating off Jitsu.",
     "evidenceIds": [
       "jitsu-docs-21",
       "jitsu-gh-2",
+      "jitsu-docs-82",
       "jitsu-docs-39",
       "jitsu-docs-56",
-      "jitsu-docs-61",
-      "jitsu-docs-62"
+      "jitsu-docs-61"
     ],
     "support": {
       "relation": "direct",
@@ -2535,6 +2542,10 @@
         {
           "evidenceId": "jitsu-gh-2",
           "quote": "Delivery to destinations — ClickHouse, BigQuery, Snowflake, Redshift, Postgres, S3, GCS, and dozens of SaaS tools"
+        },
+        {
+          "evidenceId": "jitsu-docs-82",
+          "quote": "in ClickHouse, which Jitsu Cloud provisions for you, or in your own BigQuery, Snowflake or Redshift."
         },
         {
           "evidenceId": "jitsu-docs-39",
@@ -2557,12 +2568,12 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Jitsu's docs state it is \"100% open-source\" and self-hostable, and a public GitHub repository (jitsucom/jitsu) exists. Its llms.txt calls it an open-source platform, and a community user reports using the open-source version. However, the evidence never names the license or its terms, so the \"open license\" part of the story is asserted rather than documented. missing for 10: the specific license name/terms (e.g., a LICENSE file citation), clarity on whether all components (including enterprise/cloud features) are covered by the open license.",
+    "rationale": "Jitsu's self-hosting docs say it is \"100% open-source\", its llms.txt calls it an open-source platform, a public GitHub repo (jitsucom/jitsu) is cited, and a community user reports running \"the open source version\". So the source is readable and claimed to be open. However, no evidence names the license or confirms its terms, so the \"under an open license\" part is only implied. missing for 10: the specific license name and terms (e.g. a LICENSE file or license statement), independent confirmation that the entire product source, not just parts, is under that license.",
     "evidenceIds": [
       "jitsu-docs-56",
       "jitsu-probe-1",
-      "jitsu-gh-1",
-      "jitsu-comm-2"
+      "jitsu-comm-2",
+      "jitsu-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -2590,16 +2601,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Jitsu documents itself as 100% open-source and deployable on-premise. It ships a Kubernetes/Helm self-hosting path, including a zero-config Minikube development chart, and a community user reports deploying the open-source version easily. missing for 10: a documented feature-complete deployment path without Kubernetes, since functions, profile builders and connector syncs require a cluster.",
+    "rationale": "Jitsu documents itself as 100% open-source and deployable on-premise. It describes Helm-based Kubernetes self-hosting, including a zero-config development chart and Kubernetes-native production workloads since 2.14, and lists an On Prem tier. Community users report deploying the open-source version easily. Missing for 10: a feature-complete deployment path without Kubernetes (docs say full features require a cluster), and independent hands-on corroboration of the current Helm-based setup (community reports are from the older Docker era).",
     "evidenceIds": [
       "jitsu-docs-56",
       "jitsu-docs-14",
       "jitsu-docs-41",
       "jitsu-docs-57",
       "jitsu-docs-15",
+      "jitsu-docs-74",
       "jitsu-docs-73",
       "jitsu-comm-2",
-      "jitsu-probe-1"
+      "jitsu-comm-13"
     ],
     "support": {
       "relation": "direct",
@@ -2619,8 +2631,8 @@
           "quote": "A feature-complete Jitsu deployment requires a Kubernetes cluster"
         },
         {
-          "evidenceId": "jitsu-docs-15",
-          "quote": "Development Helm chart: deploy the full architecture to Minikube with zero configuration."
+          "evidenceId": "jitsu-docs-57",
+          "quote": "Jitsu 2.14 makes production self-hosting Kubernetes-native"
         },
         {
           "evidenceId": "jitsu-comm-2",
@@ -2635,14 +2647,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Jitsu Functions are a first-party, documented stage that processes data before it reaches a destination, with built-in Filter and Transform capabilities. This gives a general mechanism for modifying or removing sensitive attributes per destination. However, nothing documents PII-specific hashing, masking, or field-level redaction; these would have to be hand-written in JavaScript/TypeScript functions, and the documented Filter excludes whole events rather than fields. Missing for 10: native hashing/masking of PII fields, documented field-level filtering of sensitive attributes, explicit per-destination PII policy controls, and independent corroboration.",
+    "rationale": "Jitsu's own Functions feature processes data before it is sent to a destination, with documented Filter and Transform operations. This gives a general-purpose JavaScript hook through which sensitive attributes could be removed or modified per destination. No PII-specific hashing, masking, or field-level redaction controls are documented; the privacy lead would have to write custom code to get them. missing for 10: built-in hashing of PII fields, built-in masking/redaction, declarative field-level allow/deny lists per destination, PII-focused documentation, independent or hands-on corroboration.",
     "evidenceIds": [
-      "jitsu-docs-3",
-      "jitsu-docs-37",
       "jitsu-docs-54",
-      "jitsu-docs-25",
-      "jitsu-docs-31",
-      "jitsu-docs-45"
+      "jitsu-docs-3",
+      "jitsu-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -2650,16 +2659,12 @@
       "subject": "As a privacy lead, I can control PII flow per destination — hashing, masking, and field-level filtering of sensitive attributes",
       "citations": [
         {
-          "evidenceId": "jitsu-docs-37",
-          "quote": "Functions are designed to process data in Jitsu before it is sent to the destination."
-        },
-        {
           "evidenceId": "jitsu-docs-54",
           "quote": "Filter - Exclude data that fails to meet your specified criteria. Transform - Modify data to fit the schema of your destination."
         },
         {
-          "evidenceId": "jitsu-docs-25",
-          "quote": "Modify, filter or augment events before it is stored in your warehouse with Jitsu Functions."
+          "evidenceId": "jitsu-docs-37",
+          "quote": "Functions are designed to process data in Jitsu before it is sent to the destination. These functions, written in JavaScript, provide various data handling options"
         }
       ]
     }
@@ -2670,14 +2675,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu lets you control where data lives in two documented ways: self-hosting on any on-premise or your own Kubernetes infrastructure, and delivering events into the warehouse you choose rather than storing them in a vendor store. However, the evidence documents no region or residency selector for Jitsu Cloud and makes no explicit data-residency guarantee. Missing for 10: a documented region choice for the hosted cloud, explicit residency or data-location commitments, and independent corroboration.",
+    "rationale": "Jitsu documents its own deployment options that control where data lives: it is open-source and deployable to any on-premise infrastructure or a user's own Kubernetes cluster, it offers Private Cloud and On Prem tiers, and it delivers data into the user's own BigQuery, Snowflake or Redshift warehouse. However, no evidence shows a region or residency selector for the hosted Jitsu Cloud (including its provisioned ClickHouse or Kafka buffering), so residency choice is mainly achieved by self-hosting. Missing for 10: documented region/residency selection for Jitsu Cloud and its provisioned storage, explicit data-residency documentation, independent corroboration.",
     "evidenceIds": [
       "jitsu-docs-56",
       "jitsu-docs-14",
       "jitsu-docs-74",
-      "jitsu-docs-73",
-      "jitsu-docs-35",
-      "jitsu-gh-2"
+      "jitsu-docs-82",
+      "jitsu-docs-73"
     ],
     "support": {
       "relation": "direct",
@@ -2693,16 +2697,12 @@
           "quote": "Run Jitsu yourself on Kubernetes with Helm, fully under your control."
         },
         {
+          "evidenceId": "jitsu-docs-82",
+          "quote": "in ClickHouse, which Jitsu Cloud provisions for you, or in your own BigQuery, Snowflake or Redshift."
+        },
+        {
           "evidenceId": "jitsu-docs-73",
           "quote": "You want the option to run the pipe on your own infrastructure, which Segment does not offer at any price."
-        },
-        {
-          "evidenceId": "jitsu-docs-35",
-          "quote": "Make your data warehouse the single source of truth for your data."
-        },
-        {
-          "evidenceId": "jitsu-gh-2",
-          "quote": "Delivery to destinations — ClickHouse, BigQuery, Snowflake, Redshift, Postgres, S3, GCS, and dozens of SaaS tools"
         }
       ]
     }
@@ -2713,7 +2713,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jitsu is a SaaS and self-hostable data pipeline, so whether customer data is used for AI training is a fair privacy question. The evidence pack has no AI-training opt-out, no no-training commitment, and no training-related policy. Self-hosting, encryption at rest and in transit, SOC 2, and the DPA are adjacent privacy controls, not this capability.",
+    "rationale": "This axis applies to a hosted data-pipeline service like Jitsu, since a vendor could state an AI-training opt-out or a no-training policy. Nothing in the evidence addresses whether customer data is used to train AI models, or offers any opt-out. Self-hosting, encryption, SOC 2 and the DPA are adjacent privacy controls and do not establish this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2728,7 +2728,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jitsu is an event-collection pipeline, so data retention and deletion is a fair question to ask of it. However, the evidence documents no retention settings, deletion API, or user/data-erasure capability. Event filtering before delivery, self-hosting and warehouse-side storage are adjacent controls or host-platform capabilities, not retention or deletion controls, so they earn no credit.",
+    "rationale": "Jitsu is an event-data pipeline, so retention and deletion controls are a fair question to ask of it. The evidence shows no documented retention-period settings, data-deletion APIs, or per-user erasure capability. Filtering events before they land (Functions, unconnected sources) and self-hosting are adjacent controls over what gets collected and where it lives, not control over how long data is kept or how it is deleted.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2743,7 +2743,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence describes Jitsu's own telemetry or usage tracking, or any setting to opt out of it. Self-hosting and Functions that filter events act on customers' collected data, not on the product's telemetry, so they are adjacent features and earn no credit.",
+    "rationale": "Opting out of telemetry is a fair question for a self-hostable analytics platform, both for the vendor's own product telemetry and for end-user tracking opt-out, so the axis applies. The pack contains no documented telemetry or tracking opt-out: no setting, flag, or consent/do-not-track mechanism. Jitsu Functions can filter events, but that is a developer building block and an adjacent control, not an opt-out feature, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2758,7 +2758,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Audience activation is a fair question for a Segment-alternative data platform, so the axis applies. The evidence shows only event streaming to warehouses and SaaS destinations, plus a Profile Builder that writes profiles to the warehouse. Nothing documents audience or segment definitions, or syncing membership entries and exits to ad platforms or engagement tools. Event forwarding and warehouse profiles are adjacent features, not audience sync.",
+    "rationale": "Jitsu is a Segment-style event pipeline, so audience activation is a fair question to ask of it. The evidence shows only event streaming to warehouses and SaaS destinations, plus Profile Builder writing customer profiles to the warehouse. Nothing documents defining audiences or syncing audience membership (entries and exits) to ad platforms or engagement tools, continuously or otherwise. Event delivery and warehouse profiles are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2773,10 +2773,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu documents its own web collection: an HTML snippet and a JavaScript integration that is '100% compatible with Segment API', plus a React integration. Backend data can be sent over an HTTP API, and `identify` events are referenced by Profile Builder. However, there is no evidence of a mobile SDK, server collection is a raw HTTP API rather than an official server SDK, and the track/identify/page spec is only implied through Segment compatibility rather than documented directly. missing for 10: official mobile SDKs, official server-side SDKs, an explicitly documented tracking spec covering track/identify/page, independent hands-on corroboration across platforms",
+    "rationale": "Jitsu documents an official web SDK: a JS tag/snippet with a JS reference based on and compatible with Analytics.js. It also claims 100% Segment-API compatibility plus a React integration, and Profile Builder consumes `identify` events. Server-side collection is documented only as a raw HTTP API, not an SDK, and nothing in the evidence shows a mobile SDK. missing for 10: official mobile SDKs (iOS/Android), an official server-side SDK beyond the raw HTTP API, an explicit spec page enumerating track/identify/page calls, independent hands-on corroboration across platforms.",
     "evidenceIds": [
-      "jitsu-docs-5",
+      "jitsu-docs-95",
       "jitsu-docs-26",
+      "jitsu-docs-79",
       "jitsu-docs-59",
       "jitsu-docs-2",
       "jitsu-docs-11"
@@ -2787,16 +2788,12 @@
       "subject": "As a data engineer, I can collect events from web, mobile, and server apps through official SDKs that implement a documented tracking spec (track, identify, page)",
       "citations": [
         {
-          "evidenceId": "jitsu-docs-5",
-          "quote": "Jitsu javascript integration is 100% compatible with Segment API."
+          "evidenceId": "jitsu-docs-95",
+          "quote": "The API is based on [Analytics.js](https://getanalytics.io/api/), and is compatible with it."
         },
         {
           "evidenceId": "jitsu-docs-26",
-          "quote": "In addition to that we have React integration"
-        },
-        {
-          "evidenceId": "jitsu-docs-59",
-          "quote": "To start tracking events just add following snippet to the `<head>` section of your website"
+          "quote": "Jitsu javascript integration is 100% compatible with Segment API. In addition to that we have React integration"
         },
         {
           "evidenceId": "jitsu-docs-2",
@@ -2852,15 +2849,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Jitsu's own connector syncs pull data into the warehouse from third-party sources using Airbyte-compatible connectors, with 300+ sources including Google Analytics and Stripe. It also ingests feeds from Segment via webhook, so customer data is not limited to your own instrumented apps. A community user confirms that most major ad sources are available but reports a higher bar to implementation than Segment, which is a caveat rather than a contradiction. Missing for 10: in-depth first-party docs on connector configuration, scheduling and incremental sync behavior, plus independent hands-on corroboration of connector reliability.",
+    "rationale": "Jitsu documents its own connector syncs that pull data into the warehouse from third-party sources. These are Airbyte-compatible connectors covering 300+ sources such as Google Analytics and Stripe, and they run as scheduled Kubernetes CronJobs with failure and recovery alerts. It can also receive data forwarded from Segment via a webhook. A community user reports that Jitsu covers most of the ad sources they care about but has a higher setup bar than Segment, which is a caveat on ease of use rather than a contradiction. Missing for 10: detailed per-connector documentation (configuration, sync modes, incremental behavior) and independent hands-on corroboration of connector syncs working.",
     "evidenceIds": [
       "jitsu-gh-3",
       "jitsu-gh-4",
       "jitsu-docs-67",
-      "jitsu-docs-71",
+      "jitsu-docs-88",
       "jitsu-docs-41",
+      "jitsu-docs-65",
       "jitsu-docs-6",
-      "jitsu-comm-6"
+      "jitsu-comm-14"
     ],
     "support": {
       "relation": "direct",
@@ -2874,6 +2872,10 @@
         {
           "evidenceId": "jitsu-docs-67",
           "quote": "offering seamless connections to over 300+ data sources including giants like Google Analytics, Stripe, and Postgres."
+        },
+        {
+          "evidenceId": "jitsu-docs-88",
+          "quote": "Now you can use Jitsu to pull data from your favorite SaaS apps, databases and custom sources."
         },
         {
           "evidenceId": "jitsu-docs-41",
@@ -2892,7 +2894,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no tracking plan, schema registry, or event-validation feature that flags, blocks, or quarantines violating events. Jitsu Functions let developers write their own filter logic, but that is a building block for constructing enforcement, not the capability itself. The dead-letter queue covers failed deliveries rather than schema violations, and automatic table/column creation does the opposite of enforcing a schema.",
+    "rationale": "The evidence documents no tracking plan or schema-enforcement feature that flags, blocks, or quarantines violating events. Jitsu Functions let you write custom JavaScript filter logic, but that is a developer building block for constructing enforcement, not the capability itself. Jitsu also auto-creates warehouse columns from whatever data is sent, which points away from schema enforcement. The dead-letter queue covers failed deliveries, not schema violations.",
     "evidenceIds": [
       "jitsu-docs-54"
     ],
@@ -2914,14 +2916,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Jitsu's Profile Builder creates customer profile records in the user's own warehouse from `identify` traits, with optional custom JavaScript logic over up to a year of events. Identity stitching links anonymous and known IDs, so a data engineer can query profiles as a documented warehouse-resident store. Missing for 10: a dedicated profile query API (the Management API covers workspace config only), documentation of the profile table schema showing identifiers and event history per profile, and independent or hands-on corroboration.",
+    "rationale": "Jitsu's Profile Builder writes customer profile records to your warehouse. They are built from `identify` traits, with optional JavaScript logic over up to a year of events, and identity stitching links anonymous records to the known user. That gives a data engineer a documented profile store to query, but there is no dedicated profile lookup API and the profile schema is not described. Missing for 10: a documented profile query API, a documented profile schema covering identifiers and event history, and independent or hands-on corroboration of querying profiles.",
     "evidenceIds": [
       "jitsu-docs-39",
       "jitsu-docs-53",
       "jitsu-docs-11",
       "jitsu-docs-12",
-      "jitsu-docs-4",
-      "jitsu-docs-61"
+      "jitsu-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -2931,6 +2932,10 @@
         {
           "evidenceId": "jitsu-docs-39",
           "quote": "Profiles are customer records stored in your warehouse, based on the events data you send to Jitsu."
+        },
+        {
+          "evidenceId": "jitsu-docs-53",
+          "quote": "Create customer profiles records in your warehouse using Jitsu Profile Builder."
         },
         {
           "evidenceId": "jitsu-docs-11",
@@ -2953,7 +2958,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jitsu is a Segment-style customer data pipeline, so visual audience building is a fair question for it. The evidence shows no visual audience builder, no no-SQL segmentation, and no audience size estimate before activation. The closest feature is Profile Builder, which builds customer profiles from `traits` and uses JavaScript for custom logic; that is adjacent profile generation, not marketer-facing audience building.",
+    "rationale": "Jitsu is a Segment-style event pipeline, so a visual audience builder is a fair question for this category, but the evidence shows no such feature. The closest item, Profile Builder, builds warehouse profile records from `identify` traits or custom JavaScript logic. That is adjacent and code-based, not a no-SQL visual audience builder, and nothing in the pack mentions audience-size estimates or audience activation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2966,15 +2971,16 @@
     "productId": "jitsu",
     "storyId": "warehouse-sync-raw",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Jitsu documents delivering raw events to ClickHouse, BigQuery, Snowflake and S3, with tables auto-created. Profile Builder writes customer profiles into your warehouse, and a community user confirms collecting data into BigQuery. The 'schedule I control' part is not shown: delivery is real-time streaming or micro-batching chosen by what the destination prefers, and 'optional batching' is mentioned without any user-configurable cadence. The cron-based connector syncs pull third-party sources in, which is not scheduled event or profile delivery. missing for 10: documented user-controlled delivery schedule or batch frequency for event/profile loads, independent corroboration of Snowflake/ClickHouse/S3 delivery and of profiles landing in the warehouse.",
+    "rationale": "Jitsu documents delivery of raw events to the user's own Snowflake, BigQuery, ClickHouse, Redshift, Postgres, S3 and GCS, streamed or micro-batched. Profile Builder writes customer profile records into the user's warehouse, and a community user confirms collecting data into BigQuery. However, user control over the delivery schedule is only implied by 'optional batching'; the micro-batch mode is chosen 'depending on what the destination prefers', and no configurable load cadence is documented. Missing for 10: documented user-configurable batch schedule or frequency for warehouse/lake loads, and independent corroboration of S3/Snowflake profile delivery.",
     "evidenceIds": [
       "jitsu-gh-2",
       "jitsu-docs-7",
-      "jitsu-docs-10",
       "jitsu-docs-39",
       "jitsu-docs-53",
+      "jitsu-docs-82",
+      "jitsu-docs-10",
       "jitsu-comm-2"
     ],
     "support": {
@@ -2995,8 +3001,8 @@
           "quote": "Profiles are customer records stored in your warehouse, based on the events data you send to Jitsu."
         },
         {
-          "evidenceId": "jitsu-docs-10",
-          "quote": "Jitsu will automatically create tables and columns in your warehouse based on the data you send"
+          "evidenceId": "jitsu-docs-82",
+          "quote": "in ClickHouse, which Jitsu Cloud provisions for you, or in your own BigQuery, Snowflake or Redshift."
         },
         {
           "evidenceId": "jitsu-comm-2",
@@ -3011,22 +3017,17 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only documented programmatic pipeline-management surface is the Warehouse Sync API, which configures ingestion from Snowflake, Redshift, BigQuery or Databricks into mParticle. That covers one kind of source. Connecting outputs is documented as a UI flow (Data Platform > Setup > Directory), and a Platform API is mentioned but its management scope is unevidenced. Missing for 10: documented API for creating general inputs and destinations, wiring connections between them, inspecting delivery status, any MCP server, and independent or hands-on corroboration of agent-driven pipeline management.",
+    "rationale": "The only first-party management API in the evidence that touches pipeline configuration is the Warehouse Sync API, which configures warehouse-to-mParticle ingestion, roughly a source-side pipeline. Destination and audience-output connections are documented only as UI flows (\"Navigate to Data Platform > Setup > Directory\"), the Events API is for data ingestion rather than pipeline management, and nothing describes an MCP server. missing for 10: documented API for creating inputs/sources generally, API for creating destinations/outputs, API for wiring connections between sources and destinations, API for inspecting delivery status/logs, an MCP server, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "mparticle-docs-x4",
       "mparticle-docs-18",
-      "mparticle-docs-x2",
-      "mparticle-events-openapi-20261106"
+      "mparticle-docs-x2"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As an AI-native user, an agent can manage the pipeline itself — create sources and destinations, wire streams, inspect deliveries — through a documented API or MCP server",
       "citations": [
-        {
-          "evidenceId": "mparticle-docs-x4",
-          "quote": "Warehouse Sync ingests data from your own warehouse into mParticle"
-        },
         {
           "evidenceId": "mparticle-docs-x4",
           "quote": "with a Warehouse Sync API, SQL reference, and data mapping"
@@ -3040,7 +3041,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "mParticle documents a Platform API 'Audiences' page and a 'Real-time API to drive user personalization', which suggests some programmatic audience and profile access. However, the only documented activation flow is dashboard-driven ('Navigate to Data Platform > Setup > Directory'), and there is no MCP evidence. missing for 10: evidence that audiences can be created and defined via API, API-based connection of audiences to outputs, documented profile query details, an MCP server, and independent or hands-on corroboration of a dashboard-free end-to-end flow.",
+    "rationale": "mParticle documents an Audiences page under its Platform API and a real-time API for user data, which gives some first-party API surface for querying profiles and managing audiences. However, the evidence shows only page titles, with no detail on programmatic audience creation. The documented activation flow requires navigating Data Platform > Setup > Directory in the UI, so a dashboard stays in the loop. Missing for 10: documented API detail for creating audiences and connecting them to outputs, a dashboard-free activation path, an MCP server, and any independent or hands-on corroboration of agent-driven end-to-end use.",
     "evidenceIds": [
       "mparticle-docs-19",
       "mparticle-docs-4",
@@ -3068,7 +3069,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack mentions an llms.txt file, markdown-for-agents docs, or any documentation aimed at AI agents. The Events API OpenAPI spec is a machine-readable artifact meant for SDK generation, which is an adjacent feature and earns no credit for agent-oriented docs. The axis applies to a SaaS CDP with public developer docs, so missing evidence means none.",
+    "rationale": "The evidence pack never mentions an llms.txt file, markdown or LLM-oriented doc exports, or any documentation built for agents to consume. The Events API OpenAPI spec is a machine-readable API contract, which is adjacent rather than agent-oriented docs. The marketing line about an in-product 'Agent' describes a product feature, not docs an external agent can be pointed at.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3082,11 +3083,13 @@
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "medium",
-    "rationale": "mParticle's homepage claims an in-product assistant: you describe an audience, journey or growth goal, and it 'understands the customer data behind it' and 'suggests the logic to use'. It also claims predictive scoring of churn, conversion and growth likelihood. Both are marketing-page claims only, with no in-depth documentation of how the insights are generated or surfaced. missing for 10: first-party product docs for the AI suggestion feature, evidence of general AI-generated insights beyond audience logic and scoring, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "mParticle's own marketing describes an in-product agent that understands customer data and suggests audience logic, offers 'recommendations grounded in your data' with inspectable reasoning, and scores churn, conversion and value likelihood. That is direct AI-generated suggestions from the user's data, but the evidence is only homepage taglines, with no product docs explaining how insights are generated or surfaced. missing for 10: in-depth documentation of the AI insight and recommendation feature, details on what insights beyond audience logic are produced, independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-22",
-      "mparticle-docs-16",
+      "mparticle-docs-20261109",
+      "mparticle-docs-20261110",
+      "mparticle-docs-20261111",
       "mparticle-docs-15"
     ],
     "support": {
@@ -3096,7 +3099,15 @@
       "citations": [
         {
           "evidenceId": "mparticle-docs-22",
-          "quote": "Describe the audience, journey, or growth goal. mParticle understands the customer data behind it, suggests the logic to use, and helps turn intent into revenue-driving activation."
+          "quote": "mParticle understands the customer data behind it, suggests the logic to use, and helps turn intent into revenue-driving activation."
+        },
+        {
+          "evidenceId": "mparticle-docs-20261109",
+          "quote": "Recommendations grounded in your data"
+        },
+        {
+          "evidenceId": "mparticle-docs-20261110",
+          "quote": "Reasoning you can inspect and refine"
         },
         {
           "evidenceId": "mparticle-docs-15",
@@ -3111,7 +3122,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Background automation is a fair question for a customer data platform, but the evidence pack does not document a capability for users to set up automations that run on their own. The closest items are adjacent: audience-to-output connections, consent-based forwarding rules, Warehouse Sync ingestion and AI-suggested audience logic. None of these describes a user-defined recurring schedule, trigger-based workflow or autonomous background agent.",
+    "rationale": "The axis applies, since a CDP could plausibly ship autonomous background automations or agents. However, the evidence only shows an assistant that \"suggests the logic to use\" from a described goal, plus marketing taglines such as \"One Agent across connected workflows.\" Nothing documents user-configured automations that run unattended in the background, so the story is not evidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3149,16 +3160,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "mParticle documents its own HTTP APIs (Events API with a downloadable OpenAPI spec, Warehouse Sync API, Platform Audiences API), so scripts can drive core functions without the UI. A per-batch development/production environment flag can separate test traffic, but it is not a sandbox. Nothing documents a CLI, CI integration, or headless runbooks, and some workflows such as connecting audience outputs are described as UI navigation. missing for 10: official CLI or CI tooling, documented CI/headless automation guides, OpenAPI specs beyond the Events API, an isolated sandbox/test tenant for CI runs, independent hands-on corroboration.",
+    "rationale": "mParticle documents its own server-side HTTP APIs, including the Events API with a downloadable OpenAPI spec, the Warehouse Sync API and the Platform/Audiences API. These let it be driven programmatically without the UI. A per-batch development/production environment flag allows test traffic to be segregated, which suits automated pipelines. However, there is no CLI, no CI-specific guidance, and the OpenAPI spec covers only the Events API, so headless/CI use is implied rather than documented as a workflow. Missing for 10: an official CLI or CI integration docs, machine-readable specs for the Platform/Profile APIs, an isolated sandbox/test tenant rather than just an environment flag, and hands-on corroboration of CI automation.",
     "evidenceIds": [
       "mparticle-events-openapi-20261106",
       "mparticle-events-spec-file-20261106",
-      "mparticle-docs-2",
-      "mparticle-docs-18",
-      "mparticle-docs-x4",
-      "mparticle-docs-19",
       "mparticle-environment-flag-20261106",
-      "mparticle-docs-x2"
+      "mparticle-docs-x4",
+      "mparticle-docs-2",
+      "mparticle-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -3170,16 +3179,16 @@
           "quote": "Use the Open API (previously known as Swagger) specification or similar tools to generate helper SDKs (using Swagger Codegen or OpenAPI Generator) for the Events API"
         },
         {
-          "evidenceId": "mparticle-docs-2",
-          "quote": "Send events directly to mParticle"
+          "evidenceId": "mparticle-environment-flag-20261106",
+          "quote": "which segregates development data from production data within the same account"
         },
         {
           "evidenceId": "mparticle-docs-x4",
           "quote": "with a Warehouse Sync API, SQL reference, and data mapping"
         },
         {
-          "evidenceId": "mparticle-environment-flag-20261106",
-          "quote": "Every Events API batch carries an environment field, \"production\" or \"development\""
+          "evidenceId": "mparticle-docs-2",
+          "quote": "Send events directly to mParticle"
         }
       ]
     }
@@ -3190,7 +3199,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "mParticle is a customer data platform with AI-assisted audience building, so acting as an MCP client is a fair question for it. However, nothing in the evidence pack documents connecting or plugging in external MCP servers or using their tools. The integrations, APIs and OpenAPI spec cover data forwarding and ingestion, not MCP client support.",
+    "rationale": "mParticle's marketing describes a built-in agent ('One Agent across connected workflows'), so asking whether that agent can connect to external MCP servers is a fair question for this product. However, nothing in the evidence documents MCP client support or any way to register third-party tool servers. The evidence covers only native integrations, APIs and an OpenAPI spec, none of which is plugging MCP servers into the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3205,7 +3214,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "mParticle is a customer data platform, so an official MCP server is a fair question for this kind of product, but nothing in the evidence pack mentions an MCP server or any agent-connection endpoint. The Events API OpenAPI spec and the HTTP APIs are developer building blocks, not an official MCP server, so they earn no credit here.",
+    "rationale": "mParticle is a customer data platform, not an agent, so an official MCP server is a fair question for this kind of product. The evidence pack never mentions an MCP server. The marketing line about 'One Agent across connected workflows' describes an in-product assistant, and the Events API OpenAPI spec is only a developer building block; neither is an MCP endpoint an external agent could connect to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3243,7 +3252,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a customer data platform, so the axis applies, but nothing in the evidence pack documents an mParticle CLI. The Events API OpenAPI spec, which can be used to generate SDKs, is a developer building block rather than an official CLI, and it earns no credit.",
+    "rationale": "An official CLI is a fair question for a CDP SaaS platform like mParticle, but the evidence pack never mentions one. The pack documents client SDKs, HTTP APIs and an Events API OpenAPI spec for generating helper SDKs. Those are developer building blocks or adjacent surfaces, not an official command-line tool, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3257,15 +3266,15 @@
     "storyId": "agentic-public-api",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "mParticle documents several public HTTP API surfaces: the Events API with a downloadable OpenAPI 3.0.3 spec, a Platform API (Audiences), a Profile API, the Warehouse Sync API, and the versioned Data Subject Request API v3. Together these let a programmatic or agent consumer drive ingestion, audiences, warehouse sync and privacy requests. missing for 10: machine-readable specs for the Platform and Profile APIs (only the Events API has one), independent or hands-on corroboration of driving the product end-to-end via API.",
+    "confidence": "medium",
+    "rationale": "mParticle documents several public HTTP API surfaces: the Events API with a downloadable OpenAPI 3.0.3 spec, Platform API audience endpoints, the Warehouse Sync API, and the versioned Data Subject Request API v3. Together these let a programmatic or AI-driven consumer drive core ingestion, audience, warehouse-sync and privacy workflows. Missing for 10: machine-readable specs for the Platform and Profile APIs (the spec covers the Events API only), detailed evidence of how far the Platform API covers configuration and management, and independent or hands-on corroboration of API-driven operation.",
     "evidenceIds": [
       "mparticle-events-openapi-20261106",
       "mparticle-events-spec-file-20261106",
-      "mparticle-dsr-v3-upgrade-20261106",
-      "mparticle-docs-x4",
+      "mparticle-docs-18",
       "mparticle-docs-19",
-      "mparticle-docs-2"
+      "mparticle-docs-x4",
+      "mparticle-dsr-v3-upgrade-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -3274,19 +3283,23 @@
       "citations": [
         {
           "evidenceId": "mparticle-events-openapi-20261106",
-          "quote": "Use the Open API (previously known as Swagger) specification or similar tools to generate helper SDKs (using Swagger Codegen or OpenAPI Generator) for the Events API: Events API Open API Spec."
+          "quote": "Use the Open API (previously known as Swagger) specification or similar tools to generate helper SDKs (using Swagger Codegen or OpenAPI Generator) for the Events API"
         },
         {
           "evidenceId": "mparticle-events-spec-file-20261106",
-          "quote": "The spec file itself downloads as OpenAPI 3.0.3 YAML"
+          "quote": "This is the mParticle Event Server"
+        },
+        {
+          "evidenceId": "mparticle-docs-x4",
+          "quote": "with a Warehouse Sync API, SQL reference, and data mapping"
         },
         {
           "evidenceId": "mparticle-dsr-v3-upgrade-20261106",
           "quote": "Update to the v3 base URL https://opendsr.mparticle.com/v3"
         },
         {
-          "evidenceId": "mparticle-docs-x4",
-          "quote": "with a Warehouse Sync API, SQL reference, and data mapping"
+          "evidenceId": "mparticle-docs-18",
+          "quote": "Warehouse Sync API Overview"
         }
       ]
     }
@@ -3297,7 +3310,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Issuing scoped API credentials is a fair question for a CDP with HTTP APIs. However, the evidence pack documents no API key or credential management, permission scopes, or least-privilege access controls. The items cover event ingestion, OpenAPI specs, environment flags, API versioning and privacy forwarding rules, none of which address credential scoping.",
+    "rationale": "Issuing scoped or least-privilege API credentials is a fair question for a SaaS customer data platform with HTTP APIs, so the axis applies. However, nothing in the evidence pack documents API key creation, permission scopes, roles, or least-privilege credentials for agents or any other client. IDSync's mention of 'data governance, policy, and security' is about identity resolution, not credential scoping, so it is an adjacent feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3339,7 +3352,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair question for a customer data platform, so the axis applies. However, nothing in the evidence pack documents registrable outbound HTTP callbacks that a programmatic consumer can subscribe to. The 'Build your own custom integrations' and 'Forward data to a downstream services' items are bare titles that never mention webhooks, and Feeds and the Events API cover inbound ingestion.",
+    "rationale": "Webhooks are a fair axis for a customer data platform, but the pack never documents registrable outbound HTTP callbacks that a programmatic consumer can receive. The only nearby items are bare page titles ('Forward data to a downstream services', 'Build your own custom integrations') and audience outputs routed to partner integrations. These are adjacent forwarding and integration features, not webhook subscriptions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3354,10 +3367,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence does not show AI decisioning agents that autonomously choose messages, timing, and channels per customer within user-set guardrails, or any measurement of lift from such decisions. What the pack does show is adjacent: predictive scoring to activate audiences, an assistant that suggests audience or journey logic, and match-rate lift from identity resolution.",
+    "rationale": "The evidence shows an assistant that suggests audience and journey logic, plus predictive scoring for churn, conversion, and value. Neither is an autonomous decisioning agent that picks messages, timing, and channels per customer. Nothing documents guardrail configuration or measured lift from such decisions; the 'lift match rates' claim is about identity matching, not decisioning outcomes. These are adjacent features, not the story's capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, AI decisioning agents pick messages, timing, and channels per customer autonomously within guardrails I set, with measurable lift",
       "citations": []
@@ -3369,13 +3382,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only a downloadable OpenAPI 3.0.3 spec for the Events API, intended for generating helper SDKs. That is a developer building block that users could load into their own tools, not an interactive API reference with runnable examples. Nothing in the pack documents a try-it console, in-browser request execution, or runnable code samples, and the Platform and Profile API pages carry no spec at all.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack has no interactive API reference (a try-it console) and no runnable API examples. The only related item is a downloadable OpenAPI spec for the Events API, which is a developer building block: users could load it into their own tools, but mParticle does not provide the interactive experience itself. The 'interactive demo' mentioned in the docs covers the UI, not the API, so it is an adjacent feature and earns no credit.",
+    "evidenceIds": [
+      "mparticle-events-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mparticle-events-openapi-20261106",
+          "quote": "Use the Open API (previously known as Swagger) specification or similar tools to generate helper SDKs (using Swagger Codegen or OpenAPI Generator) for the Events API"
+        }
+      ]
     }
   },
   {
@@ -3384,7 +3404,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "high",
-    "rationale": "mParticle publishes a downloadable OpenAPI 3.0.3 YAML spec for its Events API, suitable for SDK generation. The docs state this spec covers the Events API only, and the Platform and Profile API pages carry no spec, so much of the API surface has no machine-readable description. Missing for 10: OpenAPI specs for the Platform, Profile, and other APIs (Warehouse Sync, DSR), and independent or hands-on corroboration of the spec's usability.",
+    "rationale": "mParticle publishes a downloadable OpenAPI 3.0.3 YAML spec for its Events API and explicitly recommends it for generating SDKs with OpenAPI Generator. That spec covers only the Events API; the docs note that the Platform and Profile API pages carry no spec, so much of the API surface lacks machine-readable definitions. missing for 10: OpenAPI specs for the Platform, Profile and other APIs (e.g. DSR, Warehouse Sync), and independent or hands-on corroboration of the spec's completeness.",
     "evidenceIds": [
       "mparticle-events-openapi-20261106",
       "mparticle-events-spec-file-20261106"
@@ -3433,7 +3453,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "mParticle versions its APIs per surface and documents migrations, such as the DSR API v1/v2 to v3 upgrade guide and a Warehouse Sync API v2 migration, and it keeps a dated changelog. However, the evidence says no policy page states notice periods or lifecycle guarantees, so the deprecation-policy half of the story is unevidenced. Missing for 10: a documented deprecation policy with notice periods and sunset timelines, lifecycle or support guarantees per API version, and independent corroboration.",
+    "rationale": "mParticle versions its APIs per surface and documents migrations, such as the Data Subject Request API v1/v2→v3 upgrade guide with a new v3 base URL and a Warehouse Sync API v2 migration. It also keeps a dated changelog. However, the evidence explicitly notes that no policy page states notice periods or lifecycle guarantees, so the deprecation-policy half of the story is unmet. missing for 10: a documented deprecation policy with notice periods and lifecycle/sunset guarantees, consistent versioning across all API surfaces (Events/Platform/Profile), independent corroboration.",
     "evidenceIds": [
       "mparticle-dsr-v3-upgrade-20261106",
       "mparticle-changelog-20261106"
@@ -3445,7 +3465,11 @@
       "citations": [
         {
           "evidenceId": "mparticle-dsr-v3-upgrade-20261106",
-          "quote": "mParticle versions its APIs per surface with documented migrations, e.g. the Data Subject Request API v3 upgrade guide"
+          "quote": "mParticle versions its APIs per surface with documented migrations"
+        },
+        {
+          "evidenceId": "mparticle-dsr-v3-upgrade-20261106",
+          "quote": "Follow the steps below to upgrade from version 1 or version 2 to version 3. Update to the v3 base URL https://opendsr.mparticle.com/v3"
         },
         {
           "evidenceId": "mparticle-changelog-20261106",
@@ -3520,7 +3544,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a customer data platform, so the axis applies. However, nothing in the pack documents a recurring schedule or workflow scheduler. Warehouse Sync is described only as ingesting data from warehouses, with no mention of schedules, intervals or recurring runs, and the audience and feed docs describe one-time connection setup rather than scheduled jobs.",
+    "rationale": "Scheduling recurring jobs is a fair question for a CDP, since warehouse syncs or audience refreshes could run on a schedule. However, nothing in the evidence pack documents any scheduling capability. The Warehouse Sync material describes ingestion setup and an API with no schedule or recurrence, and the 'One Agent across connected workflows' line is a marketing tagline with no scheduling mechanism.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3535,7 +3559,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Versioning, reviewing, and rolling back user-built automations is a fair question for a CDP, since rules, audiences, and connections could plausibly carry version history. The pack shows no such capability. The only versioning evidence covers the vendor's own API surfaces (DSR API v3, Warehouse Sync API v2) and a vendor product changelog. Neither lets a user version, review, or roll back their own automations.",
+    "rationale": "The evidence pack does not document versioning, review/approval workflows, or rollback for mParticle automations such as audiences, forwarding rules, or journeys. The available material is adjacent and earns no credit: API surface versioning (DSR v3 migration), a vendor product changelog, and marketing copy about inspectable AI reasoning do not amount to version control or rollback of a user's own automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3550,12 +3574,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "mParticle documents Warehouse Sync, which ingests existing tables from Snowflake, Redshift, BigQuery and Databricks into mParticle via an API, SQL reference and data mapping. Audiences built in mParticle can then be connected to audience outputs for activation. However, the evidence shows data being copied into mParticle rather than models and audiences being defined in place on warehouse tables. The 'Composable Audiences' page appears only as a title, with no supporting content. missing for 10: documented in-warehouse model and audience definition without ingesting into mParticle, content for Composable Audiences, independent or hands-on corroboration.",
+    "rationale": "mParticle documents Warehouse Sync, which ingests existing tables from Snowflake, Redshift, BigQuery and Databricks via an API, SQL reference and data mapping, and audiences can then be connected to outputs for activation. This lets warehouse data be activated without re-instrumenting collection. However, the evidence describes ingesting (copying) warehouse data into mParticle rather than defining models and audiences natively on the warehouse tables. A 'Composable Audiences' page exists, but the pack gives only its title, so no warehouse-native audience definition is evidenced. Missing for 10: evidence of defining models and audiences directly on warehouse tables without copying data into mParticle, details of Composable Audiences, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-x4",
       "mparticle-docs-18",
-      "mparticle-docs-20",
-      "mparticle-docs-x2"
+      "mparticle-docs-x2",
+      "mparticle-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -3564,15 +3588,11 @@
       "citations": [
         {
           "evidenceId": "mparticle-docs-x4",
-          "quote": "Warehouse Sync ingests data from your own warehouse into mParticle"
+          "quote": "Warehouse Sync ingests data from your own warehouse into mParticle — documented setup flows cover Snowflake, Amazon Redshift, Google BigQuery, and Databricks"
         },
         {
           "evidenceId": "mparticle-docs-x2",
           "quote": "Once you have created an audience, you must connect it to an audience output where you can activate it."
-        },
-        {
-          "evidenceId": "mparticle-docs-20",
-          "quote": "Composable Audiences"
         }
       ]
     }
@@ -3637,7 +3657,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "mParticle documents a versioned Data Subject Request API (v3, opendsr.mparticle.com) for GDPR/CCPA requests. Its Data Privacy Controls support CCPA data-sale opt-out suppression through forwarding rules that block data from reaching downstream outputs. The evidence does not show deletion requests being propagated to connected destinations, which is the core forwarding part of the story. Missing for 10: documented forwarding of deletion/erasure requests to connected destinations, details of DSR request types and processing workflow, independent or hands-on corroboration.",
+    "rationale": "mParticle documents a Data Subject Request API (v3, opendsr.mparticle.com) for GDPR/CCPA requests. Its Data Privacy Controls cover suppression: CCPA data-sale opt-out can drive a forwarding rule that blocks data from going to destinations. However, nothing in the pack shows deletion or erasure requests being forwarded to connected destinations. Missing for 10: documented deletion/erasure processing workflow, propagation of deletion requests to downstream destinations, request status tracking, independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-dsr-v3-upgrade-20261106",
       "mparticle-docs-x3",
@@ -3669,7 +3689,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a live event debugger, per-destination delivery metrics or error views, or alerting on delivery failures. The nearest items are bare page titles about data quality and forwarding, plus a development/production environment flag. None of these describes observability of event flow, so this applicable axis has no supporting evidence.",
+    "rationale": "The evidence pack contains no documentation of a live event debugger, per-destination delivery-failure diagnostics, delivery metrics, or alerting. The closest items are bare titles about data quality and forwarding data downstream, which are adjacent topics rather than pipeline observability. Observability is a fair question for a CDP that forwards data to hundreds of vendors, so the axis applies and the lack of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3684,14 +3704,16 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "mParticle documents routing data to 'hundreds of vendors' through an integrations directory. A community user confirms forwarding to around 10 analytics providers. Per-destination filtering is shown through forwarding rules and consent filters, but per-destination mapping is only implied by a doc titled 'Transform data as it enters and leaves mParticle'. missing for 10: documented per-destination field/event mapping, detailed per-destination filtering configuration beyond consent-based forwarding rules, an explicit destination catalog listing with per-integration docs.",
+    "rationale": "mParticle's docs describe forwarding user data to hundreds of vendors through an integrations directory. They also document per-output forwarding rules and consent filters for filtering, and a community user confirms events are forwarded to many downstream providers. Per-destination field mapping is evidenced only by a doc title about transforming data as it leaves mParticle. Missing for 10: detailed documentation of per-destination event/attribute mapping, concrete per-destination filtering configuration beyond privacy forwarding rules, and an evidenced catalog size or breadth of the integration directory.",
     "evidenceIds": [
+      "mparticle-docs-20261107",
       "mparticle-docs-27",
       "mparticle-docs-11",
+      "mparticle-docs-25",
       "mparticle-docs-x2",
       "mparticle-docs-x3",
-      "mparticle-docs-8",
       "mparticle-docs-21",
+      "mparticle-docs-8",
       "mparticle-comm-2"
     ],
     "support": {
@@ -3700,16 +3722,16 @@
       "subject": "As a data engineer, I can route events to a large catalog of documented destination integrations with per-destination mapping and filtering",
       "citations": [
         {
-          "evidenceId": "mparticle-docs-27",
+          "evidenceId": "mparticle-docs-20261107",
           "quote": "simplifies how you collect and connect your user data to hundreds of vendors without needing to manage multiple integrations"
-        },
-        {
-          "evidenceId": "mparticle-docs-x3",
-          "quote": "Applying a forwarding rule of: Do not forward if CCPA Data sale opt out is present."
         },
         {
           "evidenceId": "mparticle-docs-x2",
           "quote": "Navigate to Data Platform > Setup > Directory, and click the card for your audience partner of choice."
+        },
+        {
+          "evidenceId": "mparticle-docs-x3",
+          "quote": "Applying a forwarding rule of: Do not forward if CCPA Data sale opt out is present."
         },
         {
           "evidenceId": "mparticle-docs-8",
@@ -3728,7 +3750,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Replay and backfill are a fair axis for a customer data platform like mParticle, but nothing in the evidence documents replaying archived events into a new destination or backfilling history. Warehouse Sync ingests data from a customer's own warehouse into mParticle, which is a different inbound-ingestion feature, not event replay. Bare doc titles like 'Feeds' and 'Forward data to a downstream services' say nothing about replay.",
+    "rationale": "Nothing in the pack documents replaying archived events or backfilling history into a newly added or repaired destination. The closest item, Warehouse Sync, ingests data from the customer's own warehouse into mParticle. That is a different capability from replaying mParticle's event archive to downstream tools, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3775,11 +3797,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "mParticle's own docs include a page titled 'Transform data as it enters and leaves mParticle', and it documents forwarding rules that filter events before they reach destinations. The evidence is only a page title plus a consent-based forwarding rule. Nothing shows custom code or functions running in the pipeline, or event enrichment. Missing for 10: evidence of custom code/function execution in-pipeline, documented transformation and enrichment mechanics beyond a page title, general-purpose (non-consent) filtering detail, independent or hands-on corroboration.",
+    "rationale": "mParticle's docs list a page titled \"Transform data as it enters and leaves mParticle,\" and Data Privacy Controls document forwarding rules that stop events before they reach destinations. That shows some first-party in-pipeline transformation and filtering, but the evidence is a page title plus a privacy-scoped filter, with nothing showing custom code or functions. Missing for 10: any evidence of user-authored code or functions in the pipeline, documented enrichment, detail on transformation mechanics beyond a page title, general-purpose (non-consent) event filtering, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-8",
-      "mparticle-docs-x3",
-      "mparticle-docs-21"
+      "mparticle-docs-x3"
     ],
     "support": {
       "relation": "direct",
@@ -3802,11 +3823,12 @@
     "storyId": "nl-audience-builder",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "low",
-    "rationale": "mParticle's homepage says users can describe an audience in natural language and the product 'understands the customer data behind it' and 'suggests the logic to use'. That maps directly onto NL-to-segment generation grounded in the user's data. The only support is a one-line marketing claim, with no product documentation of the workflow. missing for 10: first-party docs describing the NL audience builder, evidence that the generated definition is presented for review/editing before saving, documentation of how it grounds suggestions in the actual schema/attributes, hands-on or independent corroboration.",
+    "confidence": "medium",
+    "rationale": "mParticle's homepage says users can describe an audience while the product understands the underlying customer data, suggests segment logic, and exposes reasoning that can be inspected and refined. That maps onto natural-language audience building grounded in data, with review. However, the support is only short marketing taglines, with no product documentation on how the generated segment definition is produced, reviewed, or tied to the user's schema. missing for 10: in-depth docs on the natural-language-to-audience-definition workflow, explicit evidence that generation is grounded in the user's actual schema/attributes, documentation of the review/approval step for generated segments, independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-22",
-      "mparticle-docs-16"
+      "mparticle-docs-20261109",
+      "mparticle-docs-20261110"
     ],
     "support": {
       "relation": "direct",
@@ -3815,7 +3837,15 @@
       "citations": [
         {
           "evidenceId": "mparticle-docs-22",
-          "quote": "Describe the audience, journey, or growth goal. mParticle understands the customer data behind it, suggests the logic to use, and helps turn intent into revenue-driving activation."
+          "quote": "Describe the audience, journey, or growth goal. mParticle understands the customer data behind it, suggests the logic to use"
+        },
+        {
+          "evidenceId": "mparticle-docs-20261109",
+          "quote": "Recommendations grounded in your data"
+        },
+        {
+          "evidenceId": "mparticle-docs-20261110",
+          "quote": "Reasoning you can inspect and refine"
         }
       ]
     }
@@ -3861,7 +3891,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents no bulk export of all account data, no open export formats, and no offboarding or exit path. Warehouse Sync is documented as ingesting data from your warehouse into mParticle, the opposite direction. The forwarding and integration headlines describe routing live data to downstream vendors, an adjacent activation feature rather than a full data export for leaving the platform.",
+    "rationale": "Leaving a customer data platform with all your data is a fair question for this kind of product, so the axis applies. The evidence pack documents no bulk export, no open-format dump, and no offboarding path. Warehouse Sync is documented as ingesting data from your warehouse into mParticle, which is the opposite direction. Forwarding event streams to downstream data-warehousing integrations is an adjacent capability, not an export of all your data in open formats.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3876,7 +3906,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a customer data platform publishes its source under an open license is a fair question, so the axis applies. Nothing in the pack shows mParticle's source being published or licensed openly. The 'Client SDKs' entry gives no license or repository details. The downloadable OpenAPI spec for the Events API is an API description, not product source, so it earns no credit here.",
+    "rationale": "Open-source licensing is a fair question for a SaaS CDP like mParticle, since its client SDKs or platform could be published under an open license, so the axis applies. Nothing in the evidence pack shows any source code released under an open license. The 'Client SDKs' item gives only a title with no repository or license, and the downloadable Events API OpenAPI spec is an interface description, not source code under an open license.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3891,7 +3921,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair axis for a customer data platform, since such products can ship self-hostable deployments. Nothing in the evidence pack documents a self-hosted or on-prem deployment of mParticle. Every item describes the vendor-hosted service, its APIs, Warehouse Sync into mParticle, and integrations, so the verdict is none.",
+    "rationale": "Self-hosting is a fair question for a customer data platform, so the axis applies. Nothing in the evidence describes a self-hosted, on-premises, or customer-deployed version of mParticle. Warehouse Sync only ingests data from the customer's own warehouse into the mParticle service, and the downloadable Events API spec only describes the hosted API. Neither is self-hosting the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3906,13 +3936,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents consent-based forwarding rules per destination (e.g. blocking forwarding when a CCPA opt-out is present). That is a consent-gating control, not per-destination hashing, masking or field-level filtering of sensitive attributes. The 'Transform data as it enters and leaves mParticle' item is only a title and says nothing about PII hashing or masking, so the story's capability has no direct evidence.",
-    "evidenceIds": [],
+    "rationale": "The only related evidence is mParticle's Data Privacy Controls, which apply consent-based forwarding rules (e.g., do not forward when a CCPA data-sale opt-out is present). That blocks whole data flows by consent state; it is not per-destination hashing, masking, or field-level filtering of sensitive attributes. The 'Transform data as it enters and leaves mParticle' and 'Consent Filters' items are titles only, with no content describing PII hashing, masking, or attribute filtering per destination.",
+    "evidenceIds": [
+      "mparticle-docs-x3"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a privacy lead, I can control PII flow per destination — hashing, masking, and field-level filtering of sensitive attributes",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mparticle-docs-x3",
+          "quote": "Applying a forwarding rule of: Do not forward if CCPA Data sale opt out is present."
+        }
+      ]
     }
   },
   {
@@ -3921,7 +3958,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data region or residency selection is a fair question for a customer data platform, so the axis applies. However, nothing in the evidence pack documents choosing where data is stored. The GDPR/CCPA consent and privacy controls are a related but different capability and earn no credit here.",
+    "rationale": "Data residency and region selection is a fair question for a SaaS customer data platform, so the axis applies. Nothing in the evidence pack documents choosing a storage region or residency location. The GDPR/CCPA consent and privacy-control material is an adjacent compliance feature, not region selection, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3936,7 +3973,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "mParticle is a customer data platform that ships AI-assisted audience features, so an AI-training opt-out is a fair question to ask of it. The evidence pack contains no statement or control about excluding customer data from AI model training. The GDPR/CCPA consent controls, consent filters and data-sale opt-out forwarding rules are adjacent privacy features. They govern forwarding to downstream partners, not use of data for AI training, so they earn no credit.",
+    "rationale": "mParticle now ships AI features (an agent and recommendations), so whether customer data is used for AI training is a fair question. The pack documents only GDPR consent and CCPA data-sale opt-out controls, which govern forwarding to downstream partners. These are adjacent privacy controls, not a policy or setting that stops customer data from training AI models.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3951,7 +3988,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "mParticle documents its own Data Subject Request API (v3 at opendsr.mparticle.com) and a GDPR/CCPA compliance guide, which points to product-level handling of subject requests such as erasure. However, the evidence never explicitly describes deletion operations or configurable retention periods, and the consent and forwarding rules are adjacent controls rather than retention or deletion. Missing for 10: explicit documentation of deletion/erasure request types, configurable data retention policies or TTLs, deletion scope across downstream outputs, and independent or hands-on corroboration.",
+    "rationale": "mParticle documents its own Data Subject Request API, now at v3 with a dedicated opendsr endpoint, which points to a first-party mechanism for handling data-subject requests such as deletion. The pack never explicitly describes deletion behavior, and it contains no retention controls. The consent and opt-out forwarding rules are an adjacent feature and get no credit here. Missing for 10: explicit documentation that the DSR API performs erasure, configurable data retention periods or policies, deletion scope and timelines, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-dsr-v3-upgrade-20261106",
       "mparticle-docs-10"
@@ -3963,7 +4000,7 @@
       "citations": [
         {
           "evidenceId": "mparticle-dsr-v3-upgrade-20261106",
-          "quote": "the Data Subject Request API v3 upgrade guide"
+          "quote": "Follow the steps below to upgrade from version 1 or version 2 to version 3. Update to the v3 base URL https://opendsr.mparticle.com/v3"
         },
         {
           "evidenceId": "mparticle-docs-10",
@@ -3978,7 +4015,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents Data Privacy Controls and Consent Filters that let mParticle customers honor their own end users' GDPR consent and CCPA opt-outs when forwarding data. That is an adjacent capability for managing customer data, not a way for the product's user to opt out of mParticle's own telemetry or usage tracking. Nothing in the pack describes such an opt-out for mParticle's SDKs, dashboard or tooling.",
+    "rationale": "The evidence does not show any setting that lets an mParticle user opt out of mParticle's own telemetry or usage tracking. The Data Privacy Controls and Consent Filters handle GDPR consent and CCPA data-sale opt-outs for the end users whose data customers send through the CDP. That is an adjacent capability for a different purpose, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3993,11 +4030,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "mParticle's docs show that audiences you build connect to audience outputs (partners chosen from the integrations directory) for activation, so the core of audience syncing to downstream tools is there. Nothing in the pack shows that the sync is continuous or that members enter and exit in near-real-time. Missing for 10: evidence of continuous or near-real-time membership updates (entry and exit), named ad-platform and engagement-tool destinations, sync latency details, and independent or hands-on corroboration.",
+    "rationale": "mParticle documents connecting audiences it builds to partner audience outputs for activation, which covers the core sync-to-destinations part of the story. Nothing in the pack establishes that syncing is continuous or that members enter and exit in near-real-time. missing for 10: evidence of continuous or streaming audience sync, documented near-real-time membership entry and exit, named ad-platform and engagement-tool destinations, independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-x2",
-      "mparticle-docs-12",
-      "mparticle-docs-7"
+      "mparticle-docs-15",
+      "mparticle-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -4007,6 +4044,10 @@
         {
           "evidenceId": "mparticle-docs-x2",
           "quote": "Once you have created an audience, you must connect it to an audience output where you can activate it."
+        },
+        {
+          "evidenceId": "mparticle-docs-15",
+          "quote": "activate audiences before risk or opportunity passes"
         },
         {
           "evidenceId": "mparticle-docs-12",
@@ -4060,7 +4101,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "mParticle documents a server-side Events API for sending events directly. It publishes a machine-readable OpenAPI 3.0.3 spec for the Event Server, and batches carry a documented environment field. The evidence does not show how requests are authenticated or what delivery guarantees apply, so only the core ingestion surface is established. Missing for 10: documented authentication scheme (keys/secrets), delivery guarantees (retries, acknowledgements, durability/idempotency), independent or hands-on corroboration.",
+    "rationale": "mParticle documents an HTTP Events API for sending event batches directly to its Event Server, backed by a downloadable OpenAPI 3.0.3 spec, so the core server-to-server ingestion path exists. Nothing in the evidence describes how that API authenticates callers or what delivery guarantees it gives (retries, acknowledgements, idempotency). missing for 10: documented authentication scheme for the Events API, delivery guarantees (retry/ack/idempotency semantics), independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-2",
       "mparticle-events-openapi-20261106",
@@ -4097,7 +4138,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "mParticle's docs include a dedicated 'Feeds' guide, a first-party inbound feed capability that matches the story's 'feeds' wording. The pack contains only the page title, so the depth and the range of supported third-party sources are unproven. Warehouse Sync ingests from the customer's own warehouse, not third-party cloud apps, so it is not credited. Missing for 10: description of which third-party cloud apps/partners can send data via Feeds, setup/configuration docs, any mapping or identity handling for partner feeds, independent or hands-on corroboration.",
+    "rationale": "mParticle's documentation has a dedicated 'Feeds' guide, the product's own named inbound-feed capability, but the pack shows only its title, with no description of which third-party cloud apps or partner feeds can send data in. Warehouse Sync ingests from the customer's own warehouse, not from third-party apps, so it is adjacent and earns no credit. Missing for 10: description of the Feeds mechanism, a list of supported third-party inbound sources, setup and data-mapping documentation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-28"
     ],
@@ -4119,7 +4160,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "mParticle's own docs list a capability to \"View and enforce your data quality\" and \"Ensure data quality\", which points to first-party schema enforcement. However, the pack has only these headings, with no description of how violating events are handled. missing for 10: documented tracking plan or schema definition, specifics on flagging, blocking or quarantining violating events, details on preventing downstream corruption, independent or hands-on corroboration.",
+    "rationale": "mParticle's own docs include a section titled \"View and enforce your data quality\", plus a separate \"Ensure data quality\" entry, so the product claims first-party enforcement. The pack contains only these headings, with no detail on how violating events are flagged, blocked, or quarantined. Missing for 10: documented schema or tracking-plan definition, documented flag/block/quarantine behavior for violating events, any detail beyond section titles, independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-6",
       "mparticle-docs-24"
@@ -4183,12 +4224,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "mParticle documents creating audiences and connecting them to audience outputs for activation, and its marketing site describes a describe-the-audience flow that suggests the segmentation logic, which implies a no-SQL path. The evidence never shows a visual trait/behavior builder or a pre-activation size estimate. missing for 10: documented visual drag-and-drop builder combining traits and behaviors, explicit no-SQL confirmation, estimated audience size before activation, independent or hands-on corroboration.",
+    "rationale": "mParticle's own docs confirm that marketers create audiences and then connect them to outputs for activation. The homepage says users can describe an audience and the product suggests the logic, which implies a no-SQL path. Nothing in the pack documents a visual builder, the trait and behavior criteria, or a size estimate before activation. missing for 10: documented visual drag-and-drop builder, explicit trait/behavioral criteria support, estimated audience size preview before activation, independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-x2",
       "mparticle-docs-22",
-      "mparticle-docs-20",
-      "mparticle-docs-7"
+      "mparticle-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -4201,7 +4241,7 @@
         },
         {
           "evidenceId": "mparticle-docs-22",
-          "quote": "Describe the audience, journey, or growth goal. mParticle understands the customer data behind it, suggests the logic to use, and helps turn intent into revenue-driving activation."
+          "quote": "Describe the audience, journey, or growth goal. mParticle understands the customer data behind it, suggests the logic to use"
         }
       ]
     }
@@ -4212,7 +4252,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is the integrations-page claim that mParticle connects customer data to \"data warehousing solutions,\" which suggests outbound warehouse delivery but gives no detail. Warehouse Sync runs the other way, ingesting from the customer's warehouse into mParticle, so it is not credited for this export story. Missing for 10: documented outbound export of raw events and profiles to named destinations (Snowflake, BigQuery, ClickHouse, S3), user-controlled scheduling or cadence, schema details, and independent or hands-on corroboration.",
+    "rationale": "The only affirmative evidence of data landing in a warehouse is a one-line integrations-page claim that mParticle connects customer data to 'data warehousing solutions with just a few clicks.' Warehouse Sync is documented, but it runs the opposite direction: it ingests from Snowflake, BigQuery, Redshift and Databricks into mParticle, so it is not credited here. missing for 10: documented outbound warehouse/lake destinations (Snowflake, BigQuery, ClickHouse, S3), export of raw events and profiles specifically, user-controlled sync schedule, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-docs-11"
     ],
@@ -4223,7 +4263,7 @@
       "citations": [
         {
           "evidenceId": "mparticle-docs-11",
-          "quote": "Connect your customer data to the leading marketing, analytics, and"
+          "quote": "Connect your customer data to the leading marketing, analytics, and\n\ndata warehousing solutions with just a few clicks."
         }
       ]
     }
@@ -5666,12 +5706,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Segment's documented Public API supports CRUD on Sources, Destinations, Warehouses and Tracking Plans. It ships with a downloadable OpenAPI spec, token auth, rate-limit, pagination and versioning docs, and SDKs, so an agent can programmatically create sources and destinations. Wiring a source to a destination is only implied by destination CRUD, and nothing in the pack shows delivery or event-delivery inspection or an MCP server. Missing for 10: documented delivery/event-delivery inspection endpoints, explicit evidence of wiring sources to destinations, an official MCP server or other agent-specific tooling, and independent or hands-on corroboration.",
+    "rationale": "Segment's Public API is documented with an OpenAPI spec, an interactive reference, SDKs, auth tokens, rate limits, pagination and versioning. It explicitly supports CRUD on Sources, Destinations, Warehouses and Tracking Plans, so an agent could programmatically create sources and destinations. However, nothing in the evidence shows explicit connection wiring between sources and destinations, inspecting event deliveries, or an official MCP server. missing for 10: documented delivery inspection (event delivery/observability via API), explicit source-to-destination connection wiring, an official MCP server, independent or hands-on corroboration of agent-driven pipeline management.",
     "evidenceIds": [
       "segment-docs-18",
+      "segment-docs-4",
       "segment-docs-x1",
-      "segment-docs-x2",
-      "segment-docs-4"
+      "segment-docs-x2"
     ],
     "support": {
       "relation": "direct",
@@ -5699,7 +5739,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Segment documents a Profile API that lets an agent programmatically query user and account traits, events and external_ids. It also has a Public API with workspace-scope CRUD, an OpenAPI spec and token auth. However, the documented Public API resources list Sources, Destinations, Warehouses and Tracking Plans, and nothing shows audiences being created or activated through an API; audience building is only described generically, and no MCP server is evidenced. missing for 10: documented API endpoints for creating Engage audiences, API-driven audience activation/sync to destinations, an official MCP server, independent or hands-on corroboration of a dashboard-free end-to-end flow",
+    "rationale": "The Profile API is a documented, first-party way for an agent to query customer data programmatically: the full user or account object, including external_ids, traits, and events. The Public API is a documented CRUD API with an OpenAPI spec and token auth, but its listed resources are Sources, Destinations, Warehouses and Tracking Plans, not Audiences. Audience building and syncing are described only as product features, with no API or MCP path shown, so the create/activate half of the end-to-end story is unevidenced. Missing for 10: documented API or MCP endpoints to create Audiences, programmatic activation or sync of Audiences to destinations, any first-party MCP server, and hands-on corroboration of a dashboard-free agent workflow.",
     "evidenceIds": [
       "segment-docs-10",
       "segment-docs-19",
@@ -5715,8 +5755,8 @@
       "subject": "As an AI-native user, an agent can query customer data and create or activate audiences end to end through documented APIs or MCP — no dashboard in the loop",
       "citations": [
         {
-          "evidenceId": "segment-docs-19",
-          "quote": "You can query the entire user or account object programmatically, including the `external_ids`, `traits`, and `events` that make up a user's journey through your product."
+          "evidenceId": "segment-docs-10",
+          "quote": "The Segment Profile API provides a single API to read user-level and account-level customer data. You can query the entire user or account object programmatically"
         },
         {
           "evidenceId": "segment-docs-48",
@@ -5725,6 +5765,10 @@
         {
           "evidenceId": "segment-docs-18",
           "quote": "You can use the API to perform CRUD (create, read, update, and delete) operations at no extra charge. This includes working with resources such as Sources, Destinations, Warehouses, Tracking Plans"
+        },
+        {
+          "evidenceId": "segment-docs-x1",
+          "quote": "The Segment Public API helps you manage your Segment Workspaces and its resources."
         }
       ]
     }
@@ -5735,10 +5779,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Segment's docs pages offer first-party 'Open in ChatGPT/Claude/Cursor/Perplexity' buttons, a thin AI-oriented docs affordance for handing a page to an agent. However, probes found no llms.txt (HTTP 404 at segment.com/llms.txt) and no markdown docs endpoint (HTTP 404 at /docs/.md). Missing for 10: a published llms.txt, machine-readable/markdown doc variants, documentation of what the 'Open in' buttons pass to the agent, and independent hands-on corroboration.",
+    "rationale": "The Segment docs catalog page has built-in \"Open in ChatGPT / Claude / Cursor / Perplexity\" actions, a first-party way to hand documentation to an AI agent. The Public API also offers a downloadable OpenAPI specification that an agent could consume. However, there is no evidence of an llms.txt file, and a probe for a markdown version of the docs returned HTTP 404, so agent-oriented docs support looks thin. missing for 10: an llms.txt / llms-full.txt index, raw markdown docs endpoints (the probe 404'd), documentation describing the agent-oriented docs features, and independent or hands-on corroboration.",
     "evidenceIds": [
       "segment-intdir-1",
-      "segment-probe-1",
+      "segment-docs-x1",
       "segment-probe-2"
     ],
     "support": {
@@ -5749,6 +5793,10 @@
         {
           "evidenceId": "segment-intdir-1",
           "quote": "Open in ChatGPTOpen in ClaudeOpen in CursorOpen in Perplexity"
+        },
+        {
+          "evidenceId": "segment-docs-x1",
+          "quote": "Download OpenAPI specification"
         }
       ]
     }
@@ -5759,10 +5807,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any in-product feature that generates AI insights or suggestions from a user's data. The pricing-page tagline \"Build AI‑powered audiences\" describes audience building, an adjacent feature, and gives no detail about surfacing insights or suggestions. The Profile API \"recommendation engine\" use case is a developer building block, and the docs' \"Open in ChatGPT/Claude\" links are a documentation convenience, so neither counts for this story.",
+    "rationale": "The axis applies, since a customer data platform could plausibly surface AI-generated insights, but no evidence shows Segment generating insights or suggestions from a user's data inside the product. The only AI reference is a one-line pricing tagline, \"Build AI‑powered audiences\" (segment-docs-37). That describes audience building, an adjacent feature, not insights or suggestions. The Profile API \"recommendation engine\" example is a developer building block, and the \"Open in ChatGPT/Claude\" links point readers' docs to external tools, so neither counts.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": []
@@ -5806,7 +5854,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair question for a SaaS customer data platform, but the evidence pack never documents an in-product assistant that users can delegate tasks to. 'AI-powered audiences' on the pricing page is a feature-level marketing claim, not a delegable assistant. The 'Open in ChatGPT/Claude' links on docs pages hand content to external tools, so neither counts as support.",
+    "rationale": "A built-in AI assistant is a fair question for a SaaS customer data platform, but the evidence pack never documents an in-product assistant that users can delegate tasks to. The pricing line about 'AI-powered audiences' describes an audience feature, not a delegatable assistant. The docs-page 'Open in ChatGPT/Claude' links hand content to external tools rather than providing a built-in assistant.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5821,12 +5869,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Segment documents a first-party Public API with token authentication, an OpenAPI spec and SDKs. Through it you can create, read, update and delete workspace resources such as Sources, Destinations, Warehouses and Tracking Plans without the UI, which supports headless automation. Nothing in the evidence shows a CLI, CI pipeline integration, or CI-specific workflows. Missing for 10: an official CLI, documented CI/CD integration or examples, non-interactive/service-account guidance, and independent hands-on corroboration.",
+    "rationale": "Segment documents a Public API for managing workspace resources such as Sources, Destinations, Warehouses and Tracking Plans with full CRUD. It also documents API-token authentication, an OpenAPI spec, SDKs, rate limits and versioning, which together allow headless, scriptable control of the product. There is no evidence of a CLI or of documented CI/CD pipeline usage, so the CI part of the story is only implied. Missing for 10: an official CLI, documented CI/CD integration (e.g. tracking-plan or config-as-code in pipelines), and independent or hands-on corroboration of headless automation.",
     "evidenceIds": [
-      "segment-docs-4",
-      "segment-docs-18",
       "segment-docs-x1",
-      "segment-docs-x2"
+      "segment-docs-x2",
+      "segment-docs-18",
+      "segment-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -5834,16 +5882,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "segment-docs-18",
-          "quote": "You can use the API to perform CRUD (create, read, update, and delete) operations at no extra charge. This includes working with resources such as Sources, Destinations, Warehouses, Tracking Plans"
-        },
-        {
           "evidenceId": "segment-docs-x1",
-          "quote": "The Segment Public API helps you manage your Segment Workspaces and its resources."
+          "quote": "The Segment Public API helps you manage your Segment Workspaces and its resources. You can use the API to perform CRUD (create, read, update, delete) operations at workspace scope"
         },
         {
           "evidenceId": "segment-docs-x2",
           "quote": "Authenticating requests — Create an API token"
+        },
+        {
+          "evidenceId": "segment-docs-18",
+          "quote": "This includes working with resources such as Sources, Destinations, Warehouses, Tracking Plans"
         }
       ]
     }
@@ -5854,7 +5902,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Segment has AI-powered features, so whether it can consume external MCP servers is a fair question, but the evidence never says it can. The 'Open in ChatGPT/Claude/Cursor' doc links only send documentation to outside assistants. Functions and the Public API are developer building blocks, not an MCP client capability.",
+    "rationale": "Segment ships AI-powered features, such as AI-powered audiences, so it is plausible for it to act as an MCP client. However, the evidence pack contains no documentation of connecting external MCP servers or letting Segment invoke their tools. The 'Open in ChatGPT/Claude/Cursor' links are documentation-page sharing buttons, not MCP client support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5869,7 +5917,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Segment is a SaaS customer data platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. Nothing in the evidence pack documents a Segment MCP server or hosted MCP endpoint. The Public API, Profile API and the docs' 'Open in ChatGPT/Claude' links are adjacent building blocks or features, not an MCP server, so they earn no credit.",
+    "rationale": "Twilio Segment is a SaaS customer data platform rather than an agent, so shipping an official MCP server is a fair question for this product. The evidence pack never mentions an MCP server. The Public API, Profile API and OpenAPI spec are developer building blocks an agent could be wired to, and the docs' 'Open in ChatGPT/Claude/Cursor' buttons are a separate documentation feature. Neither counts as an official MCP server.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5884,7 +5932,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Natural-language operation is a fair question for a customer data platform, but the evidence pack shows no first-party natural-language command interface or assistant for operating Segment. The \"Open in ChatGPT/Claude\" links on docs pages only hand documentation to external chatbots, and \"AI-powered audiences\" is a marketing phrase with no documented natural-language control. The Public API is a programmatic building block, not natural-language operation.",
+    "rationale": "Natural-language operation is a fair axis for a customer data platform, but the evidence shows no first-party feature for running workspace actions from plain-language commands. The \"Open in ChatGPT/Claude\" doc buttons only hand documentation to external assistants. The vague \"AI-powered audiences\" marketing line and the Public API are adjacent features or developer building blocks, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5899,7 +5947,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a customer data platform like Segment, so the axis applies. The evidence pack documents a Public API (with an OpenAPI spec and SDKs), a Profile API, Functions, and language libraries, but nothing mentions an official command-line tool. APIs and SDKs are developer building blocks, not a CLI, so they earn no credit.",
+    "rationale": "An official CLI is a fair thing to ask of a SaaS customer-data platform, so the axis applies. However, the evidence pack never mentions a Segment CLI. The Public API, its OpenAPI spec and SDKs, and Functions are programmatic building blocks, not an official command-line tool, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5914,14 +5962,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Segment documents a versioned Public API for CRUD management of workspace resources such as Sources, Destinations, Warehouses and Tracking Plans. It ships a downloadable OpenAPI spec, SDKs, an interactive reference, and documented authentication, rate limits, pagination and versioning. A separate Profile API exposes programmatic reads of profiles, traits and events. Missing for 10: independent or hands-on corroboration that agents can drive the product end-to-end through the API.",
+    "rationale": "Segment documents a Public API for programmatic CRUD management of workspace resources such as Sources, Destinations, Warehouses and Tracking Plans. The API reference publishes a downloadable OpenAPI spec, SDKs, token authentication, rate limits, pagination and versioning, and a separate Profile API lets you query profiles, traits and events programmatically. missing for 10: independent or hands-on corroboration that an agent can drive the product end-to-end through the API.",
     "evidenceIds": [
       "segment-docs-4",
       "segment-docs-18",
       "segment-docs-x1",
       "segment-docs-x2",
       "segment-docs-10",
-      "segment-docs-19"
+      "segment-docs-48"
     ],
     "support": {
       "relation": "direct",
@@ -5945,8 +5993,8 @@
           "quote": "The Public API reference documents Authentication (Scope, Permissions and security, Authenticating requests — Create an API token), Rate Limits (rate limit errors, reducing your call volume), Pagination, and Versioning"
         },
         {
-          "evidenceId": "segment-docs-19",
-          "quote": "You can query the entire user or account object programmatically, including the `external_ids`, `traits`, and `events` that make up a user's journey through your product."
+          "evidenceId": "segment-docs-48",
+          "quote": "Use the Profile API to programmatically query user profiles, traits, and events."
         }
       ]
     }
@@ -5984,7 +6032,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Segment's docs list official source libraries for C#, Java, JavaScript, Kotlin (Android) and Swift, show an `analytics.track` code sample, and the Public API reference points to 'Install and use an SDK'. So the product does ship official SDKs. However, the evidence is mostly language-list mentions and one snippet, not in-depth SDK documentation, which leaves the depth of coverage unproven. missing for 10: per-SDK reference documentation (installation, versioning, supported platforms), documented Public API SDK languages, any AI-native affordances such as llms.txt or markdown docs (probes returned 404), and independent or hands-on corroboration.",
+    "rationale": "Segment's docs list official tracking libraries for C#, Java, JavaScript, Kotlin (Android) and Swift, show an analytics.track code sample, and the Public API reference includes an 'Install and use an SDK' section with a downloadable OpenAPI spec. The evidence only names these SDKs and does not document their depth, installation, versioning or developer experience, so coverage is partial. Missing for 10: detailed per-SDK documentation (install, configuration, method reference), evidence of SDK maintenance and versioning, hands-on or independent corroboration of the SDKs in use.",
     "evidenceIds": [
       "segment-docs-55",
       "segment-docs-56",
@@ -6002,16 +6050,16 @@
           "quote": "C# Java Javascript Kotlin (Android) Swift"
         },
         {
+          "evidenceId": "segment-docs-35",
+          "quote": "analytics.track(\"Order Completed\", { orderId: \"12345\", revenue: 99.99 });"
+        },
+        {
           "evidenceId": "segment-docs-3",
           "quote": "across all of Segment's libraries and APIs"
         },
         {
           "evidenceId": "segment-docs-x1",
-          "quote": "Install and use an SDK"
-        },
-        {
-          "evidenceId": "segment-docs-35",
-          "quote": "analytics.track(\"Order Completed\", { orderId: \"12345\", revenue: 99.99 });"
+          "quote": "with an interactive reference including 'Create a test request' and 'Install and use an SDK'"
         }
       ]
     }
@@ -6022,7 +6070,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a registrable outbound webhook or HTTP-callback destination for subscribing to events. Destination Functions are a developer building block: a user could write JavaScript to POST events somewhere, but that is not a documented webhook subscription capability, so it earns no credit. The destinations catalog excerpts list only named app integrations such as HubSpot and Algolia.",
+    "rationale": "Outbound webhooks are a fair question for a customer data platform. However, the evidence pack never documents registrable HTTP callbacks for subscribing to events. Destination Functions are a developer building block for writing custom JavaScript destinations, and the destination catalog lists third-party tool integrations; neither is a documented webhook subscription capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6037,7 +6085,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Autonomous AI decisioning is a fair question for a CDP and engagement platform, but the evidence never shows Segment AI agents choosing message, timing, or channel per customer. The closest items are AI-powered audiences and Engage audience building and activation, which are adjacent features, not autonomous decisioning. Nothing in the pack covers guardrails or measured lift.",
+    "rationale": "The evidence pack does not document AI decisioning agents that autonomously choose messages, timing, and channels per customer within user-set guardrails, nor any measurement of lift. The closest items are adjacent rather than direct: AI-powered audience building, rule-based audiences, and event-triggered messaging. None of these is autonomous per-customer decisioning.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6110,7 +6158,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a SaaS customer-data platform, so the axis applies. Nothing in the evidence documents a sandbox, dev/test workspace, or isolated environment that keeps tests away from production data. The interactive 'Create a test request' in the Public API reference is a docs convenience, not documented sandbox isolation, so it earns no credit.",
+    "rationale": "A sandbox or test environment isolated from production data is a fair question for a customer data platform. The evidence pack never documents a Segment sandbox, dev or test workspace, or any isolation from production data. The 'Create a test request' item is an interactive API-reference feature, not an isolated environment. The record/replay test discussion describes Segment's internal engineering practice, not a product capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6152,10 +6200,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only per-resource CRUD through the Public API, plus Reverse ETL and Audience syncs that move many records to destinations. None of it documents bulk or batch operations that let a user act on many workspace items at once. Reverse ETL and Audience syncs are data-pipeline features, not bulk operations, and per-item CRUD is only a developer building block, so neither earns credit.",
+    "rationale": "The evidence shows the Public API supports CRUD on individual workspace resources. It also documents pagination and rate limits, but no batch or bulk endpoints for acting on many items at once. Reverse ETL warehouse syncs and Audience syncs to destinations are data-activation features, not user-invoked bulk operations, so they are adjacent at best and earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": []
@@ -6165,14 +6213,14 @@
     "productId": "segment",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Segment's own Audiences feature lets users define criteria over tracking events and traits, and those Audiences sync to downstream destinations. That is a rule-based, event-driven activation path, though the evidence frames it as audience syncing rather than general event-triggered actions. Functions offer custom JavaScript destinations, but they are a code-level building block rather than a rule engine. missing for 10: explicit documentation of event-triggered rules or action workflows (e.g., trigger conditions, action steps), real-time per-event triggering semantics, and independent or hands-on corroboration.",
+    "rationale": "Segment's own docs show event-driven rules in two places. Engage Audiences are conditions built from tracking events and traits that sync automatically to destinations. Segment combined with Messaging sends messages automatically based on real-time events. However, the evidence never describes a general rule builder with explicit trigger, condition and action steps, and Functions are only a JavaScript building block. Missing for 10: a documented general-purpose trigger/condition/action rule engine, detail on configuring event-triggered actions beyond audience syncs and messaging, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "segment-docs-9",
-      "segment-docs-32",
+      "segment-docs-60",
       "segment-docs-53",
-      "segment-docs-5"
+      "segment-docs-62",
+      "segment-docs-66"
     ],
     "support": {
       "relation": "direct",
@@ -6180,12 +6228,16 @@
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
-          "evidenceId": "segment-docs-32",
-          "quote": "Audiences let you group users or accounts based on event behavior and traits that Segment tracks."
+          "evidenceId": "segment-docs-60",
+          "quote": "Combine Segment with Messaging to send messages automatically based on real-time events without managing complex integrations."
         },
         {
           "evidenceId": "segment-docs-53",
           "quote": "You can build Audiences from core tracking events, traits, and computed traits. You can then sync Audiences to hundreds of Destinations"
+        },
+        {
+          "evidenceId": "segment-docs-66",
+          "quote": "Destinations allow you to act on your data and learn more about your customers in real time."
         }
       ]
     }
@@ -6196,7 +6248,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring workflows is a fair question for a customer data platform, so the axis applies. Nothing in the evidence documents scheduling or recurring execution. Reverse ETL is described only as extracting warehouse data with a query and syncing it, with no schedule or recurrence mentioned. Functions and the Public API are building blocks or adjacent features, not documented job scheduling.",
+    "rationale": "Scheduling recurring jobs is a fair question for a customer data platform, so the axis applies. The pack documents one-off or event-driven mechanisms: Reverse ETL warehouse syncs, Audience syncs, Functions, and Messaging triggered by real-time events. None of them mentions a recurring schedule, cron-style cadence, or scheduled workflow, so there is no evidence of the capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6211,7 +6263,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Segment does ship automation-like resources (Functions, Reverse ETL syncs, Audiences), so versioning, review, and rollback of them is a fair question. The pack, however, never documents version history, review or approval flows, or rollback for any of them. The Public API's CRUD operations and its own API versioning are adjacent capabilities, not versioning of the user's automations, so they earn no credit.",
+    "rationale": "Segment has automation-like features, including Functions, Reverse ETL syncs, destinations, and Messaging, so this axis applies. However, the evidence pack never documents versioning, review/approval, or rollback for any of them. The Public API's 'Versioning' section covers API version access and breaking changes, not version history of a user's automations, so it is adjacent at best.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6254,13 +6306,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Segment's Engage docs say Audiences can be built from computed traits, so computed traits exist on profiles and can be used for targeting and syncing to destinations. Predictive scores (LTV, churn or purchase propensity) are not documented; the only hint is a vague pricing-page line about 'AI‑powered audiences'. Missing for 10: documentation of predictive LTV/churn/purchase-propensity scores, detail on how computed traits are defined and calculated, and independent or hands-on corroboration.",
+    "rationale": "Segment's Engage docs confirm that computed traits exist on profiles and can be used to build Audiences, which then sync to hundreds of destinations for targeting. There is no evidence of predictive scores such as LTV, churn or purchase propensity; the pricing line about 'AI-powered audiences' is too vague to count as predictive scoring. missing for 10: documented predictive traits (LTV/churn/purchase propensity), detail on how computed traits are defined and calculated, independent or hands-on corroboration.",
     "evidenceIds": [
       "segment-docs-9",
       "segment-docs-38",
-      "segment-docs-53",
-      "segment-docs-32",
-      "segment-docs-37"
+      "segment-docs-62",
+      "segment-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -6268,12 +6319,12 @@
       "subject": "As a marketer, computed traits and predictive scores (LTV, churn or purchase propensity) are calculated on profiles and usable in targeting",
       "citations": [
         {
-          "evidenceId": "segment-docs-53",
-          "quote": "You can build Audiences from core tracking events, traits, and computed traits. You can then sync Audiences to hundreds of Destinations"
+          "evidenceId": "segment-docs-9",
+          "quote": "You can build Audiences from core **tracking events**, **traits**, and **computed traits**. You can then sync Audiences to hundreds of [Destinations]"
         },
         {
-          "evidenceId": "segment-docs-37",
-          "quote": "Build AI‑powered audiences from a complete customer view"
+          "evidenceId": "segment-docs-62",
+          "quote": "You can build an audience from existing events, traits, computed traits, or other Audiences."
         }
       ]
     }
@@ -6284,10 +6335,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Segment documents a first-party Consent Management feature that captures end-user consent preferences and is recommended for enforcing them. The evidence never shows how those preferences are automatically applied to each downstream destination or how consent categories are mapped. Missing for 10: documented per-destination automatic enforcement of opt-outs, explicit consent-category mapping to destinations, independent or hands-on corroboration.",
+    "rationale": "Segment documents its own Consent Management feature for enforcing end-user consent preferences. The docs say users set preferences about the data they want collected, used, and shared, and that consent stored in the data warehouse can be enforced. However, the evidence does not show how consent categories map to destinations or that opt-outs are automatically blocked from flowing downstream. Missing for 10: documented per-destination consent-category routing, explicit automatic opt-out enforcement downstream, details on capture mechanisms (e.g., CMP integration), independent or hands-on corroboration.",
     "evidenceIds": [
       "segment-docs-12",
       "segment-docs-40",
+      "segment-docs-63",
       "segment-docs-25"
     ],
     "support": {
@@ -6304,6 +6356,10 @@
           "quote": "When an end user visits your web or mobile app, they set **consent preferences**, or make decisions about the types of data they want you to collect, use, and share."
         },
         {
+          "evidenceId": "segment-docs-63",
+          "quote": "Enforce consent preferences stored in your data warehouse."
+        },
+        {
           "evidenceId": "segment-docs-25",
           "quote": "Segment includes a suite of privacy tools to help your organization comply with regulations like the Health Insurance Portability and Accountability Act (HIPAA), the General Data Protection Regulation (GDPR), and the California Consumer Privacy Act (CCPA)."
         }
@@ -6316,7 +6372,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack mentions a Privacy Portal and a privacy tool suite for GDPR/CCPA compliance. However, no cited item documents user deletion or suppression requests, or forwarding those requests to connected destinations. The Public API's CRUD operations cover workspace resources such as sources and destinations, not end-user data deletion, so they do not count toward this story.",
+    "rationale": "The evidence pack never documents user deletion or suppression requests, or forwarding such requests to connected destinations. It shows only general privacy-compliance claims: a Privacy Portal that \"helps streamline your response to new privacy regulations\" and a suite of tools for GDPR/CCPA compliance. The rest is adjacent material, such as consent management and Public API CRUD on workspace resources like Sources and Destinations, which is not CRUD on end-user data.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6331,7 +6387,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipeline observability is a fair axis for a customer data pipeline, but the evidence pack never documents a live event debugger, per-destination delivery metrics, or delivery-failure alerting. The cited docs cover tracking, the Spec, the Public API, Functions, identity, audiences, privacy and storage. The community comment about per-destination job partitioning describes internal architecture, not a user-facing observability feature.",
+    "rationale": "The evidence pack has nothing on a live event debugger, per-destination delivery metrics, or delivery-failure alerting. The community items describe Segment's internal delivery architecture (Centrifuge job partitioning), not a user-facing observability feature. Pipeline observability is a fair question for a customer data pipeline, so the axis applies, and the lack of evidence makes this none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6346,10 +6402,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Segment's own docs establish a large documented destination catalog (700+ apps, 550+ destinations, catalog entries such as HubSpot and Salesforce Marketing Cloud Actions destinations) and the 'track once, send everywhere' routing model. Nothing in the pack documents per-destination field mapping or per-destination event filtering; the 'Actions' labels only imply mapping, and Functions are a build-it-yourself building block that earns no credit. Missing for 10: documented per-destination mapping, documented per-destination filtering, independent or hands-on corroboration of routing behavior.",
+    "rationale": "Segment's own docs show events routed to a large destination catalog: 550+/700+ apps, a published destinations catalog listing integrations such as HubSpot and Salesforce Marketing Cloud, and \"Track once, send everywhere.\" However, nothing in the evidence documents per-destination field mapping or per-destination event filtering; the \"(Actions\" labels in the catalog only hint at mapping. Missing for 10: documented per-destination mapping configuration, documented per-destination filtering, independent or hands-on corroboration.",
     "evidenceIds": [
-      "segment-docs-6",
       "segment-docs-52",
+      "segment-docs-6",
+      "segment-docs-66",
       "segment-docs-27",
       "segment-intdir-3",
       "segment-intdir-4",
@@ -6361,12 +6418,16 @@
       "subject": "As a data engineer, I can route events to a large catalog of documented destination integrations with per-destination mapping and filtering",
       "citations": [
         {
+          "evidenceId": "segment-docs-52",
+          "quote": "activating it across 550+ destinations, including email, messaging, and data warehouses"
+        },
+        {
           "evidenceId": "segment-docs-6",
           "quote": "Send customer data to 700+ apps"
         },
         {
-          "evidenceId": "segment-docs-52",
-          "quote": "activating it across 550+ destinations, including email, messaging, and data warehouses"
+          "evidenceId": "segment-docs-66",
+          "quote": "Destinations allow you to act on your data and learn more about your customers in real time."
         },
         {
           "evidenceId": "segment-docs-27",
@@ -6385,7 +6446,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented capability to replay archived events into a new destination or backfill history after a tool is added or a pipeline breaks. Data Storage Destinations only store raw data. Reverse ETL syncs warehouse query results to destinations, which is an adjacent feature and a user-side workaround rather than event replay or backfill.",
+    "rationale": "The evidence pack never documents a native replay or backfill capability that re-sends archived events to a new or repaired destination. Storage destinations (S3, warehouses) keep raw data, and Reverse ETL syncs warehouse query results to tools. Both are adjacent features or building blocks a user would have to assemble into a backfill, not the story's capability itself. The community 'record/replay' mention concerns Segment's internal test suites and is off-topic.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6400,13 +6461,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Segment's own Identity Resolution docs describe an online/offline ID graph using cookie IDs, device IDs, emails and custom external IDs. It merges each customer's history across web, mobile and server into a single profile, which covers cross-device stitching. The evidence never documents configurable identity-resolution rules (merge priorities, limits, blocking) and never explicitly describes anonymous-to-known merging. Missing for 10: documented configurable identity-resolution rules/settings, explicit anonymous-to-identified stitching behavior, independent or hands-on corroboration.",
+    "rationale": "Segment's first-party Identity Resolution docs describe an online and offline ID graph that uses cookie IDs, device IDs, emails and custom external IDs. They also say it merges activity from across devices and channels into a single user profile, which covers stitching anonymous and known identifiers. The pack does not document configurable identity-resolution rules (such as identifier priority, merge limits or blocking rules), and nothing independent or hands-on corroborates the claims. Missing for 10: documented configurable resolution rules or settings, explicit description of anonymous-to-known merge behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "segment-docs-8",
       "segment-docs-24",
-      "segment-docs-16",
-      "segment-docs-26",
-      "segment-docs-19"
+      "segment-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -6457,7 +6516,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows that Segment Engage builds Audiences from tracking events, traits and computed traits, and the pricing page vaguely claims \"AI‑powered audiences.\" Nothing in the pack documents describing an audience in natural language, having AI generate a segment definition for review, or grounding that generation in the workspace schema. The \"AI-powered audiences\" tagline is an adjacent marketing claim that does not establish this capability.",
+    "rationale": "The evidence documents Audiences built manually from tracking events, traits, computed traits, and other Audiences. The only AI reference is a pricing-page tagline, \"Build AI‑powered audiences,\" which does not describe natural-language input, AI-generated segment definitions, a review step, or grounding in the workspace schema. Natural-language audience building is a fair question for a CDP, so the axis applies; with no evidence of this capability, the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6472,15 +6531,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Segment documents a Public API with a downloadable OpenAPI spec for CRUD on workspace resources such as Sources, Destinations, Warehouses and Tracking Plans, plus a Profile API that exposes programmatically the profile data shown in the UI's Profile explorer. However, nothing in the evidence claims or shows full parity with everything the UI can do. Missing for 10: an explicit API/UI parity statement, API coverage evidence for Engage Audiences, Functions, Reverse ETL, Privacy Portal and consent management, and independent hands-on corroboration.",
+    "rationale": "Segment documents a versioned Public API with an OpenAPI spec for CRUD across workspace resources such as Sources, Destinations, Warehouses and Tracking Plans. It also offers a Profile API for programmatic profile queries that mirrors the UI's Profile explorer. However, nothing states the API matches the UI for everything, and coverage of areas like Audiences, Functions, Reverse ETL and the Privacy Portal is not shown. Missing for 10: an explicit API/UI parity statement, documented API coverage of Engage Audiences, Functions, Reverse ETL and privacy/consent settings, and independent hands-on corroboration.",
     "evidenceIds": [
       "segment-docs-4",
       "segment-docs-18",
       "segment-docs-x1",
       "segment-docs-x2",
       "segment-docs-47",
-      "segment-docs-48",
-      "segment-docs-10"
+      "segment-docs-48"
     ],
     "support": {
       "relation": "direct",
@@ -6493,19 +6551,11 @@
         },
         {
           "evidenceId": "segment-docs-x1",
-          "quote": "Download OpenAPI specification"
-        },
-        {
-          "evidenceId": "segment-docs-4",
-          "quote": "The Segment Public API helps you manage your Segment workspaces and its resources."
+          "quote": "The Segment Public API helps you manage your Segment Workspaces and its resources. You can use the API to perform CRUD (create, read, update, delete) operations at workspace scope"
         },
         {
           "evidenceId": "segment-docs-48",
           "quote": "Use the Profile API to programmatically query user profiles, traits, and events."
-        },
-        {
-          "evidenceId": "segment-docs-47",
-          "quote": "View user profiles in one place through the Profile explorer in the Segment app."
         }
       ]
     }
@@ -6516,7 +6566,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Segment's own Data Storage Destinations let you store your raw Segment data in data warehouses, AWS S3 and Google Cloud Storage. The Profile API also lets you programmatically read whole user and account objects, including external_ids, traits and events. That gives a documented path to get event and profile data out, but no evidence shows the export formats are open or that it covers all workspace data needed to leave. Missing for 10: explicit open-format guarantees (e.g. JSON/Parquet/CSV), a documented complete-account export or offboarding flow, coverage of non-event data such as audiences and configuration, and independent corroboration.",
+    "rationale": "Segment documents Data Storage Destinations that store your raw Segment data in data warehouses, AWS S3 and Google Cloud Storage. Separately, the Profile API lets you programmatically query entire user and account objects, including external_ids, traits and events. Together these give a real path to getting data out, but the evidence never names the export file formats or offers a documented complete-export or offboarding process. missing for 10: explicit open-format specification (e.g. JSON/Parquet) for exports, documented bulk export of all workspace data (profiles, audiences, config), offboarding/account-exit guidance, independent corroboration.",
     "evidenceIds": [
       "segment-docs-20",
       "segment-docs-13",
@@ -6530,7 +6580,7 @@
       "citations": [
         {
           "evidenceId": "segment-docs-20",
-          "quote": "help you store your raw Segment data, including: Data Warehouses ... AWS S3 ... Google Cloud Storage"
+          "quote": "Segment offers several [Data Storage Destinations] to help you store your raw Segment data, including: Data Warehouses ... AWS S3 ... Google Cloud Storage"
         },
         {
           "evidenceId": "segment-docs-19",
@@ -6545,7 +6595,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Source availability under an open license is a fair question for a customer data platform, since its SDKs or components could be open-sourced. However, nothing in the evidence pack mentions a source repository, an open-source license, or public code. The SDK language list and the downloadable OpenAPI spec do not show that product source is readable under an open license.",
+    "rationale": "Source availability under an open license is a fair question for a customer data platform, since its SDKs or integrations could be published as open source. However, nothing in the evidence pack mentions an open-source license, public repositories, or source access. The SDK language list (C#, Java, JavaScript, Kotlin, Swift) and the community discussion of Segment's internal Destinations codebase do not show that its source is readable under an open license.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6560,7 +6610,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a customer data platform, so the axis applies. Nothing in the evidence pack documents a self-hosted or on-premises deployment of Segment. The docs describe a hosted workspace, APIs and Functions that need 'no additional infrastructure', and warehouse or storage destinations, but none of these is self-hosting the core product.",
+    "rationale": "Self-hosting is a fair question for a customer data platform, so the axis applies. The evidence describes only Segment's hosted workspace, APIs, Functions and storage destinations, with no documented self-hosted or on-prem deployment of the core product. Sending data to your own warehouse or S3 is an adjacent data-export feature, not self-hosting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6575,7 +6625,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack mentions a Privacy Portal that can 'detect and classify customer data', a general privacy-tool suite, and consent management. None of it documents per-destination hashing, masking, or field-level filtering of sensitive attributes. Classification and consent enforcement are adjacent controls, and Functions are a developer building block for writing custom JavaScript, so none of these earn credit for this story.",
+    "rationale": "The evidence shows the Privacy Portal can detect and classify customer data, and that consent management enforces end-user preferences. Neither documents per-destination hashing, masking, or field-level filtering of sensitive attributes. Functions are a developer building block for writing custom JavaScript destinations, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6590,7 +6640,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a SaaS customer data platform, so the axis applies. The pack contains no documentation of choosing a regional workspace or residency location for data Segment stores. The Data Storage Destinations (warehouses, S3, GCS) send copies of data to downstream tools, which is an adjacent feature, not region selection for Segment's own storage. Privacy Portal and consent docs concern compliance and consent, not residency.",
+    "rationale": "Region and data-residency selection is a fair question for a SaaS customer data platform, but the evidence pack never documents choosing a storage region or residency for Segment-held data. The cited Data Storage Destinations (warehouses, S3, GCS) export raw data to the user's own storage, and the GDPR/Privacy Portal material covers adjacent compliance tooling. Neither is Segment's own region or residency control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6605,7 +6655,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An AI-training opt-out is a fair question for a SaaS customer data platform, so the axis applies. The evidence shows only a Privacy Portal for regulatory compliance and Consent Management for end-user collection preferences. Neither states that customer data is excluded from AI model training or offers an opt-out from it. These are adjacent privacy controls and earn no credit for this story.",
+    "rationale": "An AI-training opt-out is a fair question for a SaaS customer-data platform that advertises AI-powered audiences, so the axis applies. However, the pack contains no documented control that keeps customer data out of model training. The Privacy Portal and Consent Management cover regulatory compliance and end-user collection consent, which are adjacent controls and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6620,10 +6670,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents data retention settings or end-user data deletion and suppression. The Privacy Portal is described only as streamlining responses to privacy regulations and detecting and classifying data, and a general claim of GDPR/CCPA compliance tooling does not establish this capability. The Public API's CRUD covers workspace resources such as Sources, Destinations and Warehouses, not customer data deletion, and consent management is an adjacent control.",
+    "rationale": "The evidence describes a Privacy Portal and privacy tools for GDPR, CCPA and HIPAA compliance, plus consent enforcement and control over data entering the workspace, but none of it documents retention settings or end-user data deletion. Public API CRUD applies to workspace resources such as Sources and Destinations, not to deleting customer data. The Profile API is read-only. These are adjacent features, not the story's capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": []
@@ -6635,7 +6685,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of a way for a Segment user to opt out of Segment's own product telemetry or usage tracking. Consent Management and the Privacy Portal are adjacent features: they help Segment customers honor their end users' data-collection preferences and comply with regulations, which is not the same as opting out of telemetry on Segment itself.",
+    "rationale": "The evidence pack does not document any way for a Segment user to opt out of Segment's own telemetry or usage tracking in its SDKs, CLI, or app. The Consent Management and Privacy Portal material covers enforcing end-user consent for data the customer collects through Segment. That is an adjacent capability, not an opt-out from the product's own telemetry.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6650,12 +6700,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Segment's docs say Audiences built from events, traits and computed traits can be synced to hundreds of Destinations, and that Engage is 'powered by real-time data' for activating Audiences. Nothing in the pack documents continuous sync cadence, users entering and exiting audiences in near-real-time, or ad-platform audience destinations specifically. missing for 10: documented continuous/streaming audience sync, near-real-time membership entry/exit behavior, named ad-platform audience destinations, independent or hands-on corroboration.",
+    "rationale": "Segment's own docs say Audiences built from events, traits and computed traits can be synced to hundreds of Destinations, and that Engage is powered by real-time data. However, nothing documents continuous sync cadence, users entering and exiting audiences in near-real-time, or ad-platform destinations specifically. Missing for 10: documented real-time entry/exit membership updates, explicit continuous (vs. batch) audience sync, named ad-platform audience destinations, independent or hands-on corroboration.",
     "evidenceIds": [
       "segment-docs-9",
       "segment-docs-53",
       "segment-docs-23",
-      "segment-docs-32"
+      "segment-docs-32",
+      "segment-docs-66"
     ],
     "support": {
       "relation": "direct",
@@ -6664,15 +6715,15 @@
       "citations": [
         {
           "evidenceId": "segment-docs-53",
-          "quote": "You can build Audiences from core tracking events, traits, and computed traits. You can then sync Audiences to hundreds of Destinations"
+          "quote": "You can then sync Audiences to hundreds of Destinations"
         },
         {
           "evidenceId": "segment-docs-23",
           "quote": "Powered by real-time data, Twilio Engage is a customizable personalization platform with which you can build, enrich, and activate Audiences."
         },
         {
-          "evidenceId": "segment-docs-32",
-          "quote": "Audiences let you group users or accounts based on event behavior and traits that Segment tracks."
+          "evidenceId": "segment-docs-66",
+          "quote": "Destinations allow you to act on your data and learn more about your customers in real time."
         }
       ]
     }
@@ -6683,12 +6734,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Segment documents official libraries spanning web (Javascript), mobile (Kotlin Android, Swift) and server (C#, Java), shows an analytics.track call, and publishes the Segment Spec that applies across all its libraries and APIs. However, the evidence only demonstrates track; identify and page calls are never shown or described, and there is no hands-on corroboration. missing for 10: explicit documentation of identify and page calls in the Spec, per-SDK docs confirming the spec methods, independent or hands-on corroboration.",
+    "rationale": "Segment's docs list official SDKs for JavaScript (web), Kotlin/Android and Swift (mobile), and C# and Java (server). It also documents a Segment Spec that applies across all its libraries and APIs, and shows a concrete analytics.track call. However, the evidence never shows the identify or page methods, and nothing corroborates the SDKs beyond vendor docs. Missing for 10: documented identify and page calls in the spec or SDKs, detail on per-SDK spec conformance, independent or hands-on corroboration.",
     "evidenceIds": [
-      "segment-docs-3",
-      "segment-docs-2",
+      "segment-docs-55",
       "segment-docs-56",
-      "segment-docs-21"
+      "segment-docs-21",
+      "segment-docs-35",
+      "segment-docs-43"
     ],
     "support": {
       "relation": "direct",
@@ -6696,16 +6748,20 @@
       "subject": "As a data engineer, I can collect events from web, mobile, and server apps through official SDKs that implement a documented tracking spec (track, identify, page)",
       "citations": [
         {
-          "evidenceId": "segment-docs-3",
+          "evidenceId": "segment-docs-55",
+          "quote": "C# Java Javascript Kotlin (Android) Swift"
+        },
+        {
+          "evidenceId": "segment-docs-21",
           "quote": "The Segment Spec provides guidance on meaningful data to capture, and the best format for it, across all of Segment's libraries and APIs."
         },
         {
-          "evidenceId": "segment-docs-2",
-          "quote": "analytics.track(\"Order Completed\", {"
+          "evidenceId": "segment-docs-35",
+          "quote": "analytics.track(\"Order Completed\", { orderId: \"12345\", revenue: 99.99 });"
         },
         {
-          "evidenceId": "segment-docs-56",
-          "quote": "C#\n\nJava\n\nJavascript\n\nKotlin (Android)\n\nSwift"
+          "evidenceId": "segment-docs-43",
+          "quote": "Identity Resolution allows you to understand a user's interaction across web, mobile, server, and third-party partner touch-points in real time"
         }
       ]
     }
@@ -6716,10 +6772,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a library-level `analytics.track` call and a list of SDK languages, but nothing documents an HTTP ingestion (tracking) API for server-to-server events, nor its authentication or delivery guarantees. The documented authentication and rate limits belong to the Public API, a workspace-management CRUD API, which is an adjacent feature rather than event ingestion.",
+    "rationale": "The pack never documents an HTTP event-ingestion endpoint for server-to-server tracking, nor its authentication or delivery guarantees. The Public API, with its token authentication and rate limits, is a workspace-management CRUD API, not an event-collection endpoint, so it is an adjacent feature. The analytics.track snippet and the language list point to client SDKs rather than a documented HTTP ingestion API. The Centrifuge delivery-job comments describe outbound delivery to destinations, not guarantees for inbound ingestion.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a data engineer, I can send events server-to-server through a documented HTTP ingestion API with authentication and delivery guarantees",
       "citations": []
@@ -6835,10 +6891,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Segment's own Engage docs say marketers can build Audiences from tracking events, traits, and computed traits, and sync them to destinations, so the core of the story is a documented product capability. The evidence never mentions a visual builder, never confirms no SQL is needed, and never shows an estimated audience size before activation. missing for 10: evidence of a visual/no-code builder, explicit no-SQL workflow, audience size estimate before activation, independent or hands-on corroboration.",
+    "rationale": "Segment's first-party Engage docs confirm that audiences can be built from tracking events (behavior), traits, computed traits and other audiences, then synced to destinations. The evidence never describes a visual, no-SQL builder or an audience-size estimate shown before activation, so only the core grouping capability is documented. Missing for 10: documentation of a visual/no-code audience builder, no-SQL authoring, estimated audience size before activation, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "segment-docs-9",
       "segment-docs-32",
+      "segment-docs-9",
+      "segment-docs-62",
       "segment-docs-23"
     ],
     "support": {
@@ -6847,12 +6904,16 @@
       "subject": "As a marketer, I can build audiences from traits and behavior in a visual builder — no SQL required — and see estimated size before activating",
       "citations": [
         {
+          "evidenceId": "segment-docs-32",
+          "quote": "Audiences let you group users or accounts based on event behavior and traits that Segment tracks."
+        },
+        {
           "evidenceId": "segment-docs-9",
           "quote": "You can build Audiences from core **tracking events**, **traits**, and **computed traits**. You can then sync Audiences to hundreds of [Destinations]"
         },
         {
-          "evidenceId": "segment-docs-32",
-          "quote": "Audiences let you group users or accounts based on event behavior and traits that Segment tracks."
+          "evidenceId": "segment-docs-62",
+          "quote": "You can build an audience from existing events, traits, computed traits, or other Audiences."
         },
         {
           "evidenceId": "segment-docs-23",
@@ -6867,12 +6928,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Segment's own docs describe Data Storage Destinations that store raw Segment data in data warehouses, AWS S3 and Google Cloud Storage, and the Public API lets you manage Warehouses resources. That covers raw events landing in a customer-owned warehouse or lake. The evidence never names Snowflake, BigQuery or ClickHouse, never shows profiles being synced to the warehouse, and never mentions user-controlled sync schedules. Missing for 10: documented sync-schedule control, profile/identity data landing in the warehouse, named Snowflake/BigQuery/ClickHouse support, independent corroboration.",
+    "rationale": "Segment's documentation says its Data Storage Destinations store raw Segment data in data warehouses, AWS S3 and Google Cloud Storage, and the Public API manages Warehouses as a resource, so raw events landing in a customer-owned store is a direct capability. The rest of the story is unevidenced: no warehouse vendor is named, no sync schedule the user can set is shown, and there is no export of identity-resolved profiles to the warehouse. missing for 10: named support for Snowflake/BigQuery/ClickHouse, user-controlled sync scheduling, profile export to warehouse, independent or hands-on corroboration.",
     "evidenceIds": [
       "segment-docs-20",
       "segment-docs-13",
-      "segment-docs-42",
-      "segment-docs-18"
+      "segment-docs-18",
+      "segment-docs-52"
     ],
     "support": {
       "relation": "direct",
@@ -6886,6 +6947,10 @@
         {
           "evidenceId": "segment-docs-18",
           "quote": "This includes working with resources such as Sources, Destinations, Warehouses, Tracking Plans"
+        },
+        {
+          "evidenceId": "segment-docs-52",
+          "quote": "activating it across 550+ destinations, including email, messaging, and data warehouses for a unified customer view"
         }
       ]
     }
