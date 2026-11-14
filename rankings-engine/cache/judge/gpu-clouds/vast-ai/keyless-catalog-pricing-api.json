@@ -1,16 +1,17 @@
 {
-  "hash": "7ae1af4e1864dd13a1e62918c8e497c1d134aa19358e6106e8981c5b65d3d1ab",
+  "hash": "2dfbf5c36486ad2f6b078363438a38ca839b75649e50d11465376e32af5ca8ae",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Vast.ai's docs tell users to query prices programmatically with `vastai search offers`, using filters such as `rentable=true`, and publish an OpenAPI spec. Hands-on probes confirmed that both the CLI search and a bare GET to the `/api/v0/bundles/` REST endpoint return live offers with per-hour prices and no account or API key, so an agent can comparison-shop before spending anything. missing for 10: first-party documentation explicitly stating that the bundles/offer-search endpoint is public and keyless (only shown by probe), and independent corroboration that the listed availability is accurate.",
+    "rationale": "Vast.ai documents `vastai search offers` as the way to query prices programmatically, with filters such as `rentable=true`. Runtime probes confirm that both the CLI and a bare keyless GET to the public /api/v0/bundles/ REST endpoint return live marketplace offers with per-hour pricing and specs, with no account or API key, so an agent can comparison-shop before any spend. Missing for 10: a first-party documentation quote specifically describing the REST offer-search (bundles) endpoint and its unauthenticated access, which here is shown only by the probe.",
     "evidenceIds": [
-      "vast-ai-probe-rt-2",
-      "vast-ai-probe-rt-3",
+      "vast-ai-docs-93",
       "vast-ai-docs-70",
       "vast-ai-docs-20",
+      "vast-ai-probe-rt-2",
+      "vast-ai-probe-rt-3",
       "vast-ai-probe-2",
       "vast-ai-gh-1"
     ],
@@ -20,20 +21,20 @@
       "subject": "As an AI agent, I can query the GPU catalog with live pricing and availability from a public or documented endpoint before committing any spend",
       "citations": [
         {
+          "evidenceId": "vast-ai-docs-93",
+          "quote": "**CLI**: Use `vastai search offers` to query prices programmatically"
+        },
+        {
+          "evidenceId": "vast-ai-docs-20",
+          "quote": "vastai search offers 'gpu_name=RTX_4090 num_gpus=1 verified=true direct_port_count>=1 rentable=true' -o 'dlperf_usd-'"
+        },
+        {
           "evidenceId": "vast-ai-probe-rt-2",
           "quote": "searched the LIVE GPU marketplace with NO account and NO API key, returning real RTX 4090 offers with CUDA versions, vCPUs, RAM, disk, and per-hour prices"
         },
         {
           "evidenceId": "vast-ai-probe-rt-3",
           "quote": "a bare keyless GET to https://console.vast.ai/api/v0/bundles/ returned live marketplace offers as JSON including `dph_total` (per-GPU-hour price)"
-        },
-        {
-          "evidenceId": "vast-ai-docs-70",
-          "quote": "CLI: Use vastai search offers to query prices programmatically"
-        },
-        {
-          "evidenceId": "vast-ai-docs-20",
-          "quote": "vastai search offers 'gpu_name=RTX_4090 num_gpus=1 verified=true direct_port_count>=1 rentable=true' -o 'dlperf_usd-'"
         }
       ]
     },

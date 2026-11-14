@@ -11898,7 +11898,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "sevDesk documents inviting a tax advisor to collaborate inside the founder's account, with \"secure access to receipts, reports and tax-related settings.\" That covers the core invite-and-review flow. Role-scoped permissions and the accountant's ability to adjust bookings are only implied, not documented. Missing for 10: explicit role/permission configuration for invited users, documented edit or adjust rights over bookings for the accountant, and independent or hands-on corroboration.",
+    "rationale": "sevDesk's own docs say you can invite your tax advisor to collaborate in your sevdesk account, with secure access to receipts, reports and tax-related settings. That covers inviting an external accountant. Role-scoped permissions and the advisor's ability to adjust bookings are not explicitly documented. Missing for 10: documented role/permission scoping for invited users, explicit edit or adjust-entries rights for the accountant, independent or hands-on corroboration.",
     "evidenceIds": [
       "sevdesk-docs-7",
       "sevdesk-docs-13"
@@ -11925,7 +11925,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk documents a REST API for managing data and real-time BWA and dashboard reports. These are developer building blocks and adjacent reporting features, not a first-party agent that answers affordability questions from live ledger data. The probes found no llms.txt, Markdown docs or OpenAPI spec, and nothing in the pack shows a product-provided AI or agent interface for this story.",
+    "rationale": "sevDesk documents a REST API and a full OpenAPI spec that expose bookkeeping data. Those are developer building blocks that someone could use to build an affordability agent, not a shipped capability that answers \"can we afford X?\" questions. Nothing in the evidence shows a first-party AI assistant, an MCP server, or agent-facing affordability or cash-position answers, and the llms.txt probe returned 404.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -11940,7 +11940,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Anomaly and duplicate monitoring is a fair question for accounting software like sevDesk, but the pack contains no documented agent or feature that watches the ledger and flags unusual spend or duplicate transactions before the close. What it does show falls short. The dashboard only displays income and expenses, the missing-receipt hints are a different feature, and the REST API is just a building block a developer would have to turn into such a monitor.",
+    "rationale": "Anomaly and duplicate monitoring is a fair question for bookkeeping software, so the axis applies. The pack shows no agent or feature that flags spend anomalies or duplicate transactions. 'See when receipts are missing' and booking-category suggestions are adjacent features, and the REST API and OpenAPI spec are only developer building blocks for building such monitoring.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -11955,10 +11955,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a generic REST API that can 'manage data and features', double-entry bookkeeping, a trial balance that shows journal entries, and accountant collaboration. None of it documents creating or posting journal entries through the API, or a draft or review-queue state where an accountant approves entries. The generic API and the tax-advisor access are adjacent capabilities, not this story's capability, and the OpenAPI probes all returned 404, so there is no endpoint-level evidence.",
+    "rationale": "sevDesk documents a general REST API, double-entry bookkeeping, and a way to invite a tax advisor into the account. None of the evidence shows an API endpoint for creating or posting journal entries, or a draft or review-queue state for an accountant to approve. Generic API access and advisor collaboration are adjacent features, not the capability this story asks for.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an ai-native user, I can have an agent draft and post journal entries via the API and leave them in a review queue for my accountant",
       "citations": []
@@ -11970,27 +11970,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk documents manual matching aids: mapping invoices to bank payments, alerts for missing receipts, and automatic booking-category suggestions. It also offers a REST API that developers could build on. Nothing in the evidence shows an agent reconciling a full month, flagging exceptions on its own, or preparing a close for human review. The API is only a building block, and the probes found no llms.txt or OpenAPI spec for agents to use.",
-    "evidenceIds": [
-      "sevdesk-docs-9",
-      "sevdesk-docs-4",
-      "sevdesk-docs-23",
-      "sevdesk-probe-3"
-    ],
+    "rationale": "sevDesk documents bank-to-invoice mapping, missing-receipt visibility, and booking-category suggestions, but nothing shows an agent running a month-end reconciliation end-to-end, flagging exceptions, or preparing a close package for human review. The REST API and OpenAPI spec are developer building blocks an agent could be built on, not the capability itself, so they earn no credit.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an ai-native user, I can have an agent reconcile a month end-to-end, matching transactions, flagging exceptions, and preparing the close for human review",
-      "citations": [
-        {
-          "evidenceId": "sevdesk-docs-9",
-          "quote": "Map invoices directly to your bank payments. See when receipts are missing."
-        },
-        {
-          "evidenceId": "sevdesk-docs-23",
-          "quote": "The REST API lets you manage data and features in sevdesk and connect external services to sevdesk."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -11999,7 +11985,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk is a SaaS accounting product with a REST API, so agent-oriented documentation is a fair axis. Probes found no llms.txt, no markdown docs and no OpenAPI spec (all returned HTTP 404). The general REST API documentation is an adjacent developer resource, not agent-oriented docs, so it earns no credit.",
+    "rationale": "The axis applies because sevDesk is a SaaS product with a public REST API, so it could plausibly publish llms.txt or agent-oriented docs. The probes found no llms.txt (HTTP 404) and no markdown docs variant (HTTP 404). The published OpenAPI YAML and Redoc reference are conventional developer documentation, not agent-oriented docs, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12014,7 +12000,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "sevDesk documents an in-product automatic suggestion of the right booking category and automatic recognition of assets from expense receipts. These are data-derived suggestions inside the product, but neither is described as AI-generated, and the dashboard and reports are standard figures rather than generated insights. missing for 10: explicit AI or ML attribution, AI-generated business insights or analysis beyond categorization, depth of documentation on how suggestions work, independent or hands-on corroboration.",
+    "rationale": "sevDesk documents one in-product suggestion feature: automatic booking-category suggestions, plus automatic asset recognition from expense receipts. Neither is described as AI-generated, and both are narrow automations rather than broad insights. The dashboard and BWA reports are standard reporting, not AI insights. Missing for 10: explicit AI/ML-generated insights, analytical suggestions or recommendations drawn from business data, documentation of how suggestions are generated, independent or hands-on corroboration.",
     "evidenceIds": [
       "sevdesk-docs-4",
       "sevdesk-docs-17"
@@ -12041,7 +12027,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Background automation is a fair question for an accounting SaaS, but the pack shows no user-configurable automations, rules, or recurring schedules. What it does show is adjacent: automatic booking-category suggestions and asset recognition are built-in behaviours, partner integrations that 'transfer data automatically' are a third-party feature, and the REST API is a developer building block. None of these count as the user setting up autonomous automations.",
+    "rationale": "The evidence shows no user-configurable automations, rules, schedules or background workflows that sevDesk itself runs. Automatic booking-category suggestions and automatic asset recognition are built-in conveniences, not automations a user sets up. Partner integrations and the REST API are developer building blocks for constructing automation externally, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12056,7 +12042,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair axis for an accounting SaaS like sevDesk, but the evidence pack never documents a conversational or agentic assistant that users can delegate tasks to. The automatic booking-category suggestion and automatic asset recognition are adjacent automation features, not an assistant that accepts delegated tasks, so they earn no credit.",
+    "rationale": "Asking whether an accounting SaaS ships a built-in AI assistant is a fair question, so the axis applies. The evidence pack only shows automated booking-category suggestions and automatic asset recognition from receipts. These are adjacent automation features, not an assistant the user can delegate tasks to, and nothing documents a built-in AI agent or chat assistant.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12069,11 +12055,13 @@
     "productId": "sevdesk",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "sevDesk documents a first-party REST API that lets users manage data and features without the UI, which is a headless programmatic way to drive the product for automation. There is no evidence of a CLI, CI integration guidance or a machine-readable spec, and probes for an OpenAPI spec and llms.txt all returned 404. Missing for 10: official CLI or CI tooling, documented headless/CI workflows, a published OpenAPI spec, and independent corroboration of API-driven automation.",
+    "rationale": "sevDesk can be driven headlessly through its own REST API. It publishes a full OpenAPI 3.0 spec, issues long-lived API tokens suited to unattended scripts, and points users to cURL/Postman for calls. There is no first-party CLI, no documented CI integration, and no sandbox mode: testing needs a separate trial account. Missing for 10: official CLI or headless runner, CI/pipeline integration docs, sandbox or test-mode environment, independent hands-on corroboration of automated use.",
     "evidenceIds": [
-      "sevdesk-docs-23"
+      "sevdesk-docs-23",
+      "sevdesk-openapi-20261106",
+      "sevdesk-trial-testing-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -12083,6 +12071,14 @@
         {
           "evidenceId": "sevdesk-docs-23",
           "quote": "The REST API lets you manage data and features in sevdesk and connect external services to sevdesk."
+        },
+        {
+          "evidenceId": "sevdesk-openapi-20261106",
+          "quote": "sevdesk publishes its full OpenAPI 3.0.0 document (671 KB YAML, base https://my.sevdesk.de/api/v1) as a downloadable file"
+        },
+        {
+          "evidenceId": "sevdesk-trial-testing-20261106",
+          "quote": "The api tokens have an infinite lifetime"
         }
       ]
     }
@@ -12093,7 +12089,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk is accounting and invoicing SaaS, not an AI agent or assistant that would act as an MCP client, so plugging MCP servers into it to use their tools is the wrong axis for this product type. Nothing in the evidence shows sevDesk ships an agent that consumes external tools. Its REST API and partner integrations are a different capability and are not credited here.",
+    "rationale": "sevDesk is an accounting and invoicing SaaS, not an AI agent or assistant host, so acting as an MCP client that plugs in external tool servers is outside its product role. Nothing in the evidence shows an agentic assistant that could consume MCP tools; the only automation documented is booking-category suggestions. The REST API it exposes is a server-side integration surface, not client-side MCP consumption.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12107,8 +12103,8 @@
     "storyId": "agentic-mcp-server",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "sevDesk is a SaaS accounting platform, so an official MCP server is a fair question to ask of it, but nothing in the evidence pack mentions one. The REST API (sevdesk-docs-23) is a developer building block, not an MCP server, so it earns no credit; the probes found no llms.txt or OpenAPI spec either.",
+    "confidence": "medium",
+    "rationale": "sevDesk is a SaaS accounting product, so an official MCP server is a fair question and the axis applies. The evidence pack never mentions an MCP server or any agent connector. The documented REST API and OpenAPI spec are developer building blocks, not an official MCP server, and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12123,7 +12119,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Natural-language operation is a fair axis for accounting SaaS, but the evidence pack documents no chat, assistant or natural-language command interface for sevDesk. Automatic booking-category suggestions are a related but different feature, and the REST API is only a developer building block, so neither earns credit.",
+    "rationale": "Natural-language operation is a fair axis for an accounting SaaS, but nothing in the evidence shows sevDesk offering a chat, assistant, or natural-language command interface. The REST API and OpenAPI spec are developer building blocks someone could use to build such an interface, and automatic booking-category suggestions are an adjacent feature, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12138,7 +12134,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a SaaS accounting platform, so the axis applies, but nothing in the evidence documents a sevDesk CLI. The REST API (sevdesk-docs-23) is a developer building block, not a CLI, and earns no credit. The probes found no machine-readable docs either.",
+    "rationale": "The evidence pack documents a REST API, a published OpenAPI spec, and API changelogs, but nothing shows an official sevdesk CLI. The spec points testers to external tools such as Postman and cURL, which are user-side tools rather than a first-party CLI. An official CLI is a fair question for a SaaS accounting product, so the axis applies and the verdict is none, not na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12150,22 +12146,32 @@
   {
     "productId": "sevdesk",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "sevDesk's own site says it offers a REST API for managing data and features, plus API documentation for building your own solutions, so it provides the capability directly. The only evidence is that single marketing statement: the API docs themselves are not in the pack, and probes found no machine-readable OpenAPI spec or llms.txt at the candidate paths. Those 404s leave the API's breadth unproven but do not contradict that it exists. missing for 10: the actual API reference documentation, evidence of endpoint coverage across the product's features (invoices, receipts, bookkeeping), a discoverable OpenAPI/Swagger spec, auth details, and independent or hands-on corroboration of driving the product via the API.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "sevDesk documents a public REST API for managing data and features, and publishes a full OpenAPI 3.0.0 spec rendered as a Redoc reference, with documented resource versioning and a dated API changelog. The 404 probes only checked openapi.json/swagger paths, not the published openapi.yaml, so they do not contradict the docs. Missing for 10: independent or hands-on corroboration of driving the product end-to-end via the API.",
     "evidenceIds": [
       "sevdesk-docs-23",
-      "sevdesk-probe-3"
+      "sevdesk-openapi-20261106",
+      "sevdesk-versioning-20261106",
+      "sevdesk-api-news-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
           "evidenceId": "sevdesk-docs-23",
           "quote": "The REST API lets you manage data and features in sevdesk and connect external services to sevdesk. The API documentation helps you build your own solutions."
+        },
+        {
+          "evidenceId": "sevdesk-openapi-20261106",
+          "quote": "sevdesk publishes its full OpenAPI 3.0.0 document (671 KB YAML, base https://my.sevdesk.de/api/v1) as a downloadable file that is also the source its Redoc reference at api.sevdesk.de renders directly."
+        },
+        {
+          "evidenceId": "sevdesk-versioning-20261106",
+          "quote": "We use resource versioning to handle breaking changes for our endpoints, these are rarely used and will be communicated before we remove older versions"
         }
       ]
     }
@@ -12176,7 +12182,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk documents a REST API for managing data and connecting external services, so issuing API credentials is a fair question for this product. Nothing in the evidence describes scoped, least-privilege, or per-agent API tokens. Tax-adviser collaboration access is a user-invite feature, not scoped API credentials, so it earns no credit.",
+    "rationale": "sevDesk offers a REST API with tokens, so asking whether credentials can be scoped for an agent is a fair question. The evidence never describes scoped, permission-limited, or per-agent tokens. It only notes that API tokens have an infinite lifetime and recommends a separate trial account for testing, which is a workaround rather than least-privilege credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12191,10 +12197,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk documents a REST API with API documentation for building your own solutions, but the evidence never mentions any official SDKs or client libraries. A raw REST API is an adjacent building block, not the SDK capability the story asks for. Probes also found no OpenAPI spec from which SDKs might be generated.",
+    "rationale": "The evidence documents a REST API and a downloadable OpenAPI 3.0 spec, and the docs point developers to Postman and cURL for testing. None of it mentions official client SDKs or libraries in any language. The OpenAPI spec is only a developer building block from which a user could generate their own client, so it earns no credit toward official SDKs.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": []
@@ -12206,7 +12212,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies because sevDesk is a SaaS accounting product, and such products can plausibly offer outbound webhooks. However, the evidence only documents a REST API and partner integrations, with no mention of registrable outbound HTTP callbacks for events. A REST API and integrations are adjacent developer building blocks, not a webhook subscription capability.",
+    "rationale": "sevDesk is accounting SaaS with a REST API, so a webhook story is a fair question for it. However, the evidence pack documents no registrable outbound HTTP callbacks or event subscriptions. The REST API, OpenAPI spec, versioning and changelog are developer building blocks, not webhooks, and they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12221,7 +12227,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents a dashboard of income, expenses and VAT liability, a trial balance, a BWA report and invoice-to-payment matching. None of it mentions an accounts payable aging report, per-vendor balances, or as-of-date reporting. A general trial balance and dashboard are adjacent features, not AP aging or vendor balances, so they earn no credit.",
+    "rationale": "The evidence pack documents a dashboard of income, expenses and VAT liability, a trial balance, a BWA report and a cash-basis income statement. None of these is described as an accounts-payable aging report or as per-vendor balances as of a chosen date. The trial balance and receipt-to-payment matching are adjacent features, not the capability this story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12235,29 +12241,49 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence confirms a REST API and API documentation exist, but nothing shows the documentation is an interactive reference or has runnable examples. Probes also found no OpenAPI or Swagger spec at the candidate paths. Static API docs are an adjacent feature, not the interactive, runnable reference the story asks for.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "sevDesk publishes a Redoc-rendered API reference generated from its OpenAPI 3.0.0 spec. That is a static reference, not an interactive one: the docs state it is Redoc standalone with no request runner and point users to external tools (Postman, cURL) for testing. Those external tools are a user-side workaround and earn no credit, and no runnable examples are evidenced, so the interactive, runnable part of the story is absent.",
+    "evidenceIds": [
+      "sevdesk-openapi-20261106",
+      "sevdesk-trial-testing-20261106"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sevdesk-openapi-20261106",
+          "quote": "the source its Redoc reference at api.sevdesk.de renders directly"
+        }
+      ]
     }
   },
   {
     "productId": "sevdesk",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "sevDesk documents a REST API with human-facing API documentation, but nothing in the evidence shows a downloadable OpenAPI or equivalent machine-readable spec. Probes of the common OpenAPI and Swagger paths on api.sevdesk.de all returned 404. Having an API and docs is adjacent to this story, not the spec itself, so the verdict is none.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "sevDesk publishes its full OpenAPI 3.0.0 document as a downloadable 671 KB YAML file at api.sevdesk.de/openapi.yaml, and the same file drives its Redoc reference. The probe's 404s only covered JSON and well-known paths, not the YAML file, so they do not contradict this. Missing for 10: independent or hands-on confirmation that the YAML download works (the probe did not test the openapi.yaml path).",
+    "evidenceIds": [
+      "sevdesk-openapi-20261106",
+      "sevdesk-docs-23"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sevdesk-openapi-20261106",
+          "quote": "sevdesk publishes its full OpenAPI 3.0.0 document (671 KB YAML, base https://my.sevdesk.de/api/v1) as a downloadable file that is also the source its Redoc reference at api.sevdesk.de renders directly."
+        },
+        {
+          "evidenceId": "sevdesk-docs-23",
+          "quote": "The REST API lets you manage data and features in sevdesk and connect external services to sevdesk."
+        }
+      ]
     }
   },
   {
@@ -12266,10 +12292,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk is an accounting SaaS with a REST API, so a sandbox or test environment is a fair question to ask of it. The evidence pack never mentions a sandbox, test account or non-production environment. The REST API mention alone does not show isolated testing.",
+    "rationale": "sevDesk has no sandbox mode or test environment in the evidence. For API testing, its docs instead recommend opening a separate trial account to avoid changing the main account. That account is a real account with production tokens, so it is a workaround built on an adjacent feature, not a sandbox capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
       "citations": []
@@ -12278,16 +12304,32 @@
   {
     "productId": "sevdesk",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "sevDesk documents a REST API ('The REST API lets you manage data and features in sevdesk'), but nothing in the evidence mentions API versioning or a deprecation policy. The OpenAPI probes all returned 404, so no versioned spec could be confirmed either. A plain API without versioning or deprecation guarantees does not deliver this story, and this applicable capability has no evidence.",
-    "evidenceIds": [],
+    "rationale": "sevDesk's own API docs describe per-resource versioning chosen with the X-Version header (1.0–1.9). They also describe a Deprecation response header and a commitment to announce breaking changes before older versions are removed. A dated API News changelog backs this with advance breaking-change notices, such as the pagination limits announced for 30.05.2025. Missing for 10: a single formal deprecation policy page with a defined notice window or sunset timeline, URL-level major versioning beyond the fixed /api/v1 base, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "sevdesk-versioning-20261106",
+      "sevdesk-api-news-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sevdesk-versioning-20261106",
+          "quote": "We use resource versioning to handle breaking changes for our endpoints, these are rarely used and will be communicated before we remove older versions"
+        },
+        {
+          "evidenceId": "sevdesk-versioning-20261106",
+          "quote": "If a resource is deprecated we return true or a timestamp since when"
+        },
+        {
+          "evidenceId": "sevdesk-api-news-20261106",
+          "quote": "By 30.05.2025, we will introduce a restriction on our pagination limits for API calls that retrieve data."
+        }
+      ]
     }
   },
   {
@@ -12296,7 +12338,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows invoice-to-payment matching and dunning for overdue invoices. It never documents an accounts-receivable aging report or per-customer outstanding balances. These are adjacent collection features, not the requested AR tracking capability.",
+    "rationale": "The evidence shows dunning notices for overdue invoices, matching invoices to bank payments, and a dashboard of income and expenses. These are related AR features, but nothing documents an aging report or per-customer receivable balances. The adjacent features do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12311,9 +12353,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "sevDesk documents automatic booking-category suggestions, which is the core of the story. The claim sits alongside receipt-upload copy, so it is not clearly tied to imported bank transactions, and nothing in the evidence says the suggestions learn from user corrections. Missing for 10: explicit application of suggestions to imported bank transactions, evidence of learning from user corrections, in-depth documentation, independent or hands-on corroboration.",
+    "rationale": "sevDesk documents automatic booking-category suggestions, which is the core of the story. The claim sits beside receipt capture rather than imported bank transactions, though, and nothing shows the suggestions learn from user corrections. Missing for 10: evidence that suggestions apply to imported bank transactions, any learning from user corrections, depth documentation of the suggestion engine, independent or hands-on corroboration.",
     "evidenceIds": [
-      "sevdesk-docs-4"
+      "sevdesk-docs-4",
+      "sevdesk-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -12323,6 +12366,10 @@
         {
           "evidenceId": "sevdesk-docs-4",
           "quote": "Receive a suggestion for the right booking category automatically."
+        },
+        {
+          "evidenceId": "sevdesk-docs-8",
+          "quote": "Seamlessly merge your business account and bookkeeping and pay your invoices directly from sevdesk."
         }
       ]
     }
@@ -12333,7 +12380,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for accounting SaaS, but nothing in the evidence describes acting on many invoices, receipts or bookings at once. The REST API (sevdesk-docs-23) is a developer building block that could be used to script batch work, not a bulk-operations feature itself, so it earns no credit.",
+    "rationale": "Bulk operations are a fair axis for an accounting SaaS, but nothing in the evidence documents acting on many items at once, either in the UI or through batch or bulk API endpoints. The REST API and OpenAPI spec are general building blocks, and features like dunning are described per invoice, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12348,7 +12395,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair axis for an accounting SaaS, but the evidence pack never documents a user-definable rule or trigger-action engine. Automatic booking-category suggestions, automatic reference propagation and asset recognition are fixed built-in behaviors, not user-defined rules. The REST API and partner integrations are only developer building blocks or adjacent features, so they earn no credit.",
+    "rationale": "The evidence pack shows no user-definable rules engine or event-triggered automation in sevDesk. The closest items do not count: automatic booking-category suggestions are built-in behavior, not user-defined rules; partner integrations are adjacent features; and the REST API is a developer building block someone could use to construct automation, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12363,7 +12410,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for accounting SaaS such as sevDesk, but the evidence pack never documents a recurring schedule, such as recurring invoices or timed workflows. Dunning notices and quote-to-order conversion are one-off actions, not schedules. The REST API is only a developer building block, and partner integrations that 'transfer data automatically' are an adjacent feature; neither earns credit.",
+    "rationale": "Recurring or scheduled jobs are a fair question for accounting SaaS (for example recurring invoices or scheduled automations), but nothing in the evidence pack documents any scheduling or recurrence capability in sevDesk. The REST API and partner integrations are developer building blocks or adjacent features, not a native recurring-schedule feature, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12378,7 +12425,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk is a bookkeeping SaaS that could plausibly ship automation rules, so the axis applies. The evidence shows only automatic booking-category suggestions, partner integrations and a REST API, with nothing on versioning, reviewing or rolling back automations. The API is a developer building block, not this capability, and earns no credit.",
+    "rationale": "An accounting SaaS could plausibly offer user automation rules with version history, review and rollback, so the axis applies. The evidence only covers vendor-side API resource versioning via the X-Version header and an API changelog, which concern API breaking changes rather than letting users version, review or roll back their own automations. The REST API and partner integrations are developer building blocks, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12393,7 +12440,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "sevDesk's own docs say it connects business bank accounts, supporting over 4,000 banks and neobanks, and matches invoices to bank payments, which implies bank transactions flow into the bookkeeping. Nothing in the evidence mentions credit-card accounts or says transactions import automatically on a daily schedule. Missing for 10: credit-card account connections, documented automatic daily transaction sync, independent or hands-on corroboration.",
+    "rationale": "sevDesk documents its own bank connection: it merges your business account with bookkeeping, supports over 4,000 banks and neobanks, and maps invoices to bank payments. That covers the core bank-linking part of the story. The evidence never mentions credit-card accounts, and it does not say transactions import automatically on a daily or recurring schedule. Missing for 10: credit-card account connection, evidence of automatic daily transaction import, independent or hands-on corroboration.",
     "evidenceIds": [
       "sevdesk-docs-8",
       "sevdesk-docs-9"
@@ -12447,7 +12494,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "sevDesk documents its own bank connectivity: it merges the business account with bookkeeping, supports over 4,000 banks and neobanks, and lets users map invoices to bank payments. Partner integrations that 'transfer data automatically' are mentioned only generically, and nothing names payment processors or payroll systems feeding the ledger. Missing for 10: documented payment-processor integrations, documented payroll integration, detail on automatic ledger posting from these sources, independent corroboration.",
+    "rationale": "sevDesk documents a native bank-account connection covering over 4,000 banks and neobanks, and bank payments can be matched to invoices in the bookkeeping. The banking leg of the story is clearly delivered. Payments and payroll are covered only by a generic claim that partner integrations \"transfer data automatically\", with no named payment-processor or payroll connector. Missing for 10: documented payment-processor connections (e.g. card/online payment providers), documented payroll integration flowing into the ledger, and independent or hands-on corroboration of automatic transaction import.",
     "evidenceIds": [
       "sevdesk-docs-8",
       "sevdesk-docs-9",
@@ -12511,7 +12558,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "sevDesk documents that double-entry bookkeeping runs on a chart of accounts and offers cost centres as a tagging dimension for invoices and receipts, with filtering and analysis by cost centre. Nothing shows the accountant can customize the chart of accounts itself. missing for 10: evidence of editing or adding accounts in the chart of accounts, account-type configuration, sub-account hierarchies, class/tag dimensions beyond cost centres, independent or hands-on corroboration.",
+    "rationale": "sevDesk documents double-entry bookkeeping on a chart of accounts and lets users assign invoices and receipts to cost centres, which is a class-style dimension for filtering and analysis. Nothing in the evidence shows that accountants can customize the chart of accounts itself. missing for 10: ability to add or edit accounts, account type configuration, sub-account hierarchy, tag dimensions beyond cost centres, independent corroboration.",
     "evidenceIds": [
       "sevdesk-docs-15",
       "sevdesk-docs-22"
@@ -12538,7 +12585,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Audit trails are a fair axis for bookkeeping software. The evidence pack never documents a change log or audit trail showing who changed what and when across the ledger. GoBD-compliant quotes and a trial balance with journal entries are adjacent features, not an audit trail of user edits.",
+    "rationale": "An audit trail is a fair question for accounting software, so the axis applies. The pack has no evidence of a change log recording who changed what and when across the ledger. GoBD-compliant quotes, tax-advisor collaboration and the trial balance are adjacent features, not a documented audit trail.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12586,10 +12633,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "sevDesk lets users assign invoices and receipts to cost centres, then filter and analyse income and expenses by cost centre. That is a single class-like reporting dimension, but it is not a custom report builder. Other reports (BWA, trial balance, cash-basis income statement) are fixed statements with no documented dimension filtering. Missing for 10: a custom report builder, location and tag dimensions, grouping across multiple dimensions, and independent or hands-on corroboration.",
+    "rationale": "sevDesk lets users assign invoices and receipts to cost centres, then filter and analyse income and expenses by cost centre. That is a single class-like dimension for analysis, but it is not a custom report builder covering multiple dimensions. Missing for 10: a custom report builder, location and tag dimensions, grouping across several dimensions, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "sevdesk-docs-22",
-      "sevdesk-docs-24"
+      "sevdesk-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -12642,26 +12688,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk documents a general REST API and a trial balance report in its UI. No evidence shows the API exposes the general ledger or trial balance, or that either can be exported in open formats. The API mention and the UI report are adjacent capabilities that, combined, do not show programmatic GL or trial-balance retrieval. The OpenAPI probes also returned 404.",
-    "evidenceIds": [
-      "sevdesk-docs-23",
-      "sevdesk-docs-21",
-      "sevdesk-probe-3"
-    ],
+    "rationale": "sevDesk documents a trial balance view in its UI and a general-purpose REST API with a published OpenAPI spec. However, no evidence shows that general-ledger journal entries or the trial balance can be retrieved through that API, or exported in open formats. Combining a UI report with a generic API is adjacent evidence and does not show that this story's capability is delivered.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can pull the full general ledger and trial balance through a documented API in open formats",
-      "citations": [
-        {
-          "evidenceId": "sevdesk-docs-23",
-          "quote": "The REST API lets you manage data and features in sevdesk and connect external services to sevdesk."
-        },
-        {
-          "evidenceId": "sevdesk-docs-21",
-          "quote": "The trial balance gives you a detailed view of your accounts and journal entries."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -12670,7 +12703,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Period locking is a fair axis for accounting software like sevDesk, but the evidence pack never mentions locking closed periods or reopening them. GoBD-compliant quotes, the trial balance and tax-advisor collaboration are related features, not period locks, so they earn no credit.",
+    "rationale": "Period closing is a fair axis for bookkeeping software like sevDesk, but the evidence pack never documents locking closed periods or an explicit reopening workflow. The only nearby item is a GoBD-compliance mention for quotes, which is an adjacent compliance claim and not a period-lock capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12685,7 +12718,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows sevDesk does double-entry bookkeeping on a chart of accounts and that its trial balance displays journal entries. Nothing documents that an accountant can manually create and post a journal entry with balanced debit and credit lines and a memo. Viewing journal entries in a trial balance is an adjacent reporting feature, not the manual-posting capability itself.",
+    "rationale": "The evidence shows that sevDesk does double-entry bookkeeping with a chart of accounts and lets users view journal entries in the trial balance. It never documents posting manual journal entries, entering balanced debit and credit lines, or attaching memos. Viewing system-generated journal entries is an adjacent capability and does not show manual entry posting.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -12700,7 +12733,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents a sevDesk feature for importing historical books or transaction history from another accounting system. The REST API (sevdesk-docs-23) is a developer building block that could be used to build an import, and the generic partner-integrations line (sevdesk-docs-14) does not describe migration, so neither earns credit.",
+    "rationale": "The evidence pack documents no import or migration feature for bringing historical books from another accounting system into sevDesk. The REST API and generic partner integrations are developer building blocks or adjacent features, not a migration capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12715,7 +12748,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "sevDesk is accounting software, so a month-end close checklist is a fair question for it. The evidence shows only adjacent features: matching invoices to bank payments, a trial balance and tax-adviser collaboration. Nothing documents a close checklist that tracks reconciliations, accruals or review sign-offs.",
+    "rationale": "Month-end close is a fair axis for bookkeeping software like sevDesk, but the evidence pack never mentions a close checklist, accrual tracking, or review sign-offs. Bank-payment matching, missing-receipt alerts and tax-advisor collaboration are adjacent features, not a close workflow, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12730,7 +12763,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Multi-entity management with consolidated financials is a fair question for accounting software, but the evidence pack never mentions multiple legal entities, intercompany handling or consolidation. The dashboard describes managing 'your company' as a single entity. Cost-centre filtering is an adjacent feature within one entity and earns no credit for this story.",
+    "rationale": "Nothing in the evidence shows sevDesk managing multiple legal entities or consolidating financials across them. The reports it documents (income statement, trial balance, BWA, dashboard) are framed around a single company account. Cost-centre assignment is an adjacent feature within one entity and does not count as multi-entity support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12743,11 +12776,12 @@
     "productId": "sevdesk",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "sevDesk documents a REST API that \"lets you manage data and features in sevdesk,\" so the API is a first-party capability. Nothing shows it reaches parity with the UI: no evidence maps UI features such as ELSTER VAT filing, dunning, bank payments or invoice layouts to API endpoints, and probes found no public OpenAPI spec at the candidate paths. missing for 10: documented UI-to-API feature parity, endpoint coverage for key workflows (VAT returns, dunning, banking, document design), a published machine-readable API spec, independent or hands-on corroboration of API breadth.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "sevDesk documents its own REST API that 'lets you manage data and features in sevdesk', backed by a large published OpenAPI 3.0 spec. No evidence states or shows that the API matches the UI feature for feature, so parity is unproven. Several UI capabilities, such as the ELSTER VAT return, the dashboard, BWA reports, bank payments and dunning, have no API evidence. Missing for 10: an explicit API/UI parity statement, documented API coverage of UI features like ELSTER submission, banking/payments, reports and dunning, and independent hands-on confirmation of coverage.",
     "evidenceIds": [
-      "sevdesk-docs-23"
+      "sevdesk-docs-23",
+      "sevdesk-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -12757,6 +12791,10 @@
         {
           "evidenceId": "sevdesk-docs-23",
           "quote": "The REST API lets you manage data and features in sevdesk and connect external services to sevdesk."
+        },
+        {
+          "evidenceId": "sevdesk-openapi-20261106",
+          "quote": "sevdesk publishes its full OpenAPI 3.0.0 document (671 KB YAML, base https://my.sevdesk.de/api/v1)"
         }
       ]
     }
@@ -12767,10 +12805,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for an accounting SaaS, but the evidence pack documents no bulk export of all account data in open formats. The REST API is a developer building block for building one's own export. ZUGFeRD/XRechnung e-invoicing and sending files to a tax advisor are adjacent features, not a complete self-service data export, so none of them earns credit.",
+    "rationale": "Data export is a fair question for an accounting SaaS, so the axis applies. However, the evidence pack documents no first-party 'export all data' feature or open-format bulk export. The REST API is a developer building block. ZUGFeRD/XRechnung support covers e-invoice exchange, and the tax-advisor interface is an adjacent data-transfer feature; neither is a full-account export that lets a user leave.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -12781,8 +12819,8 @@
     "storyId": "openness-open-license",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Open-source availability is a fair question for any software product, including a SaaS accounting tool, so the axis applies. Nothing in the evidence pack mentions published source code, a public repository, or an open license. The REST API (sevdesk-docs-23) is an integration interface and does not count as open source.",
+    "confidence": "high",
+    "rationale": "Open-source availability is a fair question for a SaaS accounting product, so the axis applies. The evidence pack never mentions source code or an open license. The published OpenAPI spec and REST API documentation are API descriptions, not the product's source under an open license, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12797,7 +12835,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for accounting and bookkeeping software, so the axis applies. The evidence pack describes only sevDesk's hosted features and its REST API, with no mention of a self-hosted, on-premise or downloadable deployment. Absence of evidence for an applicable capability is 'none'.",
+    "rationale": "Self-hosting is a fair question for business accounting software, so the axis applies. The evidence pack only describes sevDesk as a hosted service (a REST API at my.sevdesk.de, trial accounts) and never mentions a self-hosted, on-premises or downloadable deployment of the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12812,7 +12850,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a storage region is a fair question for a SaaS accounting product, so the axis applies. Nothing in the evidence pack mentions data residency, region selection, or where data is hosted. The items cover invoicing, bookkeeping, banking, ELSTER filing and the REST API, none of which bear on storage location.",
+    "rationale": "Data residency or region selection is a fair question for a cloud accounting SaaS, so the axis applies. Nothing in the evidence pack mentions where data is stored, hosting regions, or any user choice of residency. The items cover invoicing, bookkeeping, the API, versioning and the changelog, none of which bear on this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12826,8 +12864,8 @@
     "storyId": "privacy-no-training",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "An AI-training opt-out is a fair privacy question for a SaaS accounting product that handles sensitive business data and offers automated suggestions. However, the evidence pack contains nothing about AI training data use, opt-outs, or data-usage controls. Absence of evidence for an applicable capability yields none.",
+    "confidence": "medium",
+    "rationale": "An AI-training opt-out is a fair privacy-posture question for an accounting SaaS that offers automated suggestions, so the axis applies. Nothing in the evidence pack mentions AI training, data-use policies, or any opt-out control. The automatic booking-category suggestion shows the product uses automation but says nothing about training-data use.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12842,7 +12880,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a cloud accounting SaaS like sevDesk, so the axis applies. The evidence pack has no documented retention settings, deletion workflows, or data-erasure capabilities. The REST API's general ability to 'manage data' is only a developer building block and earns no credit.",
+    "rationale": "Data retention and deletion controls are a fair question for an accounting SaaS that holds financial records, so the axis applies. The evidence pack never mentions retention policies, deletion workflows, account or data erasure, or retention settings. The generic REST API claim that it 'lets you manage data' is a developer building block, not a documented retention or deletion control, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12856,8 +12894,8 @@
     "storyId": "privacy-telemetry-optout",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a reasonable privacy question for a SaaS accounting product like sevDesk, so the axis applies. Nothing in the evidence pack covers telemetry, analytics, tracking controls or privacy opt-outs; the items describe only invoicing, bookkeeping, banking, the API and endpoint probes.",
+    "confidence": "high",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS accounting product like sevDesk, so the axis applies. Nothing in the evidence pack covers telemetry, analytics, cookie consent, or tracking opt-out controls. The material covers invoicing, bookkeeping, API, versioning and changelog features only.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12872,7 +12910,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "sevDesk documents creating a dunning notice for an overdue invoice and sending it from within the product, which covers part of the payment-reminder half of the story. That flow appears to be user-initiated, and the evidence never mentions recurring invoices at all. Missing for 10: recurring/subscription invoice scheduling, automatic (scheduled or rule-based) reminder sending, independent or hands-on corroboration.",
+    "rationale": "sevDesk documents its own dunning feature: users can create a dunning notice for an overdue invoice, send it from sevdesk, and manage the stages of their internal dunning process. That covers the reminder half of the story, but only as a manually created notice. Nothing in the pack shows recurring invoices or automatic reminder triggering. Missing for 10: recurring/scheduled invoice setup, automatic (unattended) payment reminders for overdue customers, independent or hands-on corroboration.",
     "evidenceIds": [
       "sevdesk-docs-12"
     ],

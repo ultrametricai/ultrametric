@@ -4479,10 +4479,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Netlify generating AI insights or suggestions from a user's data, such as analytics or deploy data, inside the product. Its project analytics (netlify-docs-17) have no AI component, and its dashboard AI agents (netlify-docs-21) fix and ship code rather than analyze data. AI Gateway (netlify-docs-24) is a developer building block for apps users build, so it does not count toward this story.",
+    "rationale": "The evidence shows Netlify has dashboard AI agents that fix and ship code using project context, a docs chatbot that answers questions about Netlify, and performance and visitor analytics. None of these documents AI-generated insights or suggestions derived from the user's own data inside the product. The agent and chatbot features are adjacent capabilities and do not count toward this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": []
@@ -4526,9 +4526,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Netlify's docs say users can prompt AI agents to fix, update, and ship code from inside the Netlify dashboard using their project context. That is a built-in, in-product way to delegate tasks to an AI assistant. The evidence is a single short documentation line with no detail and no hands-on confirmation. Missing for 10: detailed docs on which tasks can be delegated and how the agent behaves, any limits or review steps, and independent or community corroboration.",
+    "rationale": "Netlify's own docs say users can prompt AI agents from the Netlify dashboard to fix, update, and ship code using project context. Users can also start new projects by describing them to an AI agent, with saved prompt templates for the team. This directly covers delegating tasks to an in-product assistant. missing for 10: in-depth documentation of the agent's capabilities, limits, and review/approval flow; independent or hands-on corroboration that delegation works as claimed.",
     "evidenceIds": [
-      "netlify-docs-21"
+      "netlify-docs-21",
+      "netlify-docs-37",
+      "netlify-docs-34",
+      "netlify-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -4538,6 +4541,18 @@
         {
           "evidenceId": "netlify-docs-21",
           "quote": "Prompt AI agents to fix, update, and ship code using your unique project context directly from your Netlify dashboard."
+        },
+        {
+          "evidenceId": "netlify-docs-37",
+          "quote": "Describe what you want to build. An AI agent handles the rest."
+        },
+        {
+          "evidenceId": "netlify-docs-34",
+          "quote": "Start a new project with an AI agent, a Git repository, or drag and drop."
+        },
+        {
+          "evidenceId": "netlify-docs-33",
+          "quote": "Explore curated Prompt Templates that you can customize and save for your Netlify team's use."
         }
       ]
     }
@@ -4592,7 +4607,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify documents dashboard AI agents (netlify-docs-21), so an MCP-client axis applies, but nothing in the evidence shows users can plug external MCP servers into Netlify for it to call their tools. 'Connect AI assistants to your Netlify account' describes the opposite role: external assistants reaching into Netlify, not Netlify consuming MCP tools. The AI Gateway (model access) and the SDK (developer building blocks) are adjacent features and earn no credit.",
+    "rationale": "Netlify ships in-dashboard AI agents, so letting users plug MCP servers into them is a fair question for this product. However, no evidence shows the product consuming external MCP servers. The one AI-connection item describes connecting outside AI assistants to Netlify, which is the opposite (server-side) direction and does not count here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4656,12 +4671,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Netlify ships an official, documented CLI (netlify-cli). It is installable via npm and can deploy, run local dev servers, and manage projects from the terminal. Its anonymous deploy flag (`--allow-anonymous`, no login required) suits agent-driven workflows. missing for 10: documented agent-oriented CLI features (e.g., machine-readable/JSON output, non-interactive auth for agents), and independent hands-on corroboration of CLI use in AI-native workflows.",
+    "rationale": "Netlify documents an official command-line tool, netlify-cli, for deploying sites, running local dev servers and managing projects from the terminal, and a probe confirms the CLI docs exist. The `netlify deploy --allow-anonymous` flow suits agent-driven, login-free deploys. Community users report using Netlify Dev, though one hit an underdocumented netlify.toml [dev] config error. missing for 10: explicit AI/agent-oriented CLI features (e.g., machine-readable output, non-interactive mode docs), clearer independent hands-on corroboration of the CLI working smoothly.",
     "evidenceIds": [
       "netlify-docs-15",
       "netlify-docs-3",
+      "netlify-probe-3",
       "netlify-docs-2",
-      "netlify-probe-3"
+      "netlify-comm-24",
+      "netlify-comm-28"
     ],
     "support": {
       "relation": "direct",
@@ -4675,10 +4692,6 @@
         {
           "evidenceId": "netlify-docs-3",
           "quote": "npm i -g netlify-cli netlify deploy --allow-anonymous"
-        },
-        {
-          "evidenceId": "netlify-docs-2",
-          "quote": "Deploy directly from your working directory. No login required to start."
         },
         {
           "evidenceId": "netlify-probe-3",
@@ -4722,7 +4735,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents issuing scoped or least-privilege API tokens for agents. The nearby items cover other things: team-level access and secrets management, connecting AI assistants to an account, and AI Gateway key handling. None of these shows credentials that can be limited in scope for an agent, so they earn no credit for this story.",
+    "rationale": "Issuing API credentials to an agent is a fair question for a deployment platform with a REST API, so the axis applies. However, the evidence never documents scoped or least-privilege tokens. The closest items are adjacent and earn no credit: team-level access and secrets management, connecting AI assistants to an account, and AI Gateway removing the need to manage model API keys.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4737,7 +4750,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Netlify documents an official Netlify SDK, but its stated scope is building extensions and custom integrations rather than general-purpose client SDKs for the platform. A code snippet (`getStore(...)`) suggests a first-party storage library, and a REST API is documented, but no OpenAPI spec was found and no language client SDKs are evidenced. Missing for 10: documented official client SDKs for the REST API across languages, SDK reference depth, a published OpenAPI spec, independent or hands-on corroboration of SDK use.",
+    "rationale": "Netlify documents an official \"Netlify SDK\" for building extensions and integrations, and shows in-code platform primitives such as `getStore` for Blobs, so official SDKs do exist. However, the evidence only covers extension building and a single storage snippet, not general-purpose client SDKs for automating the platform; the REST API is documented, but the OpenAPI probe returned 404s. missing for 10: official language client SDKs for the REST API, a published OpenAPI spec for SDK generation, in-depth SDK reference docs or language coverage, independent or hands-on corroboration of SDK use.",
     "evidenceIds": [
       "netlify-docs-16",
       "netlify-docs-12",
@@ -4808,10 +4821,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Netlify documents its own AI Gateway that lets project code connect to popular AI models without managing API keys, so the core gateway capability exists. The evidence does not show the scale or shape the story asks for. Missing for 10: evidence of access to hundreds of models, documentation of a single unified endpoint/API surface, a model catalog, and independent or hands-on corroboration.",
+    "rationale": "Netlify documents its own AI Gateway for connecting to popular AI models from project code without managing API keys, so the core gateway capability is first-party. The evidence does not show breadth (\"hundreds\" of models) or a single unified endpoint, and there is no independent corroboration. Missing for 10: evidence of hundreds of models, documentation of a single unified endpoint/API shape, list of supported providers, hands-on or independent corroboration.",
     "evidenceIds": [
       "netlify-docs-7",
-      "netlify-docs-24"
+      "netlify-docs-24",
+      "netlify-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -4825,6 +4839,10 @@
         {
           "evidenceId": "netlify-docs-24",
           "quote": "Connect to popular AI models within your project code and connect to them seamlessly without managing API keys."
+        },
+        {
+          "evidenceId": "netlify-docs-32",
+          "quote": "Use popular AI models within your project code and connect to them seamlessly without managing API keys."
         }
       ]
     }
@@ -4835,7 +4853,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify documents a REST API for managing sites, deploys and DNS programmatically, but nothing in the evidence shows an interactive API reference or runnable examples. Probes for an OpenAPI spec returned 404 on all candidate paths. The axis applies to a platform with a public API, so the lack of evidence makes this none, not na.",
+    "rationale": "Netlify documents a REST API for managing sites, deploys and DNS, but nothing in the evidence shows an interactive API reference with runnable or try-it examples. The OpenAPI probe returned 404 on every candidate path. The llms.txt file and the Markdown versions of docs pages are AI-friendly documentation, which is an adjacent feature, not an interactive runnable reference.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4850,7 +4868,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify documents a REST API (netlify-docs-14), but nothing in the evidence shows a downloadable OpenAPI or equivalent machine-readable spec. A probe of common OpenAPI and Swagger paths on docs.netlify.com returned 404 at every location. The llms.txt file is documentation for LLMs, not an API specification, so it does not count toward this story.",
+    "rationale": "Netlify documents a REST API for managing sites, deploys and DNS, but the pack never says a machine-readable spec for it can be downloaded. The probe of common OpenAPI and Swagger paths on docs.netlify.com returned 404 everywhere. The llms.txt file and the Markdown versions of doc pages are documentation formats, not an API spec, so they are only adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4865,12 +4883,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Netlify gives every PR its own preview environment through Deploy Previews, so changes can be tested before they go live, and it claims Netlify Database supports 'safely iterating' on managed Postgres. Nothing documents that previews use isolated or branched data rather than production data, so the 'without touching production data' half of the story is only implied. Missing for 10: explicit preview-scoped database branching or data isolation, per-environment secrets/env var separation for previews, independent hands-on corroboration of sandboxed data testing.",
+    "rationale": "Netlify's own Deploy Previews give every PR a separate preview URL, so changes can be tested in a real isolated deployment, not a dry run, before production; community users confirm per-PR preview builds. The evidence does not show that previews use data separate from production, and the claim that Netlify Database lets you 'safely iterate' is vague. missing for 10: documented separation of preview data from production (e.g. database branching or per-preview data stores), environment-scoped secrets for previews, agent-specific sandbox workflow docs.",
     "evidenceIds": [
       "netlify-docs-1",
       "netlify-docs-25",
+      "netlify-docs-27",
       "netlify-docs-19",
-      "netlify-docs-13"
+      "netlify-docs-13",
+      "netlify-comm-26"
     ],
     "support": {
       "relation": "direct",
@@ -4882,16 +4902,16 @@
           "quote": "Every PR gets a preview URL."
         },
         {
-          "evidenceId": "netlify-docs-25",
-          "quote": "Review every change before it goes live with Deploy Previews"
-        },
-        {
-          "evidenceId": "netlify-docs-19",
-          "quote": "Share a customizable preview environment where you and key collaborators can preview content updates alongside code updates in real-time."
+          "evidenceId": "netlify-docs-27",
+          "quote": "Share preview URLs of your in-progress content and code so you can review before launching changes to production."
         },
         {
           "evidenceId": "netlify-docs-13",
           "quote": "Deploy and safely iterate on managed Postgres with **Netlify Database**"
+        },
+        {
+          "evidenceId": "netlify-comm-26",
+          "quote": "The killer feature is the GitHub integration that renders a preview build of every PR."
         }
       ]
     }
@@ -4902,7 +4922,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify documents a REST API for programmatic management, but nothing in the evidence shows API versioning or a published deprecation policy, and the OpenAPI spec probes all returned 404. A REST API existing is adjacent to this story, not proof of a versioning or deprecation commitment.",
+    "rationale": "Netlify documents a REST API for managing sites, deploys and DNS programmatically. However, nothing in the evidence shows that the API is versioned or that Netlify publishes a deprecation policy. An API's existence alone does not deliver this story, and the OpenAPI probe found no spec at any candidate path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4944,7 +4964,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a deployment platform that manages many sites, deploys and domains. However, the evidence documents no native bulk or batch capability. The REST API and CLI let a developer script per-item management, but those are building blocks for constructing bulk workflows, not a bulk-operations feature itself.",
+    "rationale": "Bulk operations are a fair question for a deployment platform that manages many sites, deploys, domains and env vars, so the axis applies. However, the evidence never documents a native bulk or batch operation. The REST API and CLI only let a developer script loops over items, which is a building block rather than the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4959,10 +4979,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Netlify's own docs show built-in event-triggered automation: deploys run on every push and each PR gets a preview URL. Community comments mention automated builds and forms/webhooks. There is no evidence of a general facility where users define their own event→action rules. missing for 10: user-definable trigger/rule configuration, documented catalog of events and actions, registrable outbound event hooks, first-party docs beyond the fixed push-to-deploy behavior.",
+    "rationale": "Netlify ships some event-triggered automation of its own: deploys fire automatically on every push, every PR gets a preview, and form submissions can trigger configurable notifications. However, the pack does not document a general user-defined rules engine for event→action mappings; serverless functions and the REST API are only building blocks. missing for 10: documented user-defined rule/trigger configuration across event types, choice of actions beyond deploys and form notifications, depth of documentation, independent hands-on corroboration of rule-based automation.",
     "evidenceIds": [
       "netlify-docs-1",
-      "netlify-comm-7",
+      "netlify-docs-28",
       "netlify-comm-8"
     ],
     "support": {
@@ -4975,8 +4995,8 @@
           "quote": "Auto-deploy on every push. Every PR gets a preview URL."
         },
         {
-          "evidenceId": "netlify-comm-7",
-          "quote": "The GitHub/Slack integration, automated builds and deploys, and rewrites/reverse proxy support work great."
+          "evidenceId": "netlify-docs-28",
+          "quote": "Netlify's serverless form handling allows you to customize forms and notifications for form entries."
         },
         {
           "evidenceId": "netlify-comm-8",
@@ -4991,7 +5011,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Recurring job scheduling is a fair question for a hosting and serverless platform, but the evidence pack never mentions scheduled functions, cron triggers or any recurring schedule. Serverless functions and the REST API for automating workflows are adjacent building blocks, not a documented scheduling capability. Auto-deploy on push is event-driven, not a recurring schedule.",
+    "rationale": "Recurring scheduling is a fair question for a hosting and serverless platform like Netlify, so the axis applies. The pack contains no evidence of scheduled or cron functions or any recurring job trigger. Serverless functions, the REST API for automating workflows, and auto-deploy on push are event-triggered features or building blocks, not a recurring schedule, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5044,7 +5064,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Netlify documents an official CLI (netlify-cli) that deploys sites from the terminal with `netlify deploy`, including anonymous deploys straight from the working directory, so no web dashboard is needed. The probe confirms official CLI documentation exists. Missing for 10: independent or hands-on community corroboration of CLI-based deploys (community items discuss Git-driven auto-deploys, not the CLI).",
+    "rationale": "Netlify ships an official CLI (netlify-cli) whose documented `netlify deploy` command deploys sites from the terminal and working directory. Anonymous deploys are supported, so no dashboard step is needed. missing for 10: independent or hands-on corroboration of CLI deploys; the community evidence covers Git-based auto-deploys and Netlify Dev, not `netlify deploy`.",
     "evidenceIds": [
       "netlify-docs-3",
       "netlify-docs-15",
@@ -5081,7 +5101,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Netlify's official CLI deploys a project straight from the working directory with a single `netlify deploy --allow-anonymous` command, with no login required, so the deploy half of the story is documented. Nothing shows a CLI command that scaffolds a new project, and the starter templates in the integrations directory are not tied to a CLI scaffold step. Missing for 10: a CLI scaffold/init command for new projects, evidence that scaffold and deploy happen in one command, hands-on corroboration.",
+    "rationale": "Netlify documents a single-command CLI deploy from the working directory (`netlify deploy --allow-anonymous`), with no login required to start, so the deploy half of the story is directly supported. Nothing in the evidence shows a CLI command that scaffolds a new project; project creation is described only via an AI agent, a Git repository, or drag and drop. missing for 10: CLI scaffolding/template-init in the same command, evidence that scaffold and deploy happen together in one step, independent hands-on corroboration of the CLI deploy flow.",
     "evidenceIds": [
       "netlify-docs-3",
       "netlify-docs-2",
@@ -5114,10 +5134,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of configurable alerts that notify via chat or email when specific conditions are met. The docs mention performance and behavior tracking (netlify-docs-17), but tracking is an adjacent observability feature, not alerting. A community comment refers vaguely to a 'GitHub/Slack integration' without describing condition-based notifications, so it earns no credit.",
+    "rationale": "Nothing in the evidence documents configurable alerts that notify a devops lead by chat or email when observability conditions are met, such as deploy failures, error spikes or bandwidth thresholds. The closest items are form-entry notifications (netlify-docs-28), which are a different feature, and a community mention of a 'GitHub/Slack integration' that does not describe condition-based alerting. Neither counts toward this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a devops-lead, I can set up alerts that notify me via chat or email when specific conditions are met",
       "citations": []
@@ -5144,12 +5164,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Netlify's docs state that it simplifies domain management and lets you add unique custom domains, even for different versions of a project. The REST API covers DNS management, automatic HTTPS secures the domains, and a community user independently confirms custom domains with SSL. missing for 10: in-depth first-party docs on DNS setup and verification steps, and detail on CLI/API domain attachment workflows.",
+    "rationale": "Netlify's docs say you can add unique custom domains to projects, and its REST API covers DNS management. Automatic HTTPS is documented, and community users independently confirm 'custom domains with SSL' in practice. missing for 10: in-depth first-party documentation of the domain attachment flow (DNS record setup, verification, apex vs. subdomain handling); the evidence consists only of brief summary lines.",
     "evidenceIds": [
       "netlify-docs-20",
       "netlify-docs-14",
       "netlify-docs-9",
-      "netlify-comm-8"
+      "netlify-comm-8",
+      "netlify-comm-31"
     ],
     "support": {
       "relation": "direct",
@@ -5165,12 +5186,12 @@
           "quote": "Manage sites, deploys, DNS, and more programmatically with the Netlify REST API"
         },
         {
-          "evidenceId": "netlify-comm-8",
-          "quote": "custom domains with SSL"
-        },
-        {
           "evidenceId": "netlify-docs-9",
           "quote": "Automatic HTTPS and DDoS protection"
+        },
+        {
+          "evidenceId": "netlify-comm-8",
+          "quote": "custom domains with SSL"
         }
       ]
     }
@@ -5181,7 +5202,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify's documented observability is limited to tracking its own project performance and visitor behavior (netlify-docs-17). Nothing in the evidence shows custom dashboards or aggregating metrics from arbitrary external services. SDK extensions and UI components are developer building blocks, not this capability, so they earn no credit.",
+    "rationale": "Netlify documents built-in analytics for tracking project performance per deployment and visitor behavior. Nothing in the evidence shows user-built custom dashboards or aggregation of metrics from arbitrary external services. That built-in analytics is an adjacent feature and does not deliver this story. Observability dashboards are a fair question for a hosting platform, so the verdict is none, not na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5225,7 +5246,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a deployment platform, so container deployment is a fair question for it. However, nothing in the evidence pack mentions Docker images or container deployment. The documented deploy paths are git push, folder drop, CLI deploy and serverless functions, which are different deployment models and earn no credit here.",
+    "rationale": "Deploying Docker containers is a fair question for a deployment platform like Netlify, so the axis applies. Nothing in the evidence pack mentions Docker or container image deployment. The documented deploy paths are Git push, the CLI, folder drag-and-drop, and serverless functions, and one community comment says Netlify users only get JS/TS/Go language support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5240,7 +5261,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rate limits and concurrency caps are a fair question for a hosting platform with a REST API and serverless functions. However, nothing in the evidence pack documents any API rate limits or function concurrency caps. The pack only mentions that the REST API and serverless functions exist, which says nothing about their documented limits.",
+    "rationale": "Netlify's evidence documents a REST API and serverless functions, but nothing in the pack states the API rate limits, function concurrency caps, or execution limits a developer would need for capacity planning. The Arcjet integration lets users add rate limiting to their own sites, which is a third-party adjacent feature rather than documentation of Netlify's platform limits.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5255,7 +5276,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Durable workflows are a fair question for a serverless/edge hosting platform like Netlify, so the axis applies. The evidence only shows generic serverless functions, storage and databases. Nothing documents durable, long-running workflows with built-in queues or retries; serverless functions are at most a developer building block and earn no credit.",
+    "rationale": "Durable workflows are a fair question for a serverless/edge hosting platform, so the axis applies. The evidence only documents generic serverless functions, Blobs storage, and a REST API for 'automating workflows'. None of these is a durable, long-running workflow engine with built-in queues and retries; they are at most building blocks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5270,7 +5291,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify documents serverless functions and edge-function adjacent integrations, so this axis applies to the platform. Nothing in the pack shows that its functions can accept or hold persistent WebSocket connections. The 'real-time' wording in the preview-environment docs refers to collaborative content previews, not WebSocket handling.",
+    "rationale": "Netlify is an edge/serverless hosting platform, so handling WebSocket connections in its functions is a fair question to ask. The pack shows serverless functions ('Build APIs with serverless functions') and mentions edge functions, but nothing documents WebSocket support or persistent connections from those functions. The 'real-time' mention refers to collaborative content previews, not WebSockets.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5285,7 +5306,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify offers serverless functions, so the question of documented execution limits applies. However, nothing in the evidence pack states any CPU time, wall-clock timeout, or duration limit for functions, so long-running or agentic workloads cannot be assessed.",
+    "rationale": "Netlify offers serverless functions, so documented CPU and wall-clock execution limits are a fair question for this product. However, nothing in the evidence pack states any function timeout, CPU limit, or duration cap. The serverless-functions mention and the community billing complaints do not address execution-time limits.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5338,7 +5359,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify documents serverless functions, but nothing in the pack covers sub-second boot or cold-start times, or autoscaling instances to tens of thousands under load. \"Deploy in seconds\" refers to deployment speed, not instance boot time, and the only edge-function mention comes from a third-party integration listing (Turso), not Netlify's own capability. Edge compute is a fair axis for a hosting platform, so the verdict is none rather than na.",
+    "rationale": "Netlify is a hosting and serverless platform, so instance boot time and autoscaling are fair questions to ask of it. The evidence only shows serverless functions exist and that deploys reach a CDN 'in seconds'. Nothing documents sub-second instance boot or scaling to tens of thousands of instances under load. The 'scale to millions of users' line comes from a third-party Clerk template, not a Netlify compute capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5353,15 +5374,17 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Netlify documents Git-push auto-deploys with per-PR preview URLs, and community users confirm the GitHub integration works. Its integration directory shows support for standard frameworks such as SvelteKit, Angular, Remix and Next.js, so existing Git and framework workflows carry over. However, nothing shows that existing CI pipelines or editors stay untouched, and deploys still route through Netlify's own CLI and config (netlify.toml). Missing for 10: documented support for existing third-party CI pipelines, editor workflow compatibility, and evidence that no Netlify-specific config or tooling is required.",
+    "rationale": "Netlify plugs into existing Git workflows: it auto-deploys on every push, gives each PR a preview URL, and can start a project from a Git repository. Users confirm the GitHub integration and npm builds work, and the integrations directory shows starters for SvelteKit, Angular and Remix. However, nothing shows it fitting into an existing CI pipeline or editor. Community reports also show Netlify-specific config (a netlify.toml [dev] section, Netlify redirects mirrored in nginx for parity), which cuts against the \"no proprietary tooling\" part of the story. missing for 10: documented use with existing third-party CI pipelines, any editor workflow integration, evidence that no Netlify-specific config (netlify.toml/redirects) is needed, broader framework-agnostic documentation.",
     "evidenceIds": [
       "netlify-docs-1",
+      "netlify-docs-34",
       "netlify-comm-10",
-      "netlify-comm-7",
+      "netlify-comm-29",
+      "netlify-comm-30",
       "netlify-intdir-11",
       "netlify-intdir-13",
-      "netlify-intdir-3",
-      "netlify-docs-15"
+      "netlify-comm-28",
+      "netlify-comm-25"
     ],
     "support": {
       "relation": "direct",
@@ -5373,16 +5396,12 @@
           "quote": "Auto-deploy on every push. Every PR gets a preview URL."
         },
         {
-          "evidenceId": "netlify-comm-10",
-          "quote": "their GitHub integration where they render a preview build of any PRs"
+          "evidenceId": "netlify-docs-34",
+          "quote": "Start a new project with an AI agent, a Git repository, or drag and drop."
         },
         {
-          "evidenceId": "netlify-comm-7",
-          "quote": "The GitHub/Slack integration, automated builds and deploys, and rewrites/reverse proxy support work great."
-        },
-        {
-          "evidenceId": "netlify-intdir-11",
-          "quote": "Versatile, open source framework for building web applications using Svelte components."
+          "evidenceId": "netlify-comm-30",
+          "quote": "Team moved off GitHub Pages to Netlify with no setup trouble and added an integrated NPM build process."
         },
         {
           "evidenceId": "netlify-intdir-13",
@@ -5397,7 +5416,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence confirms that Netlify offers serverless functions ('Build APIs with serverless functions', 'zero-config Lambda functions'). Nothing in the pack states that these functions run unmodified Node.js code or arbitrary npm packages rather than a restricted runtime subset. Offering functions is adjacent to the story's actual subject, Node.js and npm runtime compatibility, so it earns no credit.",
+    "rationale": "The evidence shows Netlify offers serverless functions ('Build APIs with serverless functions', community mentions of 'zero-config Lambda functions'). Nothing in the pack documents that these functions run unmodified Node.js code or arbitrary npm packages rather than a restricted runtime subset. The one runtime-related comment lists only JS/TS/Go language support and says nothing about Node API or npm compatibility, so the story's specific capability is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5412,13 +5431,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Netlify documents per-PR Deploy Previews, and a community user confirms that its GitHub integration builds a preview for every PR. However, the evidence never says these previews are full-stack, meaning they include serverless functions or isolated database branches per PR. It also never says they are ephemeral or torn down when the PR closes. Missing for 10: evidence that previews include backend functions and data per PR, documented ephemeral lifecycle and cleanup on merge or close.",
+    "rationale": "Netlify documents that every pull request gets a preview URL through Deploy Previews, and a community user confirms the GitHub integration renders a preview build of each PR. No evidence shows that these previews are full-stack, meaning per-PR serverless functions or database or backing-data isolation, or that they are ephemeral and torn down after the PR closes. missing for 10: evidence that previews include functions and per-PR database or data environments, documented ephemeral lifecycle/cleanup on PR close.",
     "evidenceIds": [
       "netlify-docs-1",
       "netlify-docs-25",
-      "netlify-comm-10",
-      "netlify-docs-6",
-      "netlify-docs-13"
+      "netlify-docs-27",
+      "netlify-comm-26"
     ],
     "support": {
       "relation": "direct",
@@ -5434,8 +5452,12 @@
           "quote": "Review every change before it goes live with Deploy Previews"
         },
         {
-          "evidenceId": "netlify-comm-10",
-          "quote": "their GitHub integration where they render a preview build of any PRs"
+          "evidenceId": "netlify-docs-27",
+          "quote": "Share preview URLs of your in-progress content and code so you can review before launching changes to production."
+        },
+        {
+          "evidenceId": "netlify-comm-26",
+          "quote": "The killer feature is the GitHub integration that renders a preview build of every PR."
         }
       ]
     }
@@ -5479,9 +5501,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only edge-specific evidence is a glancing reference in Netlify's integrations directory (the Turso listing) to bringing data 'close to your edge functions' and deploying globally. That implies Netlify runs code at the edge, but it is not first-party documentation of the feature. The serverless functions claim does not establish execution on a global edge network close to users. Missing for 10: first-party Edge Functions documentation, details on global PoP distribution and latency, runtime/limits details, and independent or hands-on corroboration.",
+    "rationale": "Netlify documents deploying to a global CDN and building serverless functions. Its integrations directory also describes Turso as bringing data 'close to your edge functions', which implies Netlify runs code at the edge, and one community user praises Netlify's 'edge products'. However, no first-party doc describes executing user code on edge nodes near end users; the global CDN claim covers deployed projects, not code execution. missing for 10: first-party Edge Functions documentation, evidence that serverless/edge code runs in globally distributed locations near users, runtime/region details, independent hands-on corroboration of edge execution.",
     "evidenceIds": [
-      "netlify-intdir-5"
+      "netlify-intdir-5",
+      "netlify-docs-39",
+      "netlify-docs-6",
+      "netlify-comm-25"
     ],
     "support": {
       "relation": "direct",
@@ -5490,7 +5515,19 @@
       "citations": [
         {
           "evidenceId": "netlify-intdir-5",
-          "quote": "Turso is the Edge database that brings your data close to your edge functions. Develop locally and deploy globally"
+          "quote": "Turso is the Edge database that brings your data close to your edge functions."
+        },
+        {
+          "evidenceId": "netlify-docs-39",
+          "quote": "Deploy to a global CDN in seconds"
+        },
+        {
+          "evidenceId": "netlify-docs-6",
+          "quote": "Build APIs with serverless functions"
+        },
+        {
+          "evidenceId": "netlify-comm-25",
+          "quote": "super happy with the netlify build/edge products."
         }
       ]
     }
@@ -5515,8 +5552,8 @@
     "storyId": "hard-spending-limits",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Spending limits are a fair question for a cloud hosting platform, so the axis applies, but no Netlify documentation in the pack describes hard spending caps or budget limits. Community reports of a $104k bill after a DDoS suggest usage was not capped, but there is no vendor claim to dispute, so the verdict is none.",
+    "confidence": "high",
+    "rationale": "Spending limits are a fair question for a usage-billed hosting platform, so the axis applies. No Netlify documentation in the pack describes a spending cap or a service suspension on overage. Community reports say the opposite: a $104k bill after a DDoS, users asking for a way to cap spend, and a commenter noting Netlify is transparent that 'there are no limits.'",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5531,7 +5568,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never shows Netlify integrating an organization's identity provider (SSO/SAML/OIDC) to protect internal apps, deployments, or agents. The closest items are adjacent: generic 'Advanced Security' and password protection claims, team-level access management, and a third-party Clerk template for end-user authentication. None of these documents IdP-backed access control, so the axis applies but is unevidenced.",
+    "rationale": "Nothing in the evidence shows Netlify integrating with an organization's identity provider (SSO/SAML/OIDC) to protect internal apps, deployments, or agents. The closest items are adjacent rather than this capability: team-level access management, password protection and Advanced Security, Netlify's own built-in identity for site auth, and a third-party Clerk template.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5546,7 +5583,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An in-browser dev toolbar is a reasonable thing to ask of a web hosting and deployment platform, so the axis applies, but the evidence pack never mentions a toolbar for leaving feedback, managing feature flags, or inspecting performance on a live site. The nearby items do not count as this capability: Deploy Previews, a shared preview environment, and per-deploy performance tracking are related features but not a toolbar on the live site.",
+    "rationale": "An in-browser toolbar is a fair question for a deploy and hosting platform, so the axis applies, but the evidence pack never documents one for feedback, feature flags or performance inspection on a live site. The nearest items are adjacent features that do not deliver the story: shareable preview URLs and collaborative preview environments (netlify-docs-19, netlify-docs-27) and dashboard-side performance tracking per deployment (netlify-docs-17).",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5561,7 +5598,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Incremental rollout is a fair question for a deployment platform, but the evidence pack never documents canary releases, percentage-based traffic splitting, or staged rollouts. The nearest features are one-click rollback and Deploy Previews. These are adjacent controls: they recover from a bad deploy or review it before release, but they do not shift live traffic gradually to limit blast radius.",
+    "rationale": "Incremental rollout is a fair question for a deployment platform like Netlify, but the evidence pack never documents canary, percentage-based, or traffic-splitting rollouts. The cited items cover adjacent controls only: one-click rollback, Deploy Previews, and choosing when to publish, none of which roll out a deployment incrementally to reduce blast radius.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5576,8 +5613,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only evidence of a single config file is a community mention of a netlify.toml file with a [dev] section, plus a separate mention of 'simple redirect config'. That shows Netlify has its own project config file, but nothing shows it defines the whole architecture (functions, databases, storage, env, domains), and the same user reports unclear docs for it. Missing for 10: first-party docs that netlify.toml declares the full architecture (functions, Netlify Database, Blobs, env vars, domains), evidence that one file drives deploys, documented versioning of that config alongside code, and independent hands-on corroboration.",
+    "rationale": "Community reports confirm Netlify has its own project config file, netlify.toml, with a [dev] section and simple redirect config. Nothing shows it defining functions, databases, env, or other architecture, or versioning the whole stack, and users say its [dev] section was poorly documented. missing for 10: first-party docs showing netlify.toml (or any single file) defines the entire architecture (functions, storage, database, env, domains), evidence that deploys are driven and versioned from that file, complete reference documentation for the config sections, independent hands-on corroboration of full-stack config-as-code.",
     "evidenceIds": [
+      "netlify-comm-28",
       "netlify-comm-12",
       "netlify-comm-8"
     ],
@@ -5587,12 +5625,12 @@
       "subject": "As a devops-lead, I can define, deploy, and version my entire architecture with a single configuration file",
       "citations": [
         {
-          "evidenceId": "netlify-comm-12",
-          "quote": "no clear docs on what to put in the [dev] section of netlify.toml"
+          "evidenceId": "netlify-comm-28",
+          "quote": "Setup a netlify.toml file with a [dev] section"
         },
         {
           "evidenceId": "netlify-comm-8",
-          "quote": "simple redirect config - zero javascript, zero nginx, zero S3 settings"
+          "quote": "simple redirect config"
         }
       ]
     }
@@ -5635,13 +5673,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence mentions only automatic DDoS protection and a generic 'Netlify Advanced Security' tier. Neither is documented as invisible, challenge-based protection against automated bot traffic. Bot protection is a fair axis for a hosting and edge platform, so the absence of evidence yields 'none'.",
-    "evidenceIds": [],
+    "rationale": "The evidence shows no Netlify-native invisible or challenge-based bot protection. The only bot-protection mention is a third-party Arcjet integration listed in the integrations directory, which is adjacent ecosystem tooling rather than Netlify's own capability, and it does not describe invisible challenges. The 'DDoS protection' claim is a different control and is not credited here.",
+    "evidenceIds": [
+      "netlify-docs-41"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can protect my app from automated bot traffic with invisible challenge-based protection",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "netlify-docs-41",
+          "quote": "Protect your Netlify sites with Arcjet. Implement bot protection, rate limiting, email verification, PII detection, & defend against common attacks."
+        }
+      ]
     }
   },
   {
@@ -5650,7 +5695,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Running untrusted code in sandboxes is a fair question for an edge-compute and hosting platform, so the axis applies. The evidence pack documents only serverless functions, edge-adjacent integrations and deploy previews. Nothing describes hardware-isolated (e.g. microVM), disposable sandboxes for executing untrusted code, so serverless functions are at most an adjacent feature and earn no credit.",
+    "rationale": "Running untrusted code in sandboxes is a fair question for an edge and serverless compute platform, so the axis applies. However, the evidence pack shows no hardware-isolated, disposable sandbox capability. Serverless functions and deploy previews are adjacent features: neither is documented as hardware isolation or ephemeral sandboxing for untrusted code.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5665,7 +5710,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Overage fee transparency is a fair question for a usage-billed hosting platform, but the pack has no first-party documentation of an overage fee schedule for bandwidth, function invocations or build minutes. On-topic community reports point the other way: a user hit an unexpected $104k bill after a DDoS, and another could not find pricing at all. With no vendor claim to contradict, this is 'none' rather than 'disputed'.",
+    "rationale": "Overage pricing is a fair question for a usage-billed hosting platform, but the evidence pack contains no first-party documentation of an overage fee schedule for bandwidth, function invocations, or build minutes. Community reports point the other way: one user could not find pricing at all, and another received a surprise $104k bandwidth bill. One commenter calls Netlify 'transparent that there are no limits', but that describes the absence of caps, not a published per-unit overage rate.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5680,10 +5725,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Autoscaling is a fair question for a hosting and edge platform like Netlify, but the evidence pack never documents load-based autoscaling or automatic burst absorption. The closest items are adjacent and earn no credit: serverless functions with no scaling claim, DDoS protection (a security control), \"at any scale\" phrasing about security, and a third-party template's scaling claim. Community DDoS billing stories describe costs, not a documented autoscaling capability.",
+    "rationale": "The pack never documents load-based autoscaling. It mentions a global CDN, serverless functions and DDoS protection, which are adjacent features rather than a documented capability that scales capacity automatically under load. The community DDoS-billing threads describe cost overruns, not autoscaling behavior, so they cannot be credited for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a devops-lead, I can rely on load-based autoscaling to absorb large traffic bursts automatically",
       "citations": []
@@ -5750,7 +5795,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Migration credits are a fair pricing question for a hosting/deployment platform like Netlify, so the axis applies. Nothing in the evidence pack mentions migration credits, switching incentives, or credits for moving production infrastructure. The only billing-related item is a one-off discount on a DDoS overage bill, which is a different matter and earns no credit here.",
+    "rationale": "Migration credits are a fair pricing question for a hosting and deployment platform like Netlify, so the axis applies. Nothing in the evidence pack documents a migration-credit or switching-incentive program. The community-reported one-off bill discount after a DDoS is a different matter and does not count as migration credits.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5765,7 +5810,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a deployment and hosting platform, so multi-protocol serving is a fair axis to judge it on. The evidence only shows HTTP/HTTPS web hosting and serverless functions. Nothing documents TCP, gRPC, or WebSocket traffic, or serving all four protocols from one service without separate protocol configuration, so the core capability is unevidenced.",
+    "rationale": "Netlify is a deployment and hosting platform, so multi-protocol serving is a fair axis for it. The evidence only covers HTTP-based hosting: a CDN, serverless functions and automatic HTTPS. Nothing documents TCP, gRPC or WebSocket traffic from one deployed service without separate protocol configuration, and partial support for HTTP alone does not deliver the story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5780,10 +5825,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Netlify's first-party marketing says it offers built-in file storage. A code sample shows a named blob store, getStore(\"file-uploads\"), being used for uploads, so the core of the story is covered by the product itself. The evidence is thin marketing snippets rather than in-depth docs. Missing for 10: detailed storage docs (write/read API, size limits, persistence guarantees, access control), and independent or hands-on corroboration of storing user uploads.",
+    "rationale": "Netlify documents built-in file storage through Blobs, and its own code sample creates a store named \"file-uploads\" with getStore. That points directly at persisting user uploads on the platform's native storage. However, the evidence is only short marketing and docs snippets: missing for 10: detailed docs on the upload write/read flow, object size limits and access controls, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "netlify-docs-12",
       "netlify-docs-23",
-      "netlify-docs-12"
+      "netlify-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -5791,12 +5837,16 @@
       "subject": "As a developer, I can persist user-generated uploads using built-in object storage",
       "citations": [
         {
+          "evidenceId": "netlify-docs-12",
+          "quote": "const uploads = getStore(\"file-uploads\");"
+        },
+        {
           "evidenceId": "netlify-docs-23",
           "quote": "Add instant databases and file storage"
         },
         {
-          "evidenceId": "netlify-docs-12",
-          "quote": "const uploads = getStore(\"file-uploads\");"
+          "evidenceId": "netlify-docs-31",
+          "quote": "use Blobs as a simple key/value store or lightweight database"
         }
       ]
     }
@@ -5829,7 +5879,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Netlify's own site states that any deploy can be rolled back in one click, which matches both parts of the story: any previous version, and a single action. The support is one marketing line, though, with no detailed documentation and no hands-on confirmation. Missing for 10: in-depth first-party docs on rollback mechanics and scope (e.g. how far back deploys are retained, behavior of functions and env vars on rollback), and independent or community corroboration of one-click rollback working in practice.",
+    "rationale": "Netlify's own documentation states it can roll back any deploy in one click, which matches the story's 'any previous version' and 'one click' elements directly. The support is a single marketing line with no detailed docs or hands-on confirmation. Missing for 10: in-depth first-party rollback docs (scope, retention of old deploys, function/env handling) and independent or hands-on corroboration that rollback works as claimed.",
     "evidenceIds": [
       "netlify-docs-5"
     ],
@@ -5851,7 +5901,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Netlify's own integrations directory lists starters and templates for common use cases: a Remix + Supabase starter, a bare-bones Angular project that \"has everything you need to quickly deploy it to Netlify,\" and a Clerk B2C template. The evidence never describes a one-click deploy mechanism for them, so only the templates themselves are documented. Missing for 10: explicit one-click deploy flow, a broader template catalog or docs, independent or hands-on corroboration.",
+    "rationale": "Netlify's integrations directory lists first-party-hosted starters and templates for common use cases: a Remix + Supabase starter, a bare-bones Angular project ready to deploy, and a Clerk B2C auth template. However, the evidence never documents a one-click deploy mechanism, such as a deploy button or template gallery flow, and covers only a few examples. missing for 10: explicit one-click deploy flow documentation, evidence of a broad template catalog across use cases, independent or hands-on corroboration of deploying a template.",
     "evidenceIds": [
       "netlify-intdir-12",
       "netlify-intdir-13",
@@ -5883,12 +5933,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Netlify documents a first-party REST API for managing sites, deploys, DNS \"and more\" programmatically, plus an official CLI, so a real API surface exists. Nothing in the evidence shows the API matches everything the UI can do, and the OpenAPI spec probes all returned 404. missing for 10: evidence of explicit API/UI parity, a published machine-readable API spec (OpenAPI), API coverage of dashboard features such as security, analytics, collaborative previews and the AI agent features, and independent or hands-on corroboration.",
+    "rationale": "Netlify documents a first-party REST API for managing sites, deploys, DNS \"and more\" programmatically, plus an official CLI for deploying and managing projects, so substantial programmatic control exists. Nothing in the evidence shows the API covers everything the UI does. Dashboard features such as prompting AI agents and the visual preview environment have no documented API equivalent, and the probe found no OpenAPI spec at the checked docs paths. Missing for 10: an explicit API/UI parity statement, a published machine-readable API spec, documented API coverage of dashboard-only features (agent runs, team/security settings, analytics), and independent hands-on corroboration.",
     "evidenceIds": [
       "netlify-docs-14",
       "netlify-docs-15",
-      "netlify-probe-3",
-      "netlify-probe-2"
+      "netlify-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -5902,6 +5951,10 @@
         {
           "evidenceId": "netlify-docs-15",
           "quote": "Deploy sites, run local dev servers, and manage your Netlify projects right from the terminal with this powerful command-line tool."
+        },
+        {
+          "evidenceId": "netlify-probe-3",
+          "quote": "official CLI documented at https://docs.netlify.com/cli/get-started/"
         }
       ]
     }
@@ -5912,7 +5965,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export is a fair question for a hosting platform that stores user data (forms, blobs, managed Postgres). The pack documents no export or data-portability feature. The REST API and CLI are general management building blocks, not a documented export of all data in open formats, and a user migrating off is a user-side workaround.",
+    "rationale": "Exporting account data in open formats is a fair question for a hosting platform that stores forms, blobs, databases and site configuration, so the axis applies. The pack has no documented data-export capability. The REST API and CLI are only building blocks for programmatic management, the `.md` versions of docs pages are documentation rather than user data, and community reports of migrating away describe users leaving, not a product export feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5927,7 +5980,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a hosting platform publishes its source under an open license is a fair question, so the axis applies. Nothing in the pack shows Netlify's platform, CLI, or SDK source is available under an open license. The CLI and SDK docs say nothing about licensing, and the one 'open source' mention (intdir-11) describes a third-party Svelte framework, not Netlify.",
+    "rationale": "Whether a hosting platform publishes its source under an open license is a fair question, so the axis applies. Nothing in the pack shows Netlify's own code (platform, CLI or SDK) available under an open license. The only open-source mention describes a third-party Svelte framework in the integrations directory, which does not count.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5942,7 +5995,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a deployment/hosting platform, since some platforms of this kind ship self-hostable editions, so the axis applies. Nothing in the evidence pack shows Netlify offering a self-hostable or on-prem version of its platform; it presents only managed hosting. The CLI's local dev server is a developer tool, not a self-hosted deployment of the core product, so it earns no credit.",
+    "rationale": "Self-hosting is a fair question for a deployment/hosting platform, since self-hostable alternatives exist in this category, so the axis applies. The evidence describes only Netlify's managed cloud platform (global CDN, managed Postgres, hosted AI Gateway) and never mentions a self-hostable distribution of the core product. The community comment about choosing Netlify to avoid self-hosting reflects a user preference, not a product capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5957,7 +6010,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a hosting platform that offers serverless functions, so billing for active compute rather than idle wall-clock time is a fair question to ask of it. However, nothing in the evidence pack describes how compute is metered or billed. The community billing complaints concern DDoS bandwidth overages and per-user charges, not active-versus-idle compute metering, so they do not bear on this story.",
+    "rationale": "Billing granularity is a fair question for a hosting and serverless platform like Netlify, but the evidence never describes how compute is metered. Nothing shows active-CPU billing as opposed to wall-clock or idle time. The pack mentions serverless functions only as a feature, and the billing complaints in it concern bandwidth overages, not compute metering.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5972,7 +6025,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a hosting platform that advertises file storage and managed databases, so storage billing is a fair question to ask of it. However, nothing in the evidence pack says storage auto-grows with usage or is billed by bytes written rather than by pre-provisioned capacity. The mentions of 'instant databases and file storage' and a getStore() call describe storage features, not their growth or billing model, so they earn no credit here.",
+    "rationale": "Netlify offers storage (Blobs as a key/value store, file storage, and a managed Postgres database), so asking how that storage grows and is billed is a fair question for this platform. However, nothing in the evidence describes storage auto-growing with usage or billing only for bytes written rather than pre-provisioned capacity. Mentions of storage existing do not show how it scales or is priced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5987,7 +6040,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is an edge and serverless platform, so offering a persistent agent runtime is a fair question for it, but the evidence documents no persistent runtime environment for coding agents and no automatic state checkpointing. Dashboard-prompted AI agents, deploy rollbacks and blob storage are adjacent features or developer building blocks, not this capability.",
+    "rationale": "Netlify is an edge and serverless hosting platform, so offering a persistent agent runtime is a fair question. However, the evidence shows only serverless functions, Blobs storage, deploy rollbacks, and dashboard-prompted AI agents. Nothing documents a persistent runtime environment for a coding agent that checkpoints its state automatically. Deploy rollback and key/value storage are adjacent features, not agent-state checkpointing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6002,7 +6055,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a hosting and edge-compute platform, so the language support of its edge functions is a fair question. However, the evidence pack never says which languages edge functions accept, and nothing mentions Python, Go, or Rust. The only mentions are a generic 'serverless functions' line and a Turso integration blurb that refers to edge functions.",
+    "rationale": "Edge compute is a fair axis for a deployment platform like Netlify, but the pack has no first-party documentation of edge functions written in Python, Go, Rust, or any non-JavaScript language. The only related item is a community complaint (netlify-comm-35) that language support is limited to 'JS/TS/Go or WebAssembly gimmicks.' That comment is about general platform functions, not edge functions specifically, so it does not establish the capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6017,12 +6070,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Netlify's own docs state that every PR gets a preview URL and that Deploy Previews let you review every change before it goes live. Independent community users confirm the GitHub integration renders a preview build of any PR. missing for 10: in-depth first-party documentation detailing Deploy Preview configuration and behavior (the evidence is marketing-level statements).",
+    "rationale": "Netlify's own materials say every PR gets a preview URL through Deploy Previews. Independent community users confirm the GitHub integration renders a preview build of every PR. missing for 10: in-depth first-party documentation of how Deploy Previews are configured and which Git providers they support, beyond marketing-level statements.",
     "evidenceIds": [
       "netlify-docs-1",
       "netlify-docs-25",
+      "netlify-docs-27",
       "netlify-comm-10",
-      "netlify-comm-7"
+      "netlify-comm-26"
     ],
     "support": {
       "relation": "direct",
@@ -6040,6 +6094,10 @@
         {
           "evidenceId": "netlify-comm-10",
           "quote": "The real killer bit for me has been their GitHub integration where they render a preview build of any PRs."
+        },
+        {
+          "evidenceId": "netlify-comm-26",
+          "quote": "The killer feature is the GitHub integration that renders a preview build of every PR."
         }
       ]
     }
@@ -6050,7 +6108,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents Deploy Previews, per-PR preview URLs, and a shareable preview environment where collaborators can 'preview content updates'. None of it shows a way for teammates to leave comments directly on preview or production deploys. Viewing and reviewing previews is an adjacent capability, not in-context commenting, and nothing addresses commenting on production at all.",
+    "rationale": "The evidence documents Deploy Previews, preview URLs for every PR, and shareable preview environments for review. None of it mentions a feature that lets teammates or collaborators leave comments directly on preview or production deploys. Sharing and reviewing previews is an adjacent capability, not commenting, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6065,7 +6123,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data region or residency selection is a fair question for a hosting and data platform like Netlify, so the axis applies. However, nothing in the evidence pack documents choosing a storage region for Netlify Database, Blobs, functions or deploys. The Turso integration line about bringing data close to edge functions describes a third-party service's edge placement, not a residency control in Netlify itself.",
+    "rationale": "Netlify is a hosting platform with managed databases, Blobs storage and serverless functions, so choosing a data region or residency is a fair question for it. However, no evidence item documents any region or residency selection. The pack only mentions global CDN deployment and a third-party Turso edge-database integration, neither of which is a Netlify region-choice capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6080,7 +6138,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a hosting platform with AI features (AI Gateway, dashboard AI agents), so an opt-out from AI model training is a fair question to ask. Nothing in the evidence pack documents a training opt-out, a no-training policy, or any data-use controls for AI. The 'projects stay private until published' setting controls deploy visibility, not AI training, so it earns no credit.",
+    "rationale": "Netlify ships AI features (agent runners, AI Gateway, an AI chatbot), so a training opt-out is a fair question for this product. However, nothing in the evidence pack documents a training opt-out, a no-training commitment, or any data-usage control for AI models. The access/secrets controls and privacy-until-publish deploys are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6095,7 +6153,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a hosting and data platform like Netlify, so the axis applies. The pack has no evidence of documented retention policies, deletion controls, or data-lifecycle settings. Blob storage, Netlify Database, and the REST API are only adjacent building blocks and earn no credit.",
+    "rationale": "Data retention and deletion controls are a fair question for a hosting and data platform like Netlify, so the axis applies. The pack has no evidence of retention settings, data deletion, or account and data purge controls. Deploy rollback, cache invalidation, and Blobs/Database storage are adjacent features or developer building blocks, not retention and deletion controls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6110,7 +6168,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a deployment platform with a CLI and dashboard, so the axis applies. Nothing in the evidence pack documents a way to disable telemetry or usage tracking. The only tracking-related item (netlify-docs-17) describes analytics on project and visitor behavior, not an opt-out control.",
+    "rationale": "Telemetry opt-out is a fair question for a deploy platform that ships a CLI and dashboard, so the axis applies. However, the evidence pack contains nothing documenting a way to disable telemetry or usage tracking. The only related item (netlify-docs-17) describes Netlify's analytics for tracking team and visitor behavior, which is an adjacent feature, not an opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6125,7 +6183,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Private service-to-service networking is a fair question for a cloud deployment platform that runs serverless functions and managed databases, so the axis applies. The evidence pack never documents private networking, internal-only endpoints, or traffic isolation between services. Automatic HTTPS, DDoS protection and Advanced Security are adjacent security features and do not keep internal traffic off the public internet.",
+    "rationale": "Private service-to-service networking is a fair question for a hosting and serverless platform, so the axis applies. However, the evidence pack contains no documented private networking, internal service mesh, or non-public traffic path between Netlify services. Related items such as projects staying private until published, password protection, and DDoS protection concern public access visibility and edge security, not internal network isolation, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6140,7 +6198,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a deployment and hosting platform with preview environments, so isolating non-production from production services is a fair question. The evidence never documents network isolation or per-environment controls that stop previews from reaching production services. The closest items are adjacent: team-scoped secrets and env vars, deploy previews, and generic security or password protection, none of which is environment isolation.",
+    "rationale": "Environment isolation is a fair question for a deployment platform, so the axis applies. Netlify documents deploy previews and team-level management of access, secrets, and env vars, but nothing shows non-production deploys being scoped or network-restricted from production services. Team-scoped env vars and preview URLs are adjacent features, not the isolation capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6187,7 +6245,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A public status page with historical incident postmortems is a fair question for a hosting and deployment platform like Netlify, so the axis applies. The evidence pack never mentions a status page, an incident history or postmortems. The closest item, project performance and analytics tracking, is an adjacent feature, not a public status page.",
+    "rationale": "A public status page with historical incident postmortems is a fair question for a hosting and deployment platform like Netlify, so the axis applies. Nothing in the evidence pack mentions a status page, an incident history, or postmortems. The DDoS billing complaints and the analytics docs are not about this subject, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6202,7 +6260,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a hosting platform, so asking whether it publishes an uptime SLA with defined downtime credits is a fair question. However, nothing in the evidence pack mentions an SLA, uptime commitments, or service credits. DDoS protection, analytics, and billing complaints are adjacent topics and do not count toward this story.",
+    "rationale": "An uptime SLA with defined downtime credits is a fair question for a hosting and deployment platform like Netlify, so the axis applies. Nothing in the evidence pack mentions an SLA, uptime guarantees, or service credits. DDoS protection, rollbacks and performance tracking are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6217,13 +6275,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a cloud hosting platform, so offering a managed Redis-compatible store is a fair question. The evidence shows only a blob store accessed via getStore, managed Postgres and a Turso integration. None of these is described as Redis-compatible or as supporting low-latency caching or job queues, so they are adjacent features rather than this capability.",
-    "evidenceIds": [],
+    "rationale": "Netlify documents Blobs as a 'simple key/value store or lightweight database' and an HTTP Cache API. Neither is described as Redis-compatible, and neither is shown to provide low-latency in-memory caching or job-queue primitives, so both are adjacent features rather than the requested capability. A managed Redis-compatible store is a fair axis for a hosting platform, but nothing in the evidence shows one.",
+    "evidenceIds": [
+      "netlify-docs-31",
+      "netlify-docs-30"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can use a Redis-compatible key-value store for low-latency caching and job queues",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "netlify-docs-31",
+          "quote": "use Blobs as a simple key/value store or lightweight database"
+        },
+        {
+          "evidenceId": "netlify-docs-30",
+          "quote": "a programmatic Cache API"
+        }
+      ]
     }
   },
   {
@@ -6232,10 +6302,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing deployment regions is a fair question for a hosting platform like Netlify, so the axis applies. Nothing in the evidence pack documents region selection, edge deployment, or regional function placement as a Netlify capability. The only geographic mention is the third-party Turso integration's own claim about deploying globally, which does not count as Netlify's capability.",
+    "rationale": "Choosing deployment regions is a fair question for a hosting and deployment platform, but the evidence never documents selecting specific regions for functions or apps. The only related claims are deploying to a \"global CDN\", which is automatic worldwide distribution rather than region choice, and a third-party Turso edge-database integration, which is not Netlify's own capability. Neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a devops-lead, I can deploy my application to specific regions closer to my users",
       "citations": []
@@ -6247,7 +6317,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no first-party pricing documentation explaining whether Netlify charges per seat, sets minimum seat counts, or how cost scales with team size. One community comment mentions Netlify trying to charge per user, and another says pricing was hard to find. Neither is product documentation that lets a buyer know the seat-pricing model, so this applicable axis is unevidenced.",
+    "rationale": "The pack has no first-party pricing documentation, so a buyer cannot learn from Netlify itself whether pricing is per-seat or whether minimum seat counts apply. A community anecdote mentions Netlify trying to charge per user on a documentation repo, but it is not a documented pricing disclosure and says nothing about seat minimums. Another user reports being unable to find pricing at all without handing over contact details.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6305,9 +6375,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Netlify documents its own managed Postgres offering (Netlify Database) and 'instant databases', so a first-party SQL database exists. Nothing in the evidence shows querying it directly from code or that connection management is handled for you. The Turso listing is a third-party integration and earns no credit. Missing for 10: a documented in-code query API or driver, evidence of no connection management or pooling, serverless/edge query docs, and independent hands-on corroboration.",
+    "rationale": "Netlify documents its own managed Postgres offering, Netlify Database, which can be provisioned instantly and gives the platform a first-party SQL database. Nothing in the evidence shows how code queries it, such as a serverless driver or HTTP query API, or that connection pooling and connection management are handled for the developer. The Turso entry is a third-party integration and earns no credit. Missing for 10: documented in-code query API/driver, explicit no-connection-management behavior, serverless (scale-to-zero/per-request) semantics, independent or hands-on corroboration.",
     "evidenceIds": [
       "netlify-docs-13",
+      "netlify-docs-31",
       "netlify-docs-23"
     ],
     "support": {
@@ -6318,6 +6389,10 @@
         {
           "evidenceId": "netlify-docs-13",
           "quote": "Deploy and safely iterate on managed Postgres with **Netlify Database**"
+        },
+        {
+          "evidenceId": "netlify-docs-31",
+          "quote": "Instantly provision a production-grade database with Netlify Database"
         },
         {
           "evidenceId": "netlify-docs-23",
@@ -6354,7 +6429,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automatic compute placement is a fair question for a deployment and edge platform like Netlify, so the axis applies. The pack only documents generic serverless functions and a third-party Turso integration that moves data close to edge functions, which is the reverse direction and not Netlify's own capability. Nothing shows Netlify automatically placing compute near backend data.",
+    "rationale": "Netlify is a hosting and compute platform, so automatic placement of functions near backend data is a fair question to ask of it. The pack documents serverless functions and a global CDN, but nothing about automatically placing compute near data sources. The Turso integration is a third-party edge database that moves data toward edge functions, not compute toward data, so it is an adjacent integration and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6369,7 +6444,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify offers serverless functions and storage, so the portability axis applies to it. The pack has no evidence that its runtime follows standard APIs or that code runs unmodified on other edge platforms. The only storage code shown is a Netlify-specific getStore call, and the Turso edge database is a third-party integration, not Netlify's own runtime portability.",
+    "rationale": "Runtime portability is a fair question for an edge and serverless hosting platform, so the axis applies. However, the pack never documents that Netlify functions or edge code use standard, portable runtime APIs that run unmodified on other edge platforms. The storage example shown, `getStore(\"file-uploads\")`, is a Netlify-specific Blobs API. The mentioned \"programmatic Cache API\" is never described as standards-based or portable, so it cannot be credited.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6384,7 +6459,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Published support SLAs are a fair question for a hosting platform like Netlify, but the evidence pack has no documentation of guaranteed response times, escalation paths, or per-tier support levels. A single community anecdote about support resolving a cert issue within 48 hours describes one experience, not a guaranteed commitment.",
+    "rationale": "Published support SLAs and escalation paths per plan tier are a fair question for a hosting platform, so the axis applies. However, the evidence pack contains no documentation of guaranteed response times, tiered support levels or escalation procedures. The only support-related items are anecdotal reports of support fixing an issue within 48 hours, which are not a documented guarantee.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6421,7 +6496,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unified build, deploy, and runtime logs are a fair question for a hosting and deploy platform, so the axis applies. Nothing in the evidence pack mentions build logs, deploy logs, function or runtime logs, or a consolidated log view. The closest item (netlify-docs-17) covers performance tracking and visitor and team behavior, which is analytics rather than log viewing, so it is adjacent and earns no credit.",
+    "rationale": "Unified build, deploy, and runtime logs is a fair question for a hosting and deploy platform like Netlify, so the axis applies. However, no evidence item mentions logs of any kind. The closest item, netlify-docs-17, covers tracking performance and team and visitor behavior, which is analytics rather than a unified log view.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6436,7 +6511,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Netlify documents that every PR automatically gets its own preview URL (Deploy Previews), and that environments can be shared with collaborators. A community user corroborates PR preview builds. This gives each team member's change a separate deployed environment to work in parallel. However, the evidence never states these environments are unlimited, and it never describes isolation beyond the frontend deploy, such as per-preview backends, data, or env vars. missing for 10: explicit documentation that preview environments are unlimited, evidence of full isolation (per-environment backend/data/secrets), independent confirmation of many simultaneous team environments at scale",
+    "rationale": "Netlify's docs say every PR gets its own preview URL through Deploy Previews, which also offer shareable preview environments, and community users confirm PR preview builds. That gives a team parallel per-branch environments. The evidence does not establish that these environments are unlimited or fully isolated beyond the frontend deploy, so coverage is partial. Missing for 10: documented absence of limits on concurrent environments, evidence of isolated per-environment backends/data (e.g., databases or secrets scoped per preview), and explicit multi-developer concurrency guarantees.",
     "evidenceIds": [
       "netlify-docs-1",
       "netlify-docs-25",
@@ -6495,7 +6570,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Netlify is a hosting and deployment platform, so a visual infrastructure canvas is a fair axis to ask about. Nothing in the evidence shows a canvas for visualizing or editing the infrastructure stack. The evidence covers dashboard deploys, a CLI, a REST API and per-feature zero-config claims, while the only 'visual editor' mentioned is a third-party React CMS integration for content, not infrastructure.",
+    "rationale": "Netlify is a cloud hosting and deployment platform, so a visual infrastructure canvas is a fair question for this kind of product. The evidence pack shows nothing like one. Drag-and-drop folder deploys, dashboard AI prompts and a third-party React CMS visual editor are adjacent features, not a canvas for visualizing and editing the infrastructure stack.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6510,11 +6585,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Netlify documents auto-deploy on every push with per-PR preview URLs, and community users confirm the GitHub integration delivers automated builds and deploys, so the repo-connected deploy workflow is clearly supported. Nothing in the pack shows that Netlify auto-detects frameworks or build settings, so the 'without manual build configuration' part is unproven; one user's netlify.toml confusion concerns the local Netlify Dev server, not repo deploys. Missing for 10: documented automatic framework or build-setting detection, explicit first-party docs on the repo-connect flow, and evidence that builds succeed with no build configuration.",
+    "rationale": "Netlify documents starting a project from a Git repository with auto-deploy on every push, and community users report automated builds and deploys with \"no setup trouble.\" However, nothing in the pack explicitly documents zero-config build detection (framework, build command or publish directory inference), so the \"without manual build configuration\" part is only implied. missing for 10: first-party documentation of automatic framework/build-settings detection on repo connect, and hands-on evidence that a repo deploys with no build settings entered.",
     "evidenceIds": [
+      "netlify-docs-34",
       "netlify-docs-1",
+      "netlify-comm-30",
       "netlify-comm-7",
-      "netlify-comm-10"
+      "netlify-comm-32"
     ],
     "support": {
       "relation": "direct",
@@ -6522,16 +6599,20 @@
       "subject": "As a developer, I can deploy my app by simply connecting my repo without manual build configuration",
       "citations": [
         {
+          "evidenceId": "netlify-docs-34",
+          "quote": "Start a new project with an AI agent, a Git repository, or drag and drop."
+        },
+        {
           "evidenceId": "netlify-docs-1",
-          "quote": "Auto-deploy on every push. Every PR gets a preview URL."
+          "quote": "Auto-deploy on every push."
+        },
+        {
+          "evidenceId": "netlify-comm-30",
+          "quote": "Team moved off GitHub Pages to Netlify with no setup trouble and added an integrated NPM build process."
         },
         {
           "evidenceId": "netlify-comm-7",
           "quote": "The GitHub/Slack integration, automated builds and deploys, and rewrites/reverse proxy support work great."
-        },
-        {
-          "evidenceId": "netlify-comm-10",
-          "quote": "The real killer bit for me has been their GitHub integration where they render a preview build of any PRs."
         }
       ]
     }
@@ -6542,7 +6623,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe found a live llms.txt at docs.railway.com/llms.txt (HTTP 200). Railway also serves agent-oriented markdown docs such as agents.md and ai/mcp-server.md, including a skill that teaches coding agents how to operate Railway. missing for 10: no evidence about the depth or completeness of the llms.txt content (e.g. an llms-full.txt or full-doc coverage), and no independent user reports of agents using it.",
+    "rationale": "A hands-on probe returned HTTP 200 for a Railway llms.txt at docs.railway.com. Railway also publishes agent-oriented docs as markdown pages (agents.md, ai/mcp-server.md) and a `use-railway` skill that teaches coding agents how to operate Railway. Missing for 10: independent or community corroboration of agents actually consuming the llms.txt or markdown docs, and evidence on how complete the llms.txt index is.",
     "evidenceIds": [
       "railway-probe-1",
       "railway-docs-19",
@@ -6556,15 +6637,15 @@
       "citations": [
         {
           "evidenceId": "railway-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.railway.com/llms.txt # Railway Documentation"
-        },
-        {
-          "evidenceId": "railway-docs-21",
-          "quote": "The use-railway skill teaches AI coding agents how to operate Railway."
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.railway.com/llms.txt"
         },
         {
           "evidenceId": "railway-docs-19",
           "quote": "Install the Railway CLI and configure agent support — skills, MCP, and authentication — in one command."
+        },
+        {
+          "evidenceId": "railway-docs-21",
+          "quote": "The use-railway skill teaches AI coding agents how to operate Railway."
         }
       ]
     }
@@ -6605,14 +6686,16 @@
     "productId": "railway",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Railway's cloud agents keep running on a remote machine after you disconnect, and the built-in Railway Agent can act on your behalf (configuring services, diagnosing failures, opening PRs). That gives some background, autonomous agent execution. However, the Railway Agent is chat-initiated, and nothing shows user-defined automations that trigger or recur on their own; the condition-based alerts are notifications, not automations. missing for 10: scheduled/recurring automations (cron-style), event-triggered autonomous workflows, documentation of setting up unattended automations, independent hands-on corroboration.",
+    "rationale": "Railway documents two background-autonomy capabilities. The built-in Railway Agent can automatically investigate failed deployments and open fix PRs. Cloud agents keep running coding agents on remote machines after you disconnect, so work continues unattended. There is no documented way for a user to define their own triggers or recurring schedules. Missing for 10: user-configurable automation/trigger setup, recurring scheduled runs (e.g. cron), and independent or hands-on corroboration of autonomous background operation.",
     "evidenceIds": [
-      "railway-docs-22",
-      "railway-docs-23",
+      "railway-docs-34",
       "railway-docs-25",
-      "railway-docs-26"
+      "railway-docs-32",
+      "railway-docs-22",
+      "railway-docs-42",
+      "railway-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -6620,16 +6703,20 @@
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
         {
-          "evidenceId": "railway-docs-22",
+          "evidenceId": "railway-docs-34",
+          "quote": "When a deployment fails, the agent can automatically investigate."
+        },
+        {
+          "evidenceId": "railway-docs-32",
+          "quote": "Identify the cause of a failed deployment and open a pull request against your repository with a proposed fix."
+        },
+        {
+          "evidenceId": "railway-docs-42",
           "quote": "Your files stay on the agent's disk, and the machine stays running when you disconnect."
         },
         {
-          "evidenceId": "railway-docs-25",
-          "quote": "It can operate the platform on your behalf: creating and configuring services, inspecting deployments, diagnosing failures, and opening pull requests to fix broken builds."
-        },
-        {
-          "evidenceId": "railway-docs-23",
-          "quote": "Claude Code runs on the remote machine, with its development tools and persistent disk"
+          "evidenceId": "railway-docs-45",
+          "quote": "Railway CA gives you one place to browse your machines, start sessions, and return to work that's still running."
         }
       ]
     }
@@ -6640,12 +6727,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Railway documents the Railway Agent, a chat-based AI assistant built into the dashboard. It acts on the user's behalf: it creates and configures services, inspects deployments, diagnoses failures and opens fix pull requests. It can also read from connected MCP sources and be reached via @Railway in Slack. missing for 10: independent or hands-on corroboration that the built-in agent completes delegated tasks reliably.",
+    "rationale": "Railway documents a built-in, chat-based Railway Agent inside the dashboard that operates the platform on the user's behalf. It can create and configure services, set variables, diagnose failed deployments (including automatically), and open pull requests with fixes. It also extends to Slack/Discord mentions and MCP connectors such as Linear tickets. missing for 10: independent or hands-on corroboration of the agent's delegation quality (all evidence is vendor docs).",
     "evidenceIds": [
       "railway-docs-25",
       "railway-docs-26",
-      "railway-docs-27",
-      "railway-docs-28"
+      "railway-docs-32",
+      "railway-docs-33",
+      "railway-docs-34",
+      "railway-docs-38",
+      "railway-docs-28",
+      "railway-docs-35"
     ],
     "support": {
       "relation": "direct",
@@ -6657,12 +6748,16 @@
           "quote": "The Railway Agent is a chat-based AI assistant built into the Railway dashboard. It can operate the platform on your behalf: creating and configuring services, inspecting deployments, diagnosing failures, and opening pull requests to fix broken builds."
         },
         {
-          "evidenceId": "railway-docs-26",
-          "quote": "If the fix is in your code, the agent can open a pull request with the change so you can review and merge it."
+          "evidenceId": "railway-docs-33",
+          "quote": "Create services, set variables, connect databases, wire up networking, and adjust resource limits."
         },
         {
-          "evidenceId": "railway-docs-28",
-          "quote": "Mention @Railway in Slack to ask the Railway Agent about your projects, inspect deployments, read logs, and make changes without leaving the conversation."
+          "evidenceId": "railway-docs-34",
+          "quote": "When a deployment fails, the agent can automatically investigate."
+        },
+        {
+          "evidenceId": "railway-docs-38",
+          "quote": "Ask it why a deploy broke and it can pull the Sentry issue, or hand it a Linear ticket to work from."
         }
       ]
     }
@@ -6673,11 +6768,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Railway documents an official CLI for deploying from the terminal, with authentication setup and an MCP server that lets AI assistants deploy and redeploy services, so it can be driven without the dashboard. Nothing in the pack shows the CLI running non-interactively in CI pipelines. missing for 10: documented CI/CD usage (e.g. GitHub Actions), non-interactive or token-based headless authentication, a published API spec (OpenAPI probes all returned 404), independent hands-on corroboration of headless automation.",
+    "rationale": "Railway documents an official CLI for deploying from the terminal and an MCP server that lets AI assistants create projects, manage environments and redeploy services, so it can be scripted without the dashboard. Nothing in the evidence shows CI-specific use: no project or API tokens for non-interactive auth, no headless flags, and no CI pipeline integration. Missing for 10: documented CI/CD usage (e.g., GitHub Actions), token-based non-interactive authentication, explicit headless/non-interactive CLI mode, and independent hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-15",
       "railway-probe-3",
-      "railway-docs-19",
       "railway-docs-20"
     ],
     "support": {
@@ -6694,10 +6788,6 @@
           "quote": "official CLI documented at https://docs.railway.com/guides/cli"
         },
         {
-          "evidenceId": "railway-docs-19",
-          "quote": "Install the Railway CLI and configure agent support — skills, MCP, and authentication — in one command."
-        },
-        {
           "evidenceId": "railway-docs-20",
           "quote": "It lets AI assistants create projects, deploy templates, manage environments, pull variables, and redeploy services."
         }
@@ -6710,9 +6800,10 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Railway's built-in Railway Agent can act as an MCP client. Agent connectors let users add catalog integrations (Notion, Linear, Sentry) or point Railway at any remote MCP server, and the agent can then read from it while working on projects. However, the only evidence is a single docs line: it describes the agent reading from connected servers, it covers remote servers only, and it doesn't show full tool invocation or write actions. Railway's own MCP server (server role) is a separate capability and isn't credited here. Missing for 10: evidence that the agent can invoke arbitrary MCP tools beyond reading, local/stdio MCP server support, setup/auth and permission documentation for connectors, and independent or hands-on corroboration.",
+    "rationale": "Railway's own Railway Agent supports MCP connectors. Users can connect catalog servers such as Notion, Linear and Sentry, or point Railway at any remote MCP server, and the agent reads from it while working on projects. The evidence covers only remote servers and describes the agent reading from them, with one read-style example (pulling a Sentry issue or working from a Linear ticket), so full tool use is unproven. Missing for 10: support for local/stdio MCP servers, evidence that the agent can invoke write or action tools beyond reading, detailed configuration and auth docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-27",
+      "railway-docs-38",
       "railway-docs-25"
     ],
     "support": {
@@ -6725,6 +6816,10 @@
           "quote": "Connect Notion, Linear, or Sentry from the catalog, or point Railway at any remote MCP server you run, and the agent can read from it while it works on your projects."
         },
         {
+          "evidenceId": "railway-docs-38",
+          "quote": "Ask it why a deploy broke and it can pull the Sentry issue, or hand it a Linear ticket to work from."
+        },
+        {
           "evidenceId": "railway-docs-25",
           "quote": "The Railway Agent is a chat-based AI assistant built into the Railway dashboard."
         }
@@ -6735,12 +6830,14 @@
     "productId": "railway",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Railway documents an official MCP server that lets AI assistants create projects, deploy templates, manage environments, pull variables, and redeploy services. The CLI can configure MCP for agents in one command. Railway is a cloud platform rather than an agent, so the server axis applies, and its own MCP-client connectors are not credited here. missing for 10: independent or hands-on corroboration of the MCP server, detailed setup/transport/auth documentation for connecting specific agent clients",
+    "rationale": "Railway documents an official MCP server, with a dedicated docs page. It lets AI assistants create projects, deploy templates, manage environments, pull variables and redeploy, and one command configures it for detected tools. It works with Cursor, Claude Code, VS Code, Codex and others via CLI or OAuth. missing for 10: independent or hands-on corroboration of the MCP server working in practice.",
     "evidenceIds": [
       "railway-docs-16",
       "railway-docs-20",
+      "railway-docs-40",
+      "railway-docs-39",
       "railway-docs-19"
     ],
     "support": {
@@ -6757,8 +6854,12 @@
           "quote": "It lets AI assistants create projects, deploy templates, manage environments, pull variables, and redeploy services."
         },
         {
-          "evidenceId": "railway-docs-19",
-          "quote": "Install the Railway CLI and configure agent support — skills, MCP, and authentication — in one command."
+          "evidenceId": "railway-docs-40",
+          "quote": "configures Railway MCP for detected tools, and checks Railway authentication"
+        },
+        {
+          "evidenceId": "railway-docs-39",
+          "quote": "Connect through the CLI or OAuth. Works with Cursor, Claude Code, VS Code, Codex, Copilot, Droid, OpenCode, Windsurf, and more."
         }
       ]
     }
@@ -6769,11 +6870,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Railway documents a built-in chat-based Railway Agent in the dashboard that operates the platform on the user's behalf. It can create and configure services, inspect deployments, diagnose failures and open PRs, and the same agent is reachable through @Railway mentions in Slack. An MCP server also lets external AI assistants create projects, manage environments and redeploy services. Community items concern outages and are irrelevant here. Missing for 10: independent or hands-on corroboration that the natural-language agent works as documented.",
+    "rationale": "Railway documents a chat-based Railway Agent built into the dashboard. It operates the platform on the user's behalf: creating and configuring services, setting variables, diagnosing failed deployments and opening fix PRs. The same agent can be reached by mentioning @Railway in Slack or Discord, and an MCP server lets external AI assistants drive Railway through natural language. The community items cover outages and are unrelated to this story, so they are ignored. Missing for 10: independent or hands-on corroboration that natural-language operation works as documented.",
     "evidenceIds": [
       "railway-docs-25",
-      "railway-docs-26",
+      "railway-docs-33",
+      "railway-docs-32",
       "railway-docs-28",
+      "railway-docs-36",
       "railway-docs-20",
       "railway-docs-21"
     ],
@@ -6785,6 +6888,10 @@
         {
           "evidenceId": "railway-docs-25",
           "quote": "The Railway Agent is a chat-based AI assistant built into the Railway dashboard. It can operate the platform on your behalf: creating and configuring services, inspecting deployments, diagnosing failures, and opening pull requests to fix broken builds."
+        },
+        {
+          "evidenceId": "railway-docs-33",
+          "quote": "Create services, set variables, connect databases, wire up networking, and adjust resource limits."
         },
         {
           "evidenceId": "railway-docs-28",
@@ -6801,12 +6908,15 @@
     "productId": "railway",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Railway documents an official CLI for local development and terminal deploys. Its agent docs tie the CLI to AI-native workflows: one command installs the CLI and configures skills, MCP and authentication, and a probe confirms the CLI guide exists. Missing for 10: detailed evidence of the CLI's command coverage (e.g. variables, logs, environments) and independent or hands-on corroboration of CLI use in agent workflows.",
+    "rationale": "Railway ships an official CLI for local development and terminal deploys. The docs tie it directly to AI-native workflows: one command installs the CLI, configures skills, MCP and authentication, and the CLI also starts authenticated OpenCode servers on cloud agents. A probe confirms the official CLI documentation page exists. Missing for 10: independent or hands-on corroboration of the CLI's agent workflows.",
     "evidenceIds": [
       "railway-docs-15",
       "railway-docs-19",
+      "railway-docs-39",
+      "railway-docs-40",
+      "railway-docs-48",
       "railway-probe-3"
     ],
     "support": {
@@ -6823,6 +6933,14 @@
           "quote": "Install the Railway CLI and configure agent support — skills, MCP, and authentication — in one command."
         },
         {
+          "evidenceId": "railway-docs-40",
+          "quote": "This installs or reuses the Railway CLI, installs the `use-railway` skill, configures Railway MCP for detected tools, and checks Railway authentication."
+        },
+        {
+          "evidenceId": "railway-docs-48",
+          "quote": "The CLI starts an authenticated OpenCode server on a cloud agent, checks its HTTPS connection, and gives your client everything it needs to connect."
+        },
+        {
           "evidenceId": "railway-probe-3",
           "quote": "official CLI documented at https://docs.railway.com/guides/cli"
         }
@@ -6835,7 +6953,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents a Railway CLI, an MCP server and agent skills, but none of it describes a documented public API (REST, GraphQL or otherwise) that a user can call directly. Probes of the standard OpenAPI/Swagger paths all returned 404. The CLI and MCP evidence belongs to separate stories and does not transfer to this one.",
+    "rationale": "The evidence documents a CLI, an MCP server, agent skills and a dashboard agent, but these are separate interfaces, not the documented public API this story asks about. No item describes a public HTTP or GraphQL API with reference docs, and the OpenAPI probe returned 404 on every candidate path. A public API is a fair axis for a cloud platform, so the absence of evidence is \"none\" rather than \"na\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6850,7 +6968,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud platform with an API, CLI, and MCP server, so scoped agent credentials are a fair question to ask of it. The evidence pack never documents issuing scoped or least-privilege tokens. The agent setup's generic mention of 'authentication' and the carrying of coding-agent credentials from the user's machine are adjacent features, not scoped credential issuance, so they earn no credit.",
+    "rationale": "Scoped API credentials are a fair question for a cloud platform that agents operate, so the axis applies. The evidence shows agent authentication through the CLI or OAuth, MCP setup, and copying local coding-agent credentials to cloud agents. None of it documents issuing scoped, least-privilege tokens (for example per-project or permission-limited) for an agent, so this is lack of evidence for an applicable capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6865,7 +6983,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a Railway CLI, an MCP server, and Agent Skills, but nothing mentions official language SDKs or client libraries, and the OpenAPI probe returned 404 on every path. The CLI and MCP server are separate capabilities and earn no credit for an SDK story. Official SDKs are a fair question for a cloud platform, so this is 'none', not 'na'.",
+    "rationale": "Official SDKs are a fair question for a cloud platform like Railway, so the axis applies. The evidence documents an official CLI, an MCP server, agent skills and plugins/connectors, but none of these is a language SDK, and no evidence names an official Railway SDK. The OpenAPI probe found nothing at any candidate path, so there is not even a published spec to generate one from. Those adjacent tools earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6880,7 +6998,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a cloud deployment platform, but the evidence pack never documents registrable outbound HTTP callbacks. The only alerting evidence covers Slack, Discord, or email notifications, which are chat-app and email integrations and do not qualify as webhooks.",
+    "rationale": "Webhooks are a fair question for a cloud deployment platform, so the axis applies. The pack has no documented, registrable outbound HTTP callbacks that a programmatic consumer can subscribe to. The only notification evidence covers Slack, Discord, and email alerts, which do not count as webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6895,7 +7013,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud platform, so a managed global AI inference API is a fair question for it. The evidence shows only general app hosting: CPU/RAM scaling, replicas, and running apps closer to users. There is no documented serverless model-inference call, no managed GPU offering, and no capacity-free inference capability. Regional app deployment and AI-agent tooling are adjacent features, not inference-as-a-service.",
+    "rationale": "Railway is a cloud platform, so managed global AI inference is a fair question to ask of it. The evidence shows no inference API or single-call model endpoint. Multi-region deployment ('run your application closer to where your users are') and CPU/RAM scaling are adjacent hosting features. 'Bring Your Own Models' only changes which model powers Railway's own dashboard agent, so it is not a user-facing inference service either.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6910,7 +7028,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An AI model gateway is a plausible offering for a cloud and edge platform, so the axis applies. However, nothing in the evidence documents a unified endpoint for accessing many AI models. The Railway Agent, MCP server and agent connectors are platform-operation features, not a model-routing gateway.",
+    "rationale": "An AI model gateway is a plausible capability for a cloud platform, so this axis applies. However, the evidence shows no Railway-provided unified endpoint for accessing hundreds of models. The only related item is Bring Your Own Models, which lets users sign in with ChatGPT or OpenRouter to power Railway's own agent. That is an adjacent agent-configuration feature, not a gateway that builders can call.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6925,7 +7043,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud platform, so an interactive API reference is a fair thing to ask about. The evidence pack documents a CLI, an MCP server, agent skills and llms.txt, but nothing about an interactive API reference or explorer with runnable examples. The OpenAPI probe returned 404 on every candidate path.",
+    "rationale": "Railway is a cloud platform with a programmatic surface, so an interactive API reference is a fair question. The evidence never mentions an API reference, an explorer, or runnable examples. The OpenAPI probe returned 404 on every candidate path, and llms.txt, the CLI and the MCP server are different capabilities that earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6940,7 +7058,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud platform, so publishing a machine-readable API spec is a fair question for this kind of product. However, the evidence never mentions a downloadable OpenAPI, GraphQL schema or equivalent, and probes of the common OpenAPI paths all returned 404. The llms.txt file, the CLI and the MCP server are related agent-facing features, not an API specification, so they earn no credit here.",
+    "rationale": "A cloud platform could plausibly publish a machine-readable API spec, so the axis applies. However, the probe found no OpenAPI or Swagger document at any candidate path, and nothing in the evidence documents an equivalent downloadable schema. The llms.txt file, MCP server and CLI are related agent-facing features, not an API specification, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6955,7 +7073,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Railway documents its own isolated deployment targets: unlimited environments, per-pull-request previews, and an MCP server that lets AI assistants manage environments. That gives an AI-native user a non-production place to test. This is environment-level sandbox isolation rather than a dry-run mode, but the evidence never states that these environments keep production data separate. missing for 10: explicit documentation that preview/non-production environments isolate databases and data from production, details on seeding or cloning test data, and independent or hands-on corroboration.",
+    "rationale": "Railway documents unlimited environments and per-pull-request preview environments, and its MCP server lets AI assistants manage environments, so agents can test somewhere other than production. The evidence never states that these environments use isolated data or databases separate from production. missing for 10: explicit documentation that non-production environments get their own isolated databases/data, guidance on agent-safe sandbox testing, independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-11",
       "railway-docs-12",
@@ -6987,7 +7105,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "API versioning and deprecation policy are a fair question for a cloud platform, so the axis applies. The evidence pack only covers the CLI, the MCP server, agent skills and llms.txt. None of it mentions API versioning or a documented deprecation policy, and the OpenAPI probe returned 404 on every candidate path.",
+    "rationale": "API versioning and deprecation policy are a fair axis for a cloud platform with programmatic access, but nothing in the evidence pack mentions versioned APIs, version pinning, or a deprecation policy. The probe found no OpenAPI spec at any candidate path. The CLI, MCP server, and agent-skills evidence covers different stories and does not transfer here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7002,7 +7120,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Railway's own marketing says SSL is provisioned automatically from the moment you deploy, so the core TLS capability is first-party. Nothing in the evidence says the certificates are free, automatically renewed, or cover custom and wildcard domains. Missing for 10: documented free certificate issuance, automatic renewal, custom-domain coverage, wildcard certificate support, in-depth docs and independent corroboration.",
+    "rationale": "Railway's own marketing says SSL is 'live from the moment you deploy', so the platform does provision TLS for public endpoints. The evidence never says the certificates are free, auto-renewing, cover custom domains, or support wildcards. A community report of certificates showing as invalid during a GCP outage reflects an incident, not a contradiction of the capability. Missing for 10: documented automatic renewal, wildcard certificate support, explicit coverage of every custom domain, confirmation that certificates are free, and in-depth first-party docs or independent corroboration.",
     "evidenceIds": [
       "railway-docs-4"
     ],
@@ -7024,7 +7142,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a cloud deployment platform, so the axis applies. The pack documents a CLI, an MCP server and the Railway Agent, but they cover single actions such as creating projects or redeploying services. Nothing documents acting on many services, environments or deployments in one operation, and general-purpose tooling a user could script does not count as the capability itself.",
+    "rationale": "Bulk operations are a fair question for a cloud deployment platform, so this axis applies. However, the evidence never documents acting on many items at once. The Railway Agent, MCP server and CLI handle individual operations such as creating services, setting variables and redeploying services, and nothing describes batch or multi-select actions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7039,9 +7157,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Railway documents user-specified conditions that automatically send Slack, Discord, or email alerts, which is a basic event-triggered rule. The only documented action is a notification, so this covers a thin slice of the story. Built-in automatic behaviours such as per-PR previews are not user-defined rules and earn no credit. Missing for 10: user-defined rules that trigger non-notification actions (e.g. redeploy, scale, rollback or agent tasks), documented rule syntax and event types, and independent or hands-on corroboration.",
+    "rationale": "Railway documents user-specified conditions that automatically fire Slack, Discord, or email notifications, and its agent can automatically investigate failed deployments. Both are event-triggered behaviors, but the actions are limited to alerts and a built-in agent response, not a general rule engine for arbitrary user-defined actions. Missing for 10: user-configurable rules that trigger arbitrary actions (e.g., redeploy, scale, run jobs), documentation of rule definition/configuration depth, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "railway-docs-9"
+      "railway-docs-9",
+      "railway-docs-34"
     ],
     "support": {
       "relation": "direct",
@@ -7051,6 +7170,10 @@
         {
           "evidenceId": "railway-docs-9",
           "quote": "Slack, Discord, or emails the moment conditions you specify are met."
+        },
+        {
+          "evidenceId": "railway-docs-34",
+          "quote": "When a deployment fails, the agent can automatically investigate."
         }
       ]
     }
@@ -7061,7 +7184,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Recurring scheduled jobs are a fair axis for a cloud deployment platform like Railway, but nothing in the evidence pack mentions cron jobs, schedules or recurring workflows. The pack covers deployments, agents, MCP, environments and alerts, none of which is recurring job scheduling. A cloud agent that stays running is not a recurring schedule.",
+    "rationale": "Scheduling recurring jobs is a fair question for a cloud deployment platform, but nothing in the evidence pack documents cron jobs, scheduled services, or recurring workflow triggers. The closest items are event-driven behaviors (the agent investigating failed deployments, condition-based alerts), which are one-off reactive actions rather than recurring schedules.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7107,13 +7230,14 @@
     "productId": "railway",
     "storyId": "cli-deploy",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Railway's docs state outright that you can deploy from your terminal with the Railway CLI, and a probe confirms an official CLI guide exists. That is a direct, first-party terminal deploy path that needs no dashboard. Missing for 10: command-level detail of the deploy workflow (e.g., specific deploy commands and flags), independent or hands-on corroboration of CLI deploys.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Railway's own docs state that you can deploy from your terminal with the Railway CLI, and a probe confirms an official CLI guide exists, so the core story is delivered first-party. The evidence is brief, though: one sentence plus the existence of a CLI guide, with no detail on the actual deploy commands or workflow. Missing for 10: documented deploy command details (e.g., project linking and the deploy/upload flow), confirmation that setup and authentication need no dashboard step, and independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-15",
       "railway-probe-3",
-      "railway-docs-19"
+      "railway-docs-19",
+      "railway-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -7129,8 +7253,8 @@
           "quote": "official CLI documented at https://docs.railway.com/guides/cli"
         },
         {
-          "evidenceId": "railway-docs-19",
-          "quote": "Install the Railway CLI and configure agent support"
+          "evidenceId": "railway-docs-40",
+          "quote": "checks Railway authentication"
         }
       ]
     }
@@ -7190,12 +7314,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Railway documents its own scaling primitives on the same platform: vertical CPU/RAM scaling, replicas with load balancing, networking and load balancing active from the first deploy, and multi-region placement. That suggests a prototype can grow without switching platforms, but the evidence never explicitly claims continuity to massive scale. missing for 10: explicit documentation that core APIs and primitives stay the same from prototype to massive scale, documented scale limits or large-scale case studies, independent or hands-on corroboration of growth without rearchitecting.",
+    "rationale": "Railway documents in-platform scaling of the same deployed services: vertical CPU/RAM scaling, replicas with load balancing, load balancing available from the first deploy, and running closer to users. That suggests a continuous path from prototype upward without changing platforms. However, nothing in the evidence explicitly claims or shows continuity of APIs and primitives up to massive scale, or growth without rearchitecting. Missing for 10: documented scaling limits or ceilings, an explicit prototype-to-massive-scale continuity claim, and independent or hands-on reports of scaling large workloads on Railway without migration.",
     "evidenceIds": [
       "railway-docs-6",
       "railway-docs-4",
-      "railway-docs-7",
-      "railway-docs-18"
+      "railway-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -7223,7 +7346,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis clearly applies to a cloud deployment platform, but nothing in the evidence pack mentions attaching custom domains. The closest item covers automatic public endpoints and SSL, which is an adjacent networking capability, not custom-domain attachment.",
+    "rationale": "Custom domains are a fair question for a cloud hosting platform like Railway, so the axis applies. However, nothing in the pack documents attaching a custom domain. Public endpoints, automatic SSL and agent-driven \"wire up networking\" are adjacent networking features, not the ability to map a user-owned domain to a service.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7260,7 +7383,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud hosting platform, so default DDoS protection and WAF are a fair question for it. The evidence only documents SSL, load balancing and public endpoints, which are adjacent networking features, and never mentions DDoS mitigation or a web application firewall.",
+    "rationale": "Railway is a cloud hosting platform, so default DDoS protection and a WAF are a fair axis for it. The evidence pack only documents SSL, load balancing, public endpoints and private networking. These are adjacent networking features and do not show DDoS mitigation or a web application firewall applied to requests by default.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7275,7 +7398,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud deployment platform, so deploying Docker containers is a fair question to ask of it. However, nothing in the evidence pack mentions Docker, Dockerfiles, container images or registries. The documented deploy paths (repo connect with auto-config, CLI deploy, one-click templates) are generic and never state container support, so there is no evidence for this story.",
+    "rationale": "Railway is a cloud deployment platform, so deploying Docker-packaged applications is a fair question for it. However, nothing in the evidence pack mentions Docker, Dockerfiles, container images, or registries. The general repo-based and CLI deploy claims describe deploying code, not Docker containers specifically, so they cannot be credited to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7290,7 +7413,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rate limits and concurrency caps are a fair question for a cloud platform with an API, so the axis applies. The evidence pack never documents API rate limits or concurrency caps. Replica scaling and hard spending limits are adjacent features, not documented rate or concurrency limits.",
+    "rationale": "Railway is a cloud platform with APIs and services, so documented rate limits and concurrency caps are a fair question to ask. The evidence pack never documents API rate limits or concurrency caps. Replica scaling, adjustable resource limits and hard spending limits are adjacent controls, not documented rate or concurrency limits, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7305,7 +7428,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud deployment platform, so a durable-workflow primitive is a fair question to ask of it. The evidence pack never describes workflows-as-code, durable execution, or built-in queue/retry handling. Persistent cloud-agent machines, replicas and rollbacks are adjacent features and do not deliver this story.",
+    "rationale": "Durable workflow execution is a fair question for a cloud deployment platform, so the axis applies. However, nothing in the evidence documents workflows-as-code, durable execution, or built-in queues and retries. Persistent cloud-agent machines, instant rollbacks, and replica scaling are adjacent features, not durable workflow orchestration.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7320,7 +7443,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway documents automatic WebSocket handling and running apps closer to users, but only for deployed services; nothing in the evidence shows edge or serverless functions, let alone WebSockets held open from within them. Container-hosted WebSocket support is an adjacent capability under a different compute model, so it earns no credit for this story.",
+    "rationale": "Railway documents automatic WebSocket handling and regional deployment for its services, but the evidence never describes edge or serverless functions. WebSocket support on long-running services is an adjacent capability, not persistent WebSockets from within edge/serverless functions. A cloud provider could plausibly offer this, so the axis applies, and the lack of evidence makes the verdict none.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7335,7 +7458,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Documented CPU and wall-clock execution limits are a fair question for a cloud deployment platform like Railway, so the axis applies. However, the evidence pack never states any function CPU or execution-time limits. The closest items describe scaling CPU and RAM and cloud agent machines that stay running after you disconnect; both are adjacent claims and say nothing about documented time limits.",
+    "rationale": "Execution time limits are a fair question for a cloud hosting platform like Railway, so the axis applies. However, the evidence pack never documents CPU-time or wall-clock limits for functions. The closest items are adjacent and earn no credit: the ability to scale CPU and RAM, and cloud agents whose machines keep running after disconnect.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7365,9 +7488,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Railway documents horizontal scaling by adding replicas behind load balancing, and running apps closer to users. Nothing in the evidence addresses boot time or scale on the order of tens of thousands of instances, and replicas appear to be added manually rather than automatically under load. Missing for 10: sub-second boot/cold-start evidence, documented scale to tens of thousands of instances, automatic load-driven autoscaling, independent or hands-on corroboration.",
+    "rationale": "Railway documents its own horizontal scaling: you can add replicas behind load balancing and run services closer to users. Nothing shows sub-second instance boot, and nothing shows automatic scaling under load to tens of thousands of instances, so only a thin slice of the story is evidenced. Missing for 10: any evidence of sub-second cold start or boot time, load-triggered autoscaling, documented scale limits reaching tens of thousands of instances, and independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-6",
+      "railway-docs-4",
       "railway-docs-7"
     ],
     "support": {
@@ -7424,7 +7548,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud deployment platform, so edge or serverless functions running full Node.js are a fair axis to judge it on. However, the evidence pack never mentions serverless or edge functions, a Node.js runtime, or npm package compatibility. Generic claims about deploying repos and running apps closer to users are about general app hosting, not this capability, so they earn no credit.",
+    "rationale": "Edge and serverless functions are a fair question for a cloud platform like Railway, so this axis applies. The evidence pack never mentions serverless or edge functions, a Node.js runtime, or npm package compatibility. Generic repo-based deployment and the line \"run your application closer to where your users are\" describe regional app hosting, which is adjacent rather than the story's function-runtime capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7439,12 +7563,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Railway's own marketing says every pull request gets its own preview, and that it supports unlimited environments, so per-PR previews are a first-party capability. The evidence does not say these previews spin up the whole stack (services plus databases), or that they are torn down automatically on merge or close. The community items are about outages and trust, not previews, so they were not weighed. Missing for 10: documentation that PR previews replicate the entire multi-service stack including data services, documented automatic teardown or ephemeral lifecycle, in-depth docs beyond homepage marketing lines, and independent or hands-on corroboration.",
+    "rationale": "Railway's own marketing says every pull request gets its own preview, and that it offers unlimited environments and instant previews, so per-PR previews are a first-party capability. The evidence is only short homepage claims. It does not show that previews include the full stack (databases and multiple services) or that they are torn down automatically on merge or close. Missing for 10: documented full-stack scope of PR environments (databases/services cloned), documented ephemeral lifecycle/auto-teardown, in-depth docs beyond marketing copy, independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-12",
       "railway-docs-11",
-      "railway-docs-1",
-      "railway-docs-2"
+      "railway-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -7472,7 +7595,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Railway's own docs say you connect a Git repo and Railway handles deployment, and that every pull request gets its own preview deployment. That points to Git-triggered deploys, but no evidence explicitly says deploys run automatically on every push to a branch. Missing for 10: an explicit statement of push-triggered auto-deploy on branches, branch/trigger configuration docs, and independent hands-on corroboration.",
+    "rationale": "Railway's own marketing says you connect a repo and it 'handles the rest', and that every pull request gets its own preview deployment, which shows Git-event-driven deploys built into the product. No evidence states that a push to a branch automatically triggers a production or branch redeploy. missing for 10: explicit documentation of push-triggered auto-deploys (branch selection, trigger behavior), detailed first-party docs beyond marketing copy, independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-1",
       "railway-docs-12"
@@ -7484,11 +7607,11 @@
       "citations": [
         {
           "evidenceId": "railway-docs-1",
-          "quote": "Connect your repo, Railway handles the rest."
+          "quote": "Connect your repo, Railway handles the rest. Auto-config, instant previews, no new tools to learn."
         },
         {
           "evidenceId": "railway-docs-12",
-          "quote": "Every pull request gets its own preview."
+          "quote": "Every pull request gets its own preview. No surprises after merge."
         }
       ]
     }
@@ -7499,10 +7622,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Railway's own marketing claims you can \"run your application closer to where your users are,\" so the core idea of deploying near end users is a documented first-party capability. That claim is a single thin line, with no detail on regions, automatic geo-routing, or a true global edge network as opposed to choosing a region. Missing for 10: documentation of a global edge network or points-of-presence, list of available regions, automatic routing of users to the nearest instance, multi-region replica docs, independent or hands-on corroboration.",
+    "rationale": "Railway's own marketing says you can \"Run your application closer to where your users are,\" so the product claims some geographic placement of workloads. That single line does not establish a global edge network, nor say which regions exist or how traffic reaches users. missing for 10: documentation of available regions or edge locations, multi-region or edge deployment mechanics, latency or routing details (e.g., anycast or geo-routing), and independent or hands-on corroboration.",
     "evidenceIds": [
-      "railway-docs-7",
-      "railway-docs-6"
+      "railway-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -7512,10 +7634,6 @@
         {
           "evidenceId": "railway-docs-7",
           "quote": "Run your application closer to where your users are."
-        },
-        {
-          "evidenceId": "railway-docs-6",
-          "quote": "add replicas with load balancing"
         }
       ]
     }
@@ -7526,7 +7644,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud hosting platform, so a global CDN with edge caching is a fair question for it. The evidence never mentions a CDN, edge caching, or static-asset acceleration. Running apps 'closer to where your users are' and load balancing are adjacent regional-deployment and networking features, not CDN edge caching.",
+    "rationale": "Railway is a cloud hosting platform, so a global CDN with edge caching for static assets is a fair question to ask of it. The evidence never mentions a CDN, edge caching, or static-asset acceleration. The nearest claims are 'Run your application closer to where your users are' and load balancing, which describe where compute runs and how traffic is spread, not edge caching of static assets, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7563,7 +7681,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud deployment platform, so gating internal apps, deployments, and agents behind an organization's identity provider is a fair question. The evidence never mentions SSO, SAML/OIDC, or IdP-based access control. Private networking, SSL, and CLI agent authentication are adjacent features and do not count as identity-provider-based protection.",
+    "rationale": "Securing apps and access with an organization's identity provider is a fair question for a cloud deployment platform like Railway, so the axis applies. The evidence pack contains nothing about SSO, SAML, OIDC, or an identity-aware proxy for internal apps, deployments, or agents. The closest items are adjacent: private networking and SSL (railway-docs-4), and OAuth used to connect AI tools to Railway (railway-docs-39). Neither is IdP-backed access control, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7578,7 +7696,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An in-browser toolbar overlaid on a deployed live site is a fair question for a cloud deployment platform, so the axis applies. Railway's evidence covers only dashboard-side capabilities: a visual canvas, custom metrics dashboards, logs, alerts, and PR previews. Nothing documents a toolbar injected into the live site for feedback, feature flags, or performance inspection; the dashboard metrics are an adjacent feature and earn no credit.",
+    "rationale": "An in-browser toolbar for feedback, feature flags, and performance inspection is a fair question for a cloud deployment platform, so the axis applies. The evidence pack never mentions such a toolbar for live sites. Railway's dashboard canvas, metrics dashboards, preview environments, and the Railway Agent are separate features and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7593,7 +7711,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Incremental rollout applies to a cloud deployment platform, but the evidence never documents canary, percentage-based, or staged traffic shifting for new deployments. Instant rollback, replicas with load balancing, and per-PR preview environments are adjacent capabilities, not incremental rollout. The community outage posts are not about this subject and were ignored.",
+    "rationale": "Railway is a cloud deployment platform, so incremental rollout is a fair question for it, but the evidence pack never documents canary, percentage-based, or progressive rollouts. Instant rollback, replicas with load balancing, and per-PR preview environments are related features that reduce risk, but none of them shifts traffic to a new deployment gradually, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7608,9 +7726,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Railway's own docs say settings can be changed on the canvas with \"YAML optional\", which implies a first-party YAML configuration path. Nothing shows that one file can define, deploy, and version the whole multi-service architecture. The rollback claim covers deployment versions, not a versioned architecture config file, so it is not credited. Missing for 10: documentation that a single config file defines all services, databases, and networking; config-driven deployment of the whole stack; versioning of that file in source control; independent or hands-on corroboration.",
+    "rationale": "Railway's own marketing says settings can be expressed in YAML as an optional alternative to the visual canvas, which points to a config-as-code capability. Nothing in the evidence shows a single file defining, deploying and versioning the entire multi-service architecture; the canvas is the primary workflow, and rollback refers to deployment versions rather than versioned config. Missing for 10: documentation that one config file covers all services, databases and networking, deploy-from-file workflow, config versioning in the repo, and independent corroboration.",
     "evidenceIds": [
-      "railway-docs-3"
+      "railway-docs-3",
+      "railway-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -7630,10 +7749,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Railway documents deploying from your terminal with its own CLI after developing locally. That implies pushing local project files, but the pack never explicitly says a folder upload works with no Git repo. Nothing shows a deployment can be kept private until published, and the docs say public endpoints are live from the moment you deploy. Missing for 10: explicit documentation of folder or file upload with no Git required, a private-until-publish deployment state, and independent or hands-on corroboration.",
+    "rationale": "Railway documents deploying from a local machine via its CLI ('Develop locally and deploy from your terminal'), which loosely implies shipping local files rather than connecting a repo. Nothing confirms that no Git repo is required. Nothing shows deployments stay private until published; the homepage instead says public endpoints are live from the moment you deploy. missing for 10: explicit folder/file upload without Git, documented private-until-publish deployment state, independent or hands-on corroboration.",
     "evidenceIds": [
-      "railway-docs-15",
-      "railway-probe-3"
+      "railway-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -7643,10 +7761,6 @@
         {
           "evidenceId": "railway-docs-15",
           "quote": "Develop locally and deploy from your terminal with the Railway CLI."
-        },
-        {
-          "evidenceId": "railway-probe-3",
-          "quote": "official CLI documented at https://docs.railway.com/guides/cli"
         }
       ]
     }
@@ -7657,7 +7771,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud hosting platform, so edge bot protection is a fair question to ask of it. The evidence pack only documents general networking (SSL, public endpoints, load balancing, protocol handling). Nothing mentions bot detection or invisible challenge-based protection, and those adjacent networking features earn no credit for this story.",
+    "rationale": "Railway is a cloud hosting platform, so built-in bot protection is a fair question for it. The evidence covers networking basics such as SSL, public endpoints, private connections and load balancing. None of it mentions bot detection, challenge pages or invisible challenge-based protection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7672,7 +7786,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Running untrusted code in sandboxes is a fair question for a cloud provider like Railway, but the evidence never mentions hardware isolation (e.g. microVMs) or disposable sandboxes. The closest feature, cloud agents, is described as persistent machines with persistent disks that keep running after you disconnect, which is not ephemeral sandboxing.",
+    "rationale": "Running untrusted code in sandboxes is a fair question for a cloud provider like Railway, so the axis applies. The pack never mentions hardware isolation (microVMs or similar), untrusted-code execution, or disposable sandbox lifecycles. Railway's cloud agents are the closest feature, but they are documented as persistent machines with persistent disks that keep running after you disconnect, which is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7687,7 +7801,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented overage fee schedule or per-unit rates for exceeding plan limits on bandwidth, invocations or build minutes. The only pricing-adjacent item is a testimonial praising hard spending limits. That is a related cost control, not a published overage rate schedule, so it earns no credit.",
+    "rationale": "Pricing transparency is a fair question for a cloud hosting provider, so the axis applies. However, the evidence pack contains no published overage rates or fee schedule for bandwidth, invocations, or build minutes. The nearest items are a testimonial praising hard spending limits and a note that sleeping cloud agents stops compute billing; both are adjacent billing controls, not a documented overage fee schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7702,7 +7816,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway documents that you can scale CPU and RAM or add replicas behind a load balancer. Nothing in the evidence says it adds or removes capacity automatically based on load, so this is an adjacent manual-scaling control, not load-based autoscaling for traffic bursts. The outage-related community posts are not about autoscaling and were ignored.",
+    "rationale": "The only scaling evidence says users can scale CPU/RAM or add replicas with load balancing. That describes manual vertical scaling and replica provisioning, not load-based autoscaling that adds capacity automatically during traffic bursts. Load balancing across replicas is an adjacent feature, and no evidence shows scaling triggered by traffic or load metrics.",
     "evidenceIds": [
       "railway-docs-6"
     ],
@@ -7739,10 +7853,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud provider, so managed Postgres with point-in-time recovery, replicas and high availability is a fair question to ask of it. The evidence pack never mentions Postgres, point-in-time recovery, database replicas or high-availability failover. The only replica claim (\"add replicas with load balancing\") covers application service scaling, not managed database replication, and the generic \"provision infrastructure\" line does not establish managed Postgres.",
+    "rationale": "Provisioning a managed Postgres database is a fair question for a cloud provider like Railway, but the pack has no first-party documentation of a managed Postgres offering with point-in-time recovery, database replicas, or high availability. The \"add replicas with load balancing\" claim is about scaling application services, not database replication, and the agent's ability to \"connect databases\" is a different feature. A community note that a user hosted Postgres on Railway does not document PITR, replicas, or HA.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can provision a fully-managed Postgres database with point-in-time recovery, replicas, and high availability",
       "citations": []
@@ -7754,7 +7868,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Migration credits are a fair pricing question for a cloud hosting provider like Railway, so the axis applies. The evidence only shows a 'Migrate from Heroku' guide title, which is migration documentation, not credits or financial incentives. Nothing in the pack documents credits for moving production infrastructure.",
+    "rationale": "Migration credits are a fair pricing question for a cloud provider like Railway, so the axis applies. The evidence pack documents no credit, discount, or incentive program for migrating workloads. The 'Migrate from Heroku' guide is migration documentation, an adjacent feature rather than credits, and earns no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7769,7 +7883,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Railway's homepage directly claims that HTTP, TCP, gRPC and WebSockets are 'handled automatically,' and that public endpoints, SSL and load balancing are live from the moment you deploy. Both points match the no-separate-configuration part of the story. The evidence is a single marketing line, though, with no documentation showing all four protocols served at once from one service. Missing for 10: technical docs on multi-protocol exposure from a single service (e.g., TCP proxy vs HTTP domain behavior), confirmation that no per-protocol setup is needed, and independent or hands-on corroboration.",
+    "rationale": "Railway's own marketing directly says HTTP, TCP, gRPC, and WebSockets are \"handled automatically,\" and that public endpoints, SSL, and load balancing are live from deploy, which implies no per-protocol setup. The evidence is a single homepage line, though, with no technical docs showing all four protocols served at once from one deployed service. Missing for 10: documentation that one service can expose HTTP, TCP, gRPC, and WebSocket together, details of how the protocols are exposed (e.g. TCP proxying or ports), and independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-5",
       "railway-docs-4"
@@ -7796,7 +7910,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud provider, so built-in object storage for user uploads is a fair question to ask of it. Nothing in the evidence pack mentions object storage, buckets, or volumes for application data. The 'persistent disk' references describe cloud-agent machines, an adjacent feature that does not count toward this story.",
+    "rationale": "Built-in object storage is a fair question for a cloud provider like Railway, so the axis applies. The evidence pack never mentions buckets, object storage, or volumes for persisting user uploads. The only persistence evidence is the cloud-agent machines' persistent disk, which is an adjacent feature for coding agents, not storage for application uploads.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7811,7 +7925,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is an all-in-one cloud provider, and a built-in image CDN with on-demand resizing is a fair question for that kind of product, so the axis applies. Nothing in the evidence pack mentions image resizing, image optimization, or an image CDN. Networking, load-balancing and edge-region claims are adjacent features, not image transformation.",
+    "rationale": "Railway is a cloud and deployment platform, and comparable hosting platforms do ship image CDNs, so this story is a fair question for it. Nothing in the evidence pack mentions image resizing, image optimization, or an image CDN. The docs cover deployment, networking, scaling, observability and AI agents only, so this applicable capability has no support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7826,7 +7940,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Railway's own site directly claims rollback to any previous version instantly, which matches the core of the story. The evidence is a single marketing line, and the 'one-click' interaction is implied by 'instantly' rather than stated. Missing for 10: in-depth first-party docs describing the rollback flow and its one-click UI or CLI mechanics, and independent or hands-on corroboration that rollback works as claimed.",
+    "rationale": "Railway's own site claims you can roll back to any previous version instantly when something breaks, which covers the core of the story directly. The evidence is a single marketing line, and community items about the GCP outage say nothing about rollback, so they are ignored. Missing for 10: explicit documentation of a one-click rollback flow (UI or CLI steps), any limits on which versions can be restored, and independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-13"
     ],
@@ -7848,7 +7962,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Railway's docs directly claim one-click deployable applications and starters for common use cases, and its MCP server can deploy templates. The evidence is only brief first-party statements. Missing for 10: details on the template catalog's breadth and how templates are customized or configured, plus independent or hands-on corroboration of one-click deployment.",
+    "rationale": "Railway's docs directly state it offers \"One-click deployable applications and starters for common use cases,\" which matches the story almost word for word. The MCP server docs add that AI assistants can \"deploy templates,\" confirming templates are a first-class platform object. The evidence is still a one-line docs claim with no description of the catalog or the deploy flow. Missing for 10: details on template catalog breadth and which use cases are covered, documentation of the one-click deploy flow and customization of template variables, and independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-17",
       "railway-docs-20"
@@ -7875,13 +7989,13 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Railway documents its own programmatic surfaces, an official CLI and an MCP server. The MCP server lets AI assistants create projects, deploy templates, manage environments, pull variables and redeploy services, which covers part of what the dashboard does. Nothing in the pack shows a documented public API, and the OpenAPI probe returned 404 on every path, so parity with the UI is unproven. missing for 10: documented public API reference, evidence of full UI-to-API parity (canvas settings, dashboards, alerts, scaling, rollbacks), machine-readable API spec, independent corroboration.",
+    "rationale": "Railway documents its own programmatic surfaces: an official CLI and an MCP server that lets AI assistants create projects, deploy templates, manage environments, pull variables, and redeploy services. These cover only a listed subset of operations, and the pack never documents a public API or claims parity with the dashboard. The OpenAPI probe returned 404 on every candidate path, so no machine-readable API spec was found. Missing for 10: a documented public API, evidence that every UI action (canvas settings, dashboards, alerts, scaling, rollbacks) is exposed programmatically, an API reference or spec, and independent corroboration.",
     "evidenceIds": [
       "railway-docs-20",
       "railway-docs-15",
       "railway-docs-16",
-      "railway-probe-3",
-      "railway-probe-2"
+      "railway-probe-2",
+      "railway-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -7895,10 +8009,6 @@
         {
           "evidenceId": "railway-docs-15",
           "quote": "Develop locally and deploy from your terminal with the Railway CLI."
-        },
-        {
-          "evidenceId": "railway-docs-16",
-          "quote": "Build with Railway using Agent Skills and the MCP server for AI-powered workflows."
         }
       ]
     }
@@ -7909,7 +8019,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for a cloud hosting platform, so the axis applies. The pack has no documented capability to export all account or project data in open formats. The only migration evidence is inbound (\"Migrate from Heroku\"). Pulling variables via the MCP server is an adjacent feature, not a full data export.",
+    "rationale": "Data export and portability is a fair question for a cloud hosting platform, so the axis applies. The evidence pack documents no Railway capability for exporting all of a user's data (databases, volumes, configuration, logs) in open formats. The only migration evidence ('Migrate from Heroku') covers moving onto Railway, not leaving it. A community user's plan to migrate away does not show that any export feature exists.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7924,7 +8034,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a cloud platform publishes its source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the pack mentions open-source code, a public repository, or a license. The docs cover the CLI, MCP server, agents and dashboard features, none of which address source availability.",
+    "rationale": "Whether a cloud deployment platform's source is published under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack says Railway's source is available or names any open license. The docs cover the CLI, the MCP server, agent skills and llms.txt, none of which establish open-source availability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7939,7 +8049,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair openness question for a deployment platform, since some PaaS products ship self-hostable editions. The evidence only describes Railway as a hosted cloud provider and documents no self-hosted or on-prem distribution of its core platform. The CLI, MCP server and cloud agents all operate against Railway's hosted service, so they do not count as self-hosting.",
+    "rationale": "Self-hosting the platform is a fair question for a PaaS or deployment platform, so the axis applies. The evidence only describes Railway as a hosted cloud provider (deploy to the cloud, cloud agents on Railway machines). Nothing documents a self-hostable edition, install path, or source release. Local development with the CLI is not self-hosting the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7969,7 +8079,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud hosting platform, so storage auto-growth and usage-based storage billing is a fair question to ask of it. The evidence pack never documents volume auto-growth or byte-based storage billing. The only nearby items are mentions of a 'persistent disk' for cloud agents and a user praising hard spending limits; both are adjacent features and earn no credit.",
+    "rationale": "Railway is a cloud provider, so auto-growing storage billed by bytes actually written is a fair question for it. The evidence pack never documents volume auto-growth or usage-based storage billing. The cloud-agent persistent-disk and sleep-billing items cover compute billing for agent machines, and the hard-spending-limits item is a different control, so neither supports this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7984,11 +8094,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Railway's cloud agents give a coding agent a persistent runtime: files stay on the agent's disk and the machine keeps running after you disconnect, with Claude Code and Codex documented as running on that remote machine. Nothing in the evidence shows automatic checkpointing of the agent's state. Deployment rollback is a separate, adjacent feature and earns no credit here. missing for 10: automatic state checkpointing/snapshots of the agent environment, restore-from-checkpoint workflow, independent or hands-on corroboration of cloud-agent persistence.",
+    "rationale": "Railway cloud agents give a coding agent a persistent remote machine. Files stay on the agent's disk, the machine keeps running after you disconnect, and sleeping retains files, so the persistent-runtime half of the story is documented first-party. Nothing in the evidence shows automatic checkpointing or snapshotting of agent state while it works. Deployment rollback is a different feature and earns no credit here. Missing for 10: automatic checkpoint/snapshot of agent state, restore-from-checkpoint capability, independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-22",
       "railway-docs-23",
-      "railway-docs-24"
+      "railway-docs-42",
+      "railway-docs-43",
+      "railway-docs-44"
     ],
     "support": {
       "relation": "direct",
@@ -7996,16 +8108,20 @@
       "subject": "As an ai-native builder, I can give my coding agent a persistent runtime environment that checkpoints its state automatically while working",
       "citations": [
         {
-          "evidenceId": "railway-docs-22",
+          "evidenceId": "railway-docs-42",
           "quote": "Your files stay on the agent's disk, and the machine stays running when you disconnect."
         },
         {
-          "evidenceId": "railway-docs-23",
-          "quote": "Claude Code runs on the remote machine, with its development tools and persistent disk"
+          "evidenceId": "railway-docs-43",
+          "quote": "Sleeping stops its processes and compute billing while retaining files; deleting the agent removes its disk."
         },
         {
-          "evidenceId": "railway-docs-24",
-          "quote": "Codex reads files, runs commands, and makes changes on your cloud agent."
+          "evidenceId": "railway-docs-23",
+          "quote": "Claude Code runs on the remote machine, with its development tools and persistent disk, while you prompt it and review changes in Desktop."
+        },
+        {
+          "evidenceId": "railway-docs-44",
+          "quote": "You can run several sessions on one machine, connect through a desktop app, and return to the same files later."
         }
       ]
     }
@@ -8016,7 +8132,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud deployment platform, so edge compute is a fair axis for it. However, the evidence never mentions edge functions or which languages they support. The only nearby claim is running applications 'closer to where your users are', which describes regional placement of services, an adjacent feature rather than an edge-function runtime.",
+    "rationale": "Edge functions are a fair question for a cloud provider like Railway, so the axis applies. However, the evidence never mentions edge functions or names any supported languages such as Python, Go, or Rust. Running applications closer to users and auto-detecting code settings are adjacent capabilities (regional app deployment and build auto-config), not language support for edge functions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8031,12 +8147,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Railway's own marketing states that every pull request gets its own preview, and that public endpoints are live from the moment a deploy happens, so automatic per-PR preview deployments are a first-party capability. The evidence comes only from homepage marketing lines; there are no in-depth docs and no independent confirmation. Missing for 10: explicit documentation that each PR preview gets a public URL, detailed setup/configuration docs for PR environments, independent or hands-on corroboration.",
+    "rationale": "Railway's own site states that every pull request gets its own preview, which is the core of this story. It also says public endpoints with SSL are live from the moment of deploy, implying each preview is reachable at a URL. Missing for 10: explicit documentation that each PR preview gets an automatic public URL, in-depth docs on setup and lifecycle (e.g. teardown on merge or close), and independent or hands-on corroboration beyond homepage marketing copy.",
     "evidenceIds": [
       "railway-docs-12",
       "railway-docs-1",
-      "railway-docs-4",
-      "railway-docs-11"
+      "railway-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -8064,7 +8179,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway offers per-PR preview environments and Slack/Discord alerts, but nothing in the evidence shows teammates or collaborators can comment directly on preview or production environments. Commenting on deployments is a fair axis for a deployment platform, so this is 'none' rather than 'na'; the preview and notification features are adjacent and earn no credit.",
+    "rationale": "Railway offers per-PR preview environments and unlimited environments, so a collaboration-comments axis is a fair question for this deployment platform. However, nothing in the evidence documents a feature that lets teammates or collaborators comment directly on preview or production deployments. Slack and Discord agent mentions and alert notifications are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8079,7 +8194,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Railway is a cloud provider, so region and residency choice is a fair axis. Its docs say users can run applications closer to their users, which implies the product offers its own deployment-region selection. That evidence concerns compute placement for latency rather than data storage or residency guarantees. missing for 10: explicit documentation that users can pick the region where data and volumes are stored, a list of available regions, data-residency or compliance commitments, and independent or hands-on corroboration.",
+    "rationale": "Railway's own marketing says you can \"run your application closer to where your users are,\" which suggests some first-party control over deployment location. Nothing explicitly documents choosing a region for stored data (databases, volumes) or any data-residency guarantee. missing for 10: explicit region-selection docs for databases/volumes, list of available regions, data-residency/compliance guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-7"
     ],
@@ -8101,7 +8216,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud platform with built-in AI features (the Railway Agent and cloud agents), so asking whether customer data is excluded from AI model training is a fair privacy question. The evidence pack has no documented training opt-out, no data-usage policy and no no-training commitment. The AI-feature docs cover only what the agent can do, not how customer data is handled for model training.",
+    "rationale": "Railway is a cloud platform with built-in AI features such as the Railway Agent and cloud agents, so a training-data privacy control is a fair question to ask of it. However, the evidence pack contains no training opt-out, no data-usage policy, and no statement that customer data is excluded from model training. Bring Your Own Models only changes which model account runs the agent, and 'files stay on the agent's disk' concerns storage location; both are adjacent features, not a training-prevention control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8131,7 +8246,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a cloud platform that ships a CLI, agent skills and an MCP server, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics collection or any opt-out control, so the verdict is none.",
+    "rationale": "Opting out of telemetry is a fair question for a cloud platform that ships a CLI, MCP server and AI agent, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics collection or any opt-out setting. Bring Your Own Models and files staying on the agent's disk are adjacent privacy features, not a telemetry opt-out, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8168,7 +8283,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud platform, so environment network isolation is a fair question to ask of it. The evidence shows unlimited environments, per-PR previews and private connections, but nothing documents that non-production environments are isolated or blocked from reaching production services. Those features are adjacent and earn no credit toward this story.",
+    "rationale": "Railway is a cloud platform, so network isolation between environments is a fair axis. The evidence documents unlimited environments, per-PR previews and private connections. None of it states that non-production environments are network-isolated from, or blocked from reaching, production services. Environment creation and private networking are adjacent features, not the isolation capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8183,7 +8298,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Custom-domain provisioning for SaaS tenants is a fair question for a cloud hosting platform like Railway, so the axis applies. However, the evidence never mentions custom domains, programmatic domain APIs, or per-tenant domain routing. The pack only covers generic public endpoints with SSL, a CLI, and an MCP server whose listed actions do not include domains, so the verdict is none.",
+    "rationale": "Railway is a cloud hosting platform, so programmatic custom-domain provisioning for SaaS tenants is a fair question to ask of it. The evidence pack never mentions custom domains, a domain API, or per-tenant domain routing. The only nearby items are generic: auto-provisioned public endpoints and SSL, an AI agent that can 'wire up networking', and a CLI and MCP server with no documented domain operations. These are adjacent features, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8198,7 +8313,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A public status page with incident history is a fair question for a cloud hosting provider like Railway, so the axis applies. Nothing in the evidence pack mentions a status page or published postmortems. The community threads discuss an outage but never say whether Railway published a status page or postmortem for it.",
+    "rationale": "A public status page with incident history and postmortems is a fair question for a cloud hosting provider like Railway, so the axis applies. Nothing in the pack documents a status page, an incident history, or published postmortems. The community threads describe an outage but never reference a Railway status page or postmortem, so they do not support this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8213,7 +8328,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud hosting provider, so a published uptime SLA with downtime credits is a fair question to ask of it. Nothing in the evidence pack mentions an SLA, uptime commitment, or service credits. The community posts describe an outage but say nothing about any SLA terms, and the dashboards and alerting features are a different capability.",
+    "rationale": "Railway is a cloud hosting provider, so a published uptime SLA with downtime credits is a fair question to ask of it. Nothing in the evidence pack mentions an SLA, uptime commitments, or service credits. Community reports of an outage describe reliability incidents, not whether a contractual SLA exists, so they neither support nor contradict this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8228,7 +8343,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud infrastructure provider, so offering a managed Redis-compatible key-value store is a fair question for it. However, nothing in the evidence pack mentions Redis, key-value storage, caching, or job queues. The generic references to one-click starters and provisioning infrastructure do not establish this specific capability.",
+    "rationale": "A managed Redis-compatible store is a fair question for a cloud provider like Railway, so the axis applies. However, the evidence pack never mentions Redis or any key-value cache or queue store. The only nearby evidence is generic: the agent's ability to 'connect databases', one-click starters, and community mentions of hosted Postgres, none of which shows a Redis-compatible offering.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8265,7 +8380,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pricing transparency, including whether a cloud platform charges per seat, is a fair question for Railway. The evidence pack never mentions per-seat pricing, minimum seat counts, or how cost scales with team size. The testimonial about hard spending limits describes a related but different control and does not count toward this story.",
+    "rationale": "Pricing structure is a fair question for a cloud deployment platform, so the axis applies. The evidence pack never says whether Railway charges per seat or requires minimum seat counts. The nearby mentions are a testimonial about hard spending limits and a note that sleeping cloud agents stop compute billing; neither addresses seat-based pricing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8280,12 +8395,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Railway's own docs describe managed app deployment: you connect a repo, Railway auto-configures and deploys it, and networking, SSL, load balancing and scaling are handled for you, so full-stack apps run with no servers to manage. Nothing in the evidence documents a serverless-functions offering. missing for 10: documented serverless functions capability, independent or hands-on corroboration of the managed full-stack deployment flow.",
+    "rationale": "Railway documents deploying apps from a connected repo with automatic configuration. It also provisions networking, SSL and load balancing at deploy time, so full-stack apps run without the developer managing servers. Nothing in the pack documents a serverless-functions capability, so only half the story is evidenced. Missing for 10: documented serverless/function deployment model, independent or hands-on corroboration of the no-server-management experience.",
     "evidenceIds": [
       "railway-docs-1",
+      "railway-docs-31",
       "railway-docs-4",
-      "railway-docs-6",
       "railway-docs-18",
+      "railway-docs-6",
       "railway-docs-7"
     ],
     "support": {
@@ -8298,12 +8414,12 @@
           "quote": "Connect your repo, Railway handles the rest. Auto-config, instant previews, no new tools to learn."
         },
         {
-          "evidenceId": "railway-docs-4",
-          "quote": "Private connections, public endpoints, SSL, and load balancing live from the moment you deploy."
+          "evidenceId": "railway-docs-31",
+          "quote": "Railway reads your code and sets the right settings, automatically."
         },
         {
-          "evidenceId": "railway-docs-6",
-          "quote": "Scale CPU and RAM or add replicas with load balancing."
+          "evidenceId": "railway-docs-4",
+          "quote": "Private connections, public endpoints, SSL, and load balancing live from the moment you deploy."
         },
         {
           "evidenceId": "railway-docs-18",
@@ -8318,7 +8434,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud infrastructure provider, so a serverless SQL database queried without connection management is a fair question for it. However, the evidence pack never documents a serverless SQL database, an HTTP or driverless query interface, or any connection-free data access; it covers only deployment, networking, observability and agent features.",
+    "rationale": "Railway is a cloud provider, so a serverless SQL database queried directly from code is a fair question for it. The evidence only mentions the agent's ability to \"connect databases\" and community reports of Postgres hosted on Railway. Nothing documents a serverless SQL offering, an HTTP or data-API query driver, or the removal of connection management.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8333,7 +8449,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud hosting platform, so built-in password protection for deployed sites is a fair question to ask of it. The evidence covers public endpoints, SSL, private networking and load balancing, but nothing shows a built-in password or basic-auth gate for a deployed service. Without that, the verdict is none.",
+    "rationale": "Password-protecting a deployed site is a fair question for a cloud hosting platform like Railway, so the axis applies. The evidence pack only documents general networking (public endpoints, SSL, load balancing) and never mentions site-level password protection, basic auth, or access gating for deployments.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8348,7 +8464,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Railway is a cloud provider, so automatic compute placement is a fair question to ask of it. The only related evidence, \"Run your application closer to where your users are,\" describes placing apps near users, not automatically placing compute near backend data, so it counts only as an adjacent feature. Nothing in the pack documents automatic, data-aware placement for latency optimization.",
+    "rationale": "Railway is a cloud hosting platform, so automatic compute placement is a fair question to ask of it. The only related evidence is the claim 'Run your application closer to where your users are.' That is about placing apps near users, not automatically placing compute near backend data to optimize latency. No evidence shows automatic data-proximity placement.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8363,7 +8479,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Runtime portability and avoiding proprietary APIs is a fair question for a cloud deployment platform, but nothing in the evidence describes Railway supporting standard runtime APIs or code that runs unmodified across multiple edge platforms. The repo-based deploys and run-closer-to-users claims are general hosting features and do not address portability.",
+    "rationale": "Portability across edge runtimes is a fair question for a cloud deployment platform, so the axis applies. However, the evidence never documents support for standard runtime APIs or code that runs unmodified across multiple edge platforms. Generic claims like \"connect your repo\" and \"run your application closer to where your users are\" are adjacent and do not address runtime-API portability or lock-in.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8378,7 +8494,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Support SLAs and escalation paths are a fair question for a cloud platform like Railway, so the axis applies. The evidence pack covers deployment, observability dashboards, alerts and AI agents, but nothing documents per-plan support response times or escalation paths.",
+    "rationale": "Support SLAs and escalation paths are a fair question to ask of a cloud hosting platform, so the axis applies. Nothing in the evidence pack documents support response times, plan-tier support levels, or escalation paths. The outage discussion and the alerting features are about different subjects and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8393,8 +8509,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is that Railway's MCP server lets assistants \"manage environments, pull variables,\" plus a claim of unlimited environments. That implies Railway stores and manages environment variables per environment, but it is a single thin mention reached through the AI tooling. missing for 10: team-level access control/RBAC, secrets management, centralized/shared variable management docs, independent corroboration.",
+    "rationale": "Railway's own docs show its built-in agent and MCP server can set and pull variables and manage environments, so environment-variable management exists. The evidence only shows this through AI-agent workflows, not as a centralized team-level control. missing for 10: team-level access control/RBAC, dedicated secrets management (encryption, sealed/shared secrets), centralized variable management across services/environments, independent corroboration.",
     "evidenceIds": [
+      "railway-docs-33",
       "railway-docs-20",
       "railway-docs-11"
     ],
@@ -8403,6 +8520,10 @@
       "coverage": "partial",
       "subject": "As a devops-lead, I can manage team-level access, secrets, and environment variables centrally",
       "citations": [
+        {
+          "evidenceId": "railway-docs-33",
+          "quote": "Create services, set variables, connect databases, wire up networking, and adjust resource limits."
+        },
         {
           "evidenceId": "railway-docs-20",
           "quote": "It lets AI assistants create projects, deploy templates, manage environments, pull variables, and redeploy services."
@@ -8420,7 +8541,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Railway's homepage directly claims \"All logs in one place,\" which matches the core of the story, but this is a one-line marketing claim. Nothing in the pack shows that build, deploy and runtime logs are each covered in that unified view, and the Slack agent reading logs is a separate access path, not the unified view itself. Missing for 10: in-depth docs showing build, deploy and runtime logs together in one view, plus independent or hands-on corroboration.",
+    "rationale": "Railway's own marketing directly claims \"All logs in one place,\" which matches the story's core of a unified log view. However, the only support is a one-line homepage statement that does not say build, deploy, and runtime logs are each covered. Missing for 10: explicit documentation that build, deploy, and runtime logs are all included in the unified view, detail on how logs are searched or filtered, and independent or hands-on corroboration.",
     "evidenceIds": [
       "railway-docs-10"
     ],
@@ -8489,11 +8610,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Railway's own marketing describes a visual canvas that shows the entire stack at a glance and lets you modify settings directly on it, with YAML optional and auto-config. Every element of the story (visualize, edit, no config files) is documented by first-party claims. missing for 10: in-depth docs on which infrastructure elements can be edited on the canvas beyond 'settings', independent or hands-on corroboration of canvas-only editing.",
+    "rationale": "Railway's own homepage describes a visual canvas that shows the entire stack and lets you change settings directly on it, with YAML optional. Auto-configuration further reduces the need for config files. Missing for 10: in-depth docs on what can be edited on the canvas (e.g., networking, databases, scaling), and independent or hands-on corroboration of canvas editing.",
     "evidenceIds": [
       "railway-docs-2",
       "railway-docs-3",
-      "railway-docs-1"
+      "railway-docs-1",
+      "railway-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -8511,6 +8633,10 @@
         {
           "evidenceId": "railway-docs-1",
           "quote": "Auto-config, instant previews, no new tools to learn."
+        },
+        {
+          "evidenceId": "railway-docs-31",
+          "quote": "Railway reads your code and sets the right settings, automatically."
         }
       ]
     }
@@ -8521,9 +8647,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Railway's own site says you connect your repo and it handles the rest with auto-config, and settings can be changed on the canvas with YAML optional. That directly covers repo-connected deploys without manual build configuration. The support is homepage marketing copy only; the outage comments in the pack are off-topic and were ignored. Missing for 10: in-depth docs on how builds and languages are auto-detected, and independent or hands-on confirmation of zero-config deploys.",
+    "rationale": "Railway's own materials say you can connect a repo and have the platform auto-configure the build. It \"reads your code and sets the right settings, automatically,\" and YAML is optional, which covers the core of this story. The support is homepage-level claims only. missing for 10: in-depth docs on build detection (which languages/frameworks are auto-detected, and fallback behavior when detection fails), independent or hands-on confirmation that repo-connect deploys work without manual configuration.",
     "evidenceIds": [
       "railway-docs-1",
+      "railway-docs-31",
       "railway-docs-3"
     ],
     "support": {
@@ -8536,8 +8663,12 @@
           "quote": "Connect your repo, Railway handles the rest. Auto-config, instant previews, no new tools to learn."
         },
         {
+          "evidenceId": "railway-docs-31",
+          "quote": "Railway reads your code and sets the right settings, automatically."
+        },
+        {
           "evidenceId": "railway-docs-3",
-          "quote": "Modify settings directly from the canvas. YAML optional."
+          "quote": "YAML optional."
         }
       ]
     }

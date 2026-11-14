@@ -1,17 +1,16 @@
 {
-  "hash": "0599b28105701330561a32a088d6633295adc360fccd72086e76996116ed063d",
+  "hash": "636a2d4969f2cfc728d6fd200e4aa2e5a9d7a5f17169b751d10f0a0ba35476fc",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "CoreWeave's own docs show a few group-level operations: Node Pools apply one configuration to any number of Nodes and scale as a unit, bucket lifecycle policies apply actions like Expiration across a bucket's objects, and group-based bucket policies grant access without listing individual users. There is no documented general-purpose bulk or batch operation capability, so support is thin and inferred from these constructs. Missing for 10: an explicit bulk/batch API or console action across arbitrary items (e.g. multi-select delete or update), documented limits and semantics for bulk operations, and independent or hands-on corroboration.",
+    "rationale": "CoreWeave has its own grouping mechanisms that act on many items at once. Node Pools apply one shared configuration (labels, taints, annotations) across any number of Nodes, and the autoscaler scales them as a unit. AI Object Storage bucket lifecycle policies apply expiration actions across a bucket's objects. However, the evidence never documents a general bulk-operation facility (multi-select or batch API calls across arbitrary resources), so delivery is indirect and narrow. Missing for 10: an explicit batch/bulk API or console action across resources, bulk object operations beyond lifecycle rules, and independent or hands-on corroboration.",
     "evidenceIds": [
       "coreweave-docs-22",
-      "coreweave-docs-15",
+      "coreweave-docs-2",
       "coreweave-docs-16",
-      "coreweave-docs-40",
-      "coreweave-docs-37"
+      "coreweave-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -23,12 +22,16 @@
           "quote": "A Node Pool in CKS represents one or more instances that share a common configuration, such as the same labels, taints, and annotations."
         },
         {
-          "evidenceId": "coreweave-docs-40",
-          "quote": "Bucket lifecycle policies is the reference for supported lifecycle actions (Expiration, NoncurrentVersionExpiration, AbortIncompleteMultipartUpload)"
+          "evidenceId": "coreweave-docs-2",
+          "quote": "You can deploy multiple Node Pools within a single cluster, where each Node Pool contains any number of Nodes."
         },
         {
-          "evidenceId": "coreweave-docs-37",
-          "quote": "letting you grant or restrict access based on a principal's group memberships rather than listing individual users"
+          "evidenceId": "coreweave-docs-16",
+          "quote": "CKS supports scaling Node Pools by using the Kubernetes Cluster Autoscaler, letting you scale CKS Node Pools in response to workload demands for GPU, CPU, or memory resources."
+        },
+        {
+          "evidenceId": "coreweave-docs-40",
+          "quote": "Bucket lifecycle policies is the reference for supported lifecycle actions (Expiration, NoncurrentVersionExpiration, AbortIncompleteMultipartUpload)"
         }
       ]
     },

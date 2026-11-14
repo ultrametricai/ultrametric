@@ -1,17 +1,38 @@
 {
-  "hash": "ba453133e3c7dfce7aa35fc8692b026b621d103f02a42de677d4e9f2396f704b",
+  "hash": "8832b1c93b78f915bf508d5a6865534c63bb7fdbcf2b14379b67934f7f428783",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows Pomelo processes authorizations and delivers Reversal and Refund transactions through an Adjustments endpoint in production, but nothing documents a sandbox or a simulator for generating authorizations, clearings, reversals, refunds or declines. Production handling of these transaction types is an adjacent capability and does not show they can be simulated before a real card is used.",
-    "evidenceIds": [],
+    "rationale": "Pomelo documents a first-party transaction simulator that runs entirely in its Stage environment against real cards and a configured authorization endpoint, so developers can exercise their auth logic before production. However, the evidence never lists which lifecycle events the simulator covers. Reversals and refunds are documented only as production adjustment types, not as simulatable cases. Missing for 10: explicit simulator coverage of authorizations, clearings, reversals, refunds and declines; self-serve sandbox access (it is provisioned through the integration team); independent or hands-on corroboration.",
+    "evidenceIds": [
+      "pomelo-simulator-20261106",
+      "pomelo-stage-20261106",
+      "pomelo-docs-28"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can simulate the whole transaction lifecycle in the sandbox — authorizations, clearings, reversals, refunds, and declines — so my auth logic is tested before a real card ever swipes",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pomelo-simulator-20261106",
+          "quote": "Prueba casos de simulación sobre tarjetas reales sin afectar tu ambiente productivo."
+        },
+        {
+          "evidenceId": "pomelo-simulator-20261106",
+          "quote": "Todas las ejecuciones ocurren en nuestro ambiente de Stage."
+        },
+        {
+          "evidenceId": "pomelo-stage-20261106",
+          "quote": "Prepararemos el ambiente de pruebas."
+        },
+        {
+          "evidenceId": "pomelo-docs-28",
+          "quote": "Recibirás las transacciones de tipo Reversal y Refund a través del endpoint de Ajustes."
+        }
+      ]
     },
     "productId": "pomelo",
     "storyId": "auth-simulation-testing"
