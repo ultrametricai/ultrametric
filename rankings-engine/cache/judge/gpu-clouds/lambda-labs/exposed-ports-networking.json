@@ -1,16 +1,17 @@
 {
-  "hash": "b81a2bca6f4d991b8a0af0366c3c34754d79fd65e28ce7bb06707611037bfd12",
+  "hash": "5048a46b26a0a38f2dc2ff37c9470010cf02b8c1148a7e0e76e06de7bb4c7724",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Lambda documents workspace firewall rules that control incoming traffic to instances, globally or per instance, which covers managing which ports are reachable for serving apps. Node-to-node connectivity is documented only within 1-Click Clusters (GPUDirect RDMA interconnect), not as general private networking between standalone instances. Missing for 10: explicit port-exposure/inbound-allow documentation, private networking or VPC between ODC instances, independent hands-on corroboration.",
+    "rationale": "Lambda documents workspace firewall rules that control incoming traffic, either globally or scoped to individual instances, which is the mechanism for exposing ports. It also references a guide for hosting a load-balanced API server. For private networking, the evidence covers only 1-Click Clusters, with RDMA interconnect between nodes and head nodes used as bastion hosts, not general private networking between instances. Missing for 10: explicit docs on opening or allowing specific ports to serve apps, private networking (VPC/private IPs) between On-Demand instances, and independent hands-on corroboration.",
     "evidenceIds": [
       "lambda-labs-docs-45",
       "lambda-labs-docs-55",
+      "lambda-labs-docs-48",
       "lambda-labs-docs-36",
-      "lambda-labs-docs-48"
+      "lambda-labs-docs-69"
     ],
     "support": {
       "relation": "direct",
@@ -26,8 +27,16 @@
           "quote": "You can create global rules that apply to all of the instances in the workspace, or rulesets scoped to individual instances and their regions."
         },
         {
+          "evidenceId": "lambda-labs-docs-48",
+          "quote": "Whether you're looking to fine-tune a model or host a load-balanced API server for inference, we have a guide for you."
+        },
+        {
           "evidenceId": "lambda-labs-docs-36",
           "quote": "enabling peer-to-peer GPUDirect RDMA at up to 3200 Gb/s"
+        },
+        {
+          "evidenceId": "lambda-labs-docs-69",
+          "quote": "Each 1CC includes 3x CPU management (head) nodes for use as jump boxes (bastion hosts) and for cluster administration and job scheduling."
         }
       ]
     },

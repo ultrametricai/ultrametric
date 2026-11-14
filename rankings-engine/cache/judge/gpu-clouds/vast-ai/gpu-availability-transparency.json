@@ -1,39 +1,40 @@
 {
-  "hash": "161367691fa15964b58d409a4ebfb50d210d6573cdf0b7b1c13b8f5a82fde70d",
+  "hash": "400f5c09d0b20c064406054271a0f0a9107e335dcfb186f7837aff725ac3ce66",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Vast.ai exposes its live GPU marketplace before provisioning. Hands-on probes show keyless CLI and REST searches returning real, currently listed offers filtered by GPU type, and the docs show a `rentable=true` filter, so users can see availability rather than discovering stockouts by failure. The evidence does not document filtering or viewing availability by region, and one community report says a host's listed location was inaccurate. missing for 10: documented region/geolocation filtering of availability, evidence that location data in listings is reliable",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Vast.ai's marketplace search shows live rentable offers before provisioning, with filters for location and GPU type. Runtime probes confirm that both the CLI and the public bundles REST endpoint return real, live offers keylessly, and the `rentable=true` filter surfaces only available machines. missing for 10: no documented example of region/location filtering through the CLI/API (only the web search bars are shown), no evidence that an offer stays available between search and rent, and a community report questions the accuracy of host location listings.",
     "evidenceIds": [
-      "vast-ai-probe-rt-2",
-      "vast-ai-probe-rt-3",
+      "vast-ai-docs-81",
       "vast-ai-docs-20",
       "vast-ai-docs-51",
+      "vast-ai-probe-rt-2",
+      "vast-ai-probe-rt-3",
       "vast-ai-docs-41",
       "vast-ai-comm-14"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ML engineer, I can see real-time GPU availability by type and region before I try to provision, instead of discovering stockouts by failure",
       "citations": [
         {
-          "evidenceId": "vast-ai-probe-rt-2",
-          "quote": "searched the LIVE GPU marketplace with NO account and NO API key, returning real RTX 4090 offers"
-        },
-        {
-          "evidenceId": "vast-ai-probe-rt-3",
-          "quote": "returned live marketplace offers as JSON including `dph_total` (per-GPU-hour price), gpu_name, cpu specs, and reliability fields"
+          "evidenceId": "vast-ai-docs-81",
+          "quote": "You will find various search options on the top and left control bars that allow you to filter for various criteria (location, GPU type and count, various hardware specs, rental params, etc)"
         },
         {
           "evidenceId": "vast-ai-docs-20",
-          "quote": "vastai search offers 'gpu_name=RTX_4090 num_gpus=1 verified=true direct_port_count>=1 rentable=true'"
+          "quote": "vastai search offers 'gpu_name=RTX_4090 num_gpus=1 verified=true direct_port_count>=1 rentable=true' -o 'dlperf_usd-'"
         },
         {
-          "evidenceId": "vast-ai-docs-51",
-          "quote": "Our search engine lets you filter by GPU type, RAM, CPU, bandwidth, and more"
+          "evidenceId": "vast-ai-probe-rt-2",
+          "quote": "searched the LIVE GPU marketplace with NO account and NO API key, returning real RTX 4090 offers with CUDA versions, vCPUs, RAM, disk, and per-hour prices"
+        },
+        {
+          "evidenceId": "vast-ai-probe-rt-3",
+          "quote": "a bare keyless GET to https://console.vast.ai/api/v0/bundles/ returned live marketplace offers as JSON"
         }
       ]
     },

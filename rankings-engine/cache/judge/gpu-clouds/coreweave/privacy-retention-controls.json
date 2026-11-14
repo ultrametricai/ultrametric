@@ -1,14 +1,15 @@
 {
-  "hash": "2ce042c7b8e3ae55cf5938abc9fc8d5a99de151f227f0b32e3fb108244f92674",
+  "hash": "eb9a545b0ced6a010887b6db95032294c6e93af1c6e94c669a8572abe3191bc8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "CoreWeave's own AI Object Storage supports bucket lifecycle policies with Expiration and NoncurrentVersionExpiration actions, which gives users direct, configurable retention and deletion control over stored data such as training data, checkpoints and model weights. The evidence is a single changelog mention scoped to object storage, and nothing covers retention or deletion for other data. Missing for 10: retention/deletion controls beyond object storage (inference data, logs, telemetry, account-level data), detailed first-party docs on lifecycle configuration, and independent or hands-on corroboration.",
+    "rationale": "CoreWeave AI Object Storage documents bucket lifecycle policies with Expiration and NoncurrentVersionExpiration actions, and Terraform can manage those storage policies. Customers can therefore set automatic retention and deletion rules for stored data, but the evidence covers only object-storage lifecycle rules, not a broader privacy posture. Missing for 10: platform-level data retention/deletion policy (e.g., post-account-termination data handling, log/telemetry retention), explicit documented object/bucket deletion guarantees, and independent or hands-on corroboration.",
     "evidenceIds": [
       "coreweave-docs-40",
-      "coreweave-docs-10"
+      "coreweave-docs-6",
+      "coreweave-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -20,8 +21,12 @@
           "quote": "Bucket lifecycle policies is the reference for supported lifecycle actions (Expiration, NoncurrentVersionExpiration, AbortIncompleteMultipartUpload)"
         },
         {
-          "evidenceId": "coreweave-docs-10",
-          "quote": "Store training data, checkpoints, and model weights with efficient S3-compatible access directly to your GPU compute resources."
+          "evidenceId": "coreweave-docs-6",
+          "quote": "The CoreWeave Terraform provider lets you manage CoreWeave infrastructure as code, including CKS clusters, VPC networking, AI Object Storage policies and buckets"
+        },
+        {
+          "evidenceId": "coreweave-docs-39",
+          "quote": "You can now browse, upload, download, and manage objects in CoreWeave AI Object Storage buckets directly from the CoreWeave Cloud Console"
         }
       ]
     },

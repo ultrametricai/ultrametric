@@ -1,18 +1,18 @@
 {
-  "hash": "e59f64ce36b85b765dfad0562f33433ce0abc875d1494dc21e00ac35ce2fc6be",
+  "hash": "b07a10d89084ba5eb21fb4d42e463c64af2fa46e928f51be7cf96e5dd273292d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "CoreWeave documents programmatic lifecycle control at the cluster and Node Pool level. The CKS API can create, list, update, and delete clusters, Terraform manages infrastructure as code, the Cluster Autoscaler scales Node Pools with demand, and Spot and On-Demand capacity is pay-as-you-go. Nothing in the evidence shows per-instance start, stop, or restart operations; capacity is only adjusted by adding, scaling, or deleting nodes and clusters. missing for 10: per-instance start/stop/restart API operations, explicit documentation that stopped or terminated nodes stop billing, independent hands-on corroboration",
+    "rationale": "CoreWeave's documented programmatic lifecycle works at the cluster and Node Pool level, not per instance. Clusters can be created and deleted through the CKS API and Terraform, and Node Pools (groups of instances) scale through the Cluster Autoscaler. Spot and On-Demand capacity is described as pay-as-you-go. The docs never describe per-instance stop, start, or restart, or that stopped resources stop billing. Missing for 10: per-instance start/stop/restart operations, explicit per-instance terminate API, documentation that billing stops when nodes are removed or stopped, independent hands-on corroboration.",
     "evidenceIds": [
       "coreweave-docs-5",
       "coreweave-docs-6",
       "coreweave-docs-16",
+      "coreweave-docs-22",
       "coreweave-docs-4",
-      "coreweave-docs-20",
-      "coreweave-docs-22"
+      "coreweave-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -24,16 +24,20 @@
           "quote": "The API lets you create, list, update, and delete managed Kubernetes clusters on CoreWeave infrastructure."
         },
         {
+          "evidenceId": "coreweave-docs-22",
+          "quote": "A Node Pool in CKS represents one or more instances that share a common configuration"
+        },
+        {
           "evidenceId": "coreweave-docs-16",
           "quote": "CKS supports scaling Node Pools by using the Kubernetes Cluster Autoscaler, letting you scale CKS Node Pools in response to workload demands for GPU, CPU, or memory resources."
         },
         {
-          "evidenceId": "coreweave-docs-4",
-          "quote": "Spot Node Pools provide pay-as-you-go access to high-performance bare-metal compute resources without long-term commitments or reservations."
-        },
-        {
           "evidenceId": "coreweave-docs-6",
           "quote": "The CoreWeave Terraform provider lets you manage CoreWeave infrastructure as code, including CKS clusters"
+        },
+        {
+          "evidenceId": "coreweave-docs-4",
+          "quote": "Spot Node Pools provide pay-as-you-go access to high-performance bare-metal compute resources without long-term commitments or reservations."
         }
       ]
     },

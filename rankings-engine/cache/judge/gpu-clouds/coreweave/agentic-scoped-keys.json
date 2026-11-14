@@ -1,13 +1,14 @@
 {
-  "hash": "03174397ddf30666af0b1809e12adfbec82ca486b3bebd46021f1490a1b00131",
+  "hash": "a2c9b71cf2d02aa4f2abf62ac1b3d5a6bfa3c84f5f288f37827fa1896715c7f7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "CoreWeave documents API Access Tokens that grant access to resources such as CKS clusters and VPCs. It also documents exchanging a token for temporary AI Object Storage credentials, with bucket policies that can restrict principals by group membership. That is a narrow, storage-only form of scoped, short-lived credential, not general least-privilege token issuance for an agent. Missing for 10: documented per-token permission scopes or roles, least-privilege restriction of API tokens across services (CKS, Inference, VPC), agent or service-account credential guidance, and any independent corroboration.",
+    "rationale": "CoreWeave documents its own API Access Tokens that grant access to resources, per-cluster kubeconfigs, exchange of a token for temporary AI Object Storage credentials, and bucket policies that grant or restrict access by principal or group. Together these give some resource-level least-privilege control, but nothing shows that the tokens themselves can be scoped to specific permissions or issued as agent or service identities. Missing for 10: documented per-token permission scopes or roles, service-account or agent-specific credentials, a least-privilege token-issuance workflow, and independent corroboration.",
     "evidenceIds": [
       "coreweave-docs-17",
+      "coreweave-docs-7",
       "coreweave-docs-38",
       "coreweave-docs-37",
       "coreweave-docs-26"
@@ -22,12 +23,16 @@
           "quote": "API Access Tokens authenticate users and grant access to resources such as CKS clusters and VPCs."
         },
         {
+          "evidenceId": "coreweave-docs-7",
+          "quote": "Create and download a kubeconfig for a specific cluster, so you can interact with the cluster using commands like kubectl."
+        },
+        {
           "evidenceId": "coreweave-docs-38",
           "quote": "you can now exchange that token directly for temporary AI Object Storage credentials through the container credentials endpoint."
         },
         {
           "evidenceId": "coreweave-docs-37",
-          "quote": "letting you grant or restrict access based on a principal's group memberships rather than listing individual users."
+          "quote": "CoreWeave AI Object Storage bucket policies now support group-based access control, letting you grant or restrict access based on a principal's group memberships rather than listing individual users."
         }
       ]
     },
