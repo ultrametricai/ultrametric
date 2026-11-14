@@ -5,7 +5,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is an identity, AML and fraud decisioning platform, so adverse-media screening is a fair question for this product. However, the evidence pack never mentions adverse-media matches, the evidence linked to them, or risk categories for them. Mentions of watchlist updates, manual review, AML checks and investigations are adjacent capabilities and do not show this one.",
+    "rationale": "Alloy is a KYC/AML and fraud decisioning platform, so adverse-media review is a fair question to ask of it. However, the evidence pack never mentions adverse-media matches, linked source evidence, or risk categorization for media hits. The mentions of watchlist-update webhooks, manual review, and generic AML checks are adjacent capabilities and do not show this one.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17,33 +17,32 @@
   {
     "productId": "alloy",
     "storyId": "agentic-agent-docs",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Alloy publishes an llms.txt docs index at developer.alloy.com/public/llms.txt, explicitly labeled \"For AI agents\", with per-page .md mirrors that carry per-endpoint OpenAPI fragments; the docs URLs themselves are .md pages. The probe 404 at the root /llms.txt does not contradict this, because the file lives under /public/. missing for 10: llms.txt not served at the conventional root path (root /llms.txt returns 404), no independent or hands-on corroboration of agents actually consuming these docs.",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Alloy publishes an llms.txt index at developer.alloy.com/public/llms.txt that lists its doc pages, and serves docs as raw .md files an agent can fetch, so agent-oriented docs exist. However, the probe of the conventional root path /llms.txt returned 404, so an agent following the standard convention would not find it, and no first-party docs describe or promote agent use. missing for 10: llms.txt at the standard root path, documentation explaining agent-oriented doc access (e.g. llms-full.txt or usage guidance), independent or hands-on corroboration of agents consuming the docs.",
     "evidenceIds": [
-      "alloy-openapi-20261106",
       "alloy-docs-23",
       "alloy-docs-24",
-      "alloy-deprecations-20261106",
+      "alloy-docs-25",
       "alloy-probe-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
-          "evidenceId": "alloy-openapi-20261106",
-          "quote": "For AI agents: the docs index is at https://developer.alloy.com/public/llms.txt"
-        },
-        {
-          "evidenceId": "alloy-openapi-20261106",
-          "quote": "per-page .md mirrors carrying per-endpoint OpenAPI fragments"
-        },
-        {
           "evidenceId": "alloy-docs-23",
-          "quote": "How to Configure SCIM"
+          "quote": "How to Configure SAML SSO ... Okta ... Azure ... How to Configure SCIM"
+        },
+        {
+          "evidenceId": "alloy-docs-24",
+          "quote": "Retroactively Assigning an External Entity ID ... Multiple External Entity IDs ... Entity Merging"
+        },
+        {
+          "evidenceId": "alloy-docs-25",
+          "quote": "Explore the different features of our SDK."
         }
       ]
     }
@@ -54,7 +53,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Alloy's marketing describes Fraud Signal, its own machine-learning model, producing risk signals from customer data inside the product, plus 'agentic automation' for KYC/AML checks. That is a thin, glancing form of AI-derived insight. Nothing documents user-facing AI-generated insights, explanations or recommendations, and the evidence is homepage claims only. Missing for 10: documented AI-generated insights or suggestions surfaced to users, a description of how the ML or agentic outputs are presented, first-party docs beyond marketing copy, and independent or hands-on corroboration.",
+    "rationale": "Alloy's marketing describes Fraud Signal, a machine learning model that produces fraud-risk signals, plus agentic automation for KYC/AML checks. Together these are a thin form of AI-derived insight from customer data inside the product. The evidence is homepage-level only and never shows AI-generated insights or suggestions being surfaced to the user. Missing for 10: documented in-product AI insight or suggestion surfaces, a description of what the ML/agentic outputs look like to users, explanation of recommendations, and independent or hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-18",
       "alloy-docs-20",
@@ -144,14 +143,14 @@
     "productId": "alloy",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Alloy is API-first, so it can be driven headlessly: a complete OpenAPI 3.0 spec covers sandbox and production bases, an Events API supports real-time programmatic integration, and Portfolio workflows can run on a recurring schedule. Its Sandbox mode lets an integration be tested without vendor charges, but it is a per-request dry-run of vendor calls over a shared production data store, not an isolated CI environment, and there is no CLI or CI-specific guidance. missing for 10: official CLI or CI integration docs, an isolated test environment instead of a dry-run mode over shared data, independent or hands-on evidence of CI use.",
+    "rationale": "Alloy is an API-first decisioning service. Its Events and Evaluation APIs can be called programmatically with no UI, and its scheduled Portfolio workflows run automatically. Together these give genuine headless automation, but nothing documents CI usage, a CLI, or a pipeline integration. Missing for 10: a documented CLI or headless runner, CI/CD pipeline integration guidance or examples, a sandbox or test-mode setup for automated runs, and independent hands-on corroboration.",
     "evidenceIds": [
-      "alloy-openapi-20261106",
-      "alloy-sandbox-mode-20261106",
       "alloy-docs-1",
-      "alloy-docs-15"
+      "alloy-docs-4",
+      "alloy-docs-15",
+      "alloy-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -159,20 +158,20 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "alloy-openapi-20261106",
-          "quote": "Alloy serves its complete OpenAPI 3.0.0 document at the docs origin"
-        },
-        {
-          "evidenceId": "alloy-sandbox-mode-20261106",
-          "quote": "Sandbox makes no vendor calls, so you can test your integration without incurring additional charges"
-        },
-        {
           "evidenceId": "alloy-docs-1",
           "quote": "Alloy's Events API allows you to build a real-time integration for decisioning on suspicious ongoing behavior as soon as it happens."
         },
         {
+          "evidenceId": "alloy-docs-4",
+          "quote": "Alloy will return results of the Source Workflow under the evaluations[] array in the Events response."
+        },
+        {
           "evidenceId": "alloy-docs-15",
           "quote": "Workflows can run in real time as part of a Journey evaluating an incoming application, or on a schedule as a Portfolio workflow"
+        },
+        {
+          "evidenceId": "alloy-docs-12",
+          "quote": "Alloy provides a /healthcheck endpoint that confirms basic API connectivity."
         }
       ]
     }
@@ -183,7 +182,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy markets agentic automation for KYC/KYB, AML and fraud checks, so a buyer could fairly ask whether its agents can use external MCP servers. The axis applies, but nothing in the evidence pack mentions MCP or connecting outside tool servers. Its webhooks, Events API, workflows, OpenAPI document and llms.txt are integration or documentation features, not an MCP-client capability, so they earn no credit.",
+    "rationale": "Alloy markets \"agentic automation\" for KYC/AML workflows, so whether it can consume external MCP servers is a fair question for this product. Nothing in the evidence documents connecting MCP servers or using their tools. The pack covers only the Events API, webhooks, workflows, health signals and SSO, none of which is MCP client support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -198,7 +197,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is an identity and fraud decisioning SaaS platform, not an agent, so publishing an official MCP server is a fair question for it and the axis applies. The pack documents an llms.txt docs index for AI agents, a public OpenAPI document, and marketing about 'agentic automation'. These are adjacent machine-readable surfaces and developer building blocks, not an official MCP server, so they earn no credit.",
+    "rationale": "Alloy is an identity, fraud and compliance SaaS platform rather than an agent, so shipping an official MCP server is a fair question and the axis applies. The evidence pack never mentions an MCP server or endpoint. The Events API, webhooks, an llms.txt docs index and marketing about 'agentic automation' are adjacent features, not an MCP server.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -213,7 +212,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is an identity and fraud decisioning SaaS, so a natural-language command interface is a fair question to ask of it. The evidence pack contains no documented way to operate the product with natural-language commands. The marketing line about \"agentic automation\" describes automated KYC/AML checks, not user-issued natural-language commands. The llms.txt docs index and OpenAPI file are only machine-readable building blocks, which earn no credit here.",
+    "rationale": "Alloy is an identity, fraud and compliance SaaS platform, so natural-language operation is a fair question for it. The evidence describes APIs, webhooks, workflows and 'agentic automation' for KYC/AML checks. Nothing shows users operating the product through natural-language commands; the agentic-automation claim describes automated compliance checks, not a natural-language command interface.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -228,7 +227,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is an identity and fraud decisioning API platform, so an official CLI is a fair thing to ask of it, but the evidence pack never documents one. The SDK mention, OpenAPI document, llms.txt index and ReadMe \"Try It!\" panel are developer building blocks and documentation surfaces, not a CLI, so none of them earn credit here.",
+    "rationale": "Alloy is an identity, fraud and compliance SaaS platform, so an official CLI is a fair axis to ask about. However, the evidence pack documents only APIs, webhooks, an SDK and llms.txt docs, and never mentions a command-line tool. The SDK and APIs are developer building blocks, not a CLI, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -240,34 +239,32 @@
   {
     "productId": "alloy",
     "storyId": "agentic-public-api",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Alloy publishes a complete OpenAPI 3.0.0 document and a publicly browsable reference of 134 endpoint pages with a Try It panel and SDK snippets. The API is versioned under /v1 with inline deprecation notices, and documented endpoints include the Events API, the Evaluation API and a /healthcheck. Together these let a user or agent drive the product programmatically against sandbox or production bases. Missing for 10: independent or hands-on corroboration of API use, and a public API changelog or deprecation-policy page (the OpenAPI file is also not linked from the docs UI).",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Alloy's developer docs describe public APIs the user drives programmatically: the Events API for submitting events and getting real-time decisions, an Evaluation API whose responses carry service status and warnings, and a /healthcheck endpoint. That is direct, documented API access to core decisioning. The evidence does not show that the whole product (workflow, Journey and admin configuration) can be driven via API, nor does it show API-key authentication or a full endpoint reference. missing for 10: evidence of API coverage beyond event/evaluation submission (e.g. managing workflows, Journeys, entities programmatically), documented API authentication and endpoint reference, independent or hands-on corroboration.",
     "evidenceIds": [
-      "alloy-openapi-20261106",
-      "alloy-tryit-20261106",
       "alloy-docs-1",
       "alloy-docs-4",
-      "alloy-docs-12",
-      "alloy-deprecations-20261106"
+      "alloy-docs-11",
+      "alloy-docs-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "alloy-openapi-20261106",
-          "quote": "Alloy serves its complete OpenAPI 3.0.0 document at the docs origin (servers sandbox.alloy.co/v1 and api.alloy.co/v1)."
-        },
-        {
-          "evidenceId": "alloy-tryit-20261106",
-          "quote": "The ReadMe-hosted API reference (134 endpoint pages, publicly browsable) runs the \"Try It!\" request panel with SDK snippets enabled"
-        },
-        {
           "evidenceId": "alloy-docs-1",
           "quote": "Alloy's Events API allows you to build a real-time integration for decisioning on suspicious ongoing behavior as soon as it happens."
+        },
+        {
+          "evidenceId": "alloy-docs-4",
+          "quote": "Alloy will return results of the Source Workflow under the evaluations[] array in the Events response."
+        },
+        {
+          "evidenceId": "alloy-docs-11",
+          "quote": "the warnings section in the Evaluation API response and dashboard gives additional information about what data was missing"
         },
         {
           "evidenceId": "alloy-docs-12",
@@ -282,7 +279,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is an API-first SaaS, so issuing scoped or least-privilege API credentials is a fair question for it. The pack contains no evidence of credential scoping, per-key permissions, or agent-specific keys. The only key-related detail is that the same keys work in both Sandbox and Production modes, which is not scoping. SAML SSO/SCIM and webhook shared-secret signing are adjacent controls and earn no credit.",
+    "rationale": "Alloy is an API-driven SaaS platform, so issuing scoped or least-privilege API credentials is a fair question to ask of it. The evidence pack never documents scoped API keys, per-credential permissions, or agent-specific credentials. The authentication evidence covers only webhook signing (shared secret) and SAML SSO/SCIM for user provisioning, which are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -297,10 +294,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Alloy's docs refer to an official SDK, and a separate item mentions a Web SDK with its own changelog, so a first-party SDK exists. Nothing describes its languages, scope, packages or install steps, or shows it being used to build API integrations. The 'Try It!' SDK snippets are generated code samples, not a maintained SDK, so they get no credit. Missing for 10: documented SDK languages and packages, install and usage guides, server-side or API-client SDK coverage, independent or hands-on corroboration.",
+    "rationale": "Alloy's developer docs mention an SDK ('Explore the different features of our SDK'), so a first-party SDK exists. Nothing in the evidence describes its languages, scope, installation or API coverage. missing for 10: list of supported languages/platforms, SDK reference documentation, install/package details, evidence of multiple official SDKs, independent or hands-on corroboration.",
     "evidenceIds": [
-      "alloy-docs-25",
-      "alloy-deprecations-20261106"
+      "alloy-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -310,10 +306,6 @@
         {
           "evidenceId": "alloy-docs-25",
           "quote": "Explore the different features of our SDK."
-        },
-        {
-          "evidenceId": "alloy-deprecations-20261106",
-          "quote": "the only changelog is the Web SDK's"
         }
       ]
     }
@@ -362,10 +354,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is a fraud and KYC decisioning platform, so inspecting and overriding automated decisions is a fair question to ask of it. The pack shows how to inspect evaluation results: per-service execution status, warnings, and the evaluations[] array. But no documented workflow lets a user override an automated decision while preserving its original evidence and rationale. The only hints are a passing webhook mention that \"a manual review occurs\" and the marketing phrase \"fully auditable agentic automation\", which do not document an override capability.",
+    "rationale": "The axis applies: Alloy is an automated fraud and KYC decisioning platform. The evidence shows only nearby features. There are evaluation results, a services/warnings breakdown, webhooks that fire 'when ... a manual review occurs', and a marketing claim of 'fully auditable agentic automation'. Nothing documents a human overriding an automated decision while the original evidence and rationale are preserved alongside the override.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a ai-native, I can inspect and override an automated remediation decision while preserving its original evidence and rationale",
       "citations": []
@@ -377,12 +369,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Alloy's transaction-monitoring workflows apply policy logic and generate alerts or investigations when thresholds are met. That is a documented path from automated decisioning to human investigation, and its docs also reference manual review events and auditable agentic automation. However, nothing shows policy controls that specifically cap what the agentic automation may do on its own, or routing that targets ambiguous (as opposed to threshold-exceeding) findings to a human. Missing for 10: explicit policy guardrails limiting agentic auto-remediation, documented escalation of ambiguous/low-confidence findings to human review queues, detail on the manual review workflow, independent or hands-on corroboration.",
+    "rationale": "Alloy's transaction-monitoring workflows document applying policy logic and generating alerts or investigations when thresholds are met. Its webhook docs also reference manual review events, which together suggest policy-driven escalation of risky findings to humans. The evidence does not show that the agentic automation itself can be bounded by policy, or that ambiguous AI decisions are routed to a human instead of being actioned automatically. Missing for 10: documented policy controls that cap or gate agentic/automatic remediation actions, explicit routing of ambiguous or low-confidence AI findings to human review queues, and independent or hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-17",
       "alloy-docs-5",
-      "alloy-docs-20",
-      "alloy-docs-2"
+      "alloy-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -407,55 +398,31 @@
   {
     "productId": "alloy",
     "storyId": "api-interactive-docs",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy's docs describe a publicly browsable API reference hosted on ReadMe, with 134 endpoint pages. It includes a 'Try It!' request panel and SDK snippets that execute against the sandbox or production bases, and a complete OpenAPI 3.0.0 document backs it. Together this covers both an explorable interactive reference and runnable examples. However, running requests needs the caller's own (customer-gated) keys, and the sandbox mode is a per-request dry-run over shared production data rather than an isolated environment. Missing for 10: independent or hands-on corroboration of the Try It panel, runnable examples usable without account credentials, and an isolated sandbox for safe experimentation.",
-    "evidenceIds": [
-      "alloy-tryit-20261106",
-      "alloy-openapi-20261106",
-      "alloy-sandbox-mode-20261106"
-    ],
+    "rationale": "Alloy is an API-first identity and fraud platform, so an interactive API reference is a fair question. The pack shows developer docs (Events API, webhooks, the /healthcheck endpoint, an SDK page and an llms.txt index). None of it documents an interactive, explorable API reference or runnable 'try it' examples. General API documentation is adjacent and earns no credit for this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "complete",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": [
-        {
-          "evidenceId": "alloy-tryit-20261106",
-          "quote": "The ReadMe-hosted API reference (134 endpoint pages, publicly browsable) runs the \"Try It!\" request panel with SDK snippets enabled; execution uses the caller's own keys against the live sandbox/production bases."
-        },
-        {
-          "evidenceId": "alloy-openapi-20261106",
-          "quote": "Alloy serves its complete OpenAPI 3.0.0 document at the docs origin (servers sandbox.alloy.co/v1 and api.alloy.co/v1)."
-        },
-        {
-          "evidenceId": "alloy-sandbox-mode-20261106",
-          "quote": "Sandbox makes no vendor calls, so you can test your integration without incurring additional charges"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "alloy",
     "storyId": "api-machine-spec",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy publicly serves a complete OpenAPI 3.0.0 document at https://developer.alloy.com/public/openapi/alloy.yaml, covering sandbox and production servers, and per-page .md mirrors carry per-endpoint OpenAPI fragments. That is a downloadable machine-readable spec. The main caveat is discoverability: the docs UI disables the download button, so users must know the direct URL or find it through llms.txt. Missing for 10: a UI-linked or advertised spec download, and independent or hands-on confirmation that the file is complete and current.",
-    "evidenceIds": [
-      "alloy-openapi-20261106"
-    ],
+    "rationale": "Alloy is an API-first identity and fraud platform, so a downloadable OpenAPI or equivalent spec is a fair question. The evidence pack never mentions one. The llms.txt index and the Markdown docs pages are adjacent documentation artifacts, not a machine-readable API specification, so they earn no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "complete",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": [
-        {
-          "evidenceId": "alloy-openapi-20261106",
-          "quote": "Alloy serves its complete OpenAPI 3.0.0 document at the docs origin (servers sandbox.alloy.co/v1 and api.alloy.co/v1)."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -463,52 +430,29 @@
     "storyId": "api-sandbox",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Alloy's Sandbox is a per-request mode that skips vendor calls, which makes it a dry-run of vendor calls rather than an isolated environment. The vendor explicitly states that Sandbox and Production are not separate environments, that no data boundary is enforced, and that Entities live in a single shared data store regardless of mode. Testing without touching production data is therefore not delivered.",
-    "evidenceIds": [
-      "alloy-sandbox-mode-20261106"
-    ],
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment is a fair question for an identity and fraud decisioning API platform like Alloy, so the axis applies. None of the evidence items mention a sandbox, test environment, or isolation from production data. The items cover the Events API, webhooks, health monitoring, workflows and SSO, none of which address this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": [
-        {
-          "evidenceId": "alloy-sandbox-mode-20261106",
-          "quote": "They are per-request processing modes only - Alloy does not enforce a data boundary. Most records in Alloy, including Entities, live in a single shared data store for your account, regardless of the mode used to create or update them."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "alloy",
     "storyId": "api-versioning-policy",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy versions its API under a pinned /v1 path. Deprecated endpoints carry inline warning callouts that name migration targets, such as moving to the Events API or to Investigations. However, there is no standalone versioning or deprecation-policy page and no API changelog, so the 'documented deprecation policy' half of the story is practiced only ad hoc. Missing for 10: a published deprecation policy with timelines and sunset guarantees, an API changelog, and independent corroboration.",
-    "evidenceIds": [
-      "alloy-deprecations-20261106",
-      "alloy-openapi-20261106"
-    ],
+    "rationale": "Alloy is an API-first identity and fraud platform, so a versioning and deprecation-policy story is a fair question for it. However, nothing in the evidence pack mentions API versions, version pinning, changelogs, or a deprecation policy. The cited docs cover events, webhooks, health signals and workflows, none of which concern versioning.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": [
-        {
-          "evidenceId": "alloy-deprecations-20261106",
-          "quote": "Versioning is practiced: the servers pin /v1 and deprecated endpoints carry inline warning callouts with migration targets"
-        },
-        {
-          "evidenceId": "alloy-deprecations-20261106",
-          "quote": "This endpoint is deprecated in favor of the Events API..."
-        },
-        {
-          "evidenceId": "alloy-openapi-20261106",
-          "quote": "servers sandbox.alloy.co/v1 and api.alloy.co/v1"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -539,10 +483,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents no bulk or batch operation capability, such as a batch API endpoint, bulk entity updates, or mass actions on many items. The closest item is a scheduled Portfolio workflow for portfolio monitoring. That is a recurring monitoring feature, not a user-initiated bulk operation across many items, so it earns no credit.",
+    "rationale": "The evidence pack documents no bulk or batch operation capability, such as a batch API, bulk update, or multi-item action. The nearest item is scheduled Portfolio workflows (alloy-docs-15), but that is a recurring scheduled evaluation and the evidence never says it acts on many items at once by user request. That makes it an adjacent feature, not the story's capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": []
@@ -618,7 +562,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy documents configurable workflows, Journeys, and scheduled Portfolio workflows. The pack has no evidence of versioning those workflows, reviewing changes before they go live, or rolling back to a prior version. The API endpoint versioning and deprecation notices cover the API surface, not user automations, and \"fully auditable agentic automation\" describes auditability, not version control or rollback.",
+    "rationale": "Alloy documents configurable workflows, Journeys, and scheduled Portfolio workflows, so versioning and rollback of those automations is a fair question for this product. The evidence pack never mentions workflow version history, change review or approval, or rollback. The homepage claim of \"fully auditable agentic automation\" describes auditability of decisions, which is an adjacent capability and not versioning or rollback.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -633,7 +577,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk data import is a fair question for an identity and fraud platform, so the axis applies, but the evidence shows no bulk import capability for customers or transactions, no import job tracking, and no way to resume after a partial failure. The cited material covers only adjacent features: per-event real-time submission through the Events API, webhook delivery retries, and 206 statuses for partial vendor data on a single Evaluation. None of these is a bulk import that can be tracked or resumed.",
+    "rationale": "Bulk data import is a fair question for an identity and fraud decisioning platform that ingests customers and transactions. However, the evidence covers only real-time Events API submissions, webhook delivery retries and 206 partial-data evaluations, none of which is a bulk import job with progress tracking or resume. Webhook retry logic and evaluation warnings are adjacent features and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -648,7 +592,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Alloy's homepage says it supports KYB and AML checks, which implies it can screen business entities. Nothing in the pack documents linked ownership, beneficial-owner, or association risk context for a business. Entity merging and external entity IDs are record-management features, not ownership context. missing for 10: documented business-entity screening workflow, beneficial ownership/UBO or association graph inspection, linked-party risk context, first-party docs depth, independent corroboration.",
+    "rationale": "The only first-party evidence for this story is a single marketing line saying Alloy streamlines perpetual KYC/KYB checks, which implies business-entity screening. Nothing describes inspecting linked ownership, beneficial owners, or association risk. The entity ID and merging docs cover record management, not ownership links. Missing for 10: documented KYB screening workflow, beneficial-ownership/UBO or associated-party linkage, risk context views for linked entities, independent or hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-20"
     ],
@@ -670,10 +614,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Alloy documents transaction-monitoring workflows that generate alerts or investigations when thresholds are met. Its API reference also points to an Investigations construct that replaces deprecated endpoints, so investigations exist as a product capability. However, nothing in the evidence shows an analyst prioritizing alerts or manually grouping related subjects and transactions into an investigation. Missing for 10: alert prioritization/triage, grouping multiple subjects and transactions into one investigation, analyst-facing investigation workflow docs, independent corroboration.",
+    "rationale": "Alloy's transaction monitoring workflows document that they can 'generate alerts or investigations when thresholds are met', so the product has its own alert and investigation objects. Nothing in the evidence shows analysts prioritizing alerts or grouping related subjects and transactions into an investigation. Entity merging is about identity resolution, an adjacent feature, and earns no credit here. Missing for 10: alert prioritization or triage queues, grouping multiple subjects and transactions into one investigation, case-management workflow docs, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "alloy-docs-17",
-      "alloy-deprecations-20261106"
+      "alloy-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -683,10 +626,6 @@
         {
           "evidenceId": "alloy-docs-17",
           "quote": "Monitors transaction events in real time or at scheduled times to detect suspicious activity, apply policy logic, and generate alerts or investigations when thresholds are met."
-        },
-        {
-          "evidenceId": "alloy-deprecations-20261106",
-          "quote": "These endpoints are deprecated in favor of using Investigations."
         }
       ]
     }
@@ -694,18 +633,17 @@
   {
     "productId": "alloy",
     "storyId": "case-assign-review",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Alloy's own docs show it creates investigations when monitoring thresholds are met, and that manual reviews happen as events, so a case-review surface exists. Nothing documents assigning cases to analysts or routing them through review and escalation stages. Missing for 10: case assignment to analysts, configurable review/escalation stage routing, queue or workflow-state documentation for investigations, independent or hands-on corroboration.",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Alloy can generate alerts or investigations when monitoring thresholds are met, and that manual reviews occur as webhook events. Nothing documents assigning cases to analysts or routing them through review and escalation stages. Creating investigations and emitting manual-review events are adjacent features, not the case assignment and stage-routing workflow this story asks for.",
     "evidenceIds": [
       "alloy-docs-17",
-      "alloy-docs-5",
-      "alloy-deprecations-20261106"
+      "alloy-docs-5"
     ],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a operations-lead, I can assign cases and route them through analyst review and escalation stages",
       "citations": [
         {
@@ -715,10 +653,6 @@
         {
           "evidenceId": "alloy-docs-5",
           "quote": "asynchronous events like when a watchlist gets updated or a manual review occurs"
-        },
-        {
-          "evidenceId": "alloy-deprecations-20261106",
-          "quote": "These endpoints are deprecated in favor of using Investigations."
         }
       ]
     }
@@ -729,10 +663,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents no export or bulk-retrieval capability for customer, alert, case or decision data. The closest evidence is listed external entity ID management (alloy-docs-24) and an entity-lookup API reference page. These give stable identifiers for entities but are building blocks, not an export feature, and say nothing about alerts, cases or decisions.",
+    "rationale": "The evidence pack documents no export capability for customer, alert, case or decision data. It shows External Entity ID management and entity merging, which concern identifiers, plus real-time Events API responses and webhooks, which are integration paths rather than data export for reconciliation. These are adjacent building blocks, not the export capability itself.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can export customer, alert, case and decision data with stable identifiers for reconciliation",
       "citations": []
@@ -742,15 +676,14 @@
     "productId": "alloy",
     "storyId": "case-system-integration",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Alloy documents outbound webhooks that fire on asynchronous events such as manual reviews. These come with signed authentication and 24-hour exponential-backoff retries, so a developer can push review decisions to an external system. The API reference also points to Investigations endpoints, and workflows can generate investigations. However, no documentation describes syncing investigations with another case-management system, in either direction. Missing for 10: a documented bidirectional investigation/case sync (inbound updates from an external case tool), investigation-specific webhook payloads or status mapping, a dedicated Investigations API description, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Alloy documents outbound webhooks that fire on asynchronous events such as manual reviews, with signed payloads and retry logic. Its monitoring workflows generate investigations. Together these could push review decisions to an external system, but nothing documents syncing investigations or cases with another case-management system, and nothing shows a two-way flow. Missing for 10: a documented investigation/case sync or export API, inbound updates from an external case system, a mapping between Alloy investigations and external case IDs, and hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-5",
       "alloy-docs-7",
       "alloy-docs-8",
-      "alloy-docs-17",
-      "alloy-deprecations-20261106"
+      "alloy-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -762,16 +695,16 @@
           "quote": "They're particularly useful for Journeys and asynchronous events like when a watchlist gets updated or a manual review occurs."
         },
         {
-          "evidenceId": "alloy-docs-8",
-          "quote": "retries continue on an exponential backoff for a duration of 24 hours from the time of the first failure."
-        },
-        {
           "evidenceId": "alloy-docs-17",
           "quote": "generate alerts or investigations when thresholds are met"
         },
         {
-          "evidenceId": "alloy-deprecations-20261106",
-          "quote": "These endpoints are deprecated in favor of using Investigations."
+          "evidenceId": "alloy-docs-8",
+          "quote": "Subsequently, retries continue on an exponential backoff for a duration of 24 hours from the time of the first failure."
+        },
+        {
+          "evidenceId": "alloy-docs-7",
+          "quote": "Alloy signs the request body with a shared secret and sends the signature in the Authorization header"
         }
       ]
     }
@@ -782,7 +715,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Measuring detection quality and missed fraud against labelled cases is a fair question for a fraud and risk decisioning platform, so the axis applies. Nothing in the pack documents labelled validation sets, outcome tagging, backtesting, or false-negative and precision/recall reporting. The evidence covers only event monitoring, workflows, the Fraud Signal ML model, health signals, and a sandbox mode that dry-runs vendor calls rather than scoring decisions against labels.",
+    "rationale": "Alloy is a fraud and identity decisioning platform, so measuring detection quality against labelled cases is a fair question for it. The pack documents workflows, event monitoring, ML-based Fraud Signal and alerting. It has no evidence of backtesting, labelled validation datasets, or metrics for detection rates or incorrect clearances (false negatives).",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -797,7 +730,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is a fraud/KYC decisioning platform, so resolving false positives and overriding decisions is a fair question to ask of it. The pack only mentions adjacent items: workflows that 'generate alerts or investigations', webhooks firing when 'a manual review occurs', and marketing about 'fully auditable agentic automation'. None of these documents resolving a false positive, reopening or overriding a decision, or writing an audit record of that override.",
+    "rationale": "Alloy is a fraud and identity decisioning platform, so resolving false positives and overriding decisions with an audit trail is a fair question to ask of it. The evidence only mentions that manual reviews occur (as webhook triggers), that workflows can generate investigations, and offers a general 'fully auditable' marketing claim. None of it documents an analyst resolving a false positive, reopening or overriding a decision, or the resulting audit record.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -812,7 +745,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence does not show any capability for testing proposed detection rules against historical or sandbox events before activation, such as backtesting, rule simulation, or draft-workflow replay. Alloy's Sandbox is documented only as a per-request mode that skips vendor calls so customers can test their integration over shared production data. That is integration dry-run testing with no isolated environment and no rule-validation feature, so it is adjacent and earns no credit. Scheduled and real-time transaction monitoring workflows exist, but nothing describes evaluating unactivated rules against past events.",
+    "rationale": "Testing rules before activation is a fair question for a transaction-monitoring platform, so the axis applies. The evidence only covers live event monitoring, Source Workflows and scheduled Portfolio workflows. Nothing documents backtesting proposed rules against historical events, running them in a sandbox or simulation, or a shadow or draft mode before activation, and scheduled live evaluation is not pre-activation testing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -827,7 +760,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is a fraud/KYC/AML decisioning platform, so recording notes, evidence and decision reasons in an investigation history is a fair question for it. The pack shows only that Investigations exist (workflows can generate investigations; some endpoints are deprecated in favor of Investigations). Nothing documents adding notes, attaching evidence, or capturing decision reasons in an investigation timeline or history.",
+    "rationale": "Alloy is a fraud/KYC/AML decisioning platform, so recording notes and decision reasons in an investigation history is a fair axis. The evidence only shows that workflows can 'generate alerts or investigations' and that manual reviews occur. Nothing documents analysts attaching evidence, notes or decision reasons to an investigation's history, so the evidence does not support the story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -842,7 +775,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Configurable name matching with alias or transliteration inspection is a fair question for an identity, KYC and AML screening platform like Alloy, so the axis applies. The pack only mentions AML checks generally and webhooks firing when a watchlist gets updated. Nothing describes configuring name-matching thresholds or logic, or viewing alias or transliteration match details, so these adjacent mentions earn no credit.",
+    "rationale": "Alloy is a KYC/AML decisioning platform, so configurable name-matching for watchlist screening is a fair question for this kind of product. The evidence only mentions AML checks in general and webhooks for watchlist updates. Nothing documents configuring name-matching thresholds or logic, or inspecting alias or transliteration matches.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -857,7 +790,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows that Alloy monitors events and transactions and can generate alerts or investigations (alloy-docs-17). It also stores event data and returns workflow evaluations (alloy-docs-3, alloy-docs-4). However, nothing documents an analyst view or API that shows what changed for a monitored customer between alerts, such as a diff, change history, or before/after comparison. The mention of 'suspicious PII changes' is a trigger use case, not a capability to inspect changes, so the axis applies but is unevidenced.",
+    "rationale": "Alloy documents ongoing monitoring that generates alerts (workflows that 'generate alerts or investigations when thresholds are met') and can trigger on suspicious PII changes. However, nothing in the evidence shows an analyst-facing view or API that reveals what changed between a monitored customer's prior state and the new alert. Event storage, evaluation results and 206 missing-data warnings are adjacent features, not change inspection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -903,13 +836,12 @@
     "productId": "alloy",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Alloy publishes a complete OpenAPI 3.0.0 document and a public reference of 134 endpoints, covering evaluations, entities, events, and webhooks. Some information, such as Evaluation warnings, appears in both the API response and the dashboard. However, nothing documents that the API matches the UI feature-for-feature, and some actions, like re-enabling a disabled webhook, are described only as dashboard settings. Missing for 10: an explicit API/UI parity statement, documented API coverage of workflow/Journey configuration, SSO/SCIM and webhook settings, and independent hands-on corroboration of parity.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Alloy documents its own first-party APIs for core operations: the Events API for real-time decisioning, and the Evaluation API, whose warnings appear in both the API response and the dashboard. That points to some API/UI parity for evaluation data. Nothing claims that everything doable in the UI is doable via the API, and re-enabling a webhook is described only as 'setting to active in your webhook settings.' Missing for 10: an explicit API-parity statement, documented API coverage for workflow/Journey configuration, webhook management and SSO/SCIM setup, and independent corroboration.",
     "evidenceIds": [
-      "alloy-openapi-20261106",
-      "alloy-tryit-20261106",
       "alloy-docs-1",
+      "alloy-docs-4",
       "alloy-docs-11",
       "alloy-docs-9"
     ],
@@ -919,20 +851,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "alloy-openapi-20261106",
-          "quote": "Alloy serves its complete OpenAPI 3.0.0 document at the docs origin"
-        },
-        {
-          "evidenceId": "alloy-tryit-20261106",
-          "quote": "The ReadMe-hosted API reference (134 endpoint pages, publicly browsable)"
+          "evidenceId": "alloy-docs-1",
+          "quote": "Alloy's Events API allows you to build a real-time integration for decisioning on suspicious ongoing behavior as soon as it happens."
         },
         {
           "evidenceId": "alloy-docs-11",
           "quote": "the warnings section in the Evaluation API response and dashboard gives additional information about what data was missing"
         },
         {
-          "evidenceId": "alloy-docs-1",
-          "quote": "Alloy's Events API allows you to build a real-time integration for decisioning on suspicious ongoing behavior as soon as it happens."
+          "evidenceId": "alloy-docs-4",
+          "quote": "Alloy will return results of the Source Workflow under the evaluations[] array in the Events response."
         }
       ]
     }
@@ -943,7 +871,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk data export applies to a SaaS fraud and identity platform that stores customer entities and event data, but the evidence pack never documents an export feature, open-format downloads, or an offboarding path. Alloy's public REST API, OpenAPI document, entity endpoints and webhooks are developer building blocks for building an export oneself, not an export capability, so they earn no credit.",
+    "rationale": "Alloy is a SaaS identity and fraud-decisioning platform, so bulk data export and portability is a fair question to ask of it. The evidence pack documents no bulk export, open-format download, or offboarding capability. Events API, webhooks and evaluation responses are per-request integration features, not a full data export, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -958,7 +886,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a SaaS fraud and identity platform's source is open-licensed is a fair openness question, so the axis applies. The pack has no evidence of any source repository or open license for Alloy. The publicly served OpenAPI document, the docs .md mirrors and the SDK mention are API descriptions and developer surfaces, not product source under an open license, so they earn no credit.",
+    "rationale": "Alloy is a SaaS identity and fraud-decisioning platform. Whether its source is available under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence says any Alloy source code, including the SDK, is published under an open license; the SDK mention says nothing about licensing or source availability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -973,7 +901,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is a hosted identity and fraud-decisioning SaaS, and a buyer could fairly ask whether it offers a self-hosted or on-prem deployment, so the axis applies. The evidence only documents vendor-hosted API bases (sandbox.alloy.co and api.alloy.co) and a Sandbox processing mode that is not a separate environment. Nothing in the pack shows a self-hostable distribution or on-prem option.",
+    "rationale": "Alloy is a hosted identity and fraud decisioning platform. Asking whether a SaaS platform offers self-hosting or on-prem deployment is a fair axis, so this is not a category error. Nothing in the evidence pack mentions self-hosting, on-prem deployment, or a downloadable core product; the docs describe only hosted APIs, webhooks, workflows, and a status page.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -988,12 +916,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Alloy documents real-time decisioning on submitted events, including interdicting on transactions. When a Source Workflow is mapped, the Events response returns its results in an evaluations[] array, which covers screening a payment before release and reading back the decision. Nothing in the evidence shows the supporting matches (e.g., sanctions or watchlist hit details) that a compliance officer would inspect behind the decision. Missing for 10: documented match or hit details supporting the decision, explicit pre-release payment hold/release flow, a reviewer UI for inspecting decision rationale, independent or hands-on corroboration.",
+    "rationale": "Alloy documents real-time decisioning on events, including interdicting on transactions, and returns Source Workflow results in an evaluations[] array. That covers screening a payment and getting a decision back, but the evidence never shows the supporting matches (such as watchlist or sanctions hits) a compliance officer would inspect behind that decision. missing for 10: documented display of supporting match details behind a decision, an explicit hold-before-release payment flow, a compliance-officer review UI for transaction decisions, and independent or hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-1",
       "alloy-docs-2",
       "alloy-docs-4",
-      "alloy-docs-17"
+      "alloy-docs-17",
+      "alloy-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -1006,11 +935,11 @@
         },
         {
           "evidenceId": "alloy-docs-1",
-          "quote": "build a real-time integration for decisioning on suspicious ongoing behavior as soon as it happens"
+          "quote": "Alloy's Events API allows you to build a real-time integration for decisioning on suspicious ongoing behavior as soon as it happens."
         },
         {
           "evidenceId": "alloy-docs-4",
-          "quote": "Alloy will return results of the Source Workflow under the evaluations[] array in the Events response"
+          "quote": "Alloy will return results of the Source Workflow under the evaluations[] array in the Events response."
         },
         {
           "evidenceId": "alloy-docs-17",
@@ -1025,7 +954,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "PEP screening is a fair question for an identity, KYC and AML decisioning platform like Alloy, so the axis applies. However, the evidence pack never documents identifying politically exposed persons, related associates, or supporting source context. The only nearby material is a general marketing line about AML checks and a mention of watchlist-update webhook events, and neither establishes this capability.",
+    "rationale": "Alloy is a KYC/AML decisioning platform, so PEP screening is a fair axis for it. However, the evidence pack contains no documentation of identifying politically exposed persons, their relatives or close associates, or supporting source context. The only related items are generic: AML checks and a passing mention of watchlist updates triggering webhooks. Neither is evidence of this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1040,7 +969,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is a SaaS identity, fraud and KYC platform that stores customer PII, so choosing a data region is a fair question for this kind of product. Nothing in the evidence pack documents region selection, data residency options, or regional hosting. The only storage-related item says Sandbox and Production share a single data store for the account, which concerns mode isolation rather than geographic residency.",
+    "rationale": "Alloy is a SaaS identity and fraud-decisioning platform that stores customer PII, so data residency and region choice is a fair axis to ask about. However, the evidence pack contains nothing about choosing a storage region or residency. The only storage reference is that Alloy 'stores the data submitted on events', which says nothing about where that data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1055,7 +984,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy processes customer identity and fraud data and promotes a machine-learning model (Fraud Signal), so a training opt-out is a fair question for this product. However, nothing in the evidence documents a setting, contractual term, or policy that keeps customer data out of model training. The ML marketing claim says nothing about how customer data is used for training.",
+    "rationale": "Alloy is a fraud and identity decisioning SaaS that runs ML models (Fraud Signal), so a training opt-out is a fair question for it. The evidence pack contains no documentation of an opt-out, a no-training commitment, or any data-use control for model training. The only related item describes Alloy's own ML model adapting to threats, which says nothing about whether customers can exclude their data from training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1070,7 +999,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is an identity and fraud decisioning platform that stores customer PII, so data retention and deletion controls are a fair question for it. The evidence pack documents no retention settings, deletion endpoints or data-purge controls. The mentions that Alloy stores event data and keeps entities in a shared data store describe storage, not user control over retention or deletion. Entity merging is an adjacent feature, not deletion.",
+    "rationale": "Alloy is an identity and fraud decisioning platform that stores customer PII, so controlling data retention and deletion is a fair question to ask of it. The evidence pack only says that Alloy stores event data (alloy-docs-3) and supports entity merging and ID assignment (alloy-docs-24). Neither is a user-controlled retention policy or a deletion capability, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1085,7 +1014,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is an identity and fraud decisioning SaaS with an SDK, so a telemetry or usage-tracking opt-out is a fair question for this kind of product. The evidence pack never mentions telemetry, usage tracking, or any opt-out control. The Events, monitoring and webhook docs cover customer-submitted fraud data, not product telemetry, so they are off-topic.",
+    "rationale": "Alloy is an identity and fraud decisioning SaaS with an SDK, so a telemetry or usage-tracking opt-out is a fair question for this kind of product. The evidence pack covers events, webhooks, workflows, health monitoring and SSO, but contains nothing about telemetry, usage tracking, or any opt-out control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1100,7 +1029,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency and cross-border handling are a fair governance question for a KYC/fraud-decisioning SaaS like Alloy, so the axis applies. However, nothing in the evidence pack documents a contracted processing region, data-residency options or cross-border transfer handling. The sandbox note about a single shared data store concerns the data boundary between processing modes, not geography, so it earns no credit.",
+    "rationale": "Alloy is an identity, fraud and compliance SaaS platform, so processing-region and cross-border data handling is a fair question for it. However, nothing in the evidence pack covers data residency, deployment regions, contracted processing locations, or cross-border transfer handling. The items cover events, webhooks, workflows, health monitoring and SSO, none of which address this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1115,7 +1044,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is an identity, fraud and AML platform, so preparing a suspicious-activity report is a fair question for it. The evidence only shows adjacent capabilities: transaction monitoring that \"generate[s] alerts or investigations\" and Investigations as a case concept. Nothing documents preparing a SAR, let alone a jurisdiction-specific one assembled from case evidence.",
+    "rationale": "Alloy is an AML and fraud compliance platform, so preparing suspicious-activity reports is a fair question to ask of it. The evidence shows transaction monitoring that can 'generate alerts or investigations', but nothing documents preparing a suspicious-activity report, let alone a jurisdiction-specific one, from case evidence. Alert and investigation generation is an adjacent feature and earns no credit toward report preparation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1130,7 +1059,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alloy is a KYC/AML and fraud-monitoring platform, so an approval gate before submitting regulatory reports (such as SAR filings) is a fair question for it. The evidence never describes regulatory report submission or a required authorized sign-off before external filing. Mentions of manual review events, investigations, and \"fully auditable agentic automation\" are adjacent features, not a documented approval gate on outbound regulatory reports.",
+    "rationale": "Alloy is a KYC/AML and fraud compliance platform, so a human approval gate before filing a regulatory report (e.g., a SAR) is a fair axis. However, the evidence never documents regulatory report submission or an authorized-approval step before one. Mentions of manual reviews, investigations and 'auditable agentic automation' are adjacent features, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1145,7 +1074,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Retention and deletion of customer and investigation data is a fair governance question for an identity, fraud and AML platform that stores entity and event data, so the axis applies. The pack never documents retention periods, deletion APIs, purge controls or any way to verify data deletion. The nearest items (Alloy storing event data, a shared data store across sandbox and production, entity merging) are adjacent behaviors, not retention or deletion controls.",
+    "rationale": "Alloy is an identity, fraud and compliance platform that stores customer and investigation data, so data retention and deletion controls are a fair axis to judge. The evidence pack never documents retention periods, deletion endpoints, or data-purge settings. It only notes that Alloy stores event data and mentions entity merging, which is adjacent functionality and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1160,7 +1089,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack has no evidence that a compliance officer can configure customer risk factors or inspect why a customer's risk score changed. The closest items are adjacent rather than this capability: workflows that apply policy logic to transactions, the Fraud Signal ML model, marketing claims of a 'single view of fraud risk' and 'real-time risk signals', and Evaluation responses showing vendor service execution status. None of these documents configurable risk factors or a risk-score change explanation.",
+    "rationale": "Alloy is a KYC/AML and fraud-decisioning platform, so configurable customer risk scoring is a fair question to ask. However, the evidence never documents configurable customer risk factors, a risk score, or any explanation of why a score changed. The closest items are adjacent features: workflows that \"apply policy logic,\" evaluation results returned in an evaluations[] array, and a services object showing vendor execution status. None of these is a risk-factor configuration or a score-change explanation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1175,7 +1104,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of role-based permissions, role definitions, or ways to restrict investigation or administrative actions to specific roles. The only related item is a list of SAML SSO and SCIM configuration guides. SSO and SCIM handle identity and user provisioning, which is an adjacent control, not documented role-scoped authorization, so it earns no credit.",
+    "rationale": "The evidence pack has no documentation of role-based access controls or permissions that limit who can perform investigation or administrative actions in Alloy. The only nearby evidence is doc titles for SAML SSO and SCIM configuration. Those cover identity federation and user provisioning, an adjacent control that does not show role-scoped restriction of actions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1190,10 +1119,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Alloy's own marketing says it runs KYC/KYB and AML checks, which covers individuals and companies. Its webhook docs mention events fired 'when a watchlist gets updated', which suggests watchlist screening exists. However, no evidence describes screening against sanctions lists specifically, choosing which lists to screen against, or how matches are returned. Missing for 10: explicit sanctions/watchlist screening documentation, selectable list configuration, entity vs. individual screening details, match/hit results handling, independent corroboration.",
+    "rationale": "Alloy's own docs say it runs AML checks across KYC/KYB, which covers both individuals and businesses. Its webhook docs also refer to asynchronous events \"when a watchlist gets updated\", which implies watchlist screening exists. Neither is more than a glancing mention. Missing for 10: documented sanctions/watchlist screening functionality, ability to select specific sanctions lists or watchlists, explicit company/entity screening details, match handling or review docs, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "alloy-docs-20",
-      "alloy-docs-5"
+      "alloy-docs-5",
+      "alloy-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -1201,12 +1130,12 @@
       "subject": "As a compliance-officer, I can screen individuals and companies against selected sanctions and watchlists",
       "citations": [
         {
-          "evidenceId": "alloy-docs-20",
-          "quote": "Streamline perpetual KYC/KYB, AML, and fraud checks with fully auditable agentic automation"
+          "evidenceId": "alloy-docs-5",
+          "quote": "asynchronous events like when a watchlist gets updated"
         },
         {
-          "evidenceId": "alloy-docs-5",
-          "quote": "asynchronous events like when a watchlist gets updated or a manual review occurs"
+          "evidenceId": "alloy-docs-20",
+          "quote": "Streamline perpetual KYC/KYB, AML, and fraud checks with fully auditable agentic automation"
         }
       ]
     }
@@ -1217,12 +1146,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Alloy documents a transaction-monitoring workflow use case that monitors transaction events in real time or on a schedule, applies policy logic, and raises alerts or investigations when thresholds are met. Events can also be routed to Source Workflows for evaluation. This covers configurable monitoring rules and thresholds, but nothing shows thresholds can differ by customer segment or how a compliance officer authors them. Missing for 10: segment-specific threshold configuration, documentation of the rule-authoring interface for compliance users, independent or hands-on corroboration.",
+    "rationale": "Alloy documents its own transaction-monitoring workflows. They evaluate transaction events in real time or on a schedule, apply policy logic and raise alerts when thresholds are met, and events can be routed to Source Workflows for monitoring. However, no evidence shows thresholds being set per customer segment or describes the compliance-officer rule-configuration experience. Missing for 10: documented segment-specific threshold configuration, detail on rule authoring for compliance users, independent or hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-17",
+      "alloy-docs-15",
       "alloy-docs-3",
-      "alloy-docs-4",
-      "alloy-docs-15"
+      "alloy-docs-2",
+      "alloy-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -1234,12 +1164,16 @@
           "quote": "Monitors transaction events in real time or at scheduled times to detect suspicious activity, apply policy logic, and generate alerts or investigations when thresholds are met."
         },
         {
+          "evidenceId": "alloy-docs-15",
+          "quote": "Workflows can run in real time as part of a Journey evaluating an incoming application, or on a schedule as a Portfolio workflow"
+        },
+        {
           "evidenceId": "alloy-docs-3",
           "quote": "any event can be submitted for additional monitoring by mapping the event type to a Source Workflow."
         },
         {
-          "evidenceId": "alloy-docs-15",
-          "quote": "Workflows can run in real time as part of a Journey evaluating an incoming application, or on a schedule as a Portfolio workflow"
+          "evidenceId": "alloy-docs-2",
+          "quote": "Alloy supports dozens of use cases like interdicting on transactions"
         }
       ]
     }
@@ -1250,7 +1184,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Alloy's homepage claims \"fully auditable agentic automation\" for KYC/KYB and AML checks. That is the product's own agentic capability in the screening domain, and \"auditable\" implies some record of its work. However, this single marketing line does not describe an in-product agent reviewing screening or watchlist matches, nor recording a per-decision rationale. Missing for 10: documentation of an agent that dispositions screening matches, evidence that the agent's rationale is recorded per match, a description of the review workflow or UI, and independent or hands-on corroboration.",
+    "rationale": "Alloy's homepage claims \"fully auditable agentic automation\" for KYC/KYB and AML checks. That points to a first-party agent working in the compliance-check domain with an audit trail, but it is a single marketing line. No docs show the agent reviewing screening or watchlist matches, or recording a rationale per decision. Missing for 10: documentation of an in-product agent that reviews screening matches, evidence of recorded per-match rationale, details of the review workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-20"
     ],
@@ -1272,10 +1206,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Alloy documents signed webhooks: it signs the request body with a shared secret and sends the signature in the Authorization header, which lets a developer verify authenticity and integrity. It also documents that failed deliveries are retried with exponential backoff for 24 hours, but nothing describes a unique event ID or idempotency key for deduplicating those retries. Missing for 10: documented event/delivery IDs or idempotency guidance for deduplicating retried notifications, signature-verification details (algorithm, replay/timestamp protection), independent corroboration.",
+    "rationale": "Alloy documents webhook signing: it signs the request body with a shared secret and sends the signature in the Authorization header, so developers can verify authenticity and integrity. It also documents retries with exponential backoff, but nothing in the evidence describes event IDs, idempotency keys or other guidance for deduplicating retried deliveries. That leaves only half the story supported. Missing for 10: documented unique event or delivery identifiers or idempotency guidance for deduplicating retries, signature verification details (algorithm, replay or timestamp protection), independent or hands-on corroboration.",
     "evidenceIds": [
-      "alloy-docs-7",
       "alloy-docs-6",
+      "alloy-docs-7",
       "alloy-docs-8",
       "alloy-docs-5"
     ],
@@ -1294,7 +1228,7 @@
         },
         {
           "evidenceId": "alloy-docs-8",
-          "quote": "retries continue on an exponential backoff for a duration of 24 hours from the time of the first failure"
+          "quote": "retries continue on an exponential backoff for a duration of 24 hours from the time of the first failure."
         }
       ]
     }
@@ -1304,8 +1238,8 @@
     "storyId": "stable-external-ids",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Alloy's docs index lists first-party pages on retroactively assigning an External Entity ID, supporting multiple External Entity IDs, and entity merging. That points to a native way to reconcile customer (entity) records against stable external identifiers. The evidence is only index titles with no detail, and nothing shows external identifiers for case or investigation records. Missing for 10: documented detail of external-ID behavior and lookup semantics, external-ID support for case/investigation records, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Alloy's docs index lists first-party pages on assigning external entity IDs retroactively, supporting multiple external entity IDs, and entity merging. That points to documented customer/entity reconciliation by stable external identifiers, but the evidence is only page titles with no detail. Missing for 10: any evidence that case/investigation records carry or reconcile on external identifiers, substantive documentation of how external ID assignment and merging behave, and independent or hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-24"
     ],
@@ -1327,13 +1261,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Alloy documents submitting transaction events through its Events API, with optional routing to a Source Workflow for monitoring. External Entity IDs suggest customer identifiers can be attached. The evidence never shows counterparty fields in the transaction payload, and never describes validation errors or how to correct and resubmit rejected input; the 206 warnings cover missing vendor data, not rejected submissions. Missing for 10: documented counterparty identifier fields on transaction events, documented rejection/validation error handling and resubmission flow, explicit transaction payload schema with customer IDs, independent corroboration.",
+    "rationale": "Alloy documents an Events API that ingests transaction events for real-time or scheduled monitoring through Source Workflows. Customer identity is handled through External Entity IDs, and 206 warnings report missing data. Counterparty identifiers and explicit handling or recovery for rejected input are not documented. Missing for 10: documented counterparty identifier fields on transaction events, validation-error responses and a resubmission/recovery flow for rejected input, independent or hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-1",
       "alloy-docs-2",
       "alloy-docs-3",
       "alloy-docs-17",
-      "alloy-docs-24"
+      "alloy-docs-24",
+      "alloy-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -1355,6 +1290,10 @@
         {
           "evidenceId": "alloy-docs-24",
           "quote": "Retroactively Assigning an External Entity ID ... Multiple External Entity IDs"
+        },
+        {
+          "evidenceId": "alloy-docs-11",
+          "quote": "When an Evaluation is in a 206 status, the warnings section in the Evaluation API response and dashboard gives additional information about what data was missing"
         }
       ]
     }

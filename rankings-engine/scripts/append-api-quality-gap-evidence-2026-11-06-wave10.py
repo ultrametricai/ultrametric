@@ -2,7 +2,9 @@
 # API-quality crawl-gap repairs, 2026-11-06 wave 10: the next twelve rows from the
 # corrected staleness ranking on post-#644 main (49 gap rows; waves 1-9 = PRs #623,
 # #627, #630, #632, #634, #639, #641, #643, #644). Roster: sevdesk, channel3,
-# undermind, kling, luma, pika, aircall, quo, pomelo, gitea, alloy, hummingbird.
+# undermind, kling, luma, pika, aircall, pomelo, gitea, hummingbird.
+# Quo and Alloy are withdrawn from this proposal after evidence review.
+# Their complete original inputs and model proposals remain in the PR ancestry.
 # iterm2 stays deferred (wave-2 ledger), foreloop stays excluded pending the maintainer
 # ruling (wave-7 ledger), and the two kimi cells escalated in #644 ship as judged.
 #
@@ -188,38 +190,6 @@ ITEMS = {
           'The account is valid for 4 months and can be extended as needed as long as you remain in the program'],
          'Aircall provisions test access for approved partners: "We\'ll create a trial developer account for you to build and test your integration against", valid for four months and extendable in the program, with two OAuth applications ("one for production and one for development"). Gating verbatim: "Make sure you\'ve been approved as an Aircall Technology Partner before moving forward." The partner marketing promises "dedicated support, developer sandboxes, and co-marketing opportunities". Caveats: vendor-provisioned and partner-gated, with no test base URL or test-key documentation (zero sandbox text in the API reference and docs index).'),
     ],
-    ('business-phone', 'quo'): [
-        ('quo-openapi-20261106', 'claimed-docs',
-         'https://openphone-public-api-prod.s3.us-west-2.amazonaws.com/public/openphone-public-api-2026-03-30-prod.json',
-         ['"openapi": "3.1.0"', '"title": "Quo Public API"'],
-         'Quo (formerly OpenPhone; openphone.com 301-redirects to quo.com) publishes downloadable OpenAPI 3.1.0 documents for its Public API ("API for connecting with Quo.", production server https://api.quo.com): this dated-version document (2026-03-30) is linked from the served docs pages, a v1 document is linked from the docs llms.txt ("View the raw OpenAPI specification for API version v1"). Caveat: the files are served from an S3 bucket that keeps the pre-rebrand openphone name.'),
-        ('quo-tryit-20261106', 'claimed-docs',
-         'https://www.quo.com/docs/2026-03-30/calls/list-calls',
-         ['data-testid="try-it-button"', 'aria-label="Try it"'],
-         'The Mintlify-hosted API reference runs the "Try it" playground per endpoint, with llms.txt and .md mirrors of every page; the runner executes against the production API with a real key.'),
-        # Review grounding row (PR #691 third round): summaries attach to the call
-        # record itself.
-        ('quo-call-summaries-20261106', 'claimed-docs',
-         'https://www.quo.com/docs/mdx/api-reference/calls/get-a-summary-for-a-call.md',
-         ['Retrieve a detailed summary of a specific call identified by its unique call ID'],
-         'Quo attaches AI summaries to the call record: "Retrieve a detailed summary of a specific call identified by its unique call ID. This endpoint supports summaries for both regular calls and calls handled by Sona." A dedicated webhook triggers on call-summary events. Gate caveat verbatim: "Call summaries are only available on business and scale plans."'),
-        # Provenance correction (PR #691 maintainer finding): the webhook claim binds to
-        # its own source page rather than riding the summary-retrieval row.
-        ('quo-summary-webhook-20261106', 'claimed-docs',
-         'https://www.quo.com/docs/mdx/api-reference/webhooks/create-a-new-webhook-for-call-summaries.md',
-         ['Creates a new webhook that triggers on events from call summaries'],
-         'Quo documents a dedicated call-summary webhook: "Creates a new webhook that triggers on events from call summaries."'),
-        ('quo-webhooks-api-20261106', 'claimed-docs',
-         'https://www.quo.com/docs/mdx/api-reference/webhooks/lists-all-webhooks.md',
-         ['List all webhooks for a user'],
-         'Quo documents a full webhooks API: list, get, and delete webhooks plus dedicated create endpoints per event family - messages ("Creates a new webhook that triggers on events from messages."), calls, call summaries, and call transcripts - alongside legacy signature validation ("Verify the OpenPhone-Signature header on legacy webhooks created in the Quo app or with the v1 API.").'),
-        ('quo-versioning-20261106', 'claimed-docs',
-         'https://www.quo.com/docs/2026-03-30/versioning.md',
-         ['Every version is a date. Every request declares which date it was built for:',
-          'The header is **required on every request**, and there is no default version.',
-          'No version disappears quietly.'],
-         'Quo publishes an explicit date-based versioning policy: "Every version is a date. Every request declares which date it was built for" (Quo-Api-Version header, "required on every request, and there is no default version"), "A version is frozen the day it ships." with an enumerated breaking-change list, and a retirement commitment: "No version disappears quietly. If a version is ever scheduled for retirement, we\'ll announce it in the changelog with a migration window and a precise list of what changed." The previous URL-versioned v1 API "remains fully supported and is not going anywhere without the notice described above", and the dated changelog carries current entries.'),
-    ],
     ('card-issuing', 'pomelo'): [
         ('pomelo-stage-20261106', 'claimed-docs',
          'https://developers.pomelo.la/api-reference/get-started/connection-methods',
@@ -255,25 +225,6 @@ ITEMS = {
          ['auto-generated by swagger and available on'],
          'The API usage guide documents the built-in reference ("API Reference guide is auto-generated by swagger and available on: https://gitea.your.host/api/swagger"), authentication, and pagination, with every example against the versioned /api/v1 base, and the docs site keeps per-release versions (29-dev back through 1.22). Caveats: no deprecation or backward-compatibility statement exists in the guide, the FAQ, or the per-release docs, and no vendor page documents a hosted test instance (try.gitea.io no longer resolves; demo.gitea.com is live but undocumented as a demo).'),
     ],
-    ('compliance-screening', 'alloy'): [
-        ('alloy-openapi-20261106', 'claimed-docs',
-         'https://developer.alloy.com/public/openapi/alloy.yaml',
-         ['{"openapi":"3.0.0","info":{"title":"Alloy API"',
-          '"servers":[{"url":"https://sandbox.alloy.co/v1","description":"Sandbox endpoint"'],
-         'Alloy serves its complete OpenAPI 3.0.0 document at the docs origin (servers sandbox.alloy.co/v1 and api.alloy.co/v1). Caveats: the file is publicly served but not UI-linked (project config disables the download button while keeping OpenAPI visibility public); the advertised machine-readable surface is the docs llms.txt ("For AI agents: the docs index is at https://developer.alloy.com/public/llms.txt") plus per-page .md mirrors carrying per-endpoint OpenAPI fragments.'),
-        ('alloy-tryit-20261106', 'claimed-docs',
-         'https://developer.alloy.com/public/reference/get_entities-entity-token-2',
-         ['Try It!'],
-         'The ReadMe-hosted API reference (134 endpoint pages, publicly browsable) runs the "Try It!" request panel with SDK snippets enabled; execution uses the caller\'s own keys against the live sandbox/production bases.'),
-        ('alloy-sandbox-mode-20261106', 'claimed-docs',
-         'https://developer.alloy.com/public/docs/sandbox-vs-production.md',
-         ["Alloy's API offers two modes", 'alloy-sandbox: true'],
-         'Alloy documents a Sandbox mode: "Alloy\'s API offers two modes: **Production (Live)** and **Sandbox**... Sandbox makes no vendor calls, so you can test your integration without incurring additional charges", selected by base URL (https://sandbox.alloy.co) or the alloy-sandbox: true header, with the same keys in both modes. Vendor caveat carried verbatim: "**It\'s important to understand that Alloy\'s Sandbox and Production API modes are *not* two separate environments.** They are per-request processing modes only - Alloy does not enforce a data boundary. Most records in Alloy, including Entities, live in a single shared data store for your account, regardless of the mode used to create or update them." Access is customer-gated (an Alloy account and keys).'),
-        ('alloy-deprecations-20261106', 'claimed-docs',
-         'https://developer.alloy.com/public/reference/llms.txt',
-         ['This endpoint is deprecated in favor of the Events API using an event of type "bank_account_created".'],
-         'Versioning is practiced: the servers pin /v1 and deprecated endpoints carry inline warning callouts with migration targets ("This endpoint is deprecated in favor of the Events API..."; "These endpoints are deprecated in favor of using Investigations."). Caveats: no standalone versioning or deprecation-policy page and no API changelog (/public/changelog answers 404, replayed fail-closed; the only changelog is the Web SDK\'s).'),
-    ],
     ('compliance-screening', 'hummingbird'): [
         ('hummingbird-gated-docs-20261106', 'claimed-docs',
          'https://docs.hummingbird.co/password?redirect=%2F',
@@ -290,22 +241,6 @@ REMOVALS: dict = {}
 # the committed deprecation-window sentence was removed and a dated changelog page
 # appeared. The row is re-derived to the current wording.
 UPDATES = {
-    ('business-phone', 'quo'): [
-        # Maintainer provenance finding: the get-a-summary page does not document the
-        # webhook; that claim moves to its own row bound to its own page.
-        ('quo-call-summaries-20261106',
-         'https://www.quo.com/docs/mdx/api-reference/calls/get-a-summary-for-a-call.md',
-         ['Retrieve a detailed summary of a specific call identified by its unique call ID'],
-         'Quo attaches AI summaries to the call record: "Retrieve a detailed summary of a specific call identified by its unique call ID. This endpoint supports summaries for both regular calls and calls handled by Sona." Gate caveat verbatim: "Call summaries are only available on business and scale plans." (The dedicated call-summary webhook is documented on its own page, cited as quo-summary-webhook-20261106.)'),
-    ],
-    ('compliance-screening', 'alloy'): [
-        # Maintainer rubric finding: the isolation caveat is the rubric-decisive fact
-        # for the sandbox story and now leads the excerpt.
-        ('alloy-sandbox-mode-20261106',
-         'https://developer.alloy.com/public/docs/sandbox-vs-production.md',
-         ["Alloy's API offers two modes", 'alloy-sandbox: true'],
-         'Alloy\'s Sandbox is a per-request processing mode, not an isolated environment. Vendor caveat verbatim: "**It\'s important to understand that Alloy\'s Sandbox and Production API modes are *not* two separate environments.** They are per-request processing modes only - Alloy does not enforce a data boundary. Most records in Alloy, including Entities, live in a single shared data store for your account, regardless of the mode used to create or update them." What the mode does: "Alloy\'s API offers two modes: **Production (Live)** and **Sandbox**... Sandbox makes no vendor calls, so you can test your integration without incurring additional charges", selected by base URL (https://sandbox.alloy.co) or the alloy-sandbox: true header, with the same keys in both modes (a dry-run of vendor calls over shared production data; customer-gated).'),
-    ],
     ('ai-video', 'luma'): [
         ('luma-versioning-20261106',
          'https://docs.agents.lumalabs.ai/guides/changelog/index.md',
@@ -342,9 +277,6 @@ NEGATIVE_CHECKS = {
         'https://developers.pomelo.la/openapi.json',
         'https://developers.pomelo.la/swagger.json',
     ],
-    'alloy-deprecations-20261106': [
-        'https://developer.alloy.com/public/changelog',
-    ],
     'hummingbird-gated-docs-20261106': [
         'https://www.hummingbird.co/developers',
         'https://www.hummingbird.co/api',
@@ -364,10 +296,6 @@ JSON_CHECKS = {
 # Fail-closed companion checks (PR #691 P2): claims an excerpt makes from a second page
 # replay against that page. Entries: evidence id -> [(url, [markers])].
 EXTRA_CHECKS = {
-    'quo-call-summaries-20261106': [
-        ('https://www.quo.com/docs/mdx/api-reference/webhooks/create-a-new-webhook-for-call-summaries.md',
-         ['Creates a new webhook that triggers on events from call summaries']),
-    ],
 }
 
 # Fail-closed recorded POST probes (none this wave).

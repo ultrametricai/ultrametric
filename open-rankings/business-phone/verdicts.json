@@ -4446,7 +4446,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo is a US business phone and texting platform, so guided A2P 10DLC brand and campaign registration with approval-status tracking is a fair question for it. However, nothing in the evidence pack mentions 10DLC, brand or campaign registration, carrier compliance workflows, or registration status. The pack covers only the API, MCP, webhooks, pricing and calling features.",
+    "rationale": "Quo is a business phone and texting platform that sends SMS from US local numbers, so guided A2P 10DLC brand and campaign registration with approval-status tracking is a fair axis for it. However, nothing in the evidence pack mentions 10DLC, brand or campaign registration, carrier compliance, or approval status. The texting and number-setup material is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4459,15 +4459,16 @@
     "productId": "quo",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "A probe confirms an llms.txt is live at quo.com (HTTP 200). The Mintlify-hosted API docs also ship their own llms.txt plus .md mirrors of every page, and the docs llms.txt links the raw OpenAPI spec. A dedicated \"Build with AI LLMs\" docs section adds agent-oriented guidance. missing for 10: no evidence of an llms-full.txt or detail on what the Build with AI guide contains, and the root /docs.md path 404s.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "A probe confirms Quo serves a live llms.txt (HTTP 200) that describes the platform, and the API docs include a 'Build with AI LLMs' section, so an agent can be pointed at agent-oriented docs. However, the llms.txt entries shown are mostly marketing pages (comparisons, vanity numbers) rather than API reference, and /docs.md and every OpenAPI path tried return 404. Missing for 10: evidence that llms.txt indexes the API reference, markdown versions of the docs, a machine-readable OpenAPI spec, and independent or hands-on corroboration of agents using the docs.",
     "evidenceIds": [
       "quo-probe-1",
-      "quo-tryit-20261106",
-      "quo-openapi-20261106",
       "quo-docs-8",
-      "quo-versioning-20261106"
+      "quo-docs-19",
+      "quo-docs-29",
+      "quo-probe-2",
+      "quo-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -4476,15 +4477,7 @@
       "citations": [
         {
           "evidenceId": "quo-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://www.quo.com/llms.txt"
-        },
-        {
-          "evidenceId": "quo-tryit-20261106",
-          "quote": "with llms.txt and .md mirrors of every page"
-        },
-        {
-          "evidenceId": "quo-openapi-20261106",
-          "quote": "a v1 document is linked from the docs llms.txt (\"View the raw OpenAPI specification for API version v1\")"
+          "quote": "PROBE llms.txt: HTTP 200 at https://www.quo.com/llms.txt # Quo"
         },
         {
           "evidenceId": "quo-docs-8",
@@ -4499,11 +4492,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Quo generates AI insights from the user's own call data inside the product: recorded calls are transcribed and summarized, AI call tags are offered, and summaries are attached to the call record, though only on business and scale plans. The MCP and Claude/ChatGPT connectors produce summaries in an external agent, not inside Quo, so they are not credited here. Missing for 10: any documented AI-generated suggestions or recommendations, insights beyond individual call summaries and tags (e.g. across messages or the whole workspace, since 'Spot issues before they cost your business' is too vague to credit), availability on all plans, and independent or hands-on corroboration.",
+    "rationale": "Quo's own documentation shows in-product AI insights: recorded calls are transcribed and summarized, and plans include AI call tags. Summaries requested through the MCP or Claude/ChatGPT connectors happen in an external agent, not inside Quo, so they are not credited here. missing for 10: AI-generated suggestions or recommendations, insights across aggregate data beyond individual calls, depth documentation of the AI tagging and summary features, independent or hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-23",
-      "quo-docs-27",
-      "quo-call-summaries-20261106"
+      "quo-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -4517,10 +4509,6 @@
         {
           "evidenceId": "quo-docs-27",
           "quote": "AI call tags"
-        },
-        {
-          "evidenceId": "quo-call-summaries-20261106",
-          "quote": "Call summaries are only available on business and scale plans."
         }
       ]
     }
@@ -4531,9 +4519,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Quo's own Sona AI agent works autonomously in the background: it answers calls when the team can't, captures details and hands off. That is a narrow, product-defined autonomous behavior rather than a general automation builder. Webhooks and the API are only developer building blocks, and the MCP connectors are interactive chat use, so neither earns credit here. Missing for 10: a user-configurable automation/workflow builder, triggers or schedules for background runs, documentation of how Sona is set up or customized, and independent or hands-on corroboration.",
+    "rationale": "Quo's own documented features run without a person present. Sona answers calls when the team can't and hands conversations off, recorded calls are automatically transcribed and summarized, and calls are routed by configurable ring orders and phone menus. The evidence shows no general user-configurable automation or workflow builder, and the API and MCP server are developer building blocks that earn no credit here. Missing for 10: a documented user-defined automation builder (triggers, actions, schedules), recurring or scheduled background jobs, detail on how Sona's behavior is configured, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "quo-docs-22"
+      "quo-docs-22",
+      "quo-docs-23",
+      "quo-docs-26",
+      "quo-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -4543,6 +4534,14 @@
         {
           "evidenceId": "quo-docs-22",
           "quote": "Sona answers when your team can't, captures the details you need, and hands the conversation to your team when it matters."
+        },
+        {
+          "evidenceId": "quo-docs-23",
+          "quote": "Recorded calls come back transcribed and summarized, so no detail is missed and nobody has to take notes."
+        },
+        {
+          "evidenceId": "quo-docs-26",
+          "quote": "Custom ring orders ... Call transfers ... Phone menus"
         }
       ]
     }
@@ -4553,10 +4552,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Quo ships a built-in AI agent, Sona, which the team can rely on to answer calls when they cannot, capture details, and hand conversations back, and the API documents summaries for calls handled by Sona. That makes Sona a real in-product AI that takes over a delegated task. However, it is scoped to call answering and intake, not a general assistant users can hand arbitrary tasks to. The Claude/ChatGPT connectors and the MCP server rely on external agents, so they earn no credit here. Missing for 10: a general-purpose in-product assistant accepting user-issued tasks, documentation of how users configure or delegate to Sona, and independent or hands-on corroboration.",
+    "rationale": "Quo ships a built-in AI agent, Sona, that the business delegates call answering to: it answers when the team can't, captures details, and hands off to humans. Built-in AI also transcribes and summarizes calls and applies AI call tags. The MCP server and Claude/ChatGPT connectors are external agents, not a built-in assistant, so they earn no credit here. Missing for 10: a general-purpose in-product assistant that accepts arbitrary user-delegated tasks, documentation of Sona's configuration and task scope, and independent or hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-22",
-      "quo-call-summaries-20261106"
+      "quo-docs-23",
+      "quo-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -4568,8 +4568,8 @@
           "quote": "Sona answers when your team can't, captures the details you need, and hands the conversation to your team when it matters."
         },
         {
-          "evidenceId": "quo-call-summaries-20261106",
-          "quote": "This endpoint supports summaries for both regular calls and calls handled by Sona."
+          "evidenceId": "quo-docs-23",
+          "quote": "Recorded calls come back transcribed and summarized, so no detail is missed and nobody has to take notes."
         }
       ]
     }
@@ -4577,23 +4577,21 @@
   {
     "productId": "quo",
     "storyId": "agentic-headless",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Quo's own public REST API supports non-interactive automation. Requests authenticate with API keys sent in a header, return standardized JSON, and are described by a published OpenAPI 3.1 spec and a date-based versioning policy, with webhooks for event-driven pipelines. Missing for 10: no official CLI or CI-specific integration docs/examples, no hands-on or independent corroboration of headless/CI usage, and a 10 req/s per-key rate limit that constrains heavy automation.",
+    "rationale": "Quo has its own documented REST API with API-key authentication, JSON responses and per-key rate limits. That lets scripts and automations drive the product without the app UI, which is the core of headless operation for a SaaS. There is no CLI, no CI-specific guidance, and probes found no OpenAPI spec, so automation is possible only through custom API integration. Missing for 10: an official CLI or headless runner, CI/pipeline documentation or examples, a published machine-readable API spec, and independent hands-on corroboration of automated use.",
     "evidenceIds": [
       "quo-docs-1",
-      "quo-docs-2",
       "quo-docs-3",
       "quo-docs-4",
       "quo-docs-6",
-      "quo-openapi-20261106",
-      "quo-versioning-20261106",
-      "quo-webhooks-api-20261106"
+      "quo-docs-7",
+      "quo-probe-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -4605,16 +4603,12 @@
           "quote": "Include your API key in the Authorization header of each request: `Authorization: YOUR_API_KEY`"
         },
         {
-          "evidenceId": "quo-docs-3",
-          "quote": "Each key provides full API access."
+          "evidenceId": "quo-docs-6",
+          "quote": "Each API key may make up to 10 requests per second."
         },
         {
-          "evidenceId": "quo-docs-2",
-          "quote": "All API responses are returned in standardized JSON format"
-        },
-        {
-          "evidenceId": "quo-webhooks-api-20261106",
-          "quote": "Creates a new webhook that triggers on events from messages."
+          "evidenceId": "quo-docs-7",
+          "quote": "an API your own agent can read and act on"
         }
       ]
     }
@@ -4625,7 +4619,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo ships an AI agent (Sona), so letting it plug in external MCP servers and use their tools is a fair question for this product. However, the evidence only documents Quo's own public MCP server and its connectors for Claude and ChatGPT. That is the server role, where other agents call Quo, and it does not count toward Quo consuming third-party MCP servers. No evidence shows Quo or Sona acting as an MCP client.",
+    "rationale": "The evidence shows Quo acting only as an MCP server, exposing its conversations, contacts and calls to external agents like Claude and ChatGPT. That is the server role and does not count toward this client-side story. Nothing shows Quo, or its Sona AI agent, connecting to third-party MCP servers to use their tools, so this applicable axis gets no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4640,15 +4634,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Quo, a business phone SaaS (not itself an agent), documents a public, official MCP server on its support site. The server lets any agent manage conversations, contacts, call history, voicemail transcripts and texting in plain English, and a probe confirms the official MCP documentation page exists. Missing for 10: independent or hands-on corroboration of the server working, and documented connection specifics (endpoint URL, auth/setup steps) in the evidence.",
+    "rationale": "Quo, a business phone SaaS, publicly claims a public MCP server and has a dedicated support page. That page documents agent-accessible MCP capabilities across messages, calls, voicemail transcripts, and contacts, and a probe confirmed it exists. missing for 10: documented connection details (endpoint URL, auth/OAuth setup steps for the MCP server), independent or hands-on corroboration of connecting an agent.",
     "evidenceIds": [
       "quo-docs-7",
       "quo-docs-9",
-      "quo-probe-4",
+      "quo-docs-10",
       "quo-docs-11",
       "quo-docs-12",
       "quo-docs-13",
-      "quo-docs-14"
+      "quo-docs-14",
+      "quo-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -4657,19 +4652,19 @@
       "citations": [
         {
           "evidenceId": "quo-docs-7",
-          "quote": "plus a public MCP server and an API your own agent can read and act on"
+          "quote": "One-click connectors for Claude and ChatGPT, plus a public MCP server and an API your own agent can read and act on."
         },
         {
           "evidenceId": "quo-docs-9",
           "quote": "Connect Quo to any agent and manage your conversations, contacts, and call transcripts in plain English. No coding required."
         },
         {
-          "evidenceId": "quo-probe-4",
-          "quote": "official MCP server documented at https://support.quo.com/core-concepts/integrations/mcp"
-        },
-        {
           "evidenceId": "quo-docs-14",
           "quote": "Search your contact list, look up a specific contact’s details, add new contacts, or update existing ones just by asking."
+        },
+        {
+          "evidenceId": "quo-probe-4",
+          "quote": "official MCP server documented at https://support.quo.com/core-concepts/integrations/mcp"
         }
       ]
     }
@@ -4680,14 +4675,16 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Quo documents a first-party public MCP server and one-click Claude/ChatGPT connectors that let users manage conversations, contacts, call history, voicemail transcripts and outbound texts \"in plain English\" with no coding required. That covers the product's core day-to-day operations through natural-language commands. missing for 10: evidence of natural-language control over admin and configuration tasks (call routing, phone menus, number setup), a native in-app natural-language command surface rather than one reached through an external agent, and independent or hands-on corroboration.",
+    "rationale": "Quo documents a first-party public MCP server and one-click Claude/ChatGPT connectors that let users manage conversations, contacts, and call transcripts \"in plain English\" with no coding. Documented commands cover summarizing inboxes, sending texts and broadcasts, filtering message and call history, retrieving voicemail transcripts, and adding or updating contacts. Missing for 10: natural-language control of the wider product (call routing, phone menus, number and workspace settings) is not evidenced, operation depends on an external agent host rather than a native in-app command interface, and there is no independent or hands-on corroboration.",
     "evidenceIds": [
-      "quo-docs-9",
       "quo-docs-7",
-      "quo-docs-11",
-      "quo-docs-14",
-      "quo-docs-12",
+      "quo-docs-9",
       "quo-docs-10",
+      "quo-docs-11",
+      "quo-docs-12",
+      "quo-docs-13",
+      "quo-docs-14",
+      "quo-docs-15",
       "quo-probe-4"
     ],
     "support": {
@@ -4720,7 +4717,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a SaaS communications platform with a public API, so the axis applies. The evidence documents a REST API, OpenAPI specs, a Try-it playground, Claude/ChatGPT connectors and a public MCP server, but nothing shows an official command-line tool. Those are adjacent building blocks or different stories and earn no credit here.",
+    "rationale": "Quo is a business communications SaaS, so shipping an official CLI is a fair question and the axis applies. The evidence documents a REST API, API keys, an MCP server and one-click AI connectors, but none of it mentions an official command-line tool. The API and MCP server are adjacent building blocks and earn no credit for a CLI story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4732,29 +4729,31 @@
   {
     "productId": "quo",
     "storyId": "agentic-public-api",
-    "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Quo documents a public REST API at api.quo.com. The docs cover API-key authentication, JSON responses, and per-key rate limits. A downloadable OpenAPI 3.1.0 spec, a per-endpoint \"Try it\" playground with .md and llms.txt mirrors, and an explicit date-based versioning policy round out the reference. The 404s at the guessed openapi.json paths don't contradict this, because the spec is published at a linked S3 URL. Missing for 10: independent or hands-on corroboration of driving the API end to end; the probes only confirmed llms.txt.",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Quo documents a public API with key generation, Authorization-header auth, standardized JSON responses, and per-key rate limits, and markets it as one 'your own agent can read and act on'. However, the pack shows no endpoint-level reference for the operations an agent would actually drive, and every probed OpenAPI/Swagger path returned 404. missing for 10: endpoint-level API reference showing which product actions (messages, calls, contacts) are exposed, a machine-readable OpenAPI spec, independent or hands-on corroboration of driving the product via the API.",
     "evidenceIds": [
       "quo-docs-1",
       "quo-docs-2",
       "quo-docs-3",
       "quo-docs-4",
       "quo-docs-6",
-      "quo-openapi-20261106",
-      "quo-tryit-20261106",
-      "quo-versioning-20261106",
-      "quo-webhooks-api-20261106"
+      "quo-docs-7",
+      "quo-probe-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
           "evidenceId": "quo-docs-1",
           "quote": "The Quo API enables developers to integrate powerful communication features directly into their applications and workflows."
+        },
+        {
+          "evidenceId": "quo-docs-3",
+          "quote": "Click “Generate API key” and provide a descriptive label. Each key provides full API access."
         },
         {
           "evidenceId": "quo-docs-4",
@@ -4765,16 +4764,8 @@
           "quote": "Each API key may make up to 10 requests per second."
         },
         {
-          "evidenceId": "quo-openapi-20261106",
-          "quote": "publishes downloadable OpenAPI 3.1.0 documents for its Public API"
-        },
-        {
-          "evidenceId": "quo-tryit-20261106",
-          "quote": "the runner executes against the production API with a real key"
-        },
-        {
-          "evidenceId": "quo-versioning-20261106",
-          "quote": "A version is frozen the day it ships."
+          "evidenceId": "quo-docs-7",
+          "quote": "an API your own agent can read and act on"
         }
       ]
     }
@@ -4785,7 +4776,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Quo's authentication docs state that each generated API key grants full API access, so there is no documented way to issue scoped or least-privilege credentials for an agent. Per-key labels, per-key rate limits, and independent key deletion are adjacent key-management features, not permission scoping. The MCP and agent connector material does not describe any credential scoping either.",
+    "rationale": "Quo's authentication docs say that \"Each key provides full API access,\" so there are no scoped or least-privilege credentials. Separately labeled keys that can be deleted individually limit how far a revocation reaches, but that is an adjacent control, not permission scoping. The axis applies to a SaaS product with a public API, so this is \"none\", not \"na\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4800,7 +4791,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST API with API-key auth, published OpenAPI 3.1.0 specs, a Try-it playground, date-based versioning and a public MCP server. None of it mentions official client SDKs or libraries in any language. A published OpenAPI spec and a raw HTTP API are building blocks a developer could use to generate or write a client, not an official SDK, so they earn no credit for this story.",
+    "rationale": "Quo documents a REST API with API-key auth, JSON responses and rate limits, plus a public MCP server. None of the evidence mentions an official SDK or client library in any language, and the OpenAPI probes returned 404. A raw HTTP API and an MCP server are adjacent capabilities, not official SDKs, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4812,51 +4803,33 @@
   {
     "productId": "quo",
     "storyId": "agentic-webhooks",
-    "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Quo's API documents registrable outbound webhooks with list, get, create and delete endpoints. Dedicated create endpoints cover messages, calls, call summaries and call transcripts, and the docs describe signature verification for webhook authenticity. Missing for 10: independent or hands-on corroboration of webhook delivery.",
-    "evidenceIds": [
-      "quo-webhooks-api-20261106",
-      "quo-summary-webhook-20261106"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Webhooks are a fair question for a business phone and communications platform with a public API. However, the evidence pack documents only API keys, rate limits, JSON responses and an MCP server, with no registrable outbound HTTP callbacks for events. Absence of evidence for an applicable capability yields none.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "complete",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
-      "citations": [
-        {
-          "evidenceId": "quo-webhooks-api-20261106",
-          "quote": "Creates a new webhook that triggers on events from messages."
-        },
-        {
-          "evidenceId": "quo-summary-webhook-20261106",
-          "quote": "Creates a new webhook that triggers on events from call summaries."
-        },
-        {
-          "evidenceId": "quo-webhooks-api-20261106",
-          "quote": "Verify the OpenPhone-Signature header on legacy webhooks created in the Quo app or with the v1 API."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "quo",
     "storyId": "ai-call-summaries",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Quo's own docs say recorded calls 'come back transcribed and summarized.' The API exposes a per-call summary endpoint (covering both regular and Sona-handled calls), and dedicated webhook families exist for call summaries and call transcripts, so both artifacts are tied to the call record. Missing for 10: independent or hands-on confirmation that summaries and transcripts appear on the conversation in the app, a dedicated documented transcript-retrieval endpoint beyond webhooks and MCP access, and summaries being limited to Business and Scale plans.",
+    "rationale": "Quo's own marketing says recorded calls come back transcribed and summarized, and its MCP docs reference call transcripts alongside conversations, so the core AI transcript and summary capability is first-party. The evidence never explicitly says these artifacts are attached to the conversation thread, and all of it is vendor marketing. Missing for 10: explicit documentation that summaries and transcripts attach to the conversation thread, in-depth feature docs (plan availability, recording requirements), independent or hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-23",
-      "quo-call-summaries-20261106",
-      "quo-summary-webhook-20261106",
-      "quo-webhooks-api-20261106",
-      "quo-docs-9"
+      "quo-docs-9",
+      "quo-docs-13"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a founder, calls get AI summaries and transcripts attached to the conversation",
       "citations": [
         {
@@ -4864,20 +4837,12 @@
           "quote": "Recorded calls come back transcribed and summarized, so no detail is missed and nobody has to take notes."
         },
         {
-          "evidenceId": "quo-call-summaries-20261106",
-          "quote": "This endpoint supports summaries for both regular calls and calls handled by Sona."
-        },
-        {
-          "evidenceId": "quo-summary-webhook-20261106",
-          "quote": "Creates a new webhook that triggers on events from call summaries."
-        },
-        {
-          "evidenceId": "quo-webhooks-api-20261106",
-          "quote": "calls, call summaries, and call transcripts"
-        },
-        {
           "evidenceId": "quo-docs-9",
           "quote": "manage your conversations, contacts, and call transcripts in plain English"
+        },
+        {
+          "evidenceId": "quo-docs-13",
+          "quote": "Retrieve call history and voicemail transcripts from your Quo number."
         }
       ]
     }
@@ -4886,12 +4851,13 @@
     "productId": "quo",
     "storyId": "ai-receptionist",
     "verdict": "full",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Quo's own AI agent, Sona, is described as answering calls when the team can't, capturing the caller's details, and handing the conversation to the team. The API reference separately confirms that calls are 'handled by Sona', with summaries attached to those calls. missing for 10: in-depth docs on how Sona's message capture and human handoff work or are configured (handoff triggers, transfer mechanics), and independent or hands-on corroboration.",
+    "rationale": "Quo's AI agent Sona is described as covering all three parts of the story: it answers when the team can't, captures caller details, and hands the conversation to the team. Pricing also lists call transfers, and recorded calls come back transcribed and summarized. The only support is a single homepage marketing line, so depth is unproven. Missing for 10: in-depth first-party docs on Sona's call-answering and message-taking setup, detail on how handoff or transfer to a human works and what triggers it, and independent or hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-22",
-      "quo-call-summaries-20261106"
+      "quo-docs-26",
+      "quo-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -4903,8 +4869,12 @@
           "quote": "Sona answers when your team can't, captures the details you need, and hands the conversation to your team when it matters."
         },
         {
-          "evidenceId": "quo-call-summaries-20261106",
-          "quote": "This endpoint supports summaries for both regular calls and calls handled by Sona."
+          "evidenceId": "quo-docs-26",
+          "quote": "Call transfers"
+        },
+        {
+          "evidenceId": "quo-docs-23",
+          "quote": "Recorded calls come back transcribed and summarized, so no detail is missed and nobody has to take notes."
         }
       ]
     }
@@ -4912,55 +4882,31 @@
   {
     "productId": "quo",
     "storyId": "api-interactive-docs",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo's Mintlify-hosted API reference has a per-endpoint \"Try it\" playground that executes real requests, so the reference is interactive with runnable examples. A downloadable OpenAPI 3.1.0 document is linked from the docs pages, and every page has llms.txt and .md mirrors. Missing for 10: independent or hands-on confirmation of the playground, and a sandbox or test mode (the runner hits the production API with a real key rather than isolated test execution).",
-    "evidenceIds": [
-      "quo-tryit-20261106",
-      "quo-openapi-20261106"
-    ],
+    "rationale": "Quo publishes API reference pages covering authentication and rate limits, but nothing in the evidence shows an interactive explorer, a try-it console or runnable examples. Probes for an OpenAPI spec also returned 404. A static API reference is related but not the interactive, runnable capability this story asks for.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "complete",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": [
-        {
-          "evidenceId": "quo-tryit-20261106",
-          "quote": "The Mintlify-hosted API reference runs the \"Try it\" playground per endpoint, with llms.txt and .md mirrors of every page; the runner executes against the production API with a real key."
-        },
-        {
-          "evidenceId": "quo-openapi-20261106",
-          "quote": "publishes downloadable OpenAPI 3.1.0 documents for its Public API"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "quo",
     "storyId": "api-machine-spec",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Quo's docs state that it publishes downloadable OpenAPI 3.1.0 documents for its Public API. Both the dated 2026-03-30 version and v1 are linked from the docs pages and the docs llms.txt. The probe's 404s at conventional paths such as /openapi.json do not contradict this, because the spec lives at a linked S3 URL rather than a well-known path. Missing for 10: discoverability at standard well-known/openapi.json paths (files sit in a legacy openphone-named S3 bucket), independent hands-on corroboration of the download.",
-    "evidenceIds": [
-      "quo-openapi-20261106",
-      "quo-probe-3"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Quo documents a REST API with JSON responses, API keys, and rate limits, but nothing in the evidence offers a downloadable OpenAPI or equivalent machine-readable spec. The probe found every common OpenAPI/Swagger path returning 404. The llms.txt file and the MCP server are related AI-facing features, not an API spec, so they earn no credit for this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "complete",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": [
-        {
-          "evidenceId": "quo-openapi-20261106",
-          "quote": "publishes downloadable OpenAPI 3.1.0 documents for its Public API"
-        },
-        {
-          "evidenceId": "quo-openapi-20261106",
-          "quote": "View the raw OpenAPI specification for API version v1"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -4969,7 +4915,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo is a communications API platform, so a sandbox or test environment is a fair question for this kind of product. The evidence documents only a production server (api.quo.com), and the API reference's 'Try it' playground runs against the production API with a real key. The 7-day free trial is an account trial, not an isolated sandbox, so it earns no credit.",
+    "rationale": "Quo is a business phone platform with a public API and an MCP server, so a sandbox or test environment is a fair question to ask of it. The pack documents no sandbox, test mode or test keys, and says each API key 'provides full API access.' The 7-day free trial is a billing trial, not an environment isolated from production data, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4981,36 +4927,16 @@
   {
     "productId": "quo",
     "storyId": "api-versioning-policy",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Quo documents an explicit date-based versioning scheme: a required Quo-Api-Version header with no default, versions frozen on ship, and an enumerated list of breaking changes. Its deprecation policy commits to changelog announcements with a migration window, and the legacy v1 API stays supported under that notice; dated OpenAPI documents for both versions corroborate the scheme. Missing for 10: a stated minimum length for the migration window, independent or hands-on corroboration of the policy in practice.",
-    "evidenceIds": [
-      "quo-versioning-20261106",
-      "quo-openapi-20261106"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Quo documents a public API with authentication, rate limits and JSON responses. Nothing in the evidence mentions API versioning, version pinning, or a deprecation policy, and the OpenAPI probes returned 404. The axis applies to an API-bearing SaaS platform, but there is no evidence it delivers this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "complete",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": [
-        {
-          "evidenceId": "quo-versioning-20261106",
-          "quote": "Every version is a date. Every request declares which date it was built for"
-        },
-        {
-          "evidenceId": "quo-versioning-20261106",
-          "quote": "A version is frozen the day it ships."
-        },
-        {
-          "evidenceId": "quo-versioning-20261106",
-          "quote": "No version disappears quietly. If a version is ever scheduled for retirement, we'll announce it in the changelog with a migration window and a precise list of what changed."
-        },
-        {
-          "evidenceId": "quo-openapi-20261106",
-          "quote": "a v1 document is linked from the docs llms.txt"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5019,9 +4945,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only product-native multi-item action in the evidence is the MCP integration's ability to broadcast the same message to multiple team members in one request. That is a narrow form of bulk operation. The rest of the evidence covers per-item reads and single-record contact edits, plus a 10 requests-per-second rate limit; none of it documents batch endpoints. Missing for 10: bulk/batch API endpoints, bulk updates or deletes across contacts, calls or messages, bulk import/export, and hands-on corroboration that broadcast works at scale.",
+    "rationale": "The only documented multi-item action is in Quo's first-party MCP integration, which can broadcast the same text to multiple team members in a single request. Nothing documents bulk updates, deletes or imports across contacts, conversations or calls, and the API docs describe only per-request rate limits, with no batch endpoints. Missing for 10: general bulk/batch operations across item types (e.g., bulk contact updates or imports), documented batch API endpoints, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "quo-docs-11"
+      "quo-docs-11",
+      "quo-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -5030,7 +4957,7 @@
       "citations": [
         {
           "evidenceId": "quo-docs-11",
-          "quote": "broadcast the same message to multiple team members from your Quo number, without opening your workspace"
+          "quote": "Send a text to one person or broadcast the same message to multiple team members from your Quo number, without opening your workspace."
         }
       ]
     }
@@ -5041,7 +4968,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no user-definable rules engine or automation builder in Quo that maps events to actions. Webhooks (message, call, summary and transcript events) are developer building blocks that send events out for external code to act on. Call routing, ring orders and phone menus are adjacent call-flow settings, not general event-to-action rules, so neither earns credit for this story.",
+    "rationale": "The evidence pack does not document any user-definable rules or automation builder that triggers actions on events, and it shows no webhooks or event subscriptions in the API or MCP docs. The closest items are call-routing features (ring orders, phone menus, routing incoming calls) and the Sona AI answering agent. These are fixed call-handling features, not general event-triggered automation rules, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5056,7 +4983,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs or workflows is a fair question for a business communications platform, so the axis applies. However, the evidence pack documents no scheduling, recurrence, or timed-workflow capability. The webhooks API is event-triggered (messages, calls, summaries, transcripts) rather than a recurring schedule, and the generic mention of integrating into 'workflows' does not show a scheduler.",
+    "rationale": "Scheduling recurring jobs or workflows is a fair question for a business communications platform like Quo, which could plausibly offer scheduled messages or automated workflows. The evidence pack covers only the API, MCP actions (sending texts, pulling messages, contacts and calls), call routing and AI call tags. Nothing documents scheduling, recurring jobs, or one-off delayed actions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5071,7 +4998,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo is a business phone platform with configurable call flows (ring orders, phone menus, Sona) and webhooks, so versioning, reviewing and rolling back automations is a fair question to ask of it. The pack contains no evidence of version history, change review, or rollback for those automations. The documented date-based versioning applies to the Public API contract, not to user automations, so it is an adjacent feature and earns no credit.",
+    "rationale": "Quo is a business phone platform with configurable call routing, phone menus, and an AI agent (Sona), so versioning and rolling back automations is a fair question for it. However, the evidence never mentions version history, review/approval flows, or rollback for any automation or configuration. The API, MCP server, and routing features are adjacent capabilities and earn no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5086,7 +5013,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Business-hours routing is a fair question for a business phone platform, so the axis applies. The pack documents only adjacent call-routing features: custom ring orders, call transfers, phone menus, routing calls to the right person, and Sona answering when the team can't. Nothing shows per-number business hours with distinct open, closed, or holiday behavior.",
+    "rationale": "Quo is a business phone platform, so business hours per number is a fair axis. The evidence only shows adjacent routing features: custom ring orders, call transfers, phone menus, and the Sona AI answering when the team can't. Nothing documents business-hours schedules, open/closed behavior, or holiday handling per number.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5133,56 +5060,28 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party analytics or reporting feature that shows call volume, answer rate, or missed calls broken down per number and per teammate. What is documented is raw data access: the MCP connector can retrieve call history and missed-call info, and the API has a list-calls endpoint. These are developer building blocks a user could aggregate into metrics, not the reporting capability itself.",
-    "evidenceIds": [
-      "quo-docs-15",
-      "quo-docs-13"
-    ],
+    "rationale": "The evidence pack has no documented call analytics or reporting feature showing call volume, answer rate, or missed calls broken down per number and per teammate. The MCP server can retrieve call history and missed-call details, but these are raw-data building blocks a user would have to aggregate themselves, not the reporting capability the story asks for. The vague line \"Spot issues before they cost your business\" does not describe any metrics.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a support leader, I can see call volume, answer rate, and missed calls per number and per teammate",
-      "citations": [
-        {
-          "evidenceId": "quo-docs-15",
-          "quote": "Get info about your missed calls to your Quo numbers, and see their voicemail transcripts directly from your chat."
-        },
-        {
-          "evidenceId": "quo-docs-13",
-          "quote": "Retrieve call history and voicemail transcripts from your Quo number. Use filters to focus on what’s relevant."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "quo",
     "storyId": "call-event-webhooks",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Quo documents a first-party webhooks API for registering programmatic outbound callbacks. It has list, get and delete endpoints, plus dedicated create endpoints for message, call, call-summary and call-transcript events. Signature verification is also documented, so developers can wire these events into their own systems. Missing for 10: independent or hands-on corroboration that delivery works, and documented event payload schemas and signature validation for non-legacy webhooks (only legacy OpenPhone-Signature verification is cited).",
-    "evidenceIds": [
-      "quo-webhooks-api-20261106",
-      "quo-summary-webhook-20261106"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Quo documents a REST API with API keys and rate limits, plus an MCP server that can pull messages and call history. None of the evidence documents registrable outbound HTTP webhooks for call or message events. Pull-based API and MCP access is an adjacent capability and does not satisfy a webhooks story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "complete",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a developer, call and message events arrive as webhooks I can wire into my own systems",
-      "citations": [
-        {
-          "evidenceId": "quo-webhooks-api-20261106",
-          "quote": "Quo documents a full webhooks API: list, get, and delete webhooks plus dedicated create endpoints per event family"
-        },
-        {
-          "evidenceId": "quo-webhooks-api-20261106",
-          "quote": "Creates a new webhook that triggers on events from messages."
-        },
-        {
-          "evidenceId": "quo-summary-webhook-20261106",
-          "quote": "Creates a new webhook that triggers on events from call summaries."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5216,13 +5115,12 @@
     "productId": "quo",
     "storyId": "call-recording",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Quo's homepage implies calls can be recorded and returned transcribed and summarized, and call history and voicemail transcripts can be retrieved and filtered later. Nothing in the evidence covers consent handling (announcements, per-jurisdiction rules) or retrieving the recording audio itself. Missing for 10: jurisdiction-aware recording consent handling, documented recording audio retrieval/search, explicit recording-feature docs, independent corroboration.",
+    "rationale": "Quo's own docs confirm that calls can be recorded and come back transcribed and summarized. Call history and voicemail transcripts can be retrieved later with filters through its MCP integration. Nothing in the evidence addresses consent handling or jurisdiction-specific announcements, and retrieval is described for transcripts and call history rather than for the recordings themselves. Missing for 10: jurisdiction-aware recording consent (announcements or opt-in controls), documented search and playback of the recording audio, independent or hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-23",
-      "quo-docs-13",
-      "quo-call-summaries-20261106"
+      "quo-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -5236,10 +5134,6 @@
         {
           "evidenceId": "quo-docs-13",
           "quote": "Retrieve call history and voicemail transcripts from your Quo number. Use filters to focus on what’s relevant."
-        },
-        {
-          "evidenceId": "quo-call-summaries-20261106",
-          "quote": "Retrieve a detailed summary of a specific call identified by its unique call ID."
         }
       ]
     }
@@ -5249,15 +5143,14 @@
     "storyId": "contact-history",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Quo is a shared-number team phone platform. Its docs show message and call history that can be filtered by contact, plus AI summaries attached to call records, which covers part of the team-visible per-contact history. However, no evidence shows calls and texts threaded together in one contact timeline, or contact notes the whole team sees; the per-contact filtering is documented through the MCP/agent interface, not the core workspace. Missing for 10: a documented unified per-contact thread of calls and texts, shared contact notes, explicit team-wide visibility of contact history, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Quo's docs show team visibility through a shared number, message history filterable by contact, call history, and call transcripts and summaries. They never explicitly describe a unified per-contact thread combining calls and texts, or contact notes. The contact-filtered history is described through the MCP integration rather than as an in-app contact timeline. missing for 10: explicit per-contact unified call+text thread, contact notes feature, documented team-wide visibility of contact history, hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-20",
       "quo-docs-12",
       "quo-docs-13",
-      "quo-docs-14",
       "quo-docs-23",
-      "quo-call-summaries-20261106"
+      "quo-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -5279,10 +5172,6 @@
         {
           "evidenceId": "quo-docs-23",
           "quote": "Recorded calls come back transcribed and summarized, so no detail is missed and nobody has to take notes."
-        },
-        {
-          "evidenceId": "quo-call-summaries-20261106",
-          "quote": "Call summaries are only available on business and scale plans."
         }
       ]
     }
@@ -5293,7 +5182,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Quo's pricing page lists native HubSpot and Salesforce integrations, which is the product's own CRM connector for this story. Nothing in the pack says what those integrations do: there is no confirmation that calls and texts are logged automatically or matched to the correct CRM contact. The webhooks, API and MCP server are developer building blocks or adjacent features, so they earn no credit here. Missing for 10: documentation that calls and texts auto-log to the CRM, contact-matching behavior, setup or sync details, and independent or hands-on corroboration.",
+    "rationale": "Quo's pricing page lists first-party HubSpot and Salesforce integrations, so a native CRM connection exists. Nothing in the evidence says calls and texts are logged automatically or matched to the correct CRM contact. The API and MCP items describe pulling or acting on data, not automatic CRM logging, so they add no credit. missing for 10: documentation that calls and texts sync automatically to the CRM, contact-matching behavior, details on what activity data is logged, independent or hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-25"
     ],
@@ -5315,7 +5204,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Quo documents its own number provisioning beyond one country: it offers Canadian local and toll-free virtual numbers in addition to new local or toll-free numbers per user. The evidence shows only US/Canada coverage, and nothing states any country's documentation or regulatory requirements up front. Missing for 10: a documented list of supported countries beyond the US and Canada, per-country documentation/regulatory requirements stated before purchase, and independent corroboration.",
+    "rationale": "Quo documents its own number provisioning: local and toll-free numbers per user, plus Canadian local and toll-free virtual numbers. That partly covers getting numbers where customers call, but only the US/Canada footprint is evidenced. Nothing states per-country documentation or regulatory requirements up front. missing for 10: international coverage beyond US/Canada, per-country documentation/regulatory requirements stated up front, independent corroboration.",
     "evidenceIds": [
       "quo-docs-29",
       "quo-docs-16",
@@ -5333,6 +5222,10 @@
         {
           "evidenceId": "quo-docs-16",
           "quote": "One new or ported phone number (local or toll-free) per user"
+        },
+        {
+          "evidenceId": "quo-docs-18",
+          "quote": "Set up a business number in minutes"
         }
       ]
     }
@@ -5343,7 +5236,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Quo's pricing page lists \"Phone menus\" next to custom ring orders and call transfers, and the homepage claims it routes incoming calls to the right person. That is first-party evidence of an IVR-style capability, but it is only a feature-list mention with no detail on how menus are configured or how they route to teams. Missing for 10: documentation of building keypress menu options (e.g. press 1 for sales), evidence of routing menu selections to teams or groups rather than individuals, setup or configuration docs, and independent or hands-on corroboration.",
+    "rationale": "Quo's pricing page lists 'Phone menus' alongside custom ring orders and call transfers, and the homepage says it can route incoming calls to the right person, so the product names this capability itself. These are only feature-list mentions, with no documentation of how menus are configured, how keypresses map to teams, or how team routing works. missing for 10: configuration docs for IVR menu options (e.g. press 1 for sales), evidence of routing menu selections to team or group destinations, independent or hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-26",
       "quo-docs-21"
@@ -5367,34 +5260,16 @@
   {
     "productId": "quo",
     "storyId": "messaging-api",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo documents its own message webhooks in a full webhooks API (\"Creates a new webhook that triggers on events from messages\"), which covers receiving message events programmatically. Sending a text from a Quo number is documented through its official MCP server, but the pack never shows a REST send-message endpoint or names delivery-status event types. missing for 10: an explicitly documented API send-SMS endpoint, documented delivery-status (sent/delivered/failed) callback events, an inbound-SMS event payload, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "quo-webhooks-api-20261106",
-      "quo-docs-11",
-      "quo-docs-12",
-      "quo-docs-1"
-    ],
+    "rationale": "The evidence shows a general Quo API exists, but nothing documents API endpoints for sending or receiving SMS. There is also no evidence of registrable webhooks or delivery-status callbacks. The texting and message-history capabilities appear only in the no-code MCP/agent integration, which is a different feature and does not count toward this API-plus-callbacks story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a developer, I can send and receive SMS on the number through the API with delivery status callbacks",
-      "citations": [
-        {
-          "evidenceId": "quo-webhooks-api-20261106",
-          "quote": "Creates a new webhook that triggers on events from messages."
-        },
-        {
-          "evidenceId": "quo-docs-11",
-          "quote": "Send a text to one person or broadcast the same message to multiple team members from your Quo number, without opening your workspace."
-        },
-        {
-          "evidenceId": "quo-docs-12",
-          "quote": "Pull message history from any Quo inbox, filter by contact, date, or topic, or list all your inboxes to see which numbers are available."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5403,7 +5278,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo is a business phone platform that provisions local, toll-free, Canadian and vanity numbers, so this story fairly applies to it. However, nothing in the evidence shows a number search or purchase flow that displays each number's voice, SMS or MMS capability before buying. The general claims about unlimited calls and texts describe plan features, not capability shown per number at purchase time.",
+    "rationale": "Quo is a business phone platform that provisions local, toll-free, vanity and Canadian numbers, so showing per-number capabilities before purchase is a fair question for it. The evidence never shows that numbers display voice, SMS, or MMS capability flags during selection or before buying. Plan-level claims such as \"unlimited calls and texts\" do not amount to per-number capability disclosure at purchase time.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5418,7 +5293,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo documents a public API (OpenAPI spec, auth, rate limits, webhooks, calls, messages), but none of the evidence shows endpoints to search available numbers, purchase them, or configure them programmatically. Number acquisition appears only as an in-app or plan feature (\"Set up a business number in minutes\", one number per user). The MCP's ability to \"list all your inboxes to see which numbers are available\" covers existing numbers, not provisioning new ones. This is an applicable axis for a business phone platform, so the lack of evidence makes it \"none\" rather than \"na\".",
+    "rationale": "Quo documents a general API, with authentication, rate limits and JSON responses, plus an MCP server that can list inboxes and their numbers. Nothing in the evidence shows API endpoints to search for, purchase, or configure phone numbers; number setup appears only as a product or pricing feature ('Set up a business number in minutes'), not as a programmatic capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5431,17 +5306,18 @@
     "productId": "quo",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Quo has a substantial public API with an OpenAPI 3.1 spec and versioning policy. Documented endpoints cover calls, call summaries, and a full webhooks API. Nothing claims or shows that the API matches the UI, and many UI features have no documented API equivalent, including phone menus, ring orders, number setup, and Sona configuration. missing for 10: an explicit API/UI parity commitment, API coverage of UI admin features (phone menus, custom ring orders, call transfers, number provisioning, Sona setup, AI call tags), independent corroboration of parity.",
+    "rationale": "Quo documents a public API with full-access keys, plus an MCP server covering messages, call history, voicemail transcripts and contact create/update. Nothing claims or shows parity with the UI, and many UI features listed on the pricing and marketing pages have no documented API equivalent. The OpenAPI spec probes all returned 404, so coverage cannot be verified. Missing for 10: documented API coverage of UI features such as phone menus, ring orders, call routing/transfers, number provisioning, Sona and AI call tags; a published API reference or OpenAPI spec demonstrating parity; independent confirmation.",
     "evidenceIds": [
       "quo-docs-1",
+      "quo-docs-3",
       "quo-docs-7",
-      "quo-openapi-20261106",
-      "quo-webhooks-api-20261106",
-      "quo-call-summaries-20261106",
-      "quo-versioning-20261106",
-      "quo-docs-26"
+      "quo-docs-11",
+      "quo-docs-12",
+      "quo-docs-13",
+      "quo-docs-14",
+      "quo-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -5453,16 +5329,20 @@
           "quote": "The Quo API enables developers to integrate powerful communication features directly into their applications and workflows."
         },
         {
+          "evidenceId": "quo-docs-3",
+          "quote": "Each key provides full API access."
+        },
+        {
           "evidenceId": "quo-docs-7",
-          "quote": "an API your own agent can read and act on"
+          "quote": "a public MCP server and an API your own agent can read and act on."
         },
         {
-          "evidenceId": "quo-webhooks-api-20261106",
-          "quote": "Creates a new webhook that triggers on events from messages."
+          "evidenceId": "quo-docs-14",
+          "quote": "Search your contact list, look up a specific contact’s details, add new contacts, or update existing ones just by asking."
         },
         {
-          "evidenceId": "quo-call-summaries-20261106",
-          "quote": "Retrieve a detailed summary of a specific call identified by its unique call ID."
+          "evidenceId": "quo-docs-11",
+          "quote": "Send a text to one person or broadcast the same message to multiple team members from your Quo number, without opening your workspace."
         }
       ]
     }
@@ -5488,7 +5368,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is available under an open license is a fair question for any software product, including a SaaS phone platform, so the axis applies. Nothing in the evidence shows Quo's source code published under an open license. The downloadable OpenAPI specification is an API description, not product source, so it is adjacent at most and earns no credit.",
+    "rationale": "Quo is a business phone and communications SaaS platform. Whether its source is available under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack mentions source code availability, a public repository, or an open-source license; it covers only the API, the MCP server and product features.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5503,7 +5383,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo is a hosted SaaS business phone platform. Self-hosting is a fair question for communications software, so the axis applies. Nothing in the evidence shows a self-hostable or on-premises deployment: the pack covers only the hosted API at api.quo.com, a public MCP server, and apps on iOS, Android, macOS, Windows and Web.",
+    "rationale": "Quo is a cloud business phone and communications platform, and self-hosting is a fair question for this kind of product, so the axis applies. Nothing in the evidence documents a self-hosted, on-premises or open-source deployment of the core product. The pack describes only a hosted service (web and mobile apps, a cloud API, a public MCP server) and a hosted API or MCP server does not count as self-hosting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5518,7 +5398,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo is a business texting platform, so automatic STOP/HELP handling and opt-out suppression are fair questions to ask of it. The evidence pack covers messaging, broadcasts, contacts, and webhooks, but nothing documents keyword handling or suppression of opted-out contacts from future sends.",
+    "rationale": "Quo is a business phone and texting platform, so automatic STOP/HELP keyword handling and opt-out suppression is a fair axis for it. However, nothing in the evidence pack mentions keyword handling, opt-out management, or suppression of opted-out contacts. The texting and broadcast items describe sending capability only, not compliance handling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5533,7 +5413,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Quo's pricing page says each user's plan includes a 'ported phone number', so porting in an existing number is a first-party capability. Nothing in the pack describes how the port works: whether Quo collects the losing carrier's account details, gathers the letter of authorization, or files the port itself. missing for 10: documentation of the port-in workflow (collecting account number/PIN from the losing carrier), letter of authorization capture, provider-filed port submission and status tracking, independent or hands-on corroboration of porting.",
+    "rationale": "Quo's pricing page confirms that ported numbers are supported (\"One new or ported phone number... per user\"), so porting an existing number in is a documented capability. Nothing in the evidence describes how the port works: collecting the losing carrier's account details, gathering a letter of authorization, or Quo filing the port on the user's behalf. Missing for 10: documentation of the port-in workflow, collection of losing-carrier account details and PIN, LOA capture, provider-filed port submission and status tracking, and independent or hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-16"
     ],
@@ -5555,7 +5435,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Number portability is a fair question for a business phone platform, so the axis applies. However, the evidence pack documents only porting numbers in (\"new or ported phone number\") and a general \"cancel anytime\" trial policy. It says nothing about porting numbers out, port-out or lock-in fees, or in-app access to the account number or transfer PIN a gaining carrier needs.",
+    "rationale": "Porting out is a fair question for a business phone platform, so the axis applies. The evidence only covers porting a number into Quo ('new or ported phone number') and a cancel-anytime trial. Nothing documents port-out, the absence of lock-in fees, or where to find the account number or port-out PIN in the app.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5570,7 +5450,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Number porting is a fair axis for a business phone platform. The evidence only says a ported number is included per user. Nothing documents port status tracking, an expected completion date, or rejection reasons, so this applicable capability is unevidenced.",
+    "rationale": "Quo is a business phone platform that accepts ported numbers, so port-status tracking is a fair question for it. However, the evidence only says a ported number is included per user. Nothing documents showing a port's status, its expected completion date, or the reason a port was rejected.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5585,7 +5465,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a data-storage region is a fair question for a business communications SaaS that holds messages, calls and transcripts, so the axis applies. Nothing in the evidence documents a user-selectable data region or residency option. Canadian virtual numbers are a phone-number feature, and the us-west-2 S3 bucket only hosts the OpenAPI spec files; neither is customer data residency.",
+    "rationale": "Quo is a SaaS business phone and communications platform, so choosing a data storage region is a fair question for it. Nothing in the evidence pack documents region selection or data residency controls. Offering Canadian virtual phone numbers concerns number geography, not where customer data is stored, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5600,7 +5480,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo is a business phone platform with AI features (Sona, call summaries, transcription, AI call tags), so a training opt-out is a fair question for this kind of product. However, the evidence pack contains no statement about model-training data use, an opt-out control, or a no-training commitment. The AI-feature and API documentation is adjacent at best and earns no credit toward this story.",
+    "rationale": "Quo is a business phone platform with AI features: call transcription and summaries, AI call tags, the Sona AI agent, and MCP/LLM connectors. Whether customer data is used for model training is therefore a fair privacy question for this product. Nothing in the evidence pack mentions a training opt-out, a data-usage policy, or any AI-training privacy control, so there is no support for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5615,7 +5495,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair question for a business phone platform that stores calls, messages, recordings and transcripts, so the axis applies. The evidence pack documents no retention settings and no deletion of communications data. The only deletion evidence covers API keys and webhook subscriptions, which are adjacent controls rather than control over retained data.",
+    "rationale": "Data retention and deletion controls are a fair question for a business phone and messaging platform that stores messages, call recordings and transcripts. The evidence pack documents no retention settings and no way to delete messages, recordings or transcripts. The only deletion mentioned is deleting an API key, which is an access control, not data retention.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5630,7 +5510,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo is a SaaS business-phone platform with desktop, mobile and web apps, so a telemetry or usage-tracking opt-out is a fair question for this kind of product. Nothing in the evidence pack documents any telemetry setting, analytics opt-out, or usage-tracking control. The pack covers the API, MCP, webhooks, versioning and pricing instead, none of which bears on this story.",
+    "rationale": "Quo is a business phone and communications SaaS with desktop and mobile apps, so opting out of telemetry and usage tracking is a fair privacy question for it. However, nothing in the evidence pack mentions telemetry, analytics opt-out, or usage-tracking controls. The pack covers only the API, the MCP server, pricing and phone features.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5682,7 +5562,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Quo's own marketing documents that teammates can share one number (\"Share one number and stay aligned with your team\"), and call routing and ring orders support team handling of that number. However, nothing in the evidence documents teammate presence/availability, assigning conversations to teammates, or internal comment threads. missing for 10: teammate presence indicators, conversation assignment, internal threads/notes on conversations, in-depth docs on shared-number setup, independent or hands-on corroboration.",
+    "rationale": "Quo's own marketing documents that teammates can share one number ('Share one number and stay aligned with your team') and offers call routing and ring orders. Nothing in the evidence shows presence indicators, conversation assignment, or internal team threads. Missing for 10: presence/availability status, conversation assignment to teammates, internal notes or threads on conversations, in-depth first-party docs, and independent corroboration.",
     "evidenceIds": [
       "quo-docs-20",
       "quo-docs-21",
@@ -5700,10 +5580,6 @@
         {
           "evidenceId": "quo-docs-21",
           "quote": "Route incoming calls to the right person instantly"
-        },
-        {
-          "evidenceId": "quo-docs-26",
-          "quote": "Custom ring orders ... Call transfers ... Phone menus"
         }
       ]
     }
@@ -5714,11 +5590,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Quo markets a shared business number that a team can use together, and its docs refer to Quo inboxes whose message history can be pulled per number. That supports the core idea of texts landing in a team-shared inbox. Nothing documents shared-inbox texting in depth or shows which teammate replied to a message. Missing for 10: explicit documentation of a shared SMS inbox for multiple teammates, per-message attribution of who replied, independent or hands-on corroboration.",
+    "rationale": "Quo documents sharing one business number across a team and per-number inboxes that hold message history, so texts to a shared number landing in a team-visible inbox is supported at a basic level. Nothing shows which teammate sent a given reply. missing for 10: documented per-message attribution of who replied in the shared inbox, explicit shared-inbox workflow docs (assignment, collision avoidance), independent or hands-on corroboration.",
     "evidenceIds": [
       "quo-docs-20",
       "quo-docs-12",
-      "quo-docs-10"
+      "quo-docs-10",
+      "quo-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -5746,7 +5623,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents auto-replies, missed-call text-back, after-hours replies, or scheduled texts. The closest items fall outside this story: the Sona AI agent answering calls is an adjacent feature, MCP text sending is a one-off action rather than a recurring or scheduled send, and message webhooks are developer building blocks. None of these count as the product's own auto-reply or scheduling capability.",
+    "rationale": "Quo is a business phone and texting platform, so auto-replies and scheduled texts are a fair question for it. The pack only shows adjacent features: on-demand text sending via MCP, viewing missed calls, and Sona answering calls when the team can't. None of these is documented missed-call text-back, after-hours SMS auto-replies, or recurring or scheduled texts, and a one-off send is not a schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5761,7 +5638,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quo is a business phone and texting platform that offers toll-free numbers, so a toll-free verification workflow is a fair question for this product. However, the evidence pack contains nothing about a guided verification submission, a visible approval status, or texting being blocked until approval. Mentions of toll-free numbers and texting features do not show the verification capability itself.",
+    "rationale": "Quo is a business phone and texting platform that offers toll-free numbers, so toll-free verification is a fair axis for it. However, the evidence never mentions a guided verification submission, a visible status, or texting being blocked until approval. Offering toll-free numbers alone does not show the verification workflow.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5776,11 +5653,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Quo's own docs show voicemails are transcribed, and its official MCP connectors let a user see those transcripts directly from an AI chat without dialing in. However, this is on-demand retrieval inside Claude or ChatGPT, not automatic delivery: no evidence shows transcripts being pushed to email or a team chat app. The transcript webhooks are only a developer building block and earn no credit. Missing for 10: automatic push delivery of voicemail transcripts to email, native delivery to chat apps such as Slack or Teams, and independent or hands-on corroboration.",
+    "rationale": "Quo transcribes voicemails and its first-party MCP/AI connectors let a user pull missed calls and voicemail transcripts from a chat assistant such as Claude or ChatGPT, so they can be read without dialing in. That is on-demand retrieval, not automatic delivery: no evidence shows transcripts being pushed to email or a team chat app when a voicemail arrives. Missing for 10: automatic voicemail-to-email delivery, push notifications of transcripts into chat apps (e.g., Slack), independent or hands-on corroboration of transcript quality.",
     "evidenceIds": [
       "quo-docs-15",
       "quo-docs-13",
-      "quo-docs-9"
+      "quo-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -5794,6 +5671,10 @@
         {
           "evidenceId": "quo-docs-13",
           "quote": "Retrieve call history and voicemail transcripts from your Quo number."
+        },
+        {
+          "evidenceId": "quo-docs-7",
+          "quote": "One-click connectors for Claude and ChatGPT, plus a public MCP server"
         }
       ]
     }

@@ -1,137 +1,48 @@
-# API-quality gap repairs, wave 10 (2026-11-09)
+# API-quality gap repairs, wave 10
 
-Per-cell check of the next twelve rows from the corrected staleness ranking (roster
-picked on post-#644 main, 49 gap rows; waves 1-9 = PRs #623, #627, #630, #632, #634,
-#639, #641, #643, #644, with the scan signature fix in #636). The recording run was
-interrupted by a network outage on 2026-11-06 after the evidence append completed; on
-resume (2026-11-09) current main was merged in, the scan re-confirmed all twelve roster
-rows still unrepaired, and every marker and negative check was replayed live with zero
-drift. iterm2 stays deferred, foreloop stays excluded pending its ruling, and the two
-kimi cells escalated in PR #644 ship as judged and are not reworked here.
+The current proposal retains the supported results for ten products. The proposed Quo and Alloy scoring refreshes are withdrawn to accepted main. Their original evidence and model proposals remain in commit `27fdb08b304215f867c90461a19a35630cd34cf7`.
 
-`rankings-engine/scripts/append-api-quality-gap-evidence-2026-11-06-wave10.py` appends 34
-live-verified rows fail-closed, backing 24 appended cells; 24 cells stay absent after
-checking. Eleven fail-closed negative checks replay the asserted dead URLs, four
-counter/context rows are preserved against refresh clobbering (undermind's MCP-only
-surface, luma's and pika's explicit no-sandbox statements, hummingbird's password gate),
-and curl runs with --http1.1 globally (tech.sevdesk.com fails HTTP/2 negotiation but
-serves HTTP/1.1 normally).
+The existing pipeline assembled the restored evidence and raw-cache inputs, reconciled judgments against accepted main, and regenerated derived outputs. No model calls were made for the withdrawal. The JSON report retains the original audit separately from the current publication scope.
 
-| product | arena | flagged cells | evidence rows appended | checked, still absent |
-|---------|-------|--------------:|-----------------------:|---------------------:|
-| sevdesk | accounting | 4 | 4 | 2 |
-| channel3 | agentic-commerce | 4 | 3 | 1 |
-| undermind | ai-research-agents | 4 | 1 | 4 |
-| kling | ai-video | 4 | 2 | 3 |
-| luma | ai-video | 4 | 4 | 1 |
-| pika | ai-video | 4 | 3 | 2 |
-| aircall | business-phone | 4 | 3 | 1 |
-| quo | business-phone | 4 | 3 | 1 |
-| pomelo | card-issuing | 4 | 3 | 2 |
-| gitea | code-hosting | 4 | 3 | 2 |
-| alloy | compliance-screening | 4 | 4 | 0 |
-| hummingbird | compliance-screening | 4 | 1 | 4 |
-
-Wave-10 specifics:
-
-- Two no-public-docs rows ship all-none: undermind (MCP-only surface, user-scoped OAuth;
-  spec/docs hosts 404 or unresolved) and hummingbird (the entire ReadMe docs project is
-  password-gated; the gate page is the only public content).
-- Explicit vendor sandbox denials recorded verbatim and preserved: luma ("There is no
-  staging or sandbox environment.") and pika ("no separate test environment. Every
-  generation runs against production...", with the free catalog/quote reads framed by
-  the vendor as "the closest thing to a sandbox").
-- Alloy's Sandbox mode lands with the vendor's own isolation caveat carried verbatim:
-  the modes "are *not* two separate environments... Alloy does not enforce a data
-  boundary" (single shared data store) — the judge weighs that against the
-  isolated-from-production bar. Pomelo's test environment is a dedicated Stage (separate
-  api-stage/private/mTLS hosts plus a Stage-only transaction simulator); the vendor term
-  is Stage, not sandbox, and access is integration-provisioned.
-- Strong versioning finds: quo's date-based policy (required Quo-Api-Version header,
-  frozen versions, "No version disappears quietly" retirement commitment) and sevdesk's
-  X-Version resource versioning with a Deprecation response header and a dated API News
-  changelog. kling's changelog carries dated discontinuation notices and a continuation
-  commitment, cited from the CDN content chunks because kling.ai's HTML routes are a
-  soft-200 SPA shell (a rotated chunk hash fails the replay and forces re-derivation).
-- Identity and rebrand states recorded: quo is formerly OpenPhone (openphone.com
-  301-redirects; the spec's S3 bucket keeps the old name); pika's vendor platform is an
-  aggregator API ("Generate video, image, and audio with hosted models." across
-  multiple providers), carried as scope.
-- Gitea's spec and Swagger UI are instance built-ins live-verified on the vendor-run
-  gitea.com; its sandbox cell stays absent (try.gitea.io is NXDOMAIN and demo.gitea.com
-  is undocumented as a demo).
-- Reachability: kling.ai and developers.aircall.io soft-200 unknown paths
-  (content-verified); docs.klingai.com/docs.kling.ai/docs.pika.art and the hummingbird
-  developer subdomains do not resolve; api.pika.art answers 403; the aircall Postman
-  workspace serves an unverifiable JS shell (control fetch curl error 35 — documented,
-  not circumvented).
-
-Scoped re-judges run under the ratified v6 rubric (ai-video, business-phone, and
-compliance-screening judged category-wide), then `derive` per touched arena and the
-dependent generators. Engine output is accepted as-is; honest negatives ship.
-
-Four checked-absent cells publish as engine partials on adjacent evidence and carry both
-readings (aircall api-interactive-docs q3; pika, pomelo, and gitea api-versioning-policy
-on versioned paths without policy pages — the jira/dynadot classes).
-
-## Pre-audit (before the first push)
-
-54 verdict-level up-moves vs merge-base a35dff5507 (28 target cells, 26 side-effect
-flips), re-read against the v6 on-axis bar. Zero inputs corrections this wave; eleven
-thin or adjacent partials conceded and documented in the ledger JSON. The full-verdict
-ups ground in live spec downloads, vendor-hosted or instance-built-in runners, a
-dedicated Stage environment, and committed versioning policies, with gating, isolation,
-and aggregator-scope caveats carried in the cited excerpts (alloy's sandbox publishes as
-partial q4 with the vendor's own no-data-boundary caveat quoted in the verdict's
-support). Honest downs ship (21).
-
-## Review round (PR #691)
-
-One P2, script-class: reruns skipped marker verification for already-saved rows, so the
-promised rotated-chunk replay never ran on reruns. The fix moves verification before the
-existing-ID skip, and the hardened replay immediately proved its worth by catching live
-drift: luma's FAQ dropped its committed deprecation-window sentence between 2026-11-06
-and 2026-11-10 while a dated changelog page appeared. The versioning row was re-derived
-to the current wording (changelog pre-announcement, X-API-Version reports-not-selects,
-migration-guide notice periods, with the removal carried as a caveat) and ai-video was
-re-judged: luma api-versioning-policy honestly downgrades to partial q6, and the one
-re-roll up (video-inpaint-restyle full q7) grounds in verbatim vendor quotes.
-developer.aircall.io rate-limited the repeated replays and now carries the same
-20-second courtesy pacing as developers.fellow.ai.
-
-A second-round P1 flagged luma video-inpaint-restyle at full q7 while its own rationale
-listed untouched-area preservation as missing. The appended scoping row records Modify
-Video's actual semantics (global adherence modes with motion and performance
-preservation; no masking, region selection, or untouched-area guarantee documented), and
-the re-judged cell settles at partial q5 citing it.
-
-
-A third-round review identified unsupported full credit for Gitea milestone due dates
-and Quo summaries attached to a conversation. The existing reconciliation engine
-applied the CONTRIBUTING.md stability policy to code-hosting and business-phone,
-verifying raw cache hashes, prior model judgments, and unchanged cited evidence
-against baseline `e94ade2b38c263c035edc75a6e5043812db6e22f`. Gitea retains its
-prior partial q5 and Quo its prior partial q6. The same checks retain 27 other
-unsupported re-rolls in those two arenas. The review supplement records every
-retained cell and both judgments. Evidence and raw model caches are unchanged;
-refresh-retention ledgers authenticate the effective decisions. This repair made
-no model calls. The earlier pre-audit counts describe the original proposal.
-
-While the lane push was blocked by host flakes, a maintainer reconciliation landed on
-the branch and retained the two third-round cells at their prior partials — correctly on
-the inputs it had, since the grounding rows existed only locally. The union merge keeps
-both: the maintainer verdicts were taken as base, the grounded packs re-judged, and the
-same reconcile-refresh stability machinery re-applied against the same pinned baseline.
-Both cells now publish as supported changes citing the direct-evidence rows (gitea
-milestones-due-dates full q9; quo ai-call-summaries full q7) while every unsupported
-re-roll stays retained to its prior value (13 + 10 cells, zero blocked).
-
-A fourth round of maintainer findings landed two more inputs-only corrections. The alloy
-sandbox row was re-framed to lead with the vendor's own no-data-boundary statement (same
-verbatim quotes), and the re-judged cell withdraws the credit: none q0 — a dry-run of
-vendor calls over shared production data is not sandbox isolation under v6. The quo
-webhook claim, which had been bound to the summary-retrieval page, moved to its own
-properly-bound row, and the pre-audit of that re-roll caught a single-event full: a
-grounded full-surface row (webhook CRUD plus four event families) now carries the
-webhook cells. Reconcile-refresh re-applied at the pinned baseline each round; all
-unsupported re-rolls stay retained, zero blocked.
+| Product | Arena | Story | Current verdict | Quality |
+| --- | --- | --- | --- | --- |
+| sevdesk | accounting | api-machine-spec | full | 9 |
+| sevdesk | accounting | api-interactive-docs | none | 0 |
+| sevdesk | accounting | api-sandbox | none | 0 |
+| sevdesk | accounting | api-versioning-policy | full | 7 |
+| channel3 | agentic-commerce | api-machine-spec | full | 8 |
+| channel3 | agentic-commerce | api-interactive-docs | full | 8 |
+| channel3 | agentic-commerce | api-sandbox | none | 0 |
+| channel3 | agentic-commerce | api-versioning-policy | partial | 6 |
+| undermind | ai-research-agents | api-machine-spec | none | 0 |
+| undermind | ai-research-agents | api-interactive-docs | none | 0 |
+| undermind | ai-research-agents | api-sandbox | none | 0 |
+| undermind | ai-research-agents | api-versioning-policy | none | 0 |
+| kling | ai-video | api-machine-spec | none | 0 |
+| kling | ai-video | api-interactive-docs | none | 0 |
+| kling | ai-video | api-sandbox | none | 0 |
+| kling | ai-video | api-versioning-policy | partial | 5 |
+| luma | ai-video | api-machine-spec | partial | 4 |
+| luma | ai-video | api-interactive-docs | partial | 5 |
+| luma | ai-video | api-sandbox | none | 0 |
+| luma | ai-video | api-versioning-policy | partial | 6 |
+| pika | ai-video | api-machine-spec | full | 9 |
+| pika | ai-video | api-interactive-docs | partial | 5 |
+| pika | ai-video | api-sandbox | none | 0 |
+| pika | ai-video | api-versioning-policy | partial | 3 |
+| aircall | business-phone | api-machine-spec | partial | 5 |
+| aircall | business-phone | api-interactive-docs | partial | 3 |
+| aircall | business-phone | api-sandbox | partial | 5 |
+| aircall | business-phone | api-versioning-policy | partial | 6 |
+| pomelo | card-issuing | api-machine-spec | none | 0 |
+| pomelo | card-issuing | api-interactive-docs | none | 0 |
+| pomelo | card-issuing | api-sandbox | full | 7 |
+| pomelo | card-issuing | api-versioning-policy | none | 0 |
+| gitea | code-hosting | api-machine-spec | full | 9 |
+| gitea | code-hosting | api-interactive-docs | full | 8 |
+| gitea | code-hosting | api-sandbox | none | 0 |
+| gitea | code-hosting | api-versioning-policy | partial | 3 |
+| hummingbird | compliance-screening | api-machine-spec | none | 0 |
+| hummingbird | compliance-screening | api-interactive-docs | none | 0 |
+| hummingbird | compliance-screening | api-sandbox | none | 0 |
+| hummingbird | compliance-screening | api-versioning-policy | none | 0 |
