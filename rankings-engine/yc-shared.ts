@@ -1,5 +1,7 @@
+import type { Product } from '../lib/schemas'
+
 // Shared helpers for the YC ingestion + arena-mapping lane (rankings-engine/scripts/yc-*.ts). Source of
-// truth is the yc-oss/api mirror (https://yc-oss.github.io/api/companies/all.json) of YC's public
+// fresh directory input is the yc-oss/api mirror (https://yc-oss.github.io/api/companies/all.json) of YC's public
 // company directory — a keyless, community-maintained static JSON export, chosen over guessing at
 // YC's private Algolia app id because it's verifiably reachable without credentials and mirrors
 // every batch back to Winter 2006.
@@ -43,7 +45,7 @@ export interface YcRawCompany {
   url: string
 }
 
-// Verified brand renames: YC-directory domain -> the tracked product's site domain. When a
+// Verified company domain aliases, including product sites and brand renames. When a
 // company rebrands, the YC feed renames its slug and website in place (Superset -> Paradev, X26:
 // the directory entry is now "Paradev (formerly Superset)" at paradev.com, and
 // https://superset.sh/ answers 308 -> https://paradev.com/, probed 2026-11-01), so plain domain
@@ -61,10 +63,12 @@ export interface YcRawCompany {
 // product is the founders' later, non-YC company, so the stamp removal stands.
 export const YC_DOMAIN_ALIASES: Record<string, string> = {
   'paradev.com': 'superset.sh',
+  // YC lists Mastra at mastra.ai (W25); its official coding product uses code.mastra.ai.
+  // Sources: https://www.ycombinator.com/companies/mastra and https://code.mastra.ai/
+  'code.mastra.ai': 'mastra.ai',
 }
 
-// Collapses a normalized YC-directory domain onto the tracked product's domain when the pair is
-// a verified rename; identity for everything else.
+// Maps a normalized directory or product domain to its verified company domain.
 export function canonicalYcDomain(domain: string): string {
   return YC_DOMAIN_ALIASES[domain] ?? domain
 }
@@ -81,4 +85,12 @@ export function normalizeDomain(url: string | undefined | null): string | null {
   } catch {
     return null
   }
+}
+
+// Missing mirror rows do not invalidate reviewed catalog affiliations. Retained arenas
+// keep their complete product metadata until a supported provenance migration is available.
+export function withYcBatch(product: Product, fullBatch: string | undefined, metadataFrozen = false): Product {
+  const code = fullBatch ? batchCode(fullBatch) : null
+  if (metadataFrozen || !code || product.ycBatch === code) return product
+  return { ...product, ycBatch: code }
 }
