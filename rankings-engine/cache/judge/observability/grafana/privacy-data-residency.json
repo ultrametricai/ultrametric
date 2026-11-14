@@ -1,14 +1,16 @@
 {
-  "hash": "01837e84bf1fcf8fb57a7c867c891634875b03598c15e6ac6bb0ed39f47aa0cf",
+  "hash": "a18de4e2ba3595e548eb1416d98d938af7164fe7f0c9377f695aee21efc87ac6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Grafana's own Loki docs say self-managed deployments can store log chunks in S3, GCS, or the local filesystem, so users control where that data lives. However, nothing in the evidence shows a region or data-residency choice for Grafana Cloud or a formal residency commitment. Phrases like \"wherever they're stored\" describe querying external data sources, not choosing a storage location. Missing for 10: Grafana Cloud region selection, documented data-residency guarantees, storage-location controls for metrics and traces, independent corroboration.",
+    "rationale": "Grafana's own storage layer lets users decide where telemetry physically resides. Loki stores log chunks in S3, GCS or the local filesystem and can run as a single binary with a local filesystem backend. Grafana OSS queries data wherever it is stored, and a community user confirms self-hosting Loki specifically for privacy. However, there is no evidence of choosing a region or residency location for Grafana Cloud's hosted data, which is the core of a region/residency story for the SaaS offering. missing for 10: documented Grafana Cloud region/data-residency selection, residency/compliance guarantees, independent corroboration of residency controls.",
     "evidenceIds": [
       "grafana-docs-55",
-      "grafana-docs-29"
+      "grafana-docs-29",
+      "grafana-docs-61",
+      "grafana-comm-33"
     ],
     "support": {
       "relation": "direct",
@@ -22,6 +24,14 @@
         {
           "evidenceId": "grafana-docs-29",
           "quote": "run Loki in monolithic (single-binary) mode with a local filesystem backend"
+        },
+        {
+          "evidenceId": "grafana-docs-61",
+          "quote": "enables you to query, visualize, alert on, and explore your metrics, logs, and traces wherever they’re stored."
+        },
+        {
+          "evidenceId": "grafana-comm-33",
+          "quote": "They must self-host Loki for privacy"
         }
       ]
     },

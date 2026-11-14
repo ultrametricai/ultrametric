@@ -1,16 +1,18 @@
 {
-  "hash": "d929fa9f5e8cdd86173f70c83ad5971b01a3c766146c9fc60f75cf3b696313dd",
+  "hash": "3892c279c24ab94b4695a496284420b1eca83cc068cda6d8a934e949d40e9b07",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Grafana documents connecting AI agents through a hosted Cloud MCP Server or a self-managed open source MCP Server, and a probe confirms an official MCP server repo and an OpenAPI spec. Grafana itself is documented to query metrics, logs, and traces. However, the evidence never says these agent-facing APIs actually expose metric, log, and trace queries for production debugging, so coverage is partial. Missing for 10: explicit documentation that the MCP server or API supports querying metrics (PromQL), logs (LogQL), and traces (Tempo); hands-on or independent corroboration of an agent debugging production through these APIs.",
+    "rationale": "Grafana documents its own agent-facing interfaces: a hosted Cloud MCP Server and an open-source MCP Server for connecting AI agents, plus a published OpenAPI spec. Separately, its core product queries metrics, logs, and traces, and Loki (LogQL) and Mimir provide query capabilities. However, no evidence shows which metrics, logs, or traces query operations the MCP server or API actually exposes to an external agent, so coverage of the full story is only implied. Missing for 10: documentation of MCP/API tools for querying metrics, logs, and traces; evidence of an agent-driven production debugging workflow; independent or hands-on corroboration of agent querying.",
     "evidenceIds": [
       "grafana-docs-7",
       "grafana-probe-4",
       "grafana-probe-3",
-      "grafana-docs-9"
+      "grafana-docs-9",
+      "grafana-docs-15",
+      "grafana-docs-63"
     ],
     "support": {
       "relation": "direct",
@@ -27,11 +29,19 @@
         },
         {
           "evidenceId": "grafana-probe-3",
-          "quote": "PROBE openapi: HTTP 200 at https://grafana.com/api/openapi.json — contains \"openapi\" key"
+          "quote": "contains \"openapi\" key"
         },
         {
           "evidenceId": "grafana-docs-9",
           "quote": "enables you to query, visualize, alert on, and explore your metrics, logs, and traces wherever they're stored"
+        },
+        {
+          "evidenceId": "grafana-docs-15",
+          "quote": "LogQL is Grafana Loki's query language."
+        },
+        {
+          "evidenceId": "grafana-docs-63",
+          "quote": "Grafana Mimir enables users to ingest Prometheus or OpenTelemetry metrics, run queries"
         }
       ]
     },

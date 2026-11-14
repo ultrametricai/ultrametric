@@ -1,17 +1,17 @@
 {
-  "hash": "aeaa8711e7a2631c62fdc96acc849426712c866228365a056c9dcf59cf22d1a1",
+  "hash": "b609e6256fb87c5ad147679fbb39b877dd05600bc056e62be9f31312fc2b602d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Elastic documents an ES|QL REST endpoint with request-body parameters (filter, time_zone, locale) and machine-readable output formats, which an external agent could call. ES|QL is documented for querying metrics and for ad-hoc log queries. However, the evidence never shows ES|QL or another documented API querying traces, and the OpenAPI probe found no spec at the probed elastic.co paths. missing for 10: evidence of documented API querying of traces/APM data, external-agent-specific integration guidance (e.g. agent auth or tool interface), a discoverable API spec, independent hands-on corroboration.",
+    "rationale": "Elastic documents an ES|QL REST API that an external agent could call. The API returns results in human-readable or binary formats and accepts filter, time_zone, locale and format parameters. ES|QL is documented for querying metrics (alongside PromQL) and for ad-hoc log queries. However, the evidence never shows traces being queried through that API, and nothing addresses external-agent integration specifically. The openapi probe 404s apply only to the marketing domain and do not contradict the REST docs. missing for 10: documented API access to APM traces, agent-oriented integration (e.g., an official MCP server or agent tooling), a published OpenAPI spec, independent or hands-on corroboration of agent-driven debugging.",
     "evidenceIds": [
-      "elastic-docs-36",
-      "elastic-docs-37",
-      "elastic-docs-38",
       "elastic-docs-2",
       "elastic-docs-3",
+      "elastic-docs-36",
+      "elastic-docs-37",
+      "elastic-docs-42",
       "elastic-docs-30"
     ],
     "support": {
@@ -20,20 +20,24 @@
       "subject": "As an AI-native user, I can have an external agent query metrics, logs, and traces through documented APIs to debug production",
       "citations": [
         {
-          "evidenceId": "elastic-docs-36",
-          "quote": "ES|QL can return the data in the following human readable and binary formats."
-        },
-        {
-          "evidenceId": "elastic-docs-37",
-          "quote": "Specify a Query DSL query in the `filter` parameter to filter the set of documents that an ES|QL query runs on."
-        },
-        {
           "evidenceId": "elastic-docs-2",
           "quote": "Query them with ES|QL or Prometheus Query Language (PromQL)"
         },
         {
           "evidenceId": "elastic-docs-3",
           "quote": "ad-hoc queries with ES|QL"
+        },
+        {
+          "evidenceId": "elastic-docs-36",
+          "quote": "ES|QL can return the data in the following human readable and binary formats."
+        },
+        {
+          "evidenceId": "elastic-docs-42",
+          "quote": "You can set the format by specifying the `format` parameter in the URL or by setting the `Accept` or `Content-Type` HTTP header."
+        },
+        {
+          "evidenceId": "elastic-docs-37",
+          "quote": "Specify a Query DSL query in the `filter` parameter to filter the set of documents that an ES|QL query runs on."
         }
       ]
     },

@@ -1,19 +1,18 @@
 {
-  "hash": "c33261fe52cb57ea1498928eeae6f0342958aada5672ab7a80c46039c630f4a3",
+  "hash": "f3afbdc3e6635bd2f85fe3ec044807949ad51ce57e707ad664312ea54f156744",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Sentry has an official MCP server that connects external AI assistants for searching errors and analyzing performance. It also has a documented web API, with a published OpenAPI 3.0.3 schema covering /api/0/, for programmatic access and data export, so an external agent can query error and performance/trace data. The evidence does not show that logs or metrics can be queried through these APIs; logs appear only as OTLP ingestion, and the v0 API includes beta endpoints. missing for 10: documented agent/API querying of logs, documented metrics query API, independent hands-on corroboration of agent-driven production debugging.",
+    "rationale": "Sentry documents an official MCP server that connects external AI assistants for searching errors and analyzing performance. It also has a programmatic web API for managing and exporting data, backed by a published OpenAPI 3.0.3 schema covering the /api/0/ surface. Together these give an external agent a documented path into Sentry telemetry for debugging. However, the evidence never explicitly shows logs or metrics being queryable via the API or MCP; trace exploration is documented as a UI feature, and the API is v0 with beta endpoints subject to change. Missing for 10: explicit API/MCP querying of logs and metrics, documented trace-query endpoints, hands-on corroboration of an external agent debugging production.",
     "evidenceIds": [
       "sentry-docs-2",
-      "sentry-probe-3",
       "sentry-docs-20",
       "sentry-openapi-schema-20261106",
-      "sentry-docs-9",
-      "sentry-docs-27",
-      "sentry-api-versioning-20261106"
+      "sentry-probe-3",
+      "sentry-api-versioning-20261106",
+      "sentry-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -30,7 +29,11 @@
         },
         {
           "evidenceId": "sentry-openapi-schema-20261106",
-          "quote": "The official getsentry/sentry-api-schema repository publishes the dereferenced OpenAPI 3.0.3 document for the \"Sentry Public API\""
+          "quote": "publishes the dereferenced OpenAPI 3.0.3 document for the \"Sentry Public API\""
+        },
+        {
+          "evidenceId": "sentry-docs-27",
+          "quote": "MCP access"
         }
       ]
     },
