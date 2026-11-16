@@ -5509,6 +5509,1196 @@
     }
   },
   {
+    "productId": "mastra",
+    "storyId": "action-approval-gates",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Mastra documents human-in-the-loop workflows that can suspend and wait for user approval before resuming, which covers the approval-prompt part of the story. It is framed as a workflow feature, not a per-action gate on dangerous tool or command execution. Missing for 10: command allowlists, opt-in elevated modes per action, per-tool approval gating for dangerous actions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-docs-18"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a self-hoster, dangerous actions require my explicit approval — command allowlists, approval prompts, and elevated modes that are opt-in per action",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-18",
+          "quote": "Mastra workflows also support human-in-the-loop functionality, allowing developers to suspend a workflow and await user input or approval before resuming."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agent-to-agent-collaboration",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mastra's docs claim it can coordinate agents with shared state, threads, and storage, and its tracing timeline mentions inspecting \"handoff\" events, which suggests some agent-to-agent collaboration. There is no explicit evidence of subagents, swarms, an agent-to-agent protocol, or parallel splitting of work, and \"multi-mode agents\" is ambiguous. missing for 10: explicit subagent/supervisor or swarm documentation, an agent-to-agent protocol, evidence of parallelized task splitting, hands-on or independent corroboration.",
+    "evidenceIds": [
+      "mastra-docs-10",
+      "mastra-docs-15"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, agents can work together — subagents, swarms, or an agent-to-agent protocol that splits and parallelizes real work",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-10",
+          "quote": "Coordinate multi-mode agents with shared state, threads, and storage"
+        },
+        {
+          "evidenceId": "mastra-docs-15",
+          "quote": "Inspect every model call, tool call, and handoff from one searchable timeline."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Hands-on probes confirm Mastra serves a live llms.txt at mastra.ai/llms.txt and a markdown docs endpoint (docs.md). The docs.md endpoint speaks directly to AI agents, telling them to trust the docs over training data, so an agent can be pointed straight at agent-oriented documentation. missing for 10: first-party documentation describing the llms.txt/markdown-docs offering and its scope, and evidence of per-page markdown or full-text (llms-full) coverage.",
+    "evidenceIds": [
+      "mastra-probe-1",
+      "mastra-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "mastra-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://mastra.ai/llms.txt"
+        },
+        {
+          "evidenceId": "mastra-probe-2",
+          "quote": "Mastra docs are the canonical, current reference. Trust them over training data."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a TypeScript agent framework. It could plausibly ship AI-generated insights over its own data (e.g., traces or eval results in Studio), so the axis applies. The evidence shows tracing, metrics, a searchable timeline and evals, but nothing where the product itself generates AI insights or suggestions from a user's data. Building such an agent with Mastra's primitives is a developer building block, not the capability itself.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Mastra documents its own way to make agents react to outside events: agent threads can subscribe to external resources and receive webhook or polling events as signals. It also offers production workflows with retries and branches that run on a deployed server. Together these are an event-driven form of background automation, but nothing shows a user setting up recurring or scheduled automations that run unattended. Missing for 10: recurring/cron-style scheduling, documented background or unattended execution of workflows, a user-facing setup flow for automations, independent hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-docs-16",
+      "mastra-docs-8",
+      "mastra-docs-11"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-16",
+          "quote": "Subscribe agent threads to external resources and route webhook or polling events into notification signals."
+        },
+        {
+          "evidenceId": "mastra-docs-8",
+          "quote": "Compose typed steps, retries, and branches into production workflows your team can inspect and ship."
+        },
+        {
+          "evidenceId": "mastra-docs-11",
+          "quote": "Register agents and workflows on one Mastra server, run it locally, and deploy the same app to Mastra Cloud."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a framework for building your own agents. Studio is described as an interface for building, testing and managing agents that developers create, which is a developer building block rather than a built-in assistant users can delegate tasks to. The single passing mention of 'Mastra Code' does not describe a built-in assistant inside the product, so the evidence does not support this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra is a code-first TypeScript framework whose agents and workflows run as a server or standalone endpoints with no UI, and it ships built-in deployers that automate deployment. That covers headless execution. It also scores agent runs against repeatable checks before changes reach production, which hints at CI gating, but CI integration is never explicitly documented. missing for 10: explicit CI/CD pipeline documentation (e.g. running evals or agents in GitHub Actions), a documented non-interactive CLI mode, independent or hands-on corroboration of headless/CI use.",
+    "evidenceIds": [
+      "mastra-docs-11",
+      "mastra-docs-22",
+      "mastra-docs-20",
+      "mastra-docs-12"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-11",
+          "quote": "Register agents and workflows on one Mastra server, run it locally, and deploy the same app to Mastra Cloud."
+        },
+        {
+          "evidenceId": "mastra-docs-22",
+          "quote": "or ships them as standalone endpoints"
+        },
+        {
+          "evidenceId": "mastra-docs-20",
+          "quote": "Mastra includes optional built-in deployers for Vercel, Netlify and Cloudflare to automate the deployment process."
+        },
+        {
+          "evidenceId": "mastra-docs-12",
+          "quote": "Score agent runs against repeatable checks before changes reach production."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack shows no documented way for Mastra agents to connect to or consume external MCP servers. The only MCP evidence (mastra-docs-19) covers authoring and exposing MCP servers, which is the server role, not client-side consumption. Native tool registration (mastra-docs-2) is a separate capability and does not transfer.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a framework, so an official vendor-provided MCP server is a fair question and the axis applies. The only MCP evidence says Mastra lets developers author their own MCP servers that expose their agents and tools. That is a developer building block, not an official first-party MCP server an AI-native user can connect an agent to, so it earns no credit and the verdict is none.",
+    "evidenceIds": [
+      "mastra-docs-19"
+    ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-19",
+          "quote": "Mastra supports authoring Model Context Protocol (MCP) servers, exposing agents, tools and other structured resources via the MCP interface."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Natural-language operation is a fair axis for a developer framework, since one could ship an NL-driven assistant in its CLI or Studio. The evidence only shows Mastra as a framework for building agents that end users chat with, plus building blocks such as authoring MCP servers and publishing llms.txt and docs.md for external AI tools. Nothing documents operating Mastra itself through natural-language commands, so these items are developer primitives or adjacent features and earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-official-cli",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mastra's docs say you can create your first agent with a single command, which points to a first-party command-line scaffolding entry point. The evidence never names the CLI, its commands, or any AI-native or agent-driven CLI workflow beyond initial project creation. missing for 10: a named official CLI with documented commands (dev, build, deploy), CLI usage for agent-driven or AI-native workflows, and independent hands-on corroboration of CLI use.",
+    "evidenceIds": [
+      "mastra-docs-1",
+      "mastra-docs-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-1",
+          "quote": "Create your first agent with a single command and start building."
+        },
+        {
+          "evidenceId": "mastra-docs-4",
+          "quote": "Add Mastra to an existing project, or create a new app with your preferred framework"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-public-api",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra is a TypeScript framework, so it is driven programmatically through its own documented API: agents are configured in code by passing tools to the agent constructor. Registered agents and workflows run on a Mastra server and can ship as standalone endpoints. However, the evidence includes no public HTTP API reference, and the OpenAPI probes all returned 404, so the depth of the documented API surface is unproven. Missing for 10: a documented public HTTP/REST API reference or OpenAPI spec for the server endpoints, and independent hands-on evidence of driving Mastra through that API.",
+    "evidenceIds": [
+      "mastra-docs-2",
+      "mastra-docs-11",
+      "mastra-docs-22",
+      "mastra-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-2",
+          "quote": "Add a tool to an agent by importing the tool and passing it to the agent constructor as a tools object."
+        },
+        {
+          "evidenceId": "mastra-docs-11",
+          "quote": "Register agents and workflows on one Mastra server, run it locally, and deploy the same app to Mastra Cloud."
+        },
+        {
+          "evidenceId": "mastra-docs-22",
+          "quote": "or ships them as standalone endpoints"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is an agent framework and server platform, so issuing scoped or least-privilege credentials for agents is a fair axis. The evidence pack documents no such capability. The nearest items are adjacent controls: the AUTO_BLOCK_EXTERNAL_PROVIDERS model-picker restriction and input/output guardrails, neither of which issues scoped API credentials.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Mastra is itself an official TypeScript framework/SDK. Developers build against it by importing its primitives (agents, tools) in code and embedding them in React, Next.js and Node.js apps, and community users report building directly on it. missing for 10: evidence of SDKs beyond TypeScript, a documented official client SDK for calling a deployed Mastra server, an API reference or OpenAPI spec (probes for OpenAPI paths returned 404).",
+    "evidenceIds": [
+      "mastra-probe-1",
+      "mastra-docs-2",
+      "mastra-docs-22",
+      "mastra-docs-4",
+      "mastra-comm-10",
+      "mastra-comm-9"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": [
+        {
+          "evidenceId": "mastra-probe-1",
+          "quote": "Mastra is a framework for building AI-powered applications and agents with a modern TypeScript stack."
+        },
+        {
+          "evidenceId": "mastra-docs-2",
+          "quote": "Add a tool to an agent by importing the tool and passing it to the agent constructor as a tools object."
+        },
+        {
+          "evidenceId": "mastra-docs-22",
+          "quote": "Mastra bundles agents and workflows directly into existing React, Next.js and Node.js apps, or ships them as standalone endpoints."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The only webhook-related evidence (mastra-docs-16) describes inbound handling: agent threads subscribe to external resources, and incoming webhook or polling events are routed into notification signals. That is an adjacent feature, not documented outbound HTTP callbacks that a programmatic consumer can register to receive Mastra events. The axis applies to a framework/platform like Mastra, so the verdict is none rather than na.",
+    "evidenceIds": [
+      "mastra-docs-16"
+    ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-16",
+          "quote": "Subscribe agent threads to external resources and route webhook or polling events into notification signals."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An interactive API reference is a fair thing to ask of a TypeScript agent framework, but the evidence shows none. Studio is a UI for building and testing the user's own agents, templates are clonable projects, and llms.txt and docs.md are static machine-readable docs. None of these is an interactive API reference with runnable examples, and the OpenAPI probes all returned 404.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a TypeScript agent framework with a server and cloud deployment, so offering a machine-readable API spec is a fair question for it. However, no evidence shows it publishes one: the OpenAPI probe returned 404 on every candidate path. The llms.txt and docs.md files are LLM-oriented documentation, not an API specification, and MCP server authoring is a different capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Mastra's Studio as a place for testing agents, local server runs, and pre-production eval scoring. None of it documents an isolated sandbox environment or any separation of test data from production data. These are adjacent testing and evaluation features, not the sandbox isolation the story asks for.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Versioned APIs and a deprecation policy are a fair question for a TypeScript agent framework, so the axis applies. The evidence pack never mentions API versioning, semver guarantees, or a deprecation policy. The only 'versioned' mention is versioned evaluation datasets, which is a different feature and earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk or batch operations are a fair question for an agent/workflow framework, so the axis applies. However, the evidence pack never documents batch processing, iterating a step over many items, or acting on many records at once. Workflow composition with typed steps, retries and branches is an adjacent feature and not a bulk-operations capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra's own docs say agent threads can subscribe to external resources and route webhook or polling events into notification signals, and workflows support typed steps and branches. Together these give a first-party, event-driven path to automatic actions. However, no declarative rule-definition layer (event → condition → action) is documented, and a hands-on user found rules-based, non-LLM branching clunky enough to replace with custom code. missing for 10: an explicit user-definable trigger/rule configuration, documentation of how events start workflows or actions, and independent corroboration that event triggers work in practice.",
+    "evidenceIds": [
+      "mastra-docs-16",
+      "mastra-docs-8",
+      "mastra-comm-10"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-16",
+          "quote": "Subscribe agent threads to external resources and route webhook or polling events into notification signals."
+        },
+        {
+          "evidenceId": "mastra-docs-8",
+          "quote": "Compose typed steps, retries, and branches into production workflows your team can inspect and ship."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scheduling recurring jobs is a fair question for an agent and workflow framework, but the evidence never documents a cron, schedule, or recurring trigger for workflows. The workflow docs cover typed steps, retries, branches, and suspend/resume, which are one-off orchestration rather than recurring execution. Polling events routed into notification signals (mastra-docs-16) are an adjacent event-subscription feature, not job scheduling.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a framework for building agents and workflows, so versioning, reviewing, and rolling back automations is a fair question for it. However, the evidence pack documents no versioning, review/diff, or rollback capability for workflows or agents. The 'versioned datasets' item concerns evaluation data, not automations, and 'workflows your team can inspect and ship' does not describe version history or rollback, so neither transfers to this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "browser-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a TypeScript agent framework, so a buyer could fairly ask whether it ships browser-control capability. The axis applies. The evidence pack never mentions browser automation, navigation, login or page extraction. Generic tool registration (adding tools to an agent constructor) is only a developer building block, not the capability itself, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a power user, the assistant can drive a real browser — navigate, log in, click, and extract from live pages on my behalf",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "byo-keys-usage-tracking",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra documents its own cost tracking across agent runs, a per-model-call timeline, routing to 90+ providers, and support for your own private model gateways, so it covers the core of both halves of the story. All of this comes only from marketing-level vendor claims, and it is not shown how costs break down. Missing for 10: explicit bring-your-own API key or subscription documentation, token-usage reporting, cost aggregation per model or per conversation/thread, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-docs-13",
+      "mastra-docs-15",
+      "mastra-docs-17",
+      "mastra-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a self-hoster, I bring my own API keys or subscriptions and can see token usage and cost per model or per conversation",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-13",
+          "quote": "Track latency, cost, model calls, and tool usage across every production agent run."
+        },
+        {
+          "evidenceId": "mastra-docs-15",
+          "quote": "Inspect every model call, tool call, and handoff from one searchable timeline."
+        },
+        {
+          "evidenceId": "mastra-docs-17",
+          "quote": "Mastra's model routing connects to 90+ providers through one standard interface."
+        },
+        {
+          "evidenceId": "mastra-docs-7",
+          "quote": "users can only select models from your own gateways"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "channel-access-gating",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is an agent framework that could plausibly ship messaging-channel adapters with inbound gating, so this axis applies. However, the evidence documents no sender allowlists, DM policies, or mention gating. Its input guardrails target prompt injection and sanitization, and AUTO_BLOCK_EXTERNAL_PROVIDERS restricts model selection; both are adjacent controls, not sender gating.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a self-hoster, inbound messages are gated — sender allowlists, DM policies, mention gating — so only people I approve can drive my assistant",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "coding-agent-integration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence describes Mastra as a framework with agents, tools, workflows and a multi-mode harness, and only names 'Mastra Code' in passing. No evidence shows Mastra supervising or embedding a coding agent that clones repos, edits files, or runs tests. Generic tool and agent primitives are developer building blocks, not this capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a developer, the assistant can supervise or embed real coding agents so it does repo work — cloning, editing, testing — not just snippets in chat",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "community-ecosystem-scale",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ecosystem vitality is a fair question for an agent framework, so the axis applies. The only related evidence is a pointer to browse templates, which are complete Mastra projects to clone. Nothing shows a community-published catalog of skills, plugins or presets, its scale, or active third-party maintainers. Community comments praise the framework and its team but do not describe a plugin ecosystem.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a power user, the community ecosystem is genuinely alive — thousands of published skills, plugins, or presets with active maintainers",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "custom-skill-authoring",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Mastra's docs describe adding a custom tool to an agent by importing it and passing it to the agent constructor. Studio is the interface for building and testing tools, and the Mastra server runs locally, so writing your own tool and loading it into a local instance is a first-party, documented workflow. Missing for 10: the actual tool-definition format or schema is not shown in the evidence, there is no evidence of a separate skills or plugin packaging system, and there is no independent hands-on corroboration of authoring custom tools.",
+    "evidenceIds": [
+      "mastra-docs-2",
+      "mastra-docs-3",
+      "mastra-docs-11",
+      "mastra-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can write my own skill, tool, or plugin against a documented format and load it into my instance locally",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-2",
+          "quote": "Add a tool to an agent by importing the tool and passing it to the agent constructor as a tools object."
+        },
+        {
+          "evidenceId": "mastra-docs-3",
+          "quote": "Studio is the interface for building, testing, and managing agents, workflows, and tools."
+        },
+        {
+          "evidenceId": "mastra-docs-11",
+          "quote": "Register agents and workflows on one Mastra server, run it locally"
+        },
+        {
+          "evidenceId": "mastra-docs-19",
+          "quote": "Mastra supports authoring Model Context Protocol (MCP) servers, exposing agents, tools and other structured resources via the MCP interface."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "deployment-target-breadth",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence documents built-in deployers only for Vercel, Netlify and Cloudflare, plus deployment to Mastra Cloud. These are managed or serverless platforms, not self-host targets. Nothing in the pack shows a maintained guide for Docker Compose, Kubernetes/Helm, a small VPS or a Raspberry Pi. Shipping apps as standalone endpoints is at most an adjacent building block, not an official deployment path for those targets.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a self-hoster, official deployment paths cover my target — Docker Compose, Kubernetes/Helm, a small VPS, or a Raspberry Pi — each with its own maintained guide",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "guided-onboarding-wizard",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a TypeScript agent framework, and a guided first-run setup is a fair axis for its install experience, so the story applies. The evidence only shows that you can 'create your first agent with a single command' and a user running the quickstart. Nothing documents a wizard that walks through model credentials, channels, or defaults. Configuration such as AUTO_BLOCK_EXTERNAL_PROVIDERS is set by editing `.env`, the opposite of what the story asks for.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an everyday user, a first-run wizard walks me through model credentials, channels, and defaults instead of hand-editing config files",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "knowledge-base-rag",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Attaching documents as a knowledge base for grounded answers is a fair question for an agent framework, but the evidence pack never documents document ingestion, RAG, or grounded answering over user-supplied files. The closest item describes memory features (observational memory, semantic recall, thread-aware storage). That is conversation memory, an adjacent capability, not a knowledge base built from the user's own documents, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a power user, I can attach my own documents and notes as a knowledge base and get grounded answers over them",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "local-model-support",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra's private model gateways let you route to self-hosted models so sensitive data does not leave your network. An env flag can block external providers so only your own gateways are selectable, which supports a no-cloud-dependency setup. However, none of the named local backends is explicitly documented, and there is no hands-on evidence of a fully offline run. Missing for 10: explicit documented support for Ollama, llama.cpp, LM Studio or vLLM, a confirmed end-to-end local-only setup, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-docs-6",
+      "mastra-docs-7",
+      "mastra-docs-11"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a privacy-first user, I can run the assistant entirely on local models — Ollama, llama.cpp, LM Studio, or vLLM — with no cloud model dependency",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-6",
+          "quote": "Self-hosting removes the third party, preventing sensitive data from reaching models outside of your network."
+        },
+        {
+          "evidenceId": "mastra-docs-7",
+          "quote": "set `AUTO_BLOCK_EXTERNAL_PROVIDERS=true` in your `.env` so users can only select models from your own gateways"
+        },
+        {
+          "evidenceId": "mastra-docs-11",
+          "quote": "Register agents and workflows on one Mastra server, run it locally"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "mainstream-messenger-channels",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Messaging-channel delivery is a fair question for an agent framework, but nothing in the evidence documents any WhatsApp, Telegram, Discord, Slack or iMessage integration. The closest items, routing webhook or polling events into agent threads and shipping agents as standalone endpoints or inside React/Node apps, are developer building blocks rather than built-in messenger surfaces. They earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an everyday user, I can talk to my assistant from the messengers I already use — WhatsApp, Telegram, Discord, Slack, or iMessage — not just a bespoke web page",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "memory-inspection-ownership",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra documents agent memory with 'thread-aware storage', but nothing in the evidence shows a user can inspect, edit, or delete remembered items, or that the memory store sits locally in an open format. Having a memory feature, running the server locally, and self-hosting model gateways are adjacent capabilities, not this one.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a privacy-first user, I can inspect, edit, and delete what the assistant has remembered — the memory store lives on my machine in an open format",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "model-failover",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Model failover is a fair question for an agent framework, but nothing in the evidence documents automatic fallback to another provider or model on errors or rate limits. Routing to 90+ providers through one interface and workflow-step retries are adjacent features, not failover, so neither earns credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a self-hoster, model failover keeps the assistant working — automatic fallback to another provider or model when one errors or rate-limits",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "multi-provider-models",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra documents its own model routing to 90+ providers through one standard interface, and its Studio has a model picker for selecting models. That covers the multi-provider core of the story. However, the evidence never names Anthropic, OpenAI, Google or OpenRouter, and never shows assigning a model per agent or switching mid-conversation. missing for 10: explicit confirmation of the named providers (Anthropic, OpenAI, Google, OpenRouter), documented per-agent model configuration, documented per-conversation model switching, independent hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-docs-17",
+      "mastra-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power user, I can plug in multiple model providers — Anthropic, OpenAI, Google, OpenRouter, and more — and switch models per agent or per conversation",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-17",
+          "quote": "Mastra's model routing connects to 90+ providers through one standard interface."
+        },
+        {
+          "evidenceId": "mastra-docs-7",
+          "quote": "To hide external providers from Studio's model picker, set `AUTO_BLOCK_EXTERNAL_PROVIDERS=true` in your `.env` so users can only select models from your own gateways."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "multiple-named-agents",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra documents registering multiple agents on one server, connecting to many model providers, and coordinating agents with threads and storage. It can also route webhook or polling events into agent threads, which partly covers routing conversations to specific agents. However, the evidence does not explicitly show each agent having its own prompt, model and workspace, or channel-level routing of conversations to distinct agents. missing for 10: explicit per-agent prompt/model configuration, per-agent isolated workspaces, channel-to-agent routing docs, independent hands-on corroboration of running multiple distinct agents.",
+    "evidenceIds": [
+      "mastra-docs-11",
+      "mastra-docs-10",
+      "mastra-docs-17",
+      "mastra-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power user, I can run multiple distinct agents with their own prompts, models, and workspaces, and route conversations or channels to each",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-11",
+          "quote": "Register agents and workflows on one Mastra server, run it locally, and deploy the same app to Mastra Cloud."
+        },
+        {
+          "evidenceId": "mastra-docs-10",
+          "quote": "Coordinate multi-mode agents with shared state, threads, and storage"
+        },
+        {
+          "evidenceId": "mastra-docs-17",
+          "quote": "Mastra's model routing connects to 90+ providers through one standard interface."
+        },
+        {
+          "evidenceId": "mastra-docs-16",
+          "quote": "Subscribe agent threads to external resources and route webhook or polling events into notification signals."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "native-app-surfaces",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a TypeScript framework for developers building their own agents. It does not ship a consumer assistant that everyday users meet in official web, desktop, or mobile apps, so this messaging-surfaces axis is a category error for the product. Studio is described as a developer interface for building, testing, and managing agents, not an end-user assistant app, so it does not make the axis applicable.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an everyday user, the assistant also meets me in official web, desktop, or mobile apps with feature parity beyond the chat basics",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "one-command-install",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Mastra's docs say you can create a first agent with a single command and run the server locally. Studio provides a UI for testing agents, and a community user confirms running the quickstart, creating an agent and chatting with it. The evidence does not name the actual command or package channel (installer script, npm package or Docker image), and nothing shows the setup takes only minutes, so story coverage is partial. Missing for 10: the documented install command and its package channel (npm/Docker/script), evidence of time-to-working-chat in minutes, and independent hands-on install corroboration beyond one brief comment.",
+    "evidenceIds": [
+      "mastra-docs-1",
+      "mastra-docs-11",
+      "mastra-docs-3",
+      "mastra-comm-11"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a self-hoster, I can install the assistant on my own machine with one documented command — installer script, npm/pip package, or Docker image — and reach a working chat in minutes",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-1",
+          "quote": "Create your first agent with a single command and start building."
+        },
+        {
+          "evidenceId": "mastra-docs-11",
+          "quote": "Register agents and workflows on one Mastra server, run it locally"
+        },
+        {
+          "evidenceId": "mastra-docs-3",
+          "quote": "Studio is the interface for building, testing, and managing agents, workflows, and tools."
+        },
+        {
+          "evidenceId": "mastra-comm-11",
+          "quote": "ran through the quickstart, created a first agent, chatted with it"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mastra is code-first: agents, tools and workflows are built in TypeScript and can be registered on a Mastra server or shipped as standalone endpoints, while Studio is presented as an interface for building, testing and managing those same objects. Nothing in the evidence documents that every Studio action has a programmatic equivalent, and the probe found no published OpenAPI spec at the candidate paths. missing for 10: explicit API–UI parity documentation, a documented management API covering Studio's testing/managing/evaluation actions, a published OpenAPI spec, independent hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-docs-2",
+      "mastra-docs-3",
+      "mastra-docs-11",
+      "mastra-docs-22",
+      "mastra-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-2",
+          "quote": "Add a tool to an agent by importing the tool and passing it to the agent constructor as a tools object."
+        },
+        {
+          "evidenceId": "mastra-docs-11",
+          "quote": "Register agents and workflows on one Mastra server, run it locally, and deploy the same app to Mastra Cloud."
+        },
+        {
+          "evidenceId": "mastra-docs-22",
+          "quote": "ships them as standalone endpoints"
+        },
+        {
+          "evidenceId": "mastra-docs-3",
+          "quote": "Studio is the interface for building, testing, and managing agents, workflows, and tools."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data portability is a fair question for Mastra, since it is a framework with thread-aware storage and a Mastra Cloud deployment target, so the axis applies. However, the evidence pack documents no export feature, open export format, or migration path for leaving. Self-hosting, multi-platform deployers and versioned evaluation datasets are adjacent features, not a documented data-export capability, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is a community report that Mastra's source is published under the Elastic License v2. That makes the source readable, but the license is source-available rather than OSI open, since it bars offering the software as a hosted or managed service. No first-party evidence in the pack makes an open-source claim to contradict, so 'disputed' is not supported; the restricted license is reflected as partial. Missing for 10: first-party documentation of the license and repository location, a license that is open without hosted-service restrictions, and independent hands-on confirmation that the source is publicly readable.",
+    "evidenceIds": [
+      "mastra-comm-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can read the product's source under an open license",
+      "citations": [
+        {
+          "evidenceId": "mastra-comm-2",
+          "quote": "Mastra uses the Elastic v2 license, which says 'You may not provide the software to third parties as a hosted or managed service,'"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "openness-self-host",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Mastra is a framework that runs on your own infrastructure. You run its server locally, and agents and workflows can be bundled into your own Node.js/Next.js apps or shipped as standalone endpoints, so Mastra Cloud is optional. The Elastic v2 license noted by the community restricts offering Mastra as a managed service to third parties, but it does not block self-hosting for your own use. missing for 10: a dedicated production self-hosting guide (server/Studio deployment on your own infrastructure), independent hands-on reports of self-hosted production deployments.",
+    "evidenceIds": [
+      "mastra-docs-11",
+      "mastra-docs-22",
+      "mastra-comm-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-11",
+          "quote": "Register agents and workflows on one Mastra server, run it locally"
+        },
+        {
+          "evidenceId": "mastra-docs-22",
+          "quote": "Mastra bundles agents and workflows directly into existing React, Next.js and Node.js apps, or ships them as standalone endpoints."
+        },
+        {
+          "evidenceId": "mastra-comm-2",
+          "quote": "Mastra uses the Elastic v2 license"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "paired-device-control",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a TypeScript agent framework, and a framework could plausibly ship device-pairing or remote computer-control tools, so the axis applies. Nothing in the pack shows paired phones or computers, or remote screenshot, camera, notification or media-playback control. The 'notification signals' feature routes webhook or polling events into agent threads, which is a different capability from controlling paired devices.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a power user, the assistant reaches beyond one machine — paired phones and computers it can use for screenshots, camera, notifications, or media playback",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "persistent-memory",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra's own docs say it gives agents durable context through observational memory, semantic recall, and thread-aware storage, which covers durable memory with automatic capture and recall. The evidence is a single landing-page line, though, and does not show memory persisting across separate sessions or threads for the same user. missing for 10: documented cross-session or cross-thread recall for the same user, details on how memory is automatically written and recalled, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-docs-9",
+      "mastra-docs-10"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an everyday user, the assistant remembers me across sessions — durable long-term memory it can write to and recall from automatically",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-9",
+          "quote": "Give agents durable context with observational memory, semantic recall, and thread-aware storage."
+        },
+        {
+          "evidenceId": "mastra-docs-10",
+          "quote": "Coordinate multi-mode agents with shared state, threads, and storage"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency is a fair question for an agent framework that also offers Mastra Cloud, so the axis applies. However, no evidence documents choosing a storage region or residency. The self-hosted model gateways keep prompts from reaching external models, which is an adjacent privacy control rather than data-storage location. Deploying to Vercel, Netlify or Cloudflare is a host-platform capability, not a residency feature of Mastra itself.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "privacy-no-training",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Mastra's private model gateways let teams self-host models and block external providers. This keeps sensitive data from reaching third-party models that could train on it, so the training outcome is achieved only indirectly through data isolation. The evidence never mentions model training. missing for 10: an explicit no-training or data-usage policy for Mastra Cloud and the framework, a documented training opt-out for routed third-party providers, and independent corroboration.",
+    "evidenceIds": [
+      "mastra-docs-6",
+      "mastra-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
+      "citations": [
+        {
+          "evidenceId": "mastra-docs-6",
+          "quote": "Self-hosting removes the third party, preventing sensitive data from reaching models outside of your network."
+        },
+        {
+          "evidenceId": "mastra-docs-7",
+          "quote": "set `AUTO_BLOCK_EXTERNAL_PROVIDERS=true` in your `.env` so users can only select models from your own gateways."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data retention and deletion controls are a fair question for an agent framework that stores memory, threads and traces. However, no evidence documents retention policies, TTLs, or deletion of stored threads, memory or traces. Self-hosting and private model gateways keep data inside your own network, and thread-aware storage exists, but both are adjacent features, not retention or deletion controls.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry is a fair question for a TypeScript agent framework with a CLI and Studio, but the evidence pack never documents a telemetry or usage-tracking opt-out. The self-hosted model gateways and the AUTO_BLOCK_EXTERNAL_PROVIDERS setting are adjacent privacy controls over model routing, not a way to disable vendor telemetry. The observability features describe tracing the user's own agents, not opting out of product usage tracking.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "registry-security-review",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A skills or plugin registry with scanning, provenance and a malicious-submission response is a fair question for an agent framework's ecosystem, so the axis applies. The evidence pack documents no such registry security process. Templates and tools are mentioned only as building blocks, and the prompt-injection guardrails are an adjacent runtime feature, not registry moderation.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a security engineer, the skills/plugin registry has a security story — scanning or moderation, provenance, and a documented response to malicious submissions",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "safe-updates-recovery",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is a self-hostable TypeScript framework, so safe, documented updates are a fair question to ask of it. However, the evidence pack contains nothing on versioned releases, changelogs, migration notes, or a repair or rollback path. The only 'versioned' mention refers to evaluation datasets, which is a different feature and does not transfer to this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a self-hoster, updating is safe and documented — versioned releases with changelogs, migration notes, and a repair or rollback path when an update breaks",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "sandboxed-tool-execution",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is an agent framework, so containing risky tool runs is an applicable axis. The evidence shows no container/VM sandboxing, tool policies, or permission modes that limit what tools the agent can touch. Input/output guardrails, workflow-level human-in-the-loop approval, and blocking external model providers are adjacent controls and do not constrain tool execution itself.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a security engineer, risky tool runs are containable — container/VM sandboxing, tool policies, or permission modes that limit what the agent can touch",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "secrets-credential-handling",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documented Mastra capability for credential handling: no secrets store, no environment separation for API keys, and no redaction of keys in chat history or traces. The `.env` mention covers only a model-picker config flag (AUTO_BLOCK_EXTERNAL_PROVIDERS), and the guardrails that 'sanitize responses' target prompt injection and output processing, not credential redaction. Both are adjacent features and earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a security engineer, credentials are handled deliberately — a secrets store or env separation with redaction, never API keys pasted into chat history",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "shell-file-execution",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra is an agent framework, so a built-in command-execution and file-editing surface is a fair question to ask of it. The evidence only shows generic custom tools that a developer could use to build such a capability. A passing mention of 'Mastra Code' running on the same harness does not document any shell exec or file-edit capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a power user, the assistant can run commands and edit files on my machine — a real exec surface, not just chat about what to do",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "skills-registry-install",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A skills or plugins registry with one-step install is a fair question for an agent framework, but the evidence shows no such registry. Mastra offers a templates gallery of complete projects to clone and adapt, and tools are added by importing code into the agent constructor. Both are adjacent features or developer building blocks, not a browsable capability registry with one-command or one-click install.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a power user, I can browse a real skills/plugins registry and install a capability with one command or click",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra",
+    "storyId": "voice-interaction",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Voice is a fair axis for an AI agent framework, since such a framework could ship speech-to-text, text-to-speech, or realtime voice. The evidence pack never mentions transcription, spoken replies, or live voice conversations. Absence of evidence for an applicable capability yields none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a power user, I can interact by voice — voice notes get transcribed, replies can be spoken, or live voice conversations are supported",
+      "citations": []
+    }
+  },
+  {
     "productId": "open-webui",
     "storyId": "action-approval-gates",
     "verdict": "partial",
