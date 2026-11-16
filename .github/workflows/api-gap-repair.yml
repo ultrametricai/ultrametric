@@ -17,9 +17,10 @@
 #      appends only what passes; everything else is withheld with a disposition in the
 #      dated committed ledger, never guessed. Withheld rows stay out of the ledger's
 #      `cells`, so the scan keeps flagging them for a human research wave,
-#   4. scoped judge --batch per touched product, derive + the dependent generators, the
-#      test gates, then a PR with the standard wave body (ledger, moves table,
-#      dispositions), a '@greptileai review' request, and the gated auto-merge arm.
+#   4. scoped judge --batch per touched product, refresh reconciliation (retain baseline
+#      grades for re-roll flips without new source support), derive + the dependent
+#      generators, the test gates, then a PR with the standard wave body (ledger, moves
+#      table, dispositions), a '@greptileai review' request, and the gated auto-merge arm.
 #
 # OUT OF SCOPE by design: review-finding fix rounds and pre-audit disputes are
 # judgment-heavy and stay with coordinator agents. If the bounded repair worker
@@ -71,6 +72,12 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      # The reconciliation baseline (the story-runner convention): the main commit the
+      # run started from, pinned before any append or re-judge mutates the tree.
+      - name: Pin refresh baseline
+        id: baseline
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Check for API key
         id: gate
@@ -143,15 +150,22 @@ jobs:
           echo "appended=$(jq '.cells | length' "$LEDGER")" >> "$GITHUB_OUTPUT"
 
       # Scoped re-judges — the judge's cellHash cache means untouched cells cost nothing —
-      # then derive + the analytic intervals once per touched arena. An arena with MORE
-      # THAN ONE touched product is judged category-wide (the local waves' convention):
-      # judge.ts blocks a scoped --product publication whenever any OTHER product's pack
-      # changed under its cache, so per-product calls would fail mid-wave.
+      # then reconciliation, derive + the analytic intervals once per touched arena. An
+      # arena with MORE THAN ONE touched product is judged category-wide (the local waves'
+      # convention): judge.ts blocks a scoped --product publication whenever any OTHER
+      # product's pack changed under its cache, so per-product calls would fail mid-wave.
+      # Reconciliation (reconcile-refresh.ts, the step story-runner runs between judge and
+      # derive) retains the baseline grade for every re-roll flip without new source
+      # support: a changed pack re-rolls every cell of the touched product, and model
+      # noise on cells the appended spec does not support must not move grades. Without
+      # it the check-refresh-stability gate below fails the whole wave (first scheduled
+      # run, 2026-11-12: 9 unsupported flips on two single-append products).
       - name: Judge and derive touched arenas
         if: steps.gate.outputs.enabled == 'true' && steps.verify.outputs.appended != '0'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           LEDGER: ${{ steps.verify.outputs.ledger }}
+          BASELINE_SHA: ${{ steps.baseline.outputs.sha }}
         run: |
           jq -r '.cells[] | "\(.arena) \(.product)"' "$LEDGER" | sort -u > /tmp/api-gap-touched.txt
           cut -d' ' -f1 /tmp/api-gap-touched.txt | sort -u > /tmp/api-gap-arenas.txt
@@ -164,6 +178,11 @@ jobs:
               PRODUCT=$(grep "^$ARENA " /tmp/api-gap-touched.txt | cut -d' ' -f2)
               pnpm engine judge --batch --category "$ARENA" --product "$PRODUCT"
             fi
+            echo "::endgroup::"
+            echo "::group::reconcile $ARENA"
+            pnpm exec tsx rankings-engine/scripts/reconcile-refresh.ts \
+              --category "$ARENA" --baseline "$BASELINE_SHA" \
+              --report "$RUNNER_TEMP/api-gap-reconciliation-$ARENA.json"
             echo "::endgroup::"
             echo "::group::derive $ARENA"
             pnpm engine derive --category "$ARENA"
