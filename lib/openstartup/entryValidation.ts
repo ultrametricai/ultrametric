@@ -43,8 +43,7 @@ function fieldPath(argName: string, path: readonly PropertyKey[]): string {
 /** Build the validator a registered entrypoint calls on its first line. */
 export function entrySpec(fn: string, args: readonly EntryArg[]): EntrySpec {
   const validate = (...values: unknown[]): void => {
-    for (let i = 0; i < args.length; i++) {
-      const arg = args[i]
+    for (const [i, arg] of args.entries()) {
       const value = values[i]
       if (arg.optional && value === undefined) continue
       const parsed = arg.schema.safeParse(value)

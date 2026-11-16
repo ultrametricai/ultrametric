@@ -109,7 +109,7 @@ export function modelDecimalRound(input: DecimalRoundInput): RoundResult {
       const fraction = s.cap ? dec(s.amount).div(s.cap) : dec();
       const byCap = s.cap
         ? fraction
-            .times(fd.plus(totalConversion.minus(conversion[i])))
+            .times(fd.plus(totalConversion.minus(conversion[i] ?? 0)))
             .div(dec(1).minus(fraction))
             .floor()
         : dec();
