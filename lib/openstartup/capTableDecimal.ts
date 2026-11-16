@@ -12,6 +12,19 @@ const D = Decimal.clone({ precision: 60, rounding: Decimal.ROUND_HALF_UP });
 const dec = (value: Decimal.Value = 0) => new D(value);
 const sum = (values: Decimal.Value[]) => values.reduce<Decimal>((n, value) => n.plus(value), dec());
 const fail = (message: string): never => { throw new RangeError(message); };
+// Validated cash strings have at most 18 fractional places. Keep share decisions
+// as exact integer ratios rather than dividing by rounded prices.
+const moneyScale = BigInt(10) ** BigInt(18);
+const moneyUnits = (value: string): bigint => {
+  const [whole, fraction = ""] = value.split(".");
+  return BigInt(whole!) * moneyScale + BigInt(fraction.padEnd(18, "0"));
+};
+const percentage = (value: number): [bigint, bigint] => {
+  const [whole, fraction = ""] = dec(value).toFixed().split(".");
+  return [BigInt(whole! + fraction), BigInt(100) * BigInt(10) ** BigInt(fraction.length)];
+};
+const totalShares = (values: bigint[]) => values.reduce((total, value) => total + value, BigInt(0));
+
 export type RoundResult = {
   pricePerShare: string;
   preMoney: string;
@@ -76,14 +89,10 @@ export function modelDecimalRound(input: DecimalRoundInput): RoundResult {
     if (dec(investment.amount).lte(0)) fail("Investment amount must be positive.");
   const { safes } = input;
   const terms = input;
-  const pool = { available: input.availablePoolShares };
   const pre = dec(terms.preMoney);
   const cash = sum(terms.investments.map((x) => x.amount));
   const fd = dec(input.fullyDilutedShares);
   if (fd.lte(0)) fail("A round requires existing shares.");
-  const t = dec(terms.poolTargetPct).div(100);
-  const k = t.times(pre.plus(cash)).div(pre);
-  if (k.gte(1)) fail("The pool target is unreachable at this valuation.");
   if (sum(safes.map((s) => (s.cap ? dec(s.amount).div(s.cap) : 0))).gte(1))
     fail("SAFE caps allocate 100% or more before the round.");
   if (
@@ -92,75 +101,85 @@ export function modelDecimalRound(input: DecimalRoundInput): RoundResult {
     )
   )
     fail("SAFE price claims reach the pre-money valuation.");
-  let conversion = safes.map(() => dec());
-  let increase = dec();
-  let price = dec();
+  const preUnits = moneyUnits(terms.preMoney);
+  const cashUnits = totalShares(terms.investments.map(x => moneyUnits(x.amount)));
+  const fdShares = BigInt(input.fullyDilutedShares);
+  const available = BigInt(input.availablePoolShares);
+  const [targetNumerator, targetDenominator] = percentage(terms.poolTargetPct);
+  const targetCapital = targetNumerator * (preUnits + cashUnits);
+  const poolDenominator = targetDenominator * preUnits - targetCapital;
+  if (poolDenominator <= BigInt(0)) fail("The pool target is unreachable at this valuation.");
+  const safeTerms = safes.map(s => ({
+    amount: moneyUnits(s.amount), cap: s.cap === undefined ? undefined : moneyUnits(s.cap),
+    discount: percentage(s.discountPct ?? 0),
+  }));
+  let conversion = safes.map(() => BigInt(0));
+  let increase = BigInt(0);
+  let pricingShares = BigInt(0);
   let converged = false;
   const routes: ("cap" | "discount" | "round")[] = [];
   for (let iteration = 0; iteration < 2000; iteration++) {
-    const totalConversion = sum(conversion);
-    const company = fd.plus(totalConversion);
-    increase = D.max(0, k.times(company).minus(pool.available).div(dec(1).minus(k))).ceil();
-    price = pre.div(company.plus(increase));
+    const totalConversion = totalShares(conversion);
+    const company = fdShares + totalConversion;
+    const poolNumerator = targetCapital * company - available * targetDenominator * preUnits;
+    increase = poolNumerator > BigInt(0) ? (poolNumerator + poolDenominator - BigInt(1)) / poolDenominator : BigInt(0);
+    pricingShares = company + increase;
     const next = safes.map((s, i) => {
-      const byPrice = dec(s.amount)
-        .div(price.times(dec(1).minus(dec(s.discountPct ?? 0).div(100))))
-        .floor();
-      const fraction = s.cap ? dec(s.amount).div(s.cap) : dec();
-      const byCap = s.cap
-        ? fraction
-            .times(fd.plus(totalConversion.minus(conversion[i] ?? 0)))
-            .div(dec(1).minus(fraction))
-            .floor()
-        : dec();
-      routes[i] = byCap.gte(byPrice) && s.cap ? "cap" : s.discountPct ? "discount" : "round";
-      return D.max(byCap, byPrice);
+      const term = safeTerms[i]!;
+      const [discountNumerator, discountDenominator] = term.discount;
+      const byPrice = term.amount * pricingShares * discountDenominator
+        / (preUnits * (discountDenominator - discountNumerator));
+      const byCap = term.cap === undefined ? BigInt(0)
+        : term.amount * (fdShares + totalConversion - (conversion[i] ?? BigInt(0))) / (term.cap - term.amount);
+      routes[i] = byCap >= byPrice && s.cap ? "cap" : s.discountPct ? "discount" : "round";
+      return byCap > byPrice ? byCap : byPrice;
     });
-    if (next.every((n, i) => n.eq(conversion[i] ?? 0))) {
+    if (next.every((n, i) => n === conversion[i])) {
       converged = true;
       break;
     }
     conversion = next;
   }
   if (!converged) fail("SAFE conversion did not converge. Use a reviewed conversion schedule.");
-  if (conversion.some((shares) => shares.lte(0)))
+  if (conversion.some(shares => shares <= BigInt(0)))
     fail("A SAFE converts to less than one whole share. Use a reviewed conversion schedule.");
+  const price = pre.div(pricingShares.toString());
   if (price.toDecimalPlaces(18).lte(0))
     fail("The share price is below the supported decimal scale.");
-  const allocations = terms.investments.map((x) => {
-    const shares = dec(x.amount).div(price).floor();
-    if (shares.lte(0)) fail("An investment is too small to buy one whole share.");
+  const allocations = terms.investments.map(x => {
+    const numerator = moneyUnits(x.amount) * pricingShares;
+    const shares = numerator / preUnits;
+    if (shares <= BigInt(0)) fail("An investment is too small to buy one whole share.");
+    const remainder = numerator - shares * preUnits;
     return {
       holderId: x.holderId,
-      shares: shares.toFixed(0),
+      shares: shares.toString(),
       amount: x.amount,
-      unallocatedCash: dec(x.amount).minus(shares.times(price)).toFixed(18),
+      unallocatedCash: dec(remainder.toString()).div((pricingShares * moneyScale).toString()).toFixed(18),
     };
   });
-  const fullyDiluted = fd
-    .plus(sum(conversion))
-    .plus(increase)
-    .plus(sum(allocations.map((a) => a.shares)));
+  const fullyDiluted = fdShares + totalShares(conversion) + increase
+    + totalShares(allocations.map(a => BigInt(a.shares)));
   return {
     pricePerShare: price.toFixed(18),
     preMoney: terms.preMoney,
     newMoney: cash.toFixed(),
     postMoney: pre.plus(cash).toFixed(),
-    poolIncrease: increase.toFixed(0),
+    poolIncrease: increase.toString(),
     conversions: safes.map((s, i) => ({
       securityId: s.id,
       holderId: s.holderId,
-      shares: (conversion[i] ?? dec()).toFixed(0),
+      shares: (conversion[i] ?? BigInt(0)).toString(),
       method: routes[i] ?? "round",
       price: dec(s.amount)
-        .div(conversion[i] ?? 1)
+        .div((conversion[i] ?? BigInt(1)).toString())
         .toFixed(18),
     })),
     allocations,
-    fullyDilutedShares: fullyDiluted.toFixed(0),
-    poolPct: dec(pool.available).plus(increase).div(fullyDiluted).times(100).toFixed(8),
+    fullyDilutedShares: fullyDiluted.toString(),
+    poolPct: dec((available + increase).toString()).div(fullyDiluted.toString()).times(100).toFixed(8),
     rounding:
-      "Whole shares floor; pool increases ceil; prices calculate at 60 significant digits and display at 18 decimal places. Residual cash is reported.",
+      "Whole shares floor and pool increases ceil using exact integer ratios; prices calculate at 60 significant digits and display at 18 decimal places. Residual cash is reported.",
   };
 }
 
@@ -189,5 +208,5 @@ export function vestedMonthlyShares(input: {
   let elapsed = 0;
   while (elapsed < input.months && addMonthsClamped(input.start, elapsed + 1) <= at) elapsed++;
   if (elapsed < (input.cliffMonths ?? 0)) return "0";
-  return dec(input.shares).times(elapsed).div(input.months).floor().toFixed(0);
+  return (BigInt(input.shares) * BigInt(elapsed) / BigInt(input.months)).toString();
 }

@@ -38,6 +38,28 @@ describe('decimal-string financing contract', () => {
     expect(result.pricePerShare).toBe('0.000000010000000000')
     expect(result.allocations[0].shares).toBe('2500000')
   })
+  it('allocates exact whole-share boundaries despite repeating display prices', () => {
+    const result = modelDecimalRound({ ...base(), fullyDilutedShares: '6000000',
+      availablePoolShares: '0', preMoney: '1000000', poolTargetPct: 0,
+      investments: [{ holderId: 'investor', amount: '1000000' }] })
+    expect(result.allocations[0].shares).toBe('6000000')
+    expect(result.allocations[0].unallocatedCash).toBe('0.000000000000000000')
+    expect(result.fullyDilutedShares).toBe('12000000')
+  })
+  it('floors exact cap ratios without first rounding ownership fractions', () => {
+    const result = modelDecimalRound({ ...base(), fullyDilutedShares: '4', availablePoolShares: '0',
+      preMoney: '100', poolTargetPct: 0, safes: [{ id: 'safe', holderId: 'safe', amount: '1', cap: '3' }],
+      investments: [{ holderId: 'investor', amount: '100' }] })
+    expect(result.conversions[0].shares).toBe('2')
+    expect(result.allocations[0].shares).toBe('6')
+  })
+  it('ceils exact pool top-ups without rounding the target ratio', () => {
+    const result = modelDecimalRound({ ...base(), fullyDilutedShares: '2', availablePoolShares: '0',
+      preMoney: '3', poolTargetPct: 50, investments: [{ holderId: 'investor', amount: '1' }] })
+    expect(result.poolIncrease).toBe('4')
+    expect(result.fullyDilutedShares).toBe('8')
+    expect(result.poolPct).toBe('50.00000000')
+  })
   it('uses the better discount or cap conversion route', () => {
     const input = base()
     input.safes = [{ id: 'a', holderId: 'a', amount: '500000', discountPct: 20 }]
