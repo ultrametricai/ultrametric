@@ -154,6 +154,9 @@ jobs:
       # arena with MORE THAN ONE touched product is judged category-wide (the local waves'
       # convention): judge.ts blocks a scoped --product publication whenever any OTHER
       # product's pack changed under its cache, so per-product calls would fail mid-wave.
+      # A prior retention ledger also requires category assembly: raw cached proposals
+      # can differ from accepted peer grades. Reconciliation verifies their origins
+      # against the pinned baseline and retains those grades again before derivation.
       # Reconciliation (reconcile-refresh.ts, the step story-runner runs between judge and
       # derive) retains the baseline grade for every re-roll flip without new source
       # support: a changed pack re-rolls every cell of the touched product, and model
@@ -172,7 +175,7 @@ jobs:
           while read -r ARENA; do
             COUNT=$(grep -c "^$ARENA " /tmp/api-gap-touched.txt)
             echo "::group::judge $ARENA ($COUNT touched)"
-            if [ "$COUNT" -gt 1 ]; then
+            if [ "$COUNT" -gt 1 ] || [ -f "rankings-engine/cache/refresh-retention/$ARENA/decisions.json" ]; then
               pnpm engine judge --batch --category "$ARENA"
             else
               PRODUCT=$(grep "^$ARENA " /tmp/api-gap-touched.txt | cut -d' ' -f2)
