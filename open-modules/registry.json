@@ -622,6 +622,180 @@
       }
     },
     {
+      "id": "capTableDecimal",
+      "title": "Decimal cap-table financing model",
+      "file": "lib/openstartup/capTableDecimal.ts",
+      "readme": "open-modules/README.md#cap-table",
+      "status": "verified + property-tested",
+      "exports": [
+        "modelDecimalRound",
+        "vestedMonthlyShares"
+      ],
+      "entrypoint": {
+        "function": "modelDecimalRound",
+        "signature": "modelDecimalRound(input)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of modelDecimalRound",
+          "prefixItems": [
+            {
+              "title": "input",
+              "type": "object",
+              "properties": {
+                "fullyDilutedShares": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9]\\d{0,29})$"
+                },
+                "availablePoolShares": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9]\\d{0,29})$"
+                },
+                "preMoney": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9]\\d{0,19})(\\.\\d{1,18})?$"
+                },
+                "poolTargetPct": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "safes": {
+                  "maxItems": 10000,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "holderId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "amount": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9]\\d{0,19})(\\.\\d{1,18})?$"
+                      },
+                      "cap": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9]\\d{0,19})(\\.\\d{1,18})?$"
+                      },
+                      "discountPct": {
+                        "type": "number",
+                        "minimum": 0,
+                        "exclusiveMaximum": 100
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "holderId",
+                      "amount"
+                    ]
+                  }
+                },
+                "investments": {
+                  "minItems": 1,
+                  "maxItems": 10000,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "holderId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "amount": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9]\\d{0,19})(\\.\\d{1,18})?$"
+                      }
+                    },
+                    "required": [
+                      "holderId",
+                      "amount"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "fullyDilutedShares",
+                "availablePoolShares",
+                "preMoney",
+                "poolTargetPct",
+                "safes",
+                "investments"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "note": "Versioned precision contract: decimal strings, whole-share floor, pool top-up ceil, 18-place output prices. Legacy capTable examples retain four-place pricing. MFN elections and note conversions must be resolved before calling.",
+        "example": {
+          "args": [
+            {
+              "fullyDilutedShares": "10000000",
+              "availablePoolShares": "750000",
+              "safes": [
+                {
+                  "id": "safe-a",
+                  "holderId": "angel-a",
+                  "amount": "200000",
+                  "cap": "4000000"
+                },
+                {
+                  "id": "safe-b",
+                  "holderId": "angel-b",
+                  "amount": "800000",
+                  "cap": "8000000"
+                }
+              ],
+              "preMoney": "15000000",
+              "poolTargetPct": 10,
+              "investments": [
+                {
+                  "holderId": "series-a",
+                  "amount": "5000000"
+                }
+              ]
+            }
+          ],
+          "resultShape": {
+            "pricePerShare": "string",
+            "preMoney": "string",
+            "newMoney": "string",
+            "postMoney": "string",
+            "poolIncrease": "string",
+            "conversions": [
+              {
+                "securityId": "string",
+                "holderId": "string",
+                "shares": "string",
+                "method": "string",
+                "price": "string"
+              }
+            ],
+            "allocations": [
+              {
+                "holderId": "string",
+                "shares": "string",
+                "amount": "string",
+                "unallocatedCash": "string"
+              }
+            ],
+            "fullyDilutedShares": "string",
+            "poolPct": "string",
+            "rounding": "string"
+          }
+        }
+      }
+    },
+    {
       "id": "convertibleNote",
       "title": "Convertible notes",
       "file": "lib/openstartup/convertibleNote.ts",

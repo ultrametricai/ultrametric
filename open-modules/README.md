@@ -20,6 +20,23 @@ reference a dated law rule in `open-law/` and return `needs_review` when the app
 locale or date is unknown. Status, module by module: worked-example-verified and
 property-tested — **not** independently expert-certified, and the module docs say so.
 
+### Decimal cap-table interface
+
+`lib/openstartup/capTableDecimal.ts` exports `modelDecimalRound` for consumers
+that require decimal-string quantities and cash. Its input schema and runnable
+example are in `registry.json`. SAFE and pool formulas follow the same YC sources
+as `capTable.ts`; this interface calculates prices at 60 significant digits and
+returns 18 decimal places. Existing `buildCapTable` and `replayPricedRound` outputs
+retain the four-place prices used in the published worked examples. Differences
+in new-investor share allocations from those examples are intentional precision
+behavior, tested separately. The shared calendar helper is in `calendar.ts`.
+
+Consume these sources at an exact public commit and verify their content hashes.
+Upgrade the pin through a reviewed change with parity tests; local alterations to
+the consumed calculation files should fail the consumer's integrity check. The
+consumer owns authentication, persistence, approvals, MFN election decisions and
+note conversion instructions. These modules only propose calculations.
+
 ## Module index
 
 The catalog is organized into groups, committed per module in

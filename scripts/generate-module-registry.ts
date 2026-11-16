@@ -14,6 +14,7 @@ import { loadBusinessLogicMap } from '../lib/businessLogicMap'
 import type { EntrySpec } from '../lib/openstartup/entryValidation'
 import * as antiDilution from '../lib/openstartup/antiDilution'
 import * as capTable from '../lib/openstartup/capTable'
+import * as capTableDecimal from '../lib/openstartup/capTableDecimal'
 import * as capTableCodec from '../lib/openstartup/capTableCodec'
 import * as convertibleNote from '../lib/openstartup/convertibleNote'
 import * as deFranchiseTax from '../lib/openstartup/deFranchiseTax'
@@ -78,6 +79,23 @@ export const REGISTRY_ENTRIES: readonly RegistryEntryDef[] = [
         { kind: 'priced', name: 'Series A', preMoney: 8_000_000, newMoney: 2_000_000, poolTargetPct: 10 },
       ],
     ],
+  },
+  {
+    id: 'capTableDecimal',
+    ns: capTableDecimal,
+    entry: capTableDecimal.modelDecimalRoundEntry,
+    title: 'Decimal cap-table financing model',
+    anchor: 'cap-table',
+    note: 'Versioned precision contract: decimal strings, whole-share floor, pool top-up ceil, 18-place output prices. Legacy capTable examples retain four-place pricing. MFN elections and note conversions must be resolved before calling.',
+    exampleArgs: [{
+      fullyDilutedShares: '10000000', availablePoolShares: '750000',
+      safes: [
+        { id: 'safe-a', holderId: 'angel-a', amount: '200000', cap: '4000000' },
+        { id: 'safe-b', holderId: 'angel-b', amount: '800000', cap: '8000000' },
+      ],
+      preMoney: '15000000', poolTargetPct: 10,
+      investments: [{ holderId: 'series-a', amount: '5000000' }],
+    }],
   },
   {
     id: 'capTableCodec',
