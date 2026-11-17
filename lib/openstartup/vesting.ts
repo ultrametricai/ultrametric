@@ -76,31 +76,8 @@ export const RULE_IDS_VESTING = {
 // Date math
 // ---------------------------------------------------------------------------
 
-const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
-
-function parseIso(date: string, what: string): Date {
-  if (!ISO_DATE_RE.test(date)) throw new RangeError(`${what}: expected YYYY-MM-DD, got ${JSON.stringify(date)}`)
-  const d = new Date(`${date}T00:00:00Z`)
-  if (Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== date) {
-    throw new RangeError(`${what}: invalid calendar date ${date}`)
-  }
-  return d
-}
-
-/**
- * Add calendar months in UTC, CLAMPING to the last day of the target month when the
- * anniversary day does not exist there (module convention: Jan 31 + 1 month = Feb 28/29,
- * never Mar 2/3). This is the vesting-anniversary convention; the plan documents control.
- */
-export function addMonthsClamped(iso: string, months: number): string {
-  if (!Number.isInteger(months) || months < 0) throw new RangeError('months must be a non-negative integer')
-  const d = parseIso(iso, 'date')
-  const y = d.getUTCFullYear()
-  const m = d.getUTCMonth() + months
-  const lastDayOfTarget = new Date(Date.UTC(y, m + 1, 0)).getUTCDate()
-  const day = Math.min(d.getUTCDate(), lastDayOfTarget)
-  return new Date(Date.UTC(y, m, day)).toISOString().slice(0, 10)
-}
+import { addMonthsClamped, parseIso } from './calendar'
+export { addMonthsClamped } from './calendar'
 
 // ---------------------------------------------------------------------------
 // Schedules
