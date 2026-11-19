@@ -96,7 +96,7 @@ describe('api-gap-repair workflow', () => {
       // Exercise the workflow's actual routing condition, with no provider calls.
       const condition = step('Judge and derive touched arenas')!.match(/^\s*(if \[ "\$COUNT"[^\n]+; then)$/m)![1]
       const route = () => execFileSync('bash', ['-eu', '-c', `${condition}\n echo category\nelse\n echo scoped\nfi`], {
-        cwd: root, encoding: 'utf8', env: { PATH: process.env.PATH, COUNT: '1', ARENA: arena },
+        cwd: root, encoding: 'utf8', env: { PATH: process.env.PATH, COUNT: '1', ARENA: arena } as NodeJS.ProcessEnv,
       }).trim()
       for (const [index, product] of ['first', 'second'].entries()) {
         proposal(product, [evidence, { ...evidence, id: 'unrelated', url: 'https://example.invalid/other', excerpt: 'Account settings.' }], 7)
