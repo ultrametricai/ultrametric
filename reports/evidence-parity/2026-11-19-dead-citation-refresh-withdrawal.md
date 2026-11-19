@@ -2,7 +2,7 @@
 
 PR #748 retains verified crawl-target URL maintenance for Flutterwave, Rainforest and Open WebUI. The removed targets return HTTP 404; the replacement and added targets return HTTP 200. The adjacent JSON records each checked URL and the exact source and baseline commits.
 
-The incoming evidence, claims and scoring refreshes are withdrawn. The stability checker rejected unsupported grade changes, and substantive review found credit for webhook reliability, dunning and reporting exports supported only by adjacent capabilities. The proposed repair script also saved roster changes before completing its evidence checks, so it is withdrawn with the refresh.
+The incoming evidence, claims and scoring refreshes are withdrawn. The stability checker rejected unsupported grade changes, and substantive review found credit for webhook reliability, dunning and reporting exports supported only by adjacent capabilities. The author corrected the repair script’s write ordering in commit f0431f4b148605b27961eb33f81dacbf89bda571. That fix remains in ancestry; the one-off script is withdrawn from this maintenance-only publication with the refresh.
 
 Accepted evidence, claims, raw judge caches, verdicts and generated rankings are restored as coherent sets. Existing scores and negative results remain unchanged. The [original proposal](https://github.com/ultrametricai/ultrametric/commit/ddee48b1d36ae4b058a328d36ae96d90ea448698) remains in commit ancestry, including the new observations, raw model proposals, generated outputs and script.
 
