@@ -1,6 +1,6 @@
 # API-quality gap repairs, scheduled wave (2026-11-19)
 
-offline staleness scan 2026-11-19T00:19:22.537Z: 47 gap rows after ledger suppression. 0 evidence rows appended after fail-closed live verification; 49 cells withheld (never guessed) and still flagged for a research wave.
+offline staleness scan 2026-11-19T07:48:38.348Z: 47 gap rows after ledger suppression. 1 evidence rows appended after fail-closed live verification; 48 cells withheld (never guessed) and still flagged for a research wave.
 
 | product | arena | evidence rows appended | withheld |
 |---------|-------|-----------------------:|---------:|
@@ -12,7 +12,7 @@ offline staleness scan 2026-11-19T00:19:22.537Z: 47 gap rows after ledger suppre
 | colorado-sos | government-services | 0 | 4 |
 | cra | government-services | 0 | 4 |
 | gst-india | government-services | 0 | 4 |
-| bentolabs | llm-evals-observability | 0 | 4 |
+| bentolabs | llm-evals-observability | 1 | 3 |
 | shopify-pos | mobile-payments | 0 | 4 |
 | signoz | observability | 0 | 4 |
 | trello | project-management | 0 | 5 |
@@ -24,7 +24,3 @@ Routed to the needs-human issue instead of this wave:
 Deferred:
 
 - **terminals/iterm2** — Settled unsupported-churn cell (wave-2 ledger, reports/evidence-parity/2026-11-06-api-quality-wave2.json). Deferred until a settlement-aware pass exists so a repair cannot resurrect reverted churn.
-
-## Review correction
-
-The proposed Bento API addition is withdrawn because the captured document describes an OpenAPI Plant Store sample. Bento retains its accepted evidence and judgments. The unresolved machine-spec cell remains in the research queue. The original observation, raw model proposals and generated outputs remain in [source commit 621ebbb](https://github.com/ultrametricai/ultrametric/commit/621ebbb6392b3caf2eebd8a38c520db6135dbd31); the JSON report also retains the exact captured observation.
