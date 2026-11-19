@@ -1530,12 +1530,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Bento's docs describe OpenTelemetry span capture with a navigable span tree covering every model call, tool call, and agent step. A `session_id` kwarg is attached to every span, and a shared `convo_id` ties multiple runs together into a conversation thread. Missing for 10: detailed documentation of parent/child span nesting for multi-step runs (only implied by \"span tree\"), and independent or hands-on corroboration of the session/thread grouping view.",
+    "rationale": "Bento's own docs describe a span tree built from OpenTelemetry spans and capture of every model call, tool call, and agent step. Runs can be grouped via a `session_id` applied to every span and a `convo_id` that ties runs together, which covers both the nested-span and the session/thread parts of the story. Missing for 10: in-depth documentation of how span parent/child nesting is structured and how sessions or threads are viewed, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-3",
-      "bentolabs-docs-39",
       "bentolabs-docs-23",
-      "bentolabs-docs-24"
+      "bentolabs-docs-24",
+      "bentolabs-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -1544,7 +1544,7 @@
       "citations": [
         {
           "evidenceId": "bentolabs-docs-3",
-          "quote": "Every span from every framework, captured over OpenTelemetry. Open the span tree, or follow a signal straight to the call that broke."
+          "quote": "Every span from every framework, captured over OpenTelemetry. Open the span tree"
         },
         {
           "evidenceId": "bentolabs-docs-39",
@@ -1567,10 +1567,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento's CLI and Agent Skills let an agent read runs, list and edit signals, and pull analytics, and the marketing says releases are \"scored… in CI.\" Nothing documents creating a dataset, triggering an eval run, or reading back eval results programmatically. The only published API spec is a placeholder (\"OpenAPI Plant Store\"), so release scoring and trace reading are adjacent features, not this capability.",
+    "rationale": "The evidence pack never mentions datasets, and no CLI command or API documents triggering an eval run. The CLI covers issues, runs, signals and analytics, and a marketing line says releases are 'scored ... in CI', but neither amounts to an agent creating a dataset, launching an eval and reading back its results. No OpenAPI spec was found either.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can have an agent create a dataset, trigger an eval run programmatically, and read back the results",
       "citations": []
@@ -1582,7 +1582,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms an llms.txt is served at docs.bentolabs.ai/llms.txt. The docs also offer agent-oriented paths: a paste-in prompt for Claude Code, Cursor, Codex, OpenCode and Windsurf that installs Bento's Agent Skills and hands the agent the integration playbook, plus docs loaded over MCP and pages published as .md. Missing for 10: independent or hands-on evidence of an agent actually completing an integration from these docs, and detail on how the MCP docs server is set up.",
+    "rationale": "A probe confirmed a live llms.txt at docs.bentolabs.ai (HTTP 200). The docs also say a paste-in prompt installs Bento's Agent Skills into Claude Code, Cursor, Codex, OpenCode or Windsurf, hands the agent the full integration playbook, and loads the docs over MCP. Markdown versions of the doc pages (.md) are also served for agent consumption. Missing for 10: independent or hands-on corroboration of an agent actually consuming llms.txt or the skill-driven docs end-to-end.",
     "evidenceIds": [
       "bentolabs-probe-1",
       "bentolabs-docs-1",
@@ -1663,13 +1663,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento documents its own background automations: plain-English signals and alert rules that run continuously in real time, triage fires automatically, and route to Slack, PagerDuty, email or webhook. Learned fixes also ship in shadow mode and graduate to full traffic without manual intervention. These automations are limited to monitoring and agent improvement, not general-purpose automations. Missing for 10: general-purpose or user-defined automation workflows, scheduled/recurring job configuration, documentation of setup and limits for autonomous runs, independent or hands-on corroboration.",
+    "rationale": "Bento lets users define plain-English signals and alerts that run continuously against production traces. They fire in real time, get triaged into incidents with real-or-benign judgments, and route to Slack, PagerDuty, email, or webhook. Nudges also run in shadow mode and graduate automatically. These are real autonomous background processes, but they are limited to monitoring and alerting rather than general user-defined automations. missing for 10: a general-purpose automation/workflow builder, scheduled or recurring task configuration, documented background-job controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-4",
       "bentolabs-docs-7",
-      "bentolabs-docs-45",
+      "bentolabs-docs-8",
       "bentolabs-docs-12",
-      "bentolabs-docs-11"
+      "bentolabs-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -1682,10 +1682,10 @@
         },
         {
           "evidenceId": "bentolabs-docs-7",
-          "quote": "Bento groups fires into incidents and judges each one real or benign"
+          "quote": "Write alerts in English. Bento groups fires into incidents and judges each one real or benign"
         },
         {
-          "evidenceId": "bentolabs-docs-45",
+          "evidenceId": "bentolabs-docs-8",
           "quote": "Rules compile to trace queries and route to Slack, PagerDuty, email, or webhook."
         },
         {
@@ -1701,7 +1701,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an observability and improvement platform for AI agents, so an in-product assistant is a fair axis, but the evidence shows no built-in assistant that users delegate tasks to. The closest items are adjacent and earn no credit: Agent Skills that run inside external coding agents (Claude Code, Cursor, and others), plain-English signal and alert definitions, and automated incident judging. None of these is a conversational assistant inside Bento that accepts delegated tasks.",
+    "rationale": "Bento is an AI-agent observability platform, so a built-in assistant is a fair axis, but the evidence shows no in-product assistant users can delegate tasks to. Its AI features are adjacent: plain-English signals and alerts are specific detection features, and its Agent Skills hand work to external coding agents such as Claude Code or Cursor, not a built-in assistant.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1750,7 +1750,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an AI-agent observability and improvement platform with its own AI-driven features, so consuming external MCP servers is a fair capability to ask about, but the evidence pack never documents Bento acting as an MCP client. The only MCP mention describes external coding agents loading Bento's docs over MCP. That is the server or docs-delivery direction, not Bento plugging in MCP servers to use their tools.",
+    "rationale": "Bento is an agent observability and improvement platform with AI-driven features, so an MCP-client capability is a fair question, but the evidence never shows users plugging external MCP servers into Bento for it to use their tools. The only MCP mention is coding agents loading Bento's docs over MCP, which is Bento providing content to other agents (the server direction), not consuming servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1765,7 +1765,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Bento is an observability platform rather than an agent, so the MCP-server axis applies. Its quickstart says supported coding agents load Bento's docs over MCP, which shows some official MCP connection. The evidence describes only documentation access, not an MCP server exposing Bento's traces, signals, issues or other product operations. missing for 10: an MCP server exposing product data and actions, endpoint and setup documentation, tool listing, auth details, independent or hands-on corroboration.",
+    "rationale": "Bento is an agent observability platform, not an agent itself, so an official MCP server is a fair question. The quickstart says that after installing the skill, each coding tool 'loads the docs over MCP', which points to a first-party MCP endpoint serving documentation. Nothing shows an MCP server exposing Bento's product data or actions (traces, issues, signals); those are documented only through the CLI. missing for 10: a documented MCP server endpoint and install config, MCP tools for product operations (runs, signals, issues), auth details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-2",
       "bentolabs-docs-1"
@@ -1792,12 +1792,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento lets you create two core objects in plain English: failure-mode signals (it trains a detector from the description) and alert rules (which compile to trace queries). Operating the product more broadly by natural-language command is not documented. The CLI uses structured commands, and the Agent Skills give coding agents an integration playbook rather than a way to drive the product. Missing for 10: natural-language operation beyond signal and alert authoring (e.g., triage, querying runs, analytics), a documented agent or MCP path for controlling the product by NL, and independent or hands-on corroboration.",
+    "rationale": "Bento documents plain-English input for specific features: you can describe failure modes in plain English to train signals, and write alerts in natural language that compile to trace queries. Its Agent Skills also hand a coding agent the integration playbook. Broader natural-language operation of the product, such as triage, querying runs or analytics, is not documented; those tasks are exposed through the dashboard and CLI. missing for 10: general natural-language command interface across product operations, documented agent-driven operation beyond integration setup, independent/hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-4",
-      "bentolabs-docs-38",
       "bentolabs-docs-7",
-      "bentolabs-docs-45"
+      "bentolabs-docs-38",
+      "bentolabs-docs-45",
+      "bentolabs-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -1805,8 +1806,8 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
-          "evidenceId": "bentolabs-docs-38",
-          "quote": "Describe a failure mode in plain English. Bento trains a detector on your own traces, fires it in real time, and backfills your history."
+          "evidenceId": "bentolabs-docs-4",
+          "quote": "Describe any failure mode in plain English — Bento trains a signal on your own traces, fires it in real time, and backfills your entire history"
         },
         {
           "evidenceId": "bentolabs-docs-7",
@@ -1815,6 +1816,10 @@
         {
           "evidenceId": "bentolabs-docs-45",
           "quote": "Alerts are defined in plain natural language... Rules compile to trace queries and route to Slack, PagerDuty, email, or webhook."
+        },
+        {
+          "evidenceId": "bentolabs-docs-1",
+          "quote": "It installs Bento’s Agent Skills and hands the agent the full integration playbook"
         }
       ]
     }
@@ -1825,7 +1830,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Bento documents an official `bentolabs` CLI with dashboard parity from the terminal, scripts, or CI. The docs cover browser-based auth that saves tokens to the keychain, raw JSON output for piping into jq, a `refresh` command for new commands, and signal list, read, and update commands. A probe confirms the official CLI installation page exists. Missing for 10: independent or hands-on corroboration of actually running the CLI.",
+    "rationale": "Bento documents an official `bentolabs` CLI that claims dashboard parity from the terminal, scripts, or CI. It covers triaging issues, reading runs, and inspecting and updating signals, with browser-based auth login, plain JSON output that pipes into jq, and a refresh command for new commands. A probe confirms the official CLI installation docs exist. Missing for 10: independent or hands-on corroboration of the CLI working in practice.",
     "evidenceIds": [
       "bentolabs-docs-30",
       "bentolabs-docs-31",
@@ -1852,6 +1857,10 @@
         {
           "evidenceId": "bentolabs-docs-32",
           "quote": "`raw` | Plain JSON to stdout. Pipe into `jq`, `grep`, or a file."
+        },
+        {
+          "evidenceId": "bentolabs-docs-36",
+          "quote": "`signals update <signal-id>` | Edit a signal's name, prompt, or config."
         },
         {
           "evidenceId": "bentolabs-probe-3",
@@ -1894,7 +1903,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an agent-observability SaaS with a CLI and API, so issuing scoped API credentials is a fair question for this kind of product. The evidence only shows generic authentication: an OTel exporter using \"one auth header\" and `bentolabs auth login` saving tokens to the keychain. Nothing documents scoped, least-privilege, or per-agent credential issuance, so the verdict is none.",
+    "rationale": "Bento is an agent observability SaaS with authenticated CLI and ingest endpoints, so scoped credentials are a fair axis. The evidence only shows a browser-based CLI login that saves tokens to the keychain and a single auth header for OTel export. Nothing documents issuing scoped, least-privilege, or per-agent API keys, which is an adjacent capability at most.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1909,14 +1918,15 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bento documents an official Python SDK with installation, `init()` configuration, `bento.track_ai` manual instrumentation, a Google ADK extra, and `flush()` guidance. That gives developers a real first-party SDK to build against. However, only Python is evidenced: for TypeScript the docs say you can send traces 'with no Bento package at all' via OpenTelemetry, which suggests no official JS/TS SDK. The OpenAPI spec found is a placeholder 'Plant Store' document, not a usable API surface for SDK generation. missing for 10: evidence of official SDKs beyond Python (e.g. TypeScript/JS), a published SDK reference/API surface, independent or hands-on corroboration.",
+    "rationale": "Bento documents its own Python SDK with installation pages, `init()` configuration, `bento.track_ai` for wrapping LLM and tool calls, `bento.flush()`, and a Google ADK extra, so developers can build against an official SDK. The story asks for SDKs in the plural, but only Python is clearly shown: for TypeScript the docs recommend sending OpenTelemetry traces with no Bento package, and the OpenAPI probe found no API spec. missing for 10: an evidenced official SDK beyond Python (e.g. TypeScript/JS), a published API reference or OpenAPI spec, and independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
       "bentolabs-docs-17",
       "bentolabs-docs-18",
       "bentolabs-docs-23",
       "bentolabs-docs-25",
-      "bentolabs-docs-20",
-      "bentolabs-docs-21"
+      "bentolabs-docs-21",
+      "bentolabs-docs-40",
+      "bentolabs-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -1924,24 +1934,20 @@
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
         {
+          "evidenceId": "bentolabs-docs-23",
+          "quote": "`init()` accepts `user_id`, `session_id`, and `tags` kwargs. Bento invokes them on every span"
+        },
+        {
           "evidenceId": "bentolabs-docs-18",
           "quote": "Wrap any LLM or tool call with bento.track_ai."
         },
         {
-          "evidenceId": "bentolabs-docs-23",
-          "quote": "`init()` accepts `user_id`, `session_id`, and `tags` kwargs."
-        },
-        {
           "evidenceId": "bentolabs-docs-17",
-          "quote": "If you use **Google ADK**, install the extra so Bento can capture every call automatically"
+          "quote": "install the extra so Bento can capture every call automatically"
         },
         {
           "evidenceId": "bentolabs-docs-25",
           "quote": "Call `bento.flush()` before exit."
-        },
-        {
-          "evidenceId": "bentolabs-docs-20",
-          "quote": "Wire it into an OpenTelemetry pipeline directly when you already have one configured, and skip the analytics layer entirely."
         }
       ]
     }
@@ -1952,7 +1958,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Bento's FAQ says natural-language alert rules can route to a webhook alongside Slack, PagerDuty and email. That is a first-party outbound HTTP callback, but it is documented only as one alert-delivery destination in a single sentence. missing for 10: webhook registration/configuration docs, list of subscribable event types beyond alert fires (e.g. issues, signals, incidents), payload schema, signing/verification and retry semantics, independent or hands-on corroboration.",
+    "rationale": "Bento's own alerting docs say natural-language alert rules can route to a webhook destination, which is a first-party outbound HTTP callback for alert events. That evidence is a single marketing/FAQ line covering only alert firings, not a general event-subscription system. missing for 10: webhook registration/configuration docs, event type catalog beyond alerts, payload schema, signing/verification and retry semantics, independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-8",
       "bentolabs-docs-45"
@@ -1979,7 +1985,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack has no evidence that Bento offers an interactive API reference or runnable examples for its own API. The only machine-readable spec found at /api-reference/openapi.json is titled \"OpenAPI Plant Store\", which looks like a placeholder sample rather than Bento's API, and the other OpenAPI probe paths return 404. The documented CLI and the llms.txt/MCP docs loading are adjacent features and do not count as an interactive, runnable API reference.",
+    "rationale": "Bento is an observability SaaS, so an interactive API reference is a fair question for it. The evidence documents only a CLI, SDK docs, an llms.txt file and docs served over MCP, none of which is an interactive API explorer with runnable examples. The OpenAPI probes at all candidate paths returned 404, and CLI command examples are an adjacent feature that earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1994,7 +2000,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Probes of the standard spec paths (openapi.json, swagger.json, api/openapi.json, .well-known) all returned 404. The only OpenAPI file found, at /api-reference/openapi.json, is titled \"OpenAPI Plant Store\", which appears to be a docs-template placeholder rather than a description of Bento's own API. Nothing shows a downloadable machine-readable spec of Bento's API.",
+    "rationale": "Bento is an agent-observability SaaS with a CLI and dashboard, so offering a downloadable API spec is a fair question for this product. However, every probed OpenAPI or Swagger path returned 404, and nothing in the evidence documents an OpenAPI or equivalent spec. The llms.txt file is a docs index and the CLI is a separate capability, so neither counts as a machine-readable API spec.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2009,7 +2015,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an agent observability and improvement SaaS, so a separate sandbox or test environment is a fair thing to ask about. However, no sandbox, test project, or isolated environment is documented. Shadow mode runs on live production traffic, and offline/CI evaluation scores releases against production history; both are adjacent features, not isolation from production data.",
+    "rationale": "Bento's evidence describes shadow-mode rollout of fixes on live traffic and release scoring against production history. Neither is an isolated sandbox or test environment that keeps users away from production data, and both are adjacent features at best. No documented sandbox, test project, or non-production environment appears in the evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2024,7 +2030,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence does not document versioned public APIs or any deprecation policy for Bento. Versioning appears only for the user's own prompt, skill, and model changes, which is a different feature. The only OpenAPI file found is titled \"OpenAPI Plant Store\" and shows no API versioning or deprecation terms.",
+    "rationale": "Bento is an agent-observability SaaS with a CLI and APIs, so API versioning and a deprecation policy are a fair axis to judge it on. The pack has no evidence of versioned API endpoints or any documented deprecation policy, and the OpenAPI probe found no spec. The versioning that is mentioned covers users' prompts, skills, and model changes, which is an adjacent feature rather than API versioning.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2039,30 +2045,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a scriptable CLI with dashboard parity, JSON output, and per-item commands such as `signals update <signal-id>`. It does not document a bulk operation that acts on many items at once (bulk triage, bulk update, or batch edit). Scripting loops over single-item CLI calls is a developer building block, not the capability itself, so it earns no credit. Signal backfill over history is an automatic detection feature, not a user-driven bulk operation.",
-    "evidenceIds": [
-      "bentolabs-docs-30",
-      "bentolabs-docs-32",
-      "bentolabs-docs-36"
-    ],
+    "rationale": "The evidence pack documents no first-party bulk-operation capability, such as acting on many issues, signals, or runs in one command or action. The CLI's per-item `signals update <signal-id>`, its list filters, and its JSON output that can be piped into scripts are building blocks a user could loop over, not a bulk feature. Signal backfill and failure clustering are adjacent automated behaviors, not user-initiated bulk operations.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": [
-        {
-          "evidenceId": "bentolabs-docs-30",
-          "quote": "Anything you can do in the dashboard, you can do from your terminal, a script, or CI: triage issues, read runs, inspect signals, pull analytics."
-        },
-        {
-          "evidenceId": "bentolabs-docs-32",
-          "quote": "Plain JSON to stdout. Pipe into `jq`, `grep`, or a file."
-        },
-        {
-          "evidenceId": "bentolabs-docs-36",
-          "quote": "`signals update <signal-id>` | Edit a signal's name, prompt, or config."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -2110,7 +2099,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an observability and improvement platform for AI agents, so scheduling recurring jobs such as periodic evals, reports, or backfills is a fair question to ask of it. The evidence only shows event-driven behavior: real-time signal firing, one-off backfills, CI and live-traffic scoring, and alert routing. None of these is a user-defined recurring schedule. The 'recurring failures' wording refers to grouping repeated failures, not scheduling, and the 'scheduled api-gap-repair workflow' is the evidence-collection tooling, not a Bento feature.",
+    "rationale": "Bento is an AI-agent observability and improvement platform. Scheduled or recurring evaluations are a plausible capability for this kind of product, so the axis applies, but the evidence pack never documents a scheduler or recurring job feature. Real-time signal firing, history backfill and CI-run release scoring are adjacent features. Calling the CLI from a user's own scripts or CI would be a user-side workaround, not a native recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2125,11 +2114,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento's own marketing says prompt, skill, and model changes are versioned, diffable, and reversible, which covers versioning, review, and rollback for its skills. Fixes also ship in shadow mode and only graduate after proving themselves, a form of staged review. However, this rests on one-line marketing claims with no procedural docs, and the CLI only shows in-place editing of signals with no version history. Missing for 10: documented version history, diff UI, or rollback commands for signals and alert rules; how-to docs for reverting a skill or prompt change; independent or hands-on corroboration.",
+    "rationale": "Bento's own marketing claims that every prompt, skill, and model change is versioned, diffable, and reversible. Its automation-like fixes (skills, subagents, tools, nudges) also go through a shadow-mode, candidate-to-promote review before reaching full traffic. However, this rests on one headline claim with no documented workflow for viewing history, reviewing diffs, or executing a rollback. It is also unclear whether alert rules and signals are covered. missing for 10: documented versioning/diff/rollback mechanics (UI, CLI, or API), coverage of signals and alert rules, independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-15",
-      "bentolabs-docs-12",
       "bentolabs-docs-11",
+      "bentolabs-docs-12",
       "bentolabs-docs-16"
     ],
     "support": {
@@ -2139,15 +2128,15 @@
       "citations": [
         {
           "evidenceId": "bentolabs-docs-15",
-          "quote": "Every prompt, skill, and model change is versioned, diffable, and reversible."
+          "quote": "Every prompt, skill, and model change is versioned, diffable, and reversible. Trace any regression back to the change that caused it."
+        },
+        {
+          "evidenceId": "bentolabs-docs-11",
+          "quote": "Reusable, trigger-based fixes: skills, subagents, and tools that graduate from candidate to promote as they prove themselves in production."
         },
         {
           "evidenceId": "bentolabs-docs-12",
           "quote": "The nudge ships in shadow mode, is scored against the outcome it was meant to fix, and graduates to 100% traffic only if it provably helps."
-        },
-        {
-          "evidenceId": "bentolabs-docs-16",
-          "quote": "Skills and rules live in your repo as Markdown and YAML."
         }
       ]
     }
@@ -2158,10 +2147,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents no bulk export of traces or datasets to blob storage (e.g. S3/GCS) or a data warehouse; OpenTelemetry export sends traces into Bento, not out of it. The CLI's ability to print raw JSON to stdout that a user could pipe into a file is a user-side workaround and earns no credit.",
+    "rationale": "Bento is an agent observability platform, so bulk export of traces and datasets is a fair question to ask of it. The evidence shows no documented bulk export to blob storage or a data warehouse. The CLI's raw JSON output piped to a file is a user-side workaround, and the OpenTelemetry material covers sending traces into Bento, not out of it.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can bulk-export traces and datasets to blob storage or my data warehouse",
       "citations": []
@@ -2173,7 +2162,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento's own marketing says every release is scored against production history \"in CI\" and catches regressions before users see them, and its CLI is documented as usable from CI. However, there are no first-party docs showing how to run evals in a CI job or how to block a deploy on the results, so this rests on a single thin claim. Missing for 10: documented CI eval workflow/integration, explicit deployment-gating mechanism (pass/fail thresholds, exit codes), eval dataset/scoring configuration docs, independent or hands-on corroboration.",
+    "rationale": "Bento's marketing says every release is scored against production history 'offline, in CI, and on live traffic' to catch regressions before users do. Its CLI is documented as usable from CI with JSON output. There is no documentation of how to configure CI evals or how a failing score blocks a deployment, so the gating half rests on an implied claim. missing for 10: CI eval setup docs (pipeline config, commands), an explicit deployment-gating mechanism such as thresholds or non-zero exit codes, eval dataset definition, independent or hands-on corroboration",
     "evidenceIds": [
       "bentolabs-docs-14",
       "bentolabs-docs-30"
@@ -2200,7 +2189,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bento's Python SDK attaches `user_id`, `session_id`, and custom `tags` to every span, can tag spans with feature flags or experiment IDs, and reports cost per run out of the box. The evidence never shows cost or usage actually aggregated or broken down by those metadata dimensions, so attribution is implied rather than documented. Missing for 10: documented cost/usage rollups by user, session, or feature tag; token-usage attribution; independent or hands-on corroboration.",
+    "rationale": "Bento documents attaching user_id, session_id, and custom tags (experiment IDs, feature flags) to every span, and it reports cost per run out of the box. The docs never show cost or usage being aggregated or broken down by those user, session, or feature dimensions, so the attribution step is only implied. missing for 10: documented cost/usage rollups grouped by user, session, or feature metadata; token-level usage attribution; independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-23",
       "bentolabs-docs-22",
@@ -2233,7 +2222,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an agent observability and evaluation platform, so custom code-based scorers are a fair question to ask of it. However, the evidence only shows plain-English signals that Bento trains into detectors, plus platform-run scoring of releases and nudges. Nothing documents a user-authored, code-based scorer or metric API; natural-language signals and built-in scoring are adjacent features, not this capability.",
+    "rationale": "Bento is an agent observability and evaluation platform, so custom scorers are a fair question for it. The evidence shows failure detectors (signals) defined in plain English and trained by Bento, and releases scored against production history. Nothing documents writing custom code-based scorers or metrics.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2248,25 +2237,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento documents out-of-the-box views of cost per run, tool failure rates, drift and regressions, and a CLI that can pull analytics. Nothing in the evidence shows the product letting a user build custom dashboards, or covering latency and eval-score metrics in a user-configurable view. Built-in metric views and exportable analytics are adjacent features, not the custom-dashboard capability the story asks for.",
-    "evidenceIds": [
-      "bentolabs-docs-10",
-      "bentolabs-docs-30"
-    ],
+    "rationale": "Bento documents a dashboard and out-of-the-box views of cost per run, tool failure rates, drift and regressions. Its CLI can also 'pull analytics'. None of the evidence shows users can build custom dashboards or choose panels over latency, error, cost and eval-score metrics. Fixed built-in views and exporting analytics for external charting are adjacent features or user-side workarounds, not the requested capability.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an ML engineer, I can build custom dashboards over latency, error, cost, and eval-score metrics",
-      "citations": [
-        {
-          "evidenceId": "bentolabs-docs-10",
-          "quote": "you see cost per run, tool failure rates, drift over prompt versions, and regressions across deploys out of the box."
-        },
-        {
-          "evidenceId": "bentolabs-docs-30",
-          "quote": "Anything you can do in the dashboard, you can do from your terminal, a script, or CI: triage issues, read runs, inspect signals, pull analytics."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -2275,7 +2252,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento's own marketing and FAQ copy says it scores every release against production history (offline, in CI, and on live traffic), tracks drift over prompt versions and regressions across deploys, and keeps prompt and model changes versioned and diffable so a regression can be traced to its cause. However, nothing documents an actual side-by-side comparison view of two eval runs, and the claims are homepage/FAQ-level only. Missing for 10: documented side-by-side eval-run comparison UI or CLI, per-metric diff between runs, in-depth eval docs, independent or hands-on corroboration.",
+    "rationale": "Bento's own marketing and FAQ say it scores every release against production history (offline, in CI, and on live traffic), versions and diffs prompt and model changes, and surfaces drift over prompt versions and regressions across deploys. That covers catching regressions between versions. None of this describes an actual side-by-side comparison view of eval runs, and all of it is vendor claims. Missing for 10: a documented side-by-side eval-run comparison view, eval-run/experiment comparison docs (metrics, per-example diffs), independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-14",
       "bentolabs-docs-15",
@@ -2296,7 +2273,7 @@
         },
         {
           "evidenceId": "bentolabs-docs-10",
-          "quote": "drift over prompt versions, and regressions across deploys out of the box"
+          "quote": "drift over prompt versions, and regressions across deploys out of the box."
         }
       ]
     }
@@ -2307,13 +2284,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento documents its own framework integrations: a Google ADK extra captures every model call, tool call, and agent step with one line. The docs also claim every span from every framework is captured over OpenTelemetry and that LLM calls are captured at the SDK level. However, none of the frameworks named in the story (LangChain, OpenAI SDK, Vercel AI SDK) appears explicitly, and docs-18 implies some SDKs have no integration and need manual `track_ai` wrapping. Missing for 10: explicit LangChain, OpenAI SDK and Vercel AI SDK integrations; an integration catalog; independent or hands-on corroboration.",
+    "rationale": "Bento documents its own framework integrations: a Google ADK extra that captures every call automatically, SDK-level capture of LLM calls, and a stated distinction between integrated SDKs and manual events for SDKs without one. It also claims to capture spans from every framework over OpenTelemetry. However, no named integration for LangChain, the OpenAI SDK, or the Vercel AI SDK appears in the evidence. missing for 10: documented LangChain integration, documented OpenAI SDK integration, documented Vercel AI SDK integration, a published list of supported frameworks, independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-17",
       "bentolabs-docs-39",
-      "bentolabs-docs-3",
+      "bentolabs-docs-18",
       "bentolabs-docs-27",
-      "bentolabs-docs-18"
+      "bentolabs-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -2329,12 +2306,16 @@
           "quote": "Capture every model call, tool call, and agent step from a Google ADK app with one line."
         },
         {
-          "evidenceId": "bentolabs-docs-3",
-          "quote": "Every span from every framework, captured over OpenTelemetry."
+          "evidenceId": "bentolabs-docs-18",
+          "quote": "Manual events for SDKs without an integration."
         },
         {
           "evidenceId": "bentolabs-docs-27",
           "quote": "Bento captures every LLM call at the SDK level."
+        },
+        {
+          "evidenceId": "bentolabs-docs-3",
+          "quote": "Every span from every framework, captured over OpenTelemetry."
         }
       ]
     }
@@ -2345,7 +2326,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Human annotation queues are a fair question for an agent observability and evals platform like Bento, so the axis applies. However, the evidence never mentions routing outputs to human reviewers or labeling queues. Issue triage, failure clusters, and alert routing to Slack, PagerDuty, email or webhook are adjacent features, not annotation queues, and earn no credit.",
+    "rationale": "Bento is an agent observability and evaluation platform, so human annotation queues are a fair question for it. The evidence covers issue triage, failure clustering, and alert routing to Slack, PagerDuty, email, or webhook. None of that is a queue where humans review and label outputs, so it is adjacent at best and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2360,7 +2341,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Bento's signals are its own natural-language evaluators. You describe a failure mode in plain English, each signal has an editable prompt and config, and it fires on traces in real time and backfills history; releases are also scored offline, in CI and on live traffic. The docs never say these signals are LLM-as-a-judge graders that produce per-output scores, though; they describe a detector that Bento 'trains' on your traces. missing for 10: explicit LLM-as-a-judge evaluator documentation, choice of judge model and scoring rubric/scale configuration, per-output score semantics (versus binary fires), independent or hands-on corroboration.",
+    "rationale": "Bento's own 'signals' come closest to this story. You describe a failure mode in plain English, Bento trains a detector on your traces that fires in real time and backfills history, and each signal's prompt and config can be edited. The docs never say these detectors are LLM-as-a-judge, and they flag failures rather than produce explicit output scores. Release scoring exists, but the evaluator behind it is not described. Missing for 10: explicit LLM-as-a-judge evaluator documentation, configurable judge model/rubric/scoring scales, documented per-output scores, independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-4",
       "bentolabs-docs-38",
@@ -2373,12 +2354,12 @@
       "subject": "As an ML engineer, I can score outputs with configurable LLM-as-a-judge evaluators",
       "citations": [
         {
-          "evidenceId": "bentolabs-docs-4",
-          "quote": "Describe any failure mode in plain English — Bento trains a signal on your own traces, fires it in real time, and backfills your entire history"
+          "evidenceId": "bentolabs-docs-38",
+          "quote": "Describe a failure mode in plain English. Bento trains a detector on your own traces, fires it in real time, and backfills your history."
         },
         {
           "evidenceId": "bentolabs-docs-36",
-          "quote": "Edit a signal's name, prompt, or config."
+          "quote": "`signals update <signal-id>` | Edit a signal's name, prompt, or config."
         },
         {
           "evidenceId": "bentolabs-docs-14",
@@ -2393,7 +2374,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an agent tracing and observability product, so capturing multimodal payloads in traces is a fair question to ask of it. However, the evidence only describes generic capture of spans, LLM calls and tool calls (OpenTelemetry, SDK-level capture, bento.track_ai). Nothing documents capturing or rendering images, audio or file payloads inside traces.",
+    "rationale": "Bento is an agent tracing and observability product, so capturing multimodal payloads in traces is a fair question to ask of it. The evidence documents span capture over OpenTelemetry, manual track_ai events and span tagging, but nothing about capturing images, audio or file attachments within traces. Absence of evidence for an applicable capability yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2407,10 +2388,11 @@
     "storyId": "offline-eval-datasets",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Bento's marketing says every release is scored against production history offline and in CI, which covers the offline-evaluation half of the story. Nothing in the pack documents curating, selecting, or managing datasets from traces. The nearest features (issues grouping runs, signal backfills, clusters) are triage tools, not dataset curation, and shadow-mode scoring is online rather than offline. Missing for 10: an explicit dataset curation/creation workflow from production traces, documentation of how offline evals are configured and run against a curated set, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Bento's own site claims releases are scored against production history offline and in CI, which covers the core of running offline evaluations on production-derived data. Nothing documents curating datasets from traces: no selecting, labeling, versioning or managing an eval dataset, and no docs on how offline evals are configured or run. Missing for 10: explicit dataset curation from production traces (selection, labeling, versioning), documentation of offline eval setup and execution, independent or hands-on corroboration.",
     "evidenceIds": [
-      "bentolabs-docs-14"
+      "bentolabs-docs-14",
+      "bentolabs-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -2419,36 +2401,7 @@
       "citations": [
         {
           "evidenceId": "bentolabs-docs-14",
-          "quote": "Every release scored against your production history — offline, in CI, and on live traffic."
-        }
-      ]
-    }
-  },
-  {
-    "productId": "bentolabs",
-    "storyId": "online-evals-guardrails",
-    "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Bento documents plain-English signals (detectors) that are trained on your traces, fire in real time on production traffic, and backfill history. It also says releases are scored on live traffic, not only offline or in CI, which covers the core of continuous online evaluation. Missing for 10: detailed docs on evaluator configuration (scoring metrics, sampling rates, custom or LLM-judge evaluators), and independent or hands-on corroboration beyond marketing and docs claims.",
-    "evidenceIds": [
-      "bentolabs-docs-38",
-      "bentolabs-docs-4",
-      "bentolabs-docs-14",
-      "bentolabs-docs-12"
-    ],
-    "support": {
-      "relation": "direct",
-      "coverage": "complete",
-      "subject": "As an ML engineer, I can run evaluators continuously on live production traffic, not just offline datasets",
-      "citations": [
-        {
-          "evidenceId": "bentolabs-docs-38",
-          "quote": "Bento trains a detector on your own traces, fires it in real time, and backfills your history."
-        },
-        {
-          "evidenceId": "bentolabs-docs-14",
-          "quote": "Every release scored against your production history — offline, in CI, and on live traffic."
+          "quote": "Every release scored against your production history — offline, in CI, and on live traffic. Catches regressions before users do."
         },
         {
           "evidenceId": "bentolabs-docs-12",
@@ -2459,18 +2412,50 @@
   },
   {
     "productId": "bentolabs",
+    "storyId": "online-evals-guardrails",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Bento's own docs say releases are scored on live traffic as well as offline and in CI. Its plain-English signals are trained on your traces, fire in real time on production data and backfill history, which is continuous evaluation on live traffic rather than only on datasets. missing for 10: detailed docs on how live evaluators are configured (scoring types, sampling rates, latency), independent or hands-on corroboration that real-time scoring works as claimed.",
+    "evidenceIds": [
+      "bentolabs-docs-14",
+      "bentolabs-docs-4",
+      "bentolabs-docs-38",
+      "bentolabs-docs-12"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ML engineer, I can run evaluators continuously on live production traffic, not just offline datasets",
+      "citations": [
+        {
+          "evidenceId": "bentolabs-docs-14",
+          "quote": "Every release scored against your production history — offline, in CI, and on live traffic."
+        },
+        {
+          "evidenceId": "bentolabs-docs-38",
+          "quote": "Bento trains a detector on your own traces, fires it in real time, and backfills your history."
+        },
+        {
+          "evidenceId": "bentolabs-docs-4",
+          "quote": "Bento trains a signal on your own traces, fires it in real time, and backfills your entire history"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "bentolabs",
     "storyId": "openness-api-parity",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento's docs explicitly claim dashboard parity for its official CLI: triage, runs, signals and analytics can all be done from a terminal, a script, or CI, with raw JSON output and editable signals. A documented public API is not evidenced: standard OpenAPI paths return 404, and the only published spec is a placeholder 'OpenAPI Plant Store' template rather than a real Bento API reference. Missing for 10: a documented first-party REST API reference, verified endpoint coverage matching every UI action (alert rules, issues, clusters, nudges), and independent hands-on corroboration of the parity claim.",
+    "rationale": "Bento's own CLI docs claim full dashboard parity: anything done in the UI can be done from a terminal, script, or CI, with plain JSON output for scripting. That parity is documented for the CLI, though, not for a public API, and probes found no OpenAPI spec at any candidate path. Missing for 10: a documented public REST/HTTP API with a spec, evidence that write operations (beyond signal edits) are covered, independent corroboration of the parity claim.",
     "evidenceIds": [
       "bentolabs-docs-30",
       "bentolabs-docs-32",
       "bentolabs-docs-36",
-      "bentolabs-docs-33",
       "bentolabs-probe-2",
-      "bentolabs-apigap-machine-spec-20261119"
+      "bentolabs-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -2497,12 +2482,13 @@
     "storyId": "openness-full-export",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Bento documents two things of its own that support portability. Skills and rules live in your repo as Markdown and YAML. The CLI can do anything the dashboard does, including reading runs and pulling analytics, with raw JSON output you can pipe to a file. Trace ingestion over OpenTelemetry is an import path, not an export, so it is not credited. Missing for 10: a documented bulk or complete data export (traces, runs, issues, signals), an export of traces in an open format such as OTLP, offboarding or account-deletion guidance, and independent or hands-on confirmation that the data can be fully extracted.",
+    "confidence": "medium",
+    "rationale": "Bento's own CLI can do anything the dashboard can, including reading runs, signals and analytics, and it emits plain JSON that can be piped to a file. Skills and rules also live in the user's repo as Markdown and YAML, so that accumulated knowledge is portable by design. However, there is no documented bulk or full-account export of traces and history, and no offboarding or leave path is described; OpenTelemetry is documented only for ingestion. missing for 10: a documented complete data export (traces, issues, signals, history) in open formats, an explicit offboarding/data-portability guarantee, independent or hands-on corroboration.",
     "evidenceIds": [
-      "bentolabs-docs-16",
       "bentolabs-docs-30",
-      "bentolabs-docs-32"
+      "bentolabs-docs-32",
+      "bentolabs-docs-16",
+      "bentolabs-docs-35"
     ],
     "support": {
       "relation": "direct",
@@ -2510,16 +2496,20 @@
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": [
         {
-          "evidenceId": "bentolabs-docs-16",
-          "quote": "Skills and rules live in your repo as Markdown and YAML. They're model-agnostic, so when you upgrade your model, your accumulated knowledge transfers automatically."
-        },
-        {
           "evidenceId": "bentolabs-docs-30",
           "quote": "Anything you can do in the dashboard, you can do from your terminal, a script, or CI: triage issues, read runs, inspect signals, pull analytics."
         },
         {
           "evidenceId": "bentolabs-docs-32",
-          "quote": "Plain JSON to stdout. Pipe into `jq`, `grep`, or a file."
+          "quote": "`raw` | Plain JSON to stdout. Pipe into `jq`, `grep`, or a file."
+        },
+        {
+          "evidenceId": "bentolabs-docs-16",
+          "quote": "Skills and rules live in your repo as Markdown and YAML."
+        },
+        {
+          "evidenceId": "bentolabs-docs-35",
+          "quote": "This defaults to the last 30 days; widen it with `--start-time`"
         }
       ]
     }
@@ -2530,7 +2520,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-source availability is a fair question for an AI-agent observability platform, so the axis applies. Nothing in the evidence documents a public source repository or an open license for Bento itself. Skills and rules stored in the user's repo as Markdown/YAML are the user's own content, not product source, and earn no credit.",
+    "rationale": "Whether an agent-observability platform's source is published under an open license is a fair question for this kind of product, but the evidence pack contains no mention of a public repository, source availability, or an open-source license. The note that skills and rules live in the user's repo as Markdown/YAML describes customer-owned configuration, not product source, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2545,7 +2535,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an agent-observability platform like Bento, so the axis applies. Nothing in the evidence documents a self-hosted or on-prem deployment of the core product. The closest items are adjacent and earn no credit: skills and rules stored in your repo as Markdown/YAML, OpenTelemetry export to a Bento endpoint, and running Bento alongside an existing observability stack.",
+    "rationale": "Self-hosting is a fair question for an agent observability platform like Bento, so the axis applies. Nothing in the evidence documents deploying or running Bento's core product on user infrastructure. The docs describe sending traces to a Bento endpoint, CLI access with browser auth, and skills or rules stored in the user's repo as Markdown/YAML; these are adjacent features, not self-hosting of the core.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2598,7 +2588,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an agent tracing and observability product, so masking sensitive data before it is stored in traces is a fair question for it. The evidence covers span capture, tagging, and init() kwargs (user_id, session_id, tags), but nothing on redaction, masking, PII scrubbing, or pre-storage filtering hooks. Routing traces through a user's own OpenTelemetry pipeline would be a user-side workaround and earns no credit.",
+    "rationale": "Bento is an agent tracing and observability product, so masking or redacting sensitive data before it is stored in traces is a fair question to ask of it. Nothing in the evidence pack documents redaction, masking, PII scrubbing, or span-attribute filtering before storage. The `init()` kwargs (user_id, session_id, tags) and span tagging only add metadata; they do not remove sensitive data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2613,7 +2603,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is a hosted observability and trace platform for AI agents, so choosing data region or residency is a fair question for this kind of product. However, nothing in the evidence pack mentions regions, residency or storage location. The OTel export docs describe a single endpoint with one auth header, with no regional options documented.",
+    "rationale": "Bento is a hosted observability and trace-storage service, so letting users choose a storage region is a fair axis to judge it on. Nothing in the evidence pack mentions region selection, data residency, or self-hosted storage. The docs cover trace capture, signals, alerts, the CLI, and migrations, but none of these address where the data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2628,7 +2618,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is a SaaS observability platform that ingests customer traces, so a training opt-out or no-training data policy is a fair question to ask of it. The evidence contains no such policy or control. The only training-related claim is that Bento trains detection signals on the customer's own traces, which is a product feature, not a guarantee that data is excluded from AI model training.",
+    "rationale": "Bento is an observability platform that ingests customer traces, so a training opt-out is a fair question to ask of it. The evidence pack documents no training opt-out, data-use policy, or privacy control. The only related mention is that Bento 'trains a signal on your own traces', which describes using customer data for detectors rather than a way to prevent model training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2643,7 +2633,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an observability platform that stores production traces, so controlling how long that data is kept and deleting it is a fair question to ask. The evidence pack documents no retention settings, deletion APIs, or purge controls. The only time-related item, the CLI's default 30-day window, is a query filter for reading signal firings and says nothing about data retention.",
+    "rationale": "Bento is a trace-capture and observability platform, so controlling how long trace data is kept and deleting it is a fair question to ask. The pack never documents retention settings, deletion APIs, or purge controls. The '30 days' mention is a default query window for reading signal firings, not a retention policy, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2658,7 +2648,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an agent observability platform with an SDK and CLI, so opting out of the product's own telemetry is a fair question to ask of it. Nothing in the evidence documents a telemetry opt-out, a do-not-track setting, or any usage-tracking control for the SDK, CLI, or dashboard. The OTel-transport note about skipping 'the analytics layer' describes how customer traces are routed, which is an adjacent feature and not a way to opt out of Bento's own usage tracking.",
+    "rationale": "Opting out of telemetry is a fair question for an observability SDK and CLI like Bento, but the evidence never documents a telemetry or usage-tracking opt-out for the product itself. The note about skipping 'the analytics layer' when wiring into an existing OpenTelemetry pipeline is a trace-routing choice, not an opt-out of vendor telemetry, so it is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2673,7 +2663,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bento is an LLM/agent observability and improvement platform, so a prompt playground is a fair axis to ask about. However, the evidence never documents an interactive playground for iterating on prompts against real models with variables. The closest items are prompt-change versioning and drift tracking across prompt versions, which are adjacent features and earn no credit for this story.",
+    "rationale": "Bento is an AI-agent observability and improvement platform, so a prompt playground is a fair question to ask of it. The evidence never mentions a playground for interactively running prompts against real models with variables. Prompt versioning, diffing, and release scoring are adjacent prompt-management features, not interactive iteration, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2687,12 +2677,11 @@
     "storyId": "prompt-versioning-deploy",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Bento says every prompt change is versioned, diffable, and reversible, and that fixes ship in shadow mode and graduate to full traffic, so prompt versioning is a documented capability. Nothing documents a prompt registry or runtime fetch that lets a developer push prompt edits to production without a code deploy. Skills and rules are said to live in the repo as Markdown and YAML, which points toward shipping changes through code. Missing for 10: a documented no-code or runtime prompt deployment path, a prompt registry/fetch API, environment or label promotion for prompts, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Bento documents that every prompt change is versioned, diffable and reversible, and that fixes ship in shadow mode before graduating to full traffic. Nothing shows a developer editing and deploying their own prompts to production without a code release, and skills and rules are said to live in the repo as Markdown and YAML, which implies shipping through code. Missing for 10: documented prompt-registry editing and publishing outside the codebase, runtime prompt fetching or deploy labels for application prompts, hands-on or independent corroboration.",
     "evidenceIds": [
       "bentolabs-docs-15",
       "bentolabs-docs-12",
-      "bentolabs-docs-10",
       "bentolabs-docs-16"
     ],
     "support": {
@@ -2707,10 +2696,6 @@
         {
           "evidenceId": "bentolabs-docs-12",
           "quote": "The nudge ships in shadow mode, is scored against the outcome it was meant to fix, and graduates to 100% traffic only if it provably helps."
-        },
-        {
-          "evidenceId": "bentolabs-docs-10",
-          "quote": "drift over prompt versions"
         }
       ]
     }
@@ -2721,12 +2706,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bento documents an official Python SDK, with installation, `init()` configuration, `bento.track_ai`, `flush()` and a Google ADK extra. For JS/TS, the evidence only shows sending traces through standard OpenTelemetry JSON exporters 'without installing any Bento package', so an official JS/TS SDK is not evidenced. Missing for 10: a documented official JS/TS SDK package, and independent or hands-on corroboration of either SDK.",
+    "rationale": "Bento documents an official Python SDK, with installation, configuration, a Google ADK extra, `bento.track_ai` wrapping and an OTel transport. For JS/TS, the docs only describe pointing a standard OpenTelemetry exporter at Bento \"with no Bento package at all\", so there is no evidence of an officially supported JS/TS SDK. Missing for 10: a documented first-party JS/TS SDK package, JS/TS installation and configuration docs, and independent or hands-on corroboration of either language's instrumentation.",
     "evidenceIds": [
       "bentolabs-docs-17",
       "bentolabs-docs-18",
       "bentolabs-docs-23",
-      "bentolabs-docs-25",
+      "bentolabs-docs-20",
       "bentolabs-docs-21",
       "bentolabs-docs-40"
     ],
@@ -2736,12 +2721,16 @@
       "subject": "As a developer, I can instrument apps in both Python and JS/TS with officially supported SDKs",
       "citations": [
         {
-          "evidenceId": "bentolabs-docs-18",
-          "quote": "Wrap any LLM or tool call with bento.track_ai."
+          "evidenceId": "bentolabs-docs-17",
+          "quote": "If you use **Google ADK**, install the extra so Bento can capture every call automatically"
         },
         {
           "evidenceId": "bentolabs-docs-23",
-          "quote": "`init()` accepts `user_id`, `session_id`, and `tags` kwargs."
+          "quote": "`init()` accepts `user_id`, `session_id`, and `tags` kwargs. Bento invokes them on every span"
+        },
+        {
+          "evidenceId": "bentolabs-docs-21",
+          "quote": "In TypeScript you can do this with no Bento package at all."
         },
         {
           "evidenceId": "bentolabs-docs-40",
@@ -2756,12 +2745,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Bento documents alerts written in plain natural language that compile to trace queries and route to Slack, PagerDuty, email, or webhook. It also groups alert fires into incidents. It surfaces cost per run and tool failure rates as built-in metrics, but the evidence is FAQ and marketing-level only. Missing for 10: explicit documentation of threshold or spike alerts on cost and error rates, eval-score-drop alert conditions, in-depth alert configuration docs, and independent or hands-on corroboration.",
+    "rationale": "Bento documents natural-language alert rules that compile to trace queries and route to Slack, PagerDuty, email, or webhook, which covers every notification channel in the story. The metrics behind the alerts (cost per run, tool failure rates, drift, and regressions) are tracked out of the box, but the docs never explicitly show alert rules on cost spikes or eval-score drops. Missing for 10: explicit documentation of threshold or anomaly alerts on cost spikes and eval-score drops, alert-configuration detail beyond the FAQ, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-45",
       "bentolabs-docs-8",
       "bentolabs-docs-7",
-      "bentolabs-docs-10"
+      "bentolabs-docs-10",
+      "bentolabs-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -2789,7 +2779,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Bento's own docs say developers see cost per run out of the box, and the CLI mirrors dashboard analytics, so it has a first-party cost view at the run level. That is a single thin mention, and the other dimensions the story asks for are not documented. Missing for 10: token usage metrics, breakdown by model, time-period aggregation in dashboards, per-request granularity distinct from per-run, independent or hands-on corroboration.",
+    "rationale": "Bento's own docs say users see 'cost per run' out of the box, which covers per-request cost, and the CLI docs confirm a dashboard with analytics. Nothing documents token usage or breakdowns by model or time period. Missing for 10: token usage tracking, per-model cost/usage breakdown, time-period aggregation in dashboards, independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-10",
       "bentolabs-docs-30"
@@ -2816,14 +2806,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bento documents its own LLM-call tracing. It captures every span over OpenTelemetry, captures every LLM call at the SDK level, and offers `bento.track_ai` to wrap any LLM or tool call, with a span-tree view and cost per run. However, the evidence never says the traces record inputs, outputs, latency, or token counts; cost per run only hints at token usage. Missing for 10: documented capture of prompt inputs and model outputs, per-call latency/timing fields, explicit token-usage fields, and independent or hands-on corroboration.",
+    "rationale": "Bento documents capturing LLM calls as traces: OpenTelemetry span capture, SDK-level capture of every LLM call, and manual wrapping via bento.track_ai. Cost per run is surfaced, but the evidence never states which fields each trace records. missing for 10: explicit documentation that traces record prompt inputs, model outputs, per-call latency and token usage, plus independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-3",
       "bentolabs-docs-18",
       "bentolabs-docs-27",
       "bentolabs-docs-39",
-      "bentolabs-docs-10",
-      "bentolabs-docs-21"
+      "bentolabs-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -2832,7 +2821,7 @@
       "citations": [
         {
           "evidenceId": "bentolabs-docs-3",
-          "quote": "Every span from every framework, captured over OpenTelemetry. Open the span tree, or follow a signal straight to the call that broke."
+          "quote": "Every span from every framework, captured over OpenTelemetry."
         },
         {
           "evidenceId": "bentolabs-docs-18",

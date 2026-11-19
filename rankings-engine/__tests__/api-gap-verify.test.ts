@@ -238,6 +238,33 @@ describe('api-gap-verify.py', () => {
     expect(pack).toHaveLength(1)
   })
 
+  it.each(['OpenAPI Plant Store', '  openapi   PLANT store  '])('keeps the known starter sample %s out of published evidence and completed work', (title) => {
+    const body = JSON.stringify({ openapi: '3.1.0', info: { title }, paths: { '/plants': {} } })
+    const existing = { id: 'accepted', tier: 'claimed-docs', url: 'https://docs.widget.example.com', excerpt: 'Accepted evidence', fetchedAt: '2026-11-01T00:00:00Z' }
+    const { pack, ledger, issue } = run({
+      pack: [existing],
+      items: [{ ...baseItem, format: 'openapi-document', markers: [title], excerpt: `Published API description: ${title}` }],
+      fixture: { [baseItem.url]: { status: 200, body } },
+    })
+    expect(pack).toEqual([existing])
+    expect(ledger.cells).toEqual([])
+    expect(ledger.withheld).toHaveLength(1)
+    expect(ledger.withheld[0]).toMatchObject({ storyId: 'api-machine-spec', disposition: 'withheld-verification-failed' })
+    expect(ledger.withheld[0].reason).toContain('known starter sample')
+    expect(issue).toContain('api-machine-spec')
+    expect(issue).toContain('known starter sample')
+  })
+
+  it('allows a product spec that only mentions the sample in its description', () => {
+    const body = JSON.stringify({ openapi: '3.1.0', info: { title: 'Widget API', description: 'Migrated from OpenAPI Plant Store' }, paths: { '/widgets': {} } })
+    const { pack, ledger } = run({
+      items: [{ ...baseItem, format: 'openapi-document', markers: ['Widget API'] }],
+      fixture: { [baseItem.url]: { status: 200, body } },
+    })
+    expect(pack).toHaveLength(1)
+    expect(ledger.withheld).toEqual([])
+  })
+
   it('withholds an item that declares no verification at all (fail-closed by construction)', () => {
     const { ledger, pack } = run({
       items: [{ ...baseItem, markers: [] }],
