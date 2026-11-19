@@ -1215,10 +1215,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Dover publishes an llms.txt at docs.dover.com, and a live probe confirmed it returns HTTP 200 with a structured index of the docs site. Every docs page is also served as Markdown by adding `.md` to its path, giving agents clean, machine-readable docs. The 404 on the bare root `/.md` path does not contradict per-page Markdown, since many cited doc URLs are themselves `.md` pages. missing for 10: no evidence of an llms-full.txt or single-file full-docs bundle, and the root `/.md` path does not resolve.",
+    "rationale": "A live llms.txt is confirmed by a probe returning HTTP 200, and it states that every docs page is also served as Markdown by adding `.md` to its path. The API docs also publish a machine-readable spec explicitly intended for AI coding tools. The 404 at the bare `/.md` root and the 404s at guessed OpenAPI paths on the docs domain do not contradict this, since the spec is documented at app.dover.com/docs/api.json. Missing for 10: hands-on confirmation that the per-page Markdown variants and api.json resolve, and any evidence of an llms-full.txt or independent agent usage.",
     "evidenceIds": [
       "dover-probe-1",
-      "dover-docs-7"
+      "dover-docs-7",
+      "dover-supp-api-spec"
     ],
     "support": {
       "relation": "direct",
@@ -1232,6 +1233,10 @@
         {
           "evidenceId": "dover-docs-7",
           "quote": "Every page is also served as Markdown: add `.md` to its path"
+        },
+        {
+          "evidenceId": "dover-supp-api-spec",
+          "quote": "Use it to generate a client or to give an AI coding tool the exact endpoints and fields."
         }
       ]
     }
@@ -1242,7 +1247,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Dover documents in-product AI features that produce insights and suggestions from candidate data: applicants get an AI-powered score from 0 to 100 so you can review the strongest first, the interview page offers AI-suggested questions based on the candidate's background, and the AI Notetaker fills in interview feedback forms. These are candidate-level features only; the evidence shows no AI-generated insights across broader data such as pipeline or reporting analytics. missing for 10: AI insights or suggestions over aggregate and analytics data, a general in-product AI assistant for querying your data, independent or hands-on corroboration.",
+    "rationale": "Dover documents in-product AI features that generate insights and suggestions from candidate data: AI-powered applicant scoring (0–100) to prioritize strong candidates, AI-suggested interview questions based on a candidate's background, and an AI Notetaker that fills interview feedback forms from transcripts. These are confined to specific recruiting workflows. Nothing shows general AI insights or recommendations over the user's broader data, such as reporting and analytics, and the AI MCP tools run in external AI clients rather than inside the product. missing for 10: AI-generated insights over pipeline/analytics data, a general in-product AI assistant for querying your own data, independent or hands-on corroboration of output quality.",
     "evidenceIds": [
       "dover-docs-9",
       "dover-docs-11",
@@ -1271,43 +1276,53 @@
   {
     "productId": "dover",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence does not document any user-configurable automation or workflow builder that runs autonomously in the background. The API and webhooks are developer building blocks a programmer could use to build automations, and the MCP tools are invoked on demand by the user's AI client. Fixed built-in behaviors (AI scoring, the AI Notetaker, automatic reminders, Calendly-driven stage moves) are adjacent features, not automations the user sets up, so they earn no credit.",
-    "evidenceIds": [],
-    "support": {
-      "relation": "adjacent",
-      "coverage": "none",
-      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
-      "citations": []
-    }
-  },
-  {
-    "productId": "dover",
-    "storyId": "agentic-builtin-assistant",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Dover's built-in AI Notetaker takes on one delegated task: it joins interviews, records and transcribes them, and fills in the feedback form. The AI suggested questions and AI scoring are narrow automations rather than an assistant you hand tasks to. The MCP server serves external AI clients, so it is not a built-in assistant and earns no credit here. missing for 10: a general-purpose in-product AI assistant or agent that accepts arbitrary task delegation, evidence of delegating multi-step recruiting workflows to it, independent or hands-on corroboration.",
+    "rationale": "Dover ships some background automations of its own that users turn on once. CRM Campaigns run outreach sequences that keep in touch with candidates, the AI Notetaker joins interviews and fills in feedback forms, and the Calendly integration moves candidates along and sends reminders on its own. There is no documented general automation or workflow builder: the API and webhooks are only building blocks, so they earn no credit. Missing for 10: a user-configurable trigger/action automation builder, scheduled or recurring custom automations, autonomous agent workflows beyond these fixed features, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "dover-supp-crm-campaigns",
       "dover-docs-12",
-      "dover-docs-11"
+      "dover-supp-calendly-feedback-prompt",
+      "dover-docs-9"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
-      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
+        {
+          "evidenceId": "dover-supp-crm-campaigns",
+          "quote": "Use the **Campaigns** tab to build outreach sequences that keep in touch with them, even when they aren't tied to a job."
+        },
         {
           "evidenceId": "dover-docs-12",
           "quote": "Dover AI Notetaker joins your interviews, records and transcribes them, and fills in your interview feedback form with notes."
         },
         {
-          "evidenceId": "dover-docs-11",
-          "quote": "Click **View AI suggested questions** to see questions based on the candidate's background."
+          "evidenceId": "dover-supp-calendly-feedback-prompt",
+          "quote": "It uses the booking to move the candidate along, prompt interviewers for feedback, and send reminders."
+        },
+        {
+          "evidenceId": "dover-docs-9",
+          "quote": "Each applicant gets a score from 0 to 100, so you can review your strongest candidates first."
         }
       ]
+    }
+  },
+  {
+    "productId": "dover",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows no general built-in AI assistant inside Dover that users can hand tasks to. What it does show is single-purpose AI features: applicant scoring, AI-suggested interview questions, and an AI Notetaker that fills feedback forms. It also documents an MCP server, but that lets external AI clients act on Dover rather than providing an in-product assistant. These are adjacent features and earn no credit for this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "citations": []
     }
   },
   {
@@ -1316,10 +1331,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dover's own API lets you programmatically add candidates, fetch jobs and automate recruitment processes, so the product can be driven headlessly. Nothing documents a CLI, CI integration or headless run mode, and probes found no published OpenAPI spec. missing for 10: an official CLI or documented CI/pipeline usage, a published OpenAPI spec, API auth and endpoint depth, independent hands-on corroboration of headless automation.",
+    "rationale": "Dover documents its own public API for programmatically adding candidates, fetching jobs and automating recruitment processes, plus a machine-readable spec and an HTTP MCP server, so it can be driven without the UI. However, there is no first-party CLI, CI integration guide, or documented headless or pipeline workflow; the probe 404s apply only to the docs-domain OpenAPI paths, while the spec is published at app.dover.com, so they do not contradict this. Missing for 10: official CLI or CI/pipeline integration docs, documented headless auth/automation patterns (e.g., service accounts in CI), independent hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-1",
-      "dover-probe-3"
+      "dover-supp-api-spec",
+      "dover-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -1329,6 +1345,14 @@
         {
           "evidenceId": "dover-docs-1",
           "quote": "With the API, you can programmatically add candidates to your jobs, fetch job listings, and automate various recruitment processes."
+        },
+        {
+          "evidenceId": "dover-supp-api-spec",
+          "quote": "Use it to generate a client or to give an AI coding tool the exact endpoints and fields."
+        },
+        {
+          "evidenceId": "dover-docs-5",
+          "quote": "You can add Dover as an HTTP MCP server directly from your terminal."
         }
       ]
     }
@@ -1339,7 +1363,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only that Dover runs as an MCP server, exposing its jobs and candidates to external AI clients. Nothing shows that Dover can act as an MCP client and connect to outside MCP servers to use their tools. Server-side evidence is a different story and does not transfer here, so the axis applies but is unsupported.",
+    "rationale": "The evidence documents Dover only as an MCP server that exposes Dover data to outside AI clients. Nothing shows Dover acting as an MCP client that can connect to external MCP servers and call their tools. An AI-enabled recruiting platform could plausibly offer that, so the axis applies, but the server-role evidence is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1354,7 +1378,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Dover documents an official MCP server that gives AI tools access to jobs, candidates, applications and interview workflows. It can be added as an HTTP MCP server from the terminal, and a probe confirms the official MCP docs page exists. missing for 10: independent or hands-on corroboration of an agent connecting, and documented details on authentication and the full tool list.",
+    "rationale": "Dover, a recruiting SaaS, documents an official HTTP MCP server. It gives AI tools access to jobs, candidates, applications, and interview workflows, can be added directly from the terminal, and a probe confirms the docs page exists. missing for 10: independent or hands-on corroboration of connecting an agent, documented auth and per-tool details.",
     "evidenceIds": [
       "dover-docs-4",
       "dover-docs-5",
@@ -1389,9 +1413,9 @@
     "productId": "dover",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Dover's first-party MCP server gives AI tools access to jobs, candidates, applications, and interview workflows, and Dover says users can \"ask in plain English\" while their AI client picks the right tool. Natural-language operation is therefore possible, but only through an external AI client; there is no evidence of a native in-app natural-language command interface. Missing for 10: a built-in natural-language command surface inside Dover, documentation of which write and edit actions can be run through plain-English commands, and independent hands-on corroboration.",
+    "rationale": "Dover ships a first-party MCP server that gives AI tools access to jobs, candidates, applications, and interview workflows, and it markets plain-English requests that the AI client turns into tool calls. However, natural-language operation runs only through an external AI client connected over MCP; there is no documented native in-app natural-language command interface. missing for 10: a native in-product natural-language command interface, documentation of which actions (reads vs. writes) can be performed by NL command, independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-4",
       "dover-docs-5",
@@ -1424,7 +1448,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover is a recruiting SaaS platform, so an official CLI is a fair question, but the evidence documents only a REST API, webhooks, an MCP server, and a Chrome extension. The note about adding Dover as an MCP server \"from your terminal\" describes configuring a third-party AI client, not a Dover-shipped CLI, so it earns no credit.",
+    "rationale": "Nothing in the evidence shows Dover ships its own official command-line tool. The terminal instruction refers to registering Dover's HTTP MCP server from an AI client's terminal, and the REST API and OpenAPI spec are developer building blocks, so neither counts as a Dover CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1437,12 +1461,12 @@
     "productId": "dover",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Dover documents a public API for programmatically adding candidates to jobs, fetching job listings, and automating recruitment processes, so the core of the story is delivered. The documented scope is thin, and probes found no OpenAPI or Swagger spec at any common path. Missing for 10: a machine-readable OpenAPI spec, a documented endpoint/auth reference covering the product's broader surface, and independent or hands-on corroboration of the API.",
+    "rationale": "Dover documents a public API for adding candidates to jobs, fetching job listings and automating recruiting processes. It also publishes a full machine-readable spec at app.dover.com/docs/api.json, which it explicitly recommends feeding to AI coding tools. The probe 404s were at docs.dover.com paths, not the documented app.dover.com location, so they do not contradict this. missing for 10: independent or hands-on corroboration that the API works, documented details on authentication and the breadth of endpoints beyond candidates and jobs.",
     "evidenceIds": [
       "dover-docs-1",
-      "dover-probe-3"
+      "dover-supp-api-spec"
     ],
     "support": {
       "relation": "direct",
@@ -1452,6 +1476,10 @@
         {
           "evidenceId": "dover-docs-1",
           "quote": "With the API, you can programmatically add candidates to your jobs, fetch job listings, and automate various recruitment processes."
+        },
+        {
+          "evidenceId": "dover-supp-api-spec",
+          "quote": "Use it to generate a client or to give an AI coding tool the exact endpoints and fields."
         }
       ]
     }
@@ -1462,7 +1490,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover documents a public API and an MCP server, so issuing scoped API credentials is a fair question for this product. However, no evidence shows API keys or tokens that can be limited by scope or permission. Permission groups govern human team members, and the 'own API key' mention refers to an external AI provider key for applicant scoring. Neither is scoped agent credentialing, so neither earns credit.",
+    "rationale": "Dover documents a public API and an official MCP server, so issuing scoped credentials to an agent is a fair question for this product. However, no evidence shows API keys or tokens that can be restricted by scope, permission, or resource. The permissions groups cover human team members, and the 'your own API key' mention refers to an external AI provider key, so both are adjacent features that earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1477,13 +1505,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover documents a REST API, webhooks and an MCP server, but nothing in the evidence mentions an official SDK or client library in any language. A raw API is a building block, not an SDK, and no OpenAPI spec was found to generate one from (all probed paths returned 404). Official SDKs are a fair question for a SaaS platform with an API, so this is \"none\" rather than \"na\".",
-    "evidenceIds": [],
+    "rationale": "Dover documents a REST API and publishes a machine-readable spec that users can use to generate their own client. No first-party, officially maintained SDK library appears in the evidence. A spec for self-generating clients is a developer building block, not an official SDK, so it earns no credit.",
+    "evidenceIds": [
+      "dover-supp-api-spec",
+      "dover-docs-1"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "dover-supp-api-spec",
+          "quote": "Use it to generate a client or to give an AI coding tool the exact endpoints and fields."
+        }
+      ]
     }
   },
   {
@@ -1492,7 +1528,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Dover's first-party docs describe webhooks that send HTTPS requests from Dover to a user-chosen URL when events happen. They also document a Test action that sends a sample event to an active endpoint, which is a registrable outbound callback a programmatic consumer can receive. The Slack notifications are excluded because chat-app delivery does not count as webhooks. missing for 10: a documented event-type catalog and payload schema, signature verification and retry semantics, independent or hands-on corroboration.",
+    "rationale": "Dover's own docs describe outbound HTTPS webhooks sent to a URL the user chooses whenever an event occurs, plus a Test button that sends a sample event to an active endpoint. That is a registrable callback a programmatic consumer can receive. The Slack notification option does not count toward this story. missing for 10: a documented catalog of subscribable event types, payload schema, signature verification, retry and delivery semantics, and independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-2",
       "dover-docs-3"
@@ -1519,7 +1555,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document AI-drafted job descriptions, outreach sequences, or rejection notes, and nothing covers tone matching. The closest items describe other features: AI-generated careers pages built from the company website, AI-suggested interview questions, AI applicant scoring, and manual email via the sourcing extension. None of these covers drafting recruiting copy for a role, so none earns credit here.",
+    "rationale": "The evidence shows Dover has outreach Campaigns, per-stage email templates, and AI that generates a careers page from the company website. None of it shows AI drafting job descriptions, outreach sequences, or rejection notes in the recruiter's tone from role context. Those are adjacent features (manual templates and sequences, careers-page generation, interview-question suggestions), not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1534,11 +1570,10 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Dover's own AI Notetaker joins interviews, records and transcribes them, and fills the stage's feedback form (the scorecard) with notes, so the core recording-to-scorecard flow is documented first-party. Nothing in the evidence covers candidate consent for recording, and summaries are only implied by 'notes'. missing for 10: candidate recording-consent handling, explicit AI summary output, depth of documentation on how notes map into scorecard fields, independent or hands-on corroboration.",
+    "rationale": "Dover documents its own AI Notetaker, which joins interviews, records and transcribes them, and fills the interview feedback form (the per-stage scorecard) with notes. That covers the core recording, transcription and scorecard distillation. Nothing in the pack addresses candidate consent, and the notetaker is backed by a single docs sentence. missing for 10: candidate consent/recording-disclosure handling, explicit AI summary detail beyond notes, independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-12",
-      "dover-docs-10",
-      "dover-supp-interview-page"
+      "dover-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -1552,10 +1587,6 @@
         {
           "evidenceId": "dover-docs-10",
           "quote": "Create a form once, assign it to an interview stage, and every interviewer scores candidates the same way."
-        },
-        {
-          "evidenceId": "dover-supp-interview-page",
-          "quote": "It shows the candidate's details, their resume, and the feedback form assigned to the interview stage."
         }
       ]
     }
@@ -1566,10 +1597,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Dover documents its own AI-powered applicant scoring, which gives each applicant a 0–100 score so recruiters can review the strongest candidates first. That covers the core AI screening and matching. The pack contains no documentation of how the scoring works or what safeguards apply to automated decisions; the EEO survey is a separate, adjacent feature and earns no credit. missing for 10: explanation of the scoring methodology and criteria, documented safeguards for automated decisions (human-in-the-loop review, bias auditing, candidate transparency or appeal), independent corroboration.",
+    "rationale": "Dover documents its own AI-powered applicant scoring, which gives each applicant a 0–100 score so recruiters can review the strongest candidates first. That covers the core AI screening and matching capability. The evidence does not explain how the score is derived or describe any safeguards on automated decisions; the EEO survey and reporting are adjacent and not AI-decision safeguards. missing for 10: documentation of how the scoring model works, documented safeguards for automated decisions (bias auditing, human-review requirements, candidate notice), independent corroboration.",
     "evidenceIds": [
-      "dover-docs-9",
-      "dover-docs-8"
+      "dover-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -1589,7 +1619,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover documents a public API for adding candidates and fetching jobs, but nothing in the evidence shows an interactive API reference with runnable or try-it examples. The OpenAPI/Swagger probes all returned 404. The webhook \"Test\" button is an adjacent feature, not an explorable API reference.",
+    "rationale": "Dover documents a REST API and publishes a machine-readable spec at app.dover.com/docs/api.json for generating clients or feeding AI tools. Nothing in the evidence shows an interactive API reference, try-it console, or runnable examples. A raw spec file is a developer building block, not the interactive explorer this story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1601,16 +1631,24 @@
   {
     "productId": "dover",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Dover documents a REST API, but nothing in the evidence shows a downloadable OpenAPI or equivalent spec, and probes of the common spec paths (openapi.json, swagger.json, /api/openapi.json, /.well-known/openapi.json) all returned 404. The llms.txt file, Markdown copies of doc pages, and the MCP server are adjacent machine-readable features, not an API specification, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Dover's API docs say a full machine-readable specification is downloadable at app.dover.com/docs/api.json, intended for generating clients or feeding AI coding tools. The probe's 404s were on different paths at docs.dover.com, so they do not contradict the claim. missing for 10: independent or hands-on confirmation that the api.json URL resolves, explicit statement of the spec format (e.g., OpenAPI version)",
+    "evidenceIds": [
+      "dover-supp-api-spec",
+      "dover-docs-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "dover-supp-api-spec",
+          "quote": "The full machine-readable specification is available at [app.dover.com/docs/api.json](https://app.dover.com/docs/api.json). Use it to generate a client or to give an AI coding tool the exact endpoints and fields."
+        }
+      ]
     }
   },
   {
@@ -1619,7 +1657,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover offers an API and MCP server, so a sandbox or test environment is a fair question for this product. However, no evidence documents a sandbox, test account, or isolated non-production data environment. The webhook 'Test' button only sends a sample event to an endpoint, and the careers-page preview is a UI preview. Both are adjacent features, not sandbox isolation from production data.",
+    "rationale": "Dover is a recruiting platform with a public API, webhooks and an MCP server, so a sandbox or test environment is a fair question to ask, but the evidence documents none. The webhook \"Test\" button only sends a sample event to an endpoint. That is an adjacent one-off test event, not an isolated sandbox environment that keeps API or agent activity away from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1634,7 +1672,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover documents a public API, webhooks, and an MCP server, so the axis applies to this product. However, nothing in the evidence mentions API versioning, version identifiers, or a deprecation or sunset policy, and the OpenAPI spec probes all returned 404.",
+    "rationale": "Dover documents a public API and a machine-readable spec at app.dover.com/docs/api.json. Nothing in the evidence mentions API version numbers, versioned endpoints, or a deprecation or sunset policy. Having an API spec is adjacent to this story and does not show that versioning or deprecation guarantees exist.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1649,10 +1687,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Dover documents a compliant EEO collection flow: an optional survey at the end of the application, recruiters see only aggregate results, and a Diversity (EEO) reporting tab. The evidence never shows recruiters adding custom application questions or setting knockout rules. Interview feedback forms and AI applicant scoring are separate features and don't count here. missing for 10: custom application-form questions, knockout/disqualification rules, independent corroboration.",
+    "rationale": "Dover documents an optional voluntary EEO survey at the end of applications, where recruiters see only aggregate results and never individual answers, plus a Diversity (EEO) reporting tab. That covers the compliant-demographics part of the story. Custom application questions are only implied by 'application answers' on candidate profiles, and knockout rules have no evidence at all. Missing for 10: documented recruiter-defined custom application questions, knockout/auto-disqualify rules, independent corroboration.",
     "evidenceIds": [
       "dover-supp-eeo-survey",
-      "dover-supp-eeo-reporting"
+      "dover-supp-eeo-reporting",
+      "dover-supp-candidate-profile"
     ],
     "support": {
       "relation": "direct",
@@ -1666,6 +1705,10 @@
         {
           "evidenceId": "dover-supp-eeo-reporting",
           "quote": "If you collect the voluntary EEO survey from applicants, the **Diversity (EEO)** tab shows the combined answers for all jobs or for one job, and the number of responses."
+        },
+        {
+          "evidenceId": "dover-supp-candidate-profile",
+          "quote": "their details, resume, application answers, emails, interviews, feedback, notes, and files"
         }
       ]
     }
@@ -1676,7 +1719,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dover documents its own approvals feature: admins turn approvals on, choose who approves, and review requests in Settings → Approvals. The evidence does not show which objects it covers (job openings vs. offers), whether multi-step configurable chains exist, or that publishing or sending is blocked until approval. missing for 10: explicit coverage of job openings and offers, multi-step/sequential chain configuration, gating of posting/offer sending, independent corroboration.",
+    "rationale": "Dover documents its own Approvals feature: admins turn approvals on, choose who approves, and review requests in Settings → Approvals, so a configurable approval gate exists. The evidence does not say which objects are gated, and it does not show approvals blocking jobs from going live or offers from being sent. missing for 10: explicit coverage of job openings and offers as approval subjects, multi-step/sequential approval chains, evidence that approval blocks publishing or sending, independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-23"
     ],
@@ -1698,7 +1741,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Dover documents a first-party Bulk actions feature that applies the same change to many candidates at once instead of editing each profile, which directly matches the story's core. The evidence is a single docs sentence with no detail on which actions are supported, how many items can be selected, or whether bulk operations can be run through the API or MCP tools. Missing for 10: an enumerated list of supported bulk actions and their limits, documented bulk endpoints in the API or MCP, independent or hands-on corroboration.",
+    "rationale": "Dover documents a first-party Bulk actions feature for candidate management that applies the same change to many people at once instead of opening each profile, which meets the story as written. The evidence is a single short doc line, though, and does not say which operations are supported or whether bulk changes can run through the API or MCP server. missing for 10: list of supported bulk operations, documented bulk/batch endpoints for programmatic or AI-driven use, independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-21"
     ],
@@ -1720,7 +1763,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document a user-configurable rule builder that ties events to actions inside Dover. The closest items are adjacent: webhooks deliver events to an external URL, notification settings choose which emails are sent, and the Calendly integration has built-in automation. None of these lets the user define their own trigger→action rules.",
+    "rationale": "The evidence shows no user-definable rule or automation engine in Dover where a user sets conditions that trigger actions on events. What it does show is adjacent: webhooks are outbound developer building blocks, notification preferences are adjacent controls, and the Calendly integration's auto-advance plus interview reminders are fixed built-in behaviors rather than rules the user defines. None of these count toward the story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1735,7 +1778,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring automations is a fair question for a recruiting platform, but the evidence shows no user-configurable recurring jobs or workflows. The scheduling evidence covers one-off interview booking. Interview reminders are fixed built-in notifications, not user-defined recurring schedules. The API and MCP server are developer building blocks for automation, not a scheduler.",
+    "rationale": "Dover is a recruiting SaaS, so user-defined recurring schedules are a fair question, but nothing in the evidence shows a feature for scheduling recurring jobs or workflows. The closest items don't qualify: interview scheduling is calendar booking, not workflow automation; automatic interview reminders are fixed one-off notifications; CRM campaign sequences are adjacent outreach features; and the API and MCP server are building blocks that need an external scheduler.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1750,7 +1793,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover offers automation surfaces (API, webhooks, MCP server), so this axis applies to it. However, nothing in the evidence documents versioning, review/diff, or rollback of automations. The approvals feature in Settings is a separate request-approval control and earns no credit toward this story.",
+    "rationale": "Dover is a recruiting platform with automation surfaces (API, webhooks, outreach campaigns, interview-stage workflows), so versioning and rolling back automations is a fair question for it. However, the evidence pack documents no version history, change review, or rollback for any automation. The approvals feature covers hiring-request approvals, an adjacent control that does not version or revert automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1765,7 +1808,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dover documents structured feedback forms so every interviewer scores candidates the same way. Members with Job Basic permissions submit feedback without seeing other interviewers' feedback, and a voluntary EEO survey feeds an aggregate Diversity (EEO) report for all jobs or for one job, with individual answers never shown. However, the evidence shows no option to anonymize resumes or candidate profiles for blind review, and the DEI reporting is a per-job aggregate rather than a breakdown by funnel stage. Missing for 10: demographic-blind or anonymized candidate review, DEI reporting broken down by funnel stage, independent-feedback ordering as a deliberate setting rather than a side effect of permission level, independent corroboration.",
+    "rationale": "Dover documents structured feedback forms so every interviewer scores candidates the same way, and Job Basic members can submit feedback without seeing other interviewers' feedback. It also offers a voluntary EEO survey that shows only aggregate results, with a Diversity (EEO) tab per job or across all jobs. However, the feedback isolation comes from a permission role rather than a submit-before-viewing ordering control, the EEO view is not broken down by funnel stage, and there is no anonymized or demographic-blind review mode. Missing for 10: demographic-blind/anonymized candidate review, DEI reporting segmented by funnel stage, an explicit feedback-ordering control for all interviewers, independent corroboration.",
     "evidenceIds": [
       "dover-docs-10",
       "dover-supp-feedback-visibility",
@@ -1800,14 +1843,13 @@
     "productId": "dover",
     "storyId": "candidate-profiles",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Dover documents a per-candidate profile: feedback is added on it, the calendar-invite link opens it, and the interview page shows the candidate's details, resume and feedback form. Nothing shows that email threads, activity history or consent status sit in that same record. missing for 10: email threads on the profile, activity/history timeline, consent status tracking, explicit documentation of a single unified record, independent corroboration.",
+    "rationale": "Dover's docs describe a single candidate profile where everything lives, covering resume, emails, interviews, feedback, notes and files; the interview page and calendar invite also link back to that profile. Nothing in the evidence shows a per-candidate activity-history timeline or any consent-status field on the record, so only three of the five named elements are documented. Missing for 10: activity history/audit timeline on the profile, consent status tracking, independent or hands-on corroboration.",
     "evidenceIds": [
+      "dover-supp-candidate-profile",
       "dover-supp-invite-link",
-      "dover-supp-interview-page",
-      "dover-docs-21",
-      "dover-docs-22"
+      "dover-supp-interview-page"
     ],
     "support": {
       "relation": "direct",
@@ -1815,16 +1857,16 @@
       "subject": "As a recruiter, every candidate has one unified profile — resume, email threads, interview feedback, activity history, and consent status in a single record",
       "citations": [
         {
+          "evidenceId": "dover-supp-candidate-profile",
+          "quote": "A candidate's profile is where everything about them lives: their details, resume, application answers, emails, interviews, feedback, notes, and files."
+        },
+        {
           "evidenceId": "dover-supp-invite-link",
           "quote": "Click **Add feedback** on the candidate's profile. The **View in Dover** link in the calendar invite opens the profile."
         },
         {
           "evidenceId": "dover-supp-interview-page",
           "quote": "It shows the candidate's details, their resume, and the feedback form assigned to the interview stage."
-        },
-        {
-          "evidenceId": "dover-docs-21",
-          "quote": "Bulk actions let you apply the same change to many people at once, instead of opening each profile."
         }
       ]
     }
@@ -1833,12 +1875,17 @@
     "productId": "dover",
     "storyId": "custom-reports-export",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Dover documents its own manual CSV export of candidate data from Settings → Data Export, plus built-in analytics charts that can be saved as PNG or shared. This is a one-off export rather than a recurring schedule, and the documented API covers candidates and jobs, not reporting. Missing for 10: custom report builder, scheduled/recurring exports, BI or warehouse connectors, documented reporting/analytics API, independent corroboration.",
+    "rationale": "Dover documents a one-off CSV export of candidate data, fixed built-in reporting charts (Funnel Conversion, Time to Hire, Hires by Source) that can be saved as PNG or shared, and a general API with a machine-readable spec plus outbound webhooks that can move data out programmatically. There is no evidence of a custom report builder, scheduled or recurring exports, BI or warehouse connectors, or a reporting-specific API; the CSV export is a manual one-off action, not a recurring schedule. Missing for 10: custom report building, scheduled/recurring exports, BI/warehouse connectors, a documented reporting/analytics API, independent corroboration.",
     "evidenceIds": [
       "dover-docs-26",
-      "dover-docs-19"
+      "dover-docs-19",
+      "dover-supp-funnel-conversion",
+      "dover-supp-time-to-hire",
+      "dover-docs-1",
+      "dover-supp-api-spec",
+      "dover-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -1852,6 +1899,18 @@
         {
           "evidenceId": "dover-docs-19",
           "quote": "Click the three dots on any chart to **Save as PNG**, open a **Full screen view**, or **Share** the chart."
+        },
+        {
+          "evidenceId": "dover-docs-1",
+          "quote": "With the API, you can programmatically add candidates to your jobs, fetch job listings, and automate various recruitment processes."
+        },
+        {
+          "evidenceId": "dover-supp-api-spec",
+          "quote": "The full machine-readable specification is available at [app.dover.com/docs/api.json](https://app.dover.com/docs/api.json)."
+        },
+        {
+          "evidenceId": "dover-docs-2",
+          "quote": "Webhooks send an HTTPS request from Dover to a URL you choose when something happens."
         }
       ]
     }
@@ -1862,7 +1921,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Dover documents its own referrals feature, which lets the team invite coworkers, investors, and friends to refer candidates to jobs, so the submit side of the flow is first-party. Nothing in the evidence shows the referrer tracking status or seeing where a referral stands in the pipeline. missing for 10: referrer-facing status tracking, visibility into the referral's pipeline stage, detailed referral-flow documentation, independent or hands-on corroboration",
+    "rationale": "Dover documents its own referrals feature for inviting coworkers, investors, and friends to refer candidates for its jobs, which covers the submit side of the story. Nothing in the evidence shows a referrer tracking status or seeing which stage their referral has reached. missing for 10: referrer-facing status tracking, visibility into the referral's pipeline stage, detailed referral submission docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-25"
     ],
@@ -1882,10 +1941,13 @@
     "productId": "dover",
     "storyId": "funnel-analytics",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Dover documents a first-party Reporting & Analytics section with charts you can save, view full screen, or share, so it has its own analytics capability. The evidence never says which funnel metrics those charts cover. The EEO tab and CSV export are a different metric and a user-side workaround, so they earn no credit. missing for 10: documented stage-conversion reporting, time-to-hire metrics, source-effectiveness reporting, offer-accept rates, per-role and per-team breakdowns of these metrics, independent or hands-on corroboration.",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Dover's built-in reporting covers most of the funnel. Funnel Conversion gives per-job stage-to-stage percentages through the offer stage to hires, Time to Hire gives per-job days per stage and per hire, and Hires by Source breaks hires down by source. Offer-accept rate is only implied by the offer-to-hire conversion step, and nothing shows a per-team view. missing for 10: explicit offer-accept rate metric, per-team breakdowns, source effectiveness beyond hire counts (e.g. conversion by source), independent corroboration.",
     "evidenceIds": [
+      "dover-supp-funnel-conversion",
+      "dover-supp-time-to-hire",
+      "dover-supp-hires-by-source",
       "dover-docs-19"
     ],
     "support": {
@@ -1894,8 +1956,16 @@
       "subject": "As a founder, I see the hiring funnel honestly — stage conversion, time-to-hire, source effectiveness, and offer-accept rates per role and team",
       "citations": [
         {
-          "evidenceId": "dover-docs-19",
-          "quote": "Click the three dots on any chart to **Save as PNG**, open a **Full screen view**, or **Share** the chart."
+          "evidenceId": "dover-supp-funnel-conversion",
+          "quote": "For one job, how many candidates reached each interview and offer stage, and the percent that moved on from the previous stage, ending with hires."
+        },
+        {
+          "evidenceId": "dover-supp-time-to-hire",
+          "quote": "For one job, the average days candidates spent in each interview and offer stage before moving on, plus a table of every hire with the hire date, days in each stage, and days from when the job was created."
+        },
+        {
+          "evidenceId": "dover-supp-hires-by-source",
+          "quote": "Hires by where the candidate was found, such as LinkedIn, Indeed, or an agency."
         }
       ]
     }
@@ -1906,11 +1976,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Dover's docs describe a careers page it generates for you by scanning your website, which suggests branding with no engineering work. Job changes appear on that careers page automatically, so jobs publish straight from the ATS. Nothing in the evidence shows hosting on the customer's own domain, though, and that is an explicit part of the story. missing for 10: custom-domain hosting, documented branding controls (logo/colors), independent or hands-on corroboration.",
+    "rationale": "Dover documents an auto-generated careers page that it builds from your company website, with a desktop and phone preview. Job changes flow automatically to the posting, the careers page and connected job boards with no engineering work. Nothing in the evidence shows hosting on the customer's own domain or branding controls beyond the automatic website scan. missing for 10: custom-domain hosting, explicit branding customization controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-17",
-      "dover-docs-15",
-      "dover-docs-18"
+      "dover-docs-18",
+      "dover-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -1936,10 +2006,11 @@
     "productId": "dover",
     "storyId": "interview-plans",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Dover documents reusable feedback forms that are created once and assigned to interview stages, so every interviewer on that stage uses the same scorecard. This covers the stage-plus-reusable-form core of the story. Its AI-suggested questions are generated per candidate, which is not a reusable question bank. missing for 10: a reusable question bank defined per role, per-interviewer focus areas or assignments, explicit documentation of a role-level interview plan template, and independent corroboration.",
+    "rationale": "Dover documents a per-job interview plan where each stage has its own interviewers, duration, meeting type, email templates and feedback form. Feedback forms are created once and reused across stages so every interviewer scores the same way. The docs do not describe a reusable question bank, since AI-suggested questions are generated per candidate, and they do not describe per-interviewer focus areas within a stage. Missing for 10: a reusable question bank attached to the plan, per-interviewer focus-area assignment, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "dover-supp-interview-plan",
       "dover-docs-10",
       "dover-supp-interview-page"
     ],
@@ -1948,6 +2019,10 @@
       "coverage": "partial",
       "subject": "As a recruiter, each role carries an interview plan — stages, question banks, and per-interviewer focus areas defined once and reused",
       "citations": [
+        {
+          "evidenceId": "dover-supp-interview-plan",
+          "quote": "Each stage can have its own interviewers, duration, meeting type, email templates, and feedback form."
+        },
         {
           "evidenceId": "dover-docs-10",
           "quote": "Create a form once, assign it to an interview stage, and every interviewer scores candidates the same way."
@@ -1963,16 +2038,18 @@
     "productId": "dover",
     "storyId": "interviewer-prep",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Dover's calendar invite includes a **View in Dover** link to the candidate profile. The interview page shows the resume and the feedback form assigned to that stage, and AI-suggested questions act as a light interview kit. Reminders go out 24h and 1h before, but feedback-submission prompts are documented only for the Calendly integration path, and the kit and scorecard are reached via a link rather than carried in the invite. missing for 10: kit/scorecard content embedded in the invite itself, documented post-interview feedback reminders for natively scheduled interviews, independent or hands-on corroboration.",
+    "rationale": "Dover's calendar invite includes a \"View in Dover\" link to the candidate profile. The interview page shows the candidate's details, resume, and the feedback form assigned to that stage, and per-stage feedback forms act as a standard scorecard. Interview reminders go out 24 hours and 1 hour before, but explicit prompts to submit feedback are only documented for the Calendly integration flow. missing for 10: the invite only links to the kit and scorecard rather than containing them, feedback-submission reminders documented for Dover-native scheduling (not just Calendly), independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-supp-invite-link",
       "dover-supp-interview-page",
       "dover-docs-10",
-      "dover-docs-11",
+      "dover-supp-interview-plan",
       "dover-supp-interview-reminders",
-      "dover-supp-calendly-feedback-prompt"
+      "dover-supp-calendly-feedback-prompt",
+      "dover-docs-11",
+      "dover-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -2008,7 +2085,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dover documents posting a job to LinkedIn, Indeed, or ZipRecruiter from the job's Job Boards tab in a few clicks. Edits to the posting propagate to the careers page and any connected job boards, which covers the core fan-out from one posting. Missing for 10: any evidence of sponsored/paid post management (budgets, promotion) inside the ATS, broader aggregator coverage beyond the three named boards, and independent or hands-on corroboration.",
+    "rationale": "Dover's own Job Boards tab posts a job to LinkedIn, Indeed, or ZipRecruiter in a few clicks. Edits propagate to the careers page and to any connected job boards, so the multi-board fan-out from inside the ATS is documented. Nothing in the pack shows sponsored or paid-post management, and coverage of aggregators beyond these three boards is not shown. missing for 10: sponsored-post/budget management inside the ATS, broader aggregator distribution, independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-16",
       "dover-docs-15"
@@ -2035,9 +2112,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dover's offers documentation shows built-in e-signature: the recruiter shares a link, the candidate signs electronically, and the signed offer downloads as a PDF. A generic approvals settings page exists, but nothing ties it to offers, and offer templates with dynamic fields are not evidenced. missing for 10: templated offer letters with dynamic/merge fields, offer-specific approval routing, independent or hands-on corroboration.",
+    "rationale": "Dover's offers docs show built-in e-signature: the recruiter shares a link, the candidate signs electronically, and the signed offer downloads as a PDF. A generic approvals setting exists, but nothing ties it to offers, and templated letters with dynamic fields are not evidenced. Missing for 10: templated offer letters with dynamic/merge fields, approval routing explicitly applied to offers, independent or hands-on corroboration.",
     "evidenceIds": [
-      "dover-docs-20"
+      "dover-docs-20",
+      "dover-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -2047,6 +2125,10 @@
         {
           "evidenceId": "dover-docs-20",
           "quote": "You share the link, the candidate signs electronically, and you can download the signed offer as a PDF."
+        },
+        {
+          "evidenceId": "dover-docs-23",
+          "quote": "Turn them on, choose who approves, and review requests in **Settings → Approvals**."
         }
       ]
     }
@@ -2057,7 +2139,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover documents e-signed offers, but the evidence shows no HRIS or payroll integration that carries new-hire data into onboarding. Webhooks, the API and CSV export are developer building blocks or manual workarounds, so they earn no credit. Handing off from an ATS to HRIS is a fair axis for a recruiting platform, so the verdict is none rather than na.",
+    "rationale": "Dover documents e-signed offers, but the evidence pack shows no HRIS or payroll integration that carries a new hire's data into onboarding. The generic API, webhooks, and CSV export are developer building blocks or user-side workarounds, so they earn no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2070,13 +2152,13 @@
     "productId": "dover",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Dover documents its own API for adding candidates, fetching jobs, and automating 'various recruitment processes'. Its official MCP server exposes jobs, candidates, applications, and interview workflows. Nothing claims or shows UI parity: many UI-documented functions have no evidenced API equivalent, and the probes found no published OpenAPI spec. Missing for 10: an explicit API/UI parity claim, a complete API reference or OpenAPI spec, API coverage of UI features such as approvals, permissions, offers, reporting, careers page, job-board posting, bulk actions and settings, and independent corroboration.",
+    "rationale": "Dover documents a public API for adding candidates, fetching jobs and automating recruitment processes, plus a machine-readable spec and an MCP server covering jobs, candidates, applications and interview workflows. Nothing claims or shows parity with the UI: the docs describe many UI-only features with no API coverage. missing for 10: any stated UI-parity commitment, documented API coverage for offers, approvals, permissions, careers page, reporting/analytics, bulk actions, CRM campaigns and settings, independent corroboration of API breadth",
     "evidenceIds": [
       "dover-docs-1",
-      "dover-docs-4",
-      "dover-probe-3"
+      "dover-supp-api-spec",
+      "dover-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -2086,6 +2168,10 @@
         {
           "evidenceId": "dover-docs-1",
           "quote": "With the API, you can programmatically add candidates to your jobs, fetch job listings, and automate various recruitment processes."
+        },
+        {
+          "evidenceId": "dover-supp-api-spec",
+          "quote": "The full machine-readable specification is available at [app.dover.com/docs/api.json](https://app.dover.com/docs/api.json)."
         },
         {
           "evidenceId": "dover-docs-4",
@@ -2100,9 +2186,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dover documents a self-serve export of candidate data to CSV, an open format, from Settings → Data Export. Signed offers can also be downloaded as PDFs. However, the evidence shows only candidate data being exported, not all account data (jobs, interview feedback, notes, notetaker transcripts, analytics), so a complete exit is not shown. missing for 10: documented export of all data types beyond candidates, a full-account or bulk archive export, independent or hands-on confirmation of export completeness",
+    "rationale": "Dover documents a first-party Data Export in Settings that exports candidate data to CSV, an open format. Its own API can also fetch jobs and candidates, and signed offers download as PDF. However, the documented export covers only candidate data, not 'all of my data', and nothing describes leaving the platform. Missing for 10: evidence of a complete export (interview feedback, notes, emails, files, recordings, jobs, reports), a documented account-closure or deletion process, and independent or hands-on corroboration that the export is complete.",
     "evidenceIds": [
       "dover-docs-26",
+      "dover-docs-1",
       "dover-docs-20"
     ],
     "support": {
@@ -2113,6 +2200,10 @@
         {
           "evidenceId": "dover-docs-26",
           "quote": "Export your candidate data to a CSV from **Settings → Data Export**."
+        },
+        {
+          "evidenceId": "dover-docs-1",
+          "quote": "With the API, you can programmatically add candidates to your jobs, fetch job listings, and automate various recruitment processes."
         },
         {
           "evidenceId": "dover-docs-20",
@@ -2127,7 +2218,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover is a hosted recruiting SaaS, and whether its source is available under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack mentions a public source repository or an open-source license. The API, webhooks, MCP server, and Markdown docs are integration and openness-adjacent features, not readable source code.",
+    "rationale": "Dover is a SaaS recruiting platform, and whether its source is published under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack shows a public repository or an open-source license. The published API spec, MCP server and Markdown docs are about API openness, not source availability, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2142,7 +2233,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS recruiting platform like Dover, so the axis applies. Nothing in the evidence pack documents a self-hosted, on-prem, or open-source deployment of the core product. The API, the hosted HTTP MCP server, and CSV data export are integration and portability features, not self-hosting, so they earn no credit here.",
+    "rationale": "Dover is a SaaS recruiting platform, and self-hosting is a fair question for this kind of product, so the axis applies. The evidence covers only the hosted API, webhooks, a hosted HTTP MCP server, and CSV export. None of it documents a self-hosted or on-premises deployment of the core product, and these adjacent openness features earn no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2157,7 +2248,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover documents only basic single-interview scheduling: candidate booking links, manually placing a meeting with Schedule Interview, or direct calendar booking with full permissions. The pack has no evidence of automatic scheduling for multi-interviewer panels or onsite loops, interviewer load balancing, room booking, or conflict resolution, so the basic scheduling counts only as an adjacent feature.",
+    "rationale": "Dover documents basic interview scheduling: candidate booking links, manual Schedule Interview, direct calendar booking with Full permissions, and per-stage interviewers. Nothing in the evidence shows automatic scheduling of multi-interviewer panels or full onsite loops, and there is no interviewer load balancing, room booking, or conflict resolution. Single-interview scheduling is an adjacent feature and earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -2169,31 +2260,31 @@
   {
     "productId": "dover",
     "storyId": "pipeline-stages",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Dover documents its own bulk actions for applying one change to many candidates. Its docs also refer to interview stages that feedback forms attach to, and say candidates are moved along the pipeline. The core configurable-pipeline elements of the story are not evidenced. Missing for 10: custom stages configurable per job, drag-to-move candidates between stages (kanban), bulk actions explicitly spanning the whole pipeline, independent or hands-on corroboration.",
+    "rationale": "Dover's docs cover all three parts of the story. Each job's interview plan takes custom stages with their own interviewers, templates and feedback forms. The candidate board lets you drag a card to another column to change its stage. Bulk actions apply the same change to many candidates at once. Missing for 10: no independent or hands-on corroboration, and no explicit evidence that bulk actions span the entire pipeline (all stages) rather than a selected set.",
     "evidenceIds": [
-      "dover-docs-21",
-      "dover-docs-10",
-      "dover-supp-calendly-feedback-prompt"
+      "dover-supp-interview-plan",
+      "dover-supp-board-drag",
+      "dover-docs-21"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a recruiter, I run configurable hiring pipelines — custom stages per job, drag-to-move candidates, and bulk actions across the whole pipeline",
       "citations": [
         {
+          "evidenceId": "dover-supp-interview-plan",
+          "quote": "You add your own for each interview, assignment, or reference check. Each stage can have its own interviewers, duration, meeting type, email templates, and feedback form."
+        },
+        {
+          "evidenceId": "dover-supp-board-drag",
+          "quote": "Drag a card to another column to move the candidate to that stage."
+        },
+        {
           "evidenceId": "dover-docs-21",
           "quote": "Bulk actions let you apply the same change to many people at once, instead of opening each profile."
-        },
-        {
-          "evidenceId": "dover-docs-10",
-          "quote": "Create a form once, assign it to an interview stage, and every interviewer scores candidates the same way."
-        },
-        {
-          "evidenceId": "dover-supp-calendly-feedback-prompt",
-          "quote": "It uses the booking to move the candidate along, prompt interviewers for feedback, and send reminders."
         }
       ]
     }
@@ -2204,7 +2295,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover is a SaaS recruiting platform that stores candidate data, so a buyer could fairly ask whether they can choose a storage region; the axis applies. Nothing in the evidence pack mentions region selection, data residency, or hosting location. CSV data export is a different capability and earns no credit here.",
+    "rationale": "Dover is a SaaS recruiting platform, so choosing a data-storage region is a fair question to ask of it, but the evidence pack never mentions data residency or region selection. CSV data export is an adjacent capability, not residency control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2219,7 +2310,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dover is a recruiting SaaS that ships AI features such as applicant scoring, an AI notetaker and suggested questions, so a training opt-out is a fair question to ask of it. Nothing in the evidence documents a setting, policy, or guarantee that stops customer data from being used to train AI models. The bring-your-own-API-key option for scoring is about billing and rate limits, not training opt-out, so it earns no credit.",
+    "rationale": "Dover is a recruiting SaaS with AI features (applicant scoring, AI notetaker, MCP server), so an AI-training opt-out is a fair question to ask of it. The evidence pack contains no documented control, policy, or setting that keeps customer data out of AI model training. Bring-your-own API key and data export are different features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2234,7 +2325,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a recruiting SaaS that holds candidate data, so the axis applies. However, the evidence pack documents no retention policy, auto-deletion, or candidate or account data deletion capability. The CSV data export and the aggregate-only EEO survey results are adjacent privacy features, not retention or deletion controls.",
+    "rationale": "Retention and deletion controls are a fair question for a recruiting SaaS that holds candidate data, so the axis applies. However, the evidence documents no retention settings, deletion workflows or purge capabilities. The only related item is CSV data export, which is an adjacent feature and does not count as retention or deletion control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2249,7 +2340,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy-posture question for a SaaS recruiting platform, so the axis applies. Nothing in the evidence documents a telemetry or usage-tracking opt-out. The nearest items are adjacent and earn no credit: per-job email notification muting and an optional applicant EEO survey.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS recruiting platform like Dover, so the axis applies. The pack has no documentation of a telemetry, analytics or usage-tracking opt-out. Muting job email notifications and the optional applicant EEO survey are different controls and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2262,12 +2353,13 @@
     "productId": "dover",
     "storyId": "self-schedule-links",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Dover's own docs say you can send candidates a booking link so they pick a time, and that with Full permissions Dover books the interview directly on your calendar, so candidate self-scheduling is a native capability. The evidence does not show that the booking link reflects live availability across a team's calendars, nor that it handles timezones. missing for 10: evidence that booking links read live availability across multiple team members' calendars, timezone handling, independent or hands-on corroboration.",
+    "rationale": "Dover's own scheduling docs describe sending candidates a booking link so they pick a time, and say Dover can book interviews directly on the interviewer's calendar with full calendar permissions. The evidence does not show that booking links read live availability across a team's calendars, and timezone handling is never documented, so the depth of the story is unproven. Missing for 10: explicit evidence of live multi-interviewer or team calendar availability behind booking links, documented timezone handling for candidates, and independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-29",
-      "dover-docs-31"
+      "dover-docs-31",
+      "dover-supp-interview-plan"
     ],
     "support": {
       "relation": "direct",
@@ -2281,6 +2373,10 @@
         {
           "evidenceId": "dover-docs-31",
           "quote": "With **Full permissions**, Dover books the interview directly on your calendar."
+        },
+        {
+          "evidenceId": "dover-supp-interview-plan",
+          "quote": "Each stage can have its own interviewers, duration, meeting type, email templates, and feedback form."
         }
       ]
     }
@@ -2291,7 +2387,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dover documents its own Chrome extension, the Dover Sourcing Extension, which sources a candidate from their LinkedIn profile directly into a job and lets you email them without leaving the page. That covers LinkedIn capture into the ATS. The pack says nothing about capturing prospects from other websites or about deduplication. missing for 10: capture from non-LinkedIn web pages, deduplication of existing candidates, independent or hands-on corroboration.",
+    "rationale": "Dover documents its own Chrome extension, the Dover Sourcing Extension, which sources a candidate from their LinkedIn profile into a job and lets the recruiter email them without leaving the page. That covers the core LinkedIn-to-ATS capture. Nothing in the evidence shows capture from the wider web or any deduplication of candidates already in the ATS. missing for 10: capture from non-LinkedIn web pages, deduplication against existing candidates, independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-27"
     ],
@@ -2313,11 +2409,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Dover documents interview feedback forms that are assigned to a stage so every interviewer scores candidates the same way. That covers per-stage structure and consistent, comparable scoring. Interviewers with Job Basic access cannot see others' feedback, which keeps evaluations independent. missing for 10: evidence of defined scorecard attributes or rating scales within forms, per-interviewer focus areas or rubrics within a stage, a side-by-side candidate scorecard comparison view, and independent or hands-on corroboration.",
+    "rationale": "Dover documents interview feedback forms that can be assigned per interview stage so every interviewer scores candidates the same way, which gives per-stage structure and consistency across candidates. The evidence does not show focus areas assigned per interviewer, what attributes or rating scales a form contains, or any side-by-side scorecard comparison. missing for 10: per-interviewer focused rubrics/attribute assignment, documented attribute and rating-scale definitions, cross-candidate scorecard comparison view, independent corroboration",
     "evidenceIds": [
       "dover-docs-10",
+      "dover-supp-interview-plan",
       "dover-supp-interview-page",
-      "dover-supp-feedback-visibility",
       "dover-docs-12"
     ],
     "support": {
@@ -2330,12 +2426,16 @@
           "quote": "Create a form once, assign it to an interview stage, and every interviewer scores candidates the same way."
         },
         {
+          "evidenceId": "dover-supp-interview-plan",
+          "quote": "Each stage can have its own interviewers, duration, meeting type, email templates, and feedback form."
+        },
+        {
           "evidenceId": "dover-supp-interview-page",
           "quote": "It shows the candidate's details, their resume, and the feedback form assigned to the interview stage."
         },
         {
-          "evidenceId": "dover-supp-feedback-visibility",
-          "quote": "A member with **Job Basic** can submit feedback, but can't see other interviewers' feedback"
+          "evidenceId": "dover-docs-12",
+          "quote": "Dover AI Notetaker joins your interviews, records and transcribes them, and fills in your interview feedback form with notes."
         }
       ]
     }
@@ -2344,10 +2444,11 @@
     "productId": "dover",
     "storyId": "talent-crm",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Dover documents its own CRM page with boolean search to find people by skills or experience. It also offers a Sourcing Extension that sources LinkedIn candidates into a job and emails them, so there is a basic in-product CRM and outreach capability. Nothing shows the richer talent-CRM workflow the story describes. Missing for 10: prospect pools/talent lists, multi-step personalized email sequences, open/reply tracking, nurture campaigns for future roles, and independent corroboration.",
+    "rationale": "Dover documents its own CRM with boolean keyword search over sourced people. Its Campaigns tab builds outreach sequences that keep in touch with prospects even when they aren't tied to a job, which covers nurture for future roles. The Chrome extension sources LinkedIn profiles and emails them. Missing for 10: email open/reply tracking, explicit prospect pools or lists, documented per-recipient personalization of sequences, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "dover-supp-crm-campaigns",
       "dover-docs-28",
       "dover-docs-27"
     ],
@@ -2356,6 +2457,10 @@
       "coverage": "partial",
       "subject": "As a recruiter, sourcing lives in a talent CRM — pools of prospects, personalized email sequences with tracking, and nurture campaigns for future roles",
       "citations": [
+        {
+          "evidenceId": "dover-supp-crm-campaigns",
+          "quote": "Use the **Campaigns** tab to build outreach sequences that keep in touch with them, even when they aren't tied to a job."
+        },
         {
           "evidenceId": "dover-docs-28",
           "quote": "Combine keywords with `AND`, `OR`, `NOT`, quotes, and parentheses to find people by skills or experience."
@@ -2373,9 +2478,10 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Dover's docs cover @mentioning teammates in candidate notes and role-based visibility rules: Job Basic members can submit feedback but cannot see other interviewers' feedback, and permission groups are configurable. Tasks are not documented anywhere in the pack, so a core part of the story is unevidenced. Missing for 10: task assignment/tracking, detail on how shared notes are scoped, independent or hands-on corroboration.",
+    "rationale": "Dover documents @mentions in candidate notes, shared notes on the candidate profile, and permission-based visibility rules. Job Basic members can submit feedback but can't see other interviewers' feedback, and permissions groups are configurable. However, nothing in the evidence documents team tasks or assignments, and every source is vendor docs. missing for 10: collaborative tasks/assignments, detail on note-level privacy controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "dover-docs-22",
+      "dover-supp-candidate-profile",
       "dover-supp-feedback-visibility",
       "dover-docs-24"
     ],
@@ -2387,6 +2493,10 @@
         {
           "evidenceId": "dover-docs-22",
           "quote": "Type @ followed by a name to tag a teammate."
+        },
+        {
+          "evidenceId": "dover-supp-candidate-profile",
+          "quote": "A candidate's profile is where everything about them lives: their details, resume, application answers, emails, interviews, feedback, notes, and files."
         },
         {
           "evidenceId": "dover-supp-feedback-visibility",

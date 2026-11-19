@@ -3,11 +3,15 @@
 #
 # Dover's docs corpus is 32 crawled sources, so the extract stage's fair per-source budget
 # (60,000 characters split evenly) offered the model under 2,000 characters of each page.
-# The passages below sit past that cut on their pages (or on two Dover docs pages outside
-# the crawl list) and bear on the two cells the PR #714 review contested, `bias-controls`
-# and `interviewer-prep`: EEO survey collection and its aggregate reporting tab, the
-# permissions group that hides other interviewers' feedback, what the interview page and
-# the calendar invite give an interviewer, and the interview reminder and feedback prompts.
+# The passages below sit past that cut on their pages (or on Dover docs pages outside the
+# crawl list). The first seven bear on the two cells the PR #714 review contested,
+# `bias-controls` and `interviewer-prep`: EEO survey collection and its aggregate reporting
+# tab, the permissions group that hides other interviewers' feedback, what the interview
+# page and the calendar invite give an interviewer, and the interview reminder and feedback
+# prompts. The rest answer the PR #747 review: the reporting charts by name
+# (`funnel-analytics` had partial credit on a chart-sharing quote alone), the published
+# machine-readable API spec, and the profile, interview plan, board and CRM passages for
+# cells whose first-pass citations were adjacent features.
 #
 # Each excerpt is one verbatim passage. The script fetches the cited page's Markdown copy
 # and requires the excerpt to appear on it (whitespace-normalized) before anything is
@@ -46,6 +50,22 @@ NEW_ITEMS = [
      'Interview emails go out when the event happens, and reminders go 24 hours and 1 hour before.'),
     ('dover-supp-calendly-feedback-prompt', f'{DOCS}/integrations/calendly-integration.md',
      'It uses the booking to move the candidate along, prompt interviewers for feedback, and send reminders.'),
+    ('dover-supp-funnel-conversion', f'{DOCS}/getting-started/reporting-analytics.md',
+     '**Funnel Conversion** | For one job, how many candidates reached each interview and offer stage, and the percent that moved on from the previous stage, ending with hires.'),
+    ('dover-supp-time-to-hire', f'{DOCS}/getting-started/reporting-analytics.md',
+     '**Time to Hire** | For one job, the average days candidates spent in each interview and offer stage before moving on, plus a table of every hire with the hire date, days in each stage, and days from when the job was created.'),
+    ('dover-supp-hires-by-source', f'{DOCS}/getting-started/reporting-analytics.md',
+     '**Hires by Source** | Hires by where the candidate was found, such as LinkedIn, Indeed, or an agency.'),
+    ('dover-supp-api-spec', f'{DOCS}/api.md',
+     'The full machine-readable specification is available at [app.dover.com/docs/api.json](https://app.dover.com/docs/api.json). Use it to generate a client or to give an AI coding tool the exact endpoints and fields.'),
+    ('dover-supp-candidate-profile', f'{DOCS}/managing-candidates/candidate-profiles.md',
+     "A candidate's profile is where everything about them lives: their details, resume, application answers, emails, interviews, feedback, notes, and files."),
+    ('dover-supp-interview-plan', f'{DOCS}/scheduling-interviewing/setting-up-your-interview-plan.md',
+     'You add your own for each interview, assignment, or reference check. Each stage can have its own interviewers, duration, meeting type, email templates, and feedback form.'),
+    ('dover-supp-board-drag', f'{DOCS}/managing-candidates/candidates-overview.md',
+     'A card for each candidate. Drag a card to another column to move the candidate to that stage.'),
+    ('dover-supp-crm-campaigns', f'{DOCS}/sourcing-and-outreach/crm.md',
+     "Use the **Campaigns** tab to build outreach sequences that keep in touch with them, even when they aren't tied to a job."),
 ]
 
 _PAGES: dict = {}
