@@ -77,6 +77,8 @@ class Verifier:
             return f'{url} returned {status}; refusing to append unverified evidence'
         if fmt == 'openapi-document' and not looks_like_spec_document(body):
             return f'{url} no longer parses as a machine-readable API description document; re-derive the item'
+        if fmt == 'openapi-document' and is_known_starter_spec(body):
+            return f'{url} is a known starter sample, not verified product API evidence; keep the gap unresolved'
         text = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', body))
         for marker in markers:
             if marker not in text and marker not in body:
@@ -135,6 +137,21 @@ class Verifier:
         if not cert.strip() or host in cert or recorded_wrong_name not in cert:
             return f'{host}: certificate state drifted — re-derive the counter-check'
         return None
+
+
+def is_known_starter_spec(body):
+    """Reject the JSON starter observed in #744/#750, even on a vendor docs host.
+
+    This is a narrow rejection of a known sample, not a claim that every other
+    structurally valid specification describes the product being reviewed.
+    """
+    try:
+        parsed = json.loads(body)
+    except json.JSONDecodeError:
+        return False
+    info = parsed.get('info') if isinstance(parsed, dict) else None
+    title = info.get('title') if isinstance(info, dict) else None
+    return isinstance(title, str) and ' '.join(title.casefold().split()) == 'openapi plant store'
 
 
 def looks_like_spec_document(body):
