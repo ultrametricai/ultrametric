@@ -201,7 +201,6 @@ async function apply(fix: Fix): Promise<void> {
   // Re-read as plain JSON so fields outside this product keep their exact committed shape.
   const plain = JSON.parse(rosterText) as { id: string; urls: { extra?: string[] } }[]
   plain.find((p) => p.id === fix.product)!.urls.extra = extra
-  writeJson(rosterFile, plain)
 
   const evidenceFile = path.join(dir, 'evidence', `${fix.product}.json`)
   let rows = EvidenceSchema.array().parse(JSON.parse(fs.readFileSync(evidenceFile, 'utf8')))
@@ -234,6 +233,9 @@ async function apply(fix: Fix): Promise<void> {
   // Extract-stage order: claimed-docs and github rows first, then community and probe rows.
   const docs = rows.filter((row) => row.tier === 'claimed-docs' || row.tier === 'github')
   const rest = rows.filter((row) => row.tier !== 'claimed-docs' && row.tier !== 'github')
+  // Both inputs are written only after every reachability and verbatim check has passed, so
+  // a rejected repair leaves the roster and the evidence file untouched.
+  writeJson(rosterFile, plain)
   writeJson(evidenceFile, [...docs, ...added, ...rest])
   console.log(`${fix.arena}/${fix.product}: ${fix.moved.length} moved, ${fix.withdrawn.length} withdrawn, ${fix.restated.length} restated`)
 }
