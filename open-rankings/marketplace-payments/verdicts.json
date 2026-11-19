@@ -3797,7 +3797,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is an embedded payments platform for marketplaces, so agent-initiated checkout is a fair question for it. The evidence documents amount splits, stored payment methods, and short-lived component sessions. None of it covers agentic-commerce protocols, delegated payment credentials for AI agents, or agent-initiated checkout. Those adjacent features do not count as delivering the story.",
+    "rationale": "Agent-initiated checkout is a fair question for an embedded-payments platform, so the axis applies. However, the evidence never mentions agentic-commerce protocols, agent-initiated checkout, or delegated payment credentials for agents. Amount splits, stored payment methods, and scoped short-lived component sessions are adjacent building blocks, not the requested capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3812,15 +3812,17 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Rainforest documents an API to create merchants with an initial application, a direct-to-API onboarding path (only for Rainforest-approved platforms), and a 'Needs Information' application status surfaced via webhooks, so an agent could drive much of seller onboarding programmatically. It is not documented how to answer requirements-due states via the API, whether API keys can be scoped, or any MCP surface. Missing for 10: documented API flow for resolving Needs Information requirements, scoped/least-privilege API credentials (only long-lived API keys and component sessions are shown), any MCP server, independent or hands-on corroboration.",
+    "rationale": "Rainforest documents API-driven seller operations: a create-merchant endpoint, direct-to-API onboarding (gated to approved platforms), KYC/KYB decisions, and webhooks that surface a 'Needs Information' application status. It does not document how an agent answers those requirements through the API, there is no MCP surface, and permission-scoped statements are documented only for short-lived component sessions, not for API keys. Missing for 10: an MCP server, a documented API flow for resolving Needs Information requirements, scoped API keys for server or agent use, and ungated API onboarding.",
     "evidenceIds": [
       "rainforest-docs-5",
       "rainforest-docs-31",
       "rainforest-docs-21",
       "rainforest-docs-37",
-      "rainforest-docs-22",
+      "rainforest-docs-42",
+      "rainforest-docs-48",
+      "rainforest-docs-55",
       "rainforest-docs-25",
-      "rainforest-docs-24"
+      "rainforest-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -3840,8 +3842,12 @@
           "quote": "Merchant application moves to the **Needs Information** status and requires additional verification for merchant onboarding"
         },
         {
-          "evidenceId": "rainforest-docs-25",
-          "quote": "An API key is a long-lived credential that authorizes servers to communicate with the Rainforest API."
+          "evidenceId": "rainforest-docs-55",
+          "quote": "A **statement** consists of a set of **permissions** and **constraints** that defines what **resources** and **actions** this session can access."
+        },
+        {
+          "evidenceId": "rainforest-docs-42",
+          "quote": "Rainforest performs the Know Your Customer (KYC) and Know Your Business (KYB) verifications requirement by the card brands and provides you with an approved, declined, or manual review response within minutes."
         }
       ]
     }
@@ -3851,13 +3857,15 @@
     "storyId": "agent-platform-operations",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Rainforest documents agent-usable surfaces: an OpenAPI 3.1.0 spec of its API, an llms.txt that serves docs as Markdown, and long-lived server API keys. It also documents deposits (payouts) and offers a chargebacks component. However, the evidence never shows API reads of balances or deposit status, a way to investigate a missing payout, or a documented dispute-evidence submission endpoint. Missing for 10: documented balance/payout read endpoints, a payout-investigation workflow, an API for drafting or submitting dispute evidence, a fetchable OpenAPI file (the probe paths returned 404), and hands-on agent corroboration.",
+    "confidence": "medium",
+    "rationale": "Rainforest documents agent-usable surfaces: an OpenAPI 3.1.0 spec of its API, an llms.txt index with markdown-fetchable pages, and server API keys. Its money-side resources include deposits, configurable via the Update merchant endpoint, with webhooks for deposit events and for every status change in a chargeback's lifecycle. However, the pack never shows endpoints for reading balances or listing payouts, a way to investigate a missing deposit, or submitting dispute evidence via API. The probe's 404s at guessed OpenAPI paths do not contradict the documented spec. Missing for 10: documented balance/payout read endpoints, a missing-payout investigation workflow, an API surface for drafting or submitting dispute evidence, and hands-on corroboration of agent use.",
     "evidenceIds": [
       "rainforest-docs-26",
       "rainforest-probe-1",
       "rainforest-docs-25",
-      "rainforest-docs-7",
+      "rainforest-docs-40",
+      "rainforest-docs-48",
+      "rainforest-docs-49",
       "rainforest-docs-15"
     ],
     "support": {
@@ -3874,16 +3882,16 @@
           "quote": "Append .md to any documentation page URL to get it"
         },
         {
-          "evidenceId": "rainforest-docs-25",
-          "quote": "An API key is a long-lived credential that authorizes servers to communicate with the Rainforest API."
+          "evidenceId": "rainforest-docs-40",
+          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant](https://docs.rainforestpay.com/reference/update_merchant) endpoint."
         },
         {
-          "evidenceId": "rainforest-docs-7",
-          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant] endpoint."
+          "evidenceId": "rainforest-docs-48",
+          "quote": "Configure Rainforest to send webhook notifications for any payment, merchant, or deposit events"
         },
         {
-          "evidenceId": "rainforest-docs-15",
-          "quote": "pre-built, embeddable components for payments, reporting, chargebacks, merchant onboarding, and more."
+          "evidenceId": "rainforest-docs-49",
+          "quote": "Webhooks can be configured to receive updates on every status change that occurs through the lifecycle of a chargeback."
         }
       ]
     }
@@ -3894,10 +3902,9 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe found an llms.txt at docs.rainforestpay.com, returning HTTP 200, that states any documentation page can be fetched as markdown by appending .md. The many .md documentation URLs in the pack confirm agent-readable page versions exist, so an agent can be pointed at this index and its markdown docs. Missing for 10: first-party documentation describing the llms.txt or agent-oriented docs offering, and evidence of a consolidated full-content file (e.g. llms-full.txt) or independent corroboration of agent usage.",
+    "rationale": "A live probe found an llms.txt at docs.rainforestpay.com (HTTP 200), and it states that appending .md to any documentation page returns markdown. The cited docs URLs are served as .md pages, which corroborates agent-readable docs. missing for 10: evidence of an llms-full.txt or richer agent-specific guidance (the llms.txt summary is generic), first-party docs describing AI/agent usage of the docs.",
     "evidenceIds": [
       "rainforest-probe-1",
-      "rainforest-docs-4",
       "rainforest-docs-26"
     ],
     "support": {
@@ -3922,7 +3929,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is an embedded payments platform with reporting components, so in-product AI-generated insights from payment and merchant data is a fair question for it. However, nothing in the evidence pack documents AI-driven insights or suggestions. The revenue calculator and real-time underwriting verifications are rule- or questionnaire-based features, not AI insights, so they earn no credit.",
+    "rationale": "Rainforest is an embedded payments platform with reporting components and payment/merchant data, so in-product AI insights are a fair question for this kind of product. However, nothing in the evidence pack documents AI-generated insights or suggestions. Reporting components, real-time underwriting verifications and the llms.txt docs file are adjacent features, not AI insights drawn from the user's data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3937,7 +3944,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is a payments platform, so background automation is a fair question to ask of it. However, the evidence shows no first-party automation builder or autonomous background workflow feature. Webhooks only notify the platform of events, Zapier is a third-party tool users would connect themselves, and configurable deposit frequency is a payout setting rather than a user-defined automation, so none of these earn credit.",
+    "rationale": "Rainforest is a payments platform, so user-configured background automations are a fair question for it. The evidence shows no first-party automation builder or autonomous agent capability. The closest items are webhooks (a developer building block), a Zapier guide (a third-party user-side workaround), and a merchant deposit-frequency setting (an adjacent control). None of these count as the product's own automation feature for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3951,8 +3958,8 @@
     "storyId": "agentic-builtin-assistant",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Rainforest is an embedded-payments SaaS platform, and a portal-embedded AI assistant is a plausible capability for this kind of product, so the axis applies. The evidence pack documents payments, onboarding, webhooks, components and APIs, but nothing shows a built-in AI assistant that users can delegate tasks to. The llms.txt file only exposes docs in a machine-readable form; it is not an in-product assistant.",
+    "confidence": "high",
+    "rationale": "Rainforest is an embedded-payments SaaS platform with a Platform Portal, so a built-in AI assistant is a fair question for this kind of product. The evidence pack documents no in-product AI assistant or task delegation. The llms.txt docs endpoint and Zapier no-code workflows are adjacent documentation and automation features, not an AI assistant inside the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3967,11 +3974,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Rainforest is an API-first payments platform. Its own Rainforest API runs headlessly through long-lived server API keys, with an OpenAPI 3.1.0 spec and an end-to-end sandbox, so server-side automation without the UI is documented. Nothing addresses CI pipelines specifically. Missing for 10: documented CI/CD integration or guidance, an official CLI or headless test runner, hands-on corroboration of automated pipeline use.",
+    "rationale": "Rainforest can be driven headlessly through its own server-side API. Long-lived API keys authorize servers to call the API, payins and merchant onboarding can be done via the API instead of the embedded UI components, an OpenAPI 3.1.0 spec is published, and a sandbox environment with test cards supports end-to-end testing. However, nothing documents CI-specific usage, such as a CLI, CI pipeline guidance or automated test-run tooling. missing for 10: an official CLI or CI integration guide, documented CI/test-automation workflows, independent hands-on corroboration of headless/CI use.",
     "evidenceIds": [
       "rainforest-docs-25",
       "rainforest-docs-20",
+      "rainforest-docs-31",
       "rainforest-docs-26",
+      "rainforest-docs-9",
       "rainforest-docs-16"
     ],
     "support": {
@@ -3984,12 +3993,16 @@
           "quote": "An API key is a long-lived credential that authorizes servers to communicate with the Rainforest API."
         },
         {
-          "evidenceId": "rainforest-docs-26",
-          "quote": "Rainforest supports OpenAPI Specifications (OAS) of the Rainforest API, version 3.1.0."
+          "evidenceId": "rainforest-docs-31",
+          "quote": "Platforms that are approved by Rainforest can send sensitive merchant onboarding data, including bank accounts and Social Security Numbers, to Rainforest via a direct to API integration."
         },
         {
           "evidenceId": "rainforest-docs-16",
-          "quote": "full end-to-end sandbox testing, realtime API logs"
+          "quote": "Detailed guides and walkthroughs, full end-to-end sandbox testing, realtime API logs, and more."
+        },
+        {
+          "evidenceId": "rainforest-docs-26",
+          "quote": "Rainforest supports OpenAPI Specifications (OAS) of the Rainforest API, version 3.1.0."
         }
       ]
     }
@@ -3999,8 +4012,8 @@
     "storyId": "agentic-mcp-client",
     "verdict": "na",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Rainforest is an embedded payments infrastructure platform (APIs, embeddable components, webhooks), not an AI agent or assistant that consumes tools. Plugging MCP servers into it as a client is a category error for this kind of product. Nothing in the evidence shows it ships any agent or MCP-client capability that would make the axis apply.",
+    "confidence": "high",
+    "rationale": "Rainforest is an embedded-payments platform offering APIs, embeddable components, and webhooks. It is not an AI agent or assistant host that would consume tools from MCP servers, so acting as an MCP client is a category error for this kind of product. Nothing in the evidence shows it ships any agent or MCP-client capability that would make the axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4015,7 +4028,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is a payments API platform, so an official MCP server is a plausible offering and the axis applies. The evidence pack never mentions an MCP server. The llms.txt file and OpenAPI 3.1.0 spec are developer building blocks, not an official MCP server, and earn no credit.",
+    "rationale": "Rainforest is a payments platform, not an agent, so an official MCP server is a fair axis. Nothing in the evidence documents an MCP server or a first-party agent endpoint. The llms.txt file, the OpenAPI 3.1.0 spec and the REST API are developer building blocks, not an official MCP server, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4030,7 +4043,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is an embedded-payments platform, and a natural-language operating interface is a fair question for a SaaS product of this kind. The evidence pack documents only embeddable components, a REST API, an OpenAPI spec, a portal, webhooks and Zapier no-code automation, with no natural-language command capability. The llms.txt file and the OpenAPI spec are developer building blocks and adjacent features, not a product-provided natural-language interface, so they earn no credit.",
+    "rationale": "A payments platform with a Platform Portal could plausibly offer a natural-language assistant or command interface, so this axis applies. The evidence pack documents no such capability. The llms.txt docs index, the OpenAPI spec, and the Zapier no-code webhook workflows are developer building blocks or adjacent features, not natural-language operation of the product itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4045,7 +4058,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is a payments platform with an API, so an official CLI is a fair question for this kind of product. Nothing in the evidence pack mentions a Rainforest CLI. The API keys, OpenAPI spec, embedded components, Zapier and llms.txt are related developer surfaces, not a command-line tool, so they earn no credit.",
+    "rationale": "Rainforest is an embedded-payments API platform, so an official CLI is a fair thing to ask about, and the axis applies. The evidence pack documents a REST API, OpenAPI specs, embeddable components, a Platform Portal, SDKs and llms.txt, but no official command-line tool. Those are adjacent developer surfaces, not a CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4058,18 +4071,18 @@
     "productId": "rainforest",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Rainforest documents a public REST API with long-lived server API keys, endpoint reference pages such as Create merchant and Update merchant, and API-based payin and onboarding paths. It also supports an OpenAPI 3.1.0 specification and offers sandbox testing with realtime API logs. The probe's 404s at guessed OpenAPI paths do not contradict the documented spec, which is published under the reference docs. Missing for 10: independent or hands-on corroboration of driving the API end to end, and a spec confirmed at a machine-discoverable URL.",
+    "rationale": "Rainforest documents a public server-side API: API-key auth, a reference with endpoints such as create_merchant and update_merchant, an OpenAPI 3.1.0 spec, and an API option for both payins and merchant onboarding. An llms.txt also offers agent-friendly markdown docs. The probe's 404s at guessed OpenAPI paths don't contradict the documented spec page. Missing for 10: independent or hands-on corroboration of API use, a directly fetchable OpenAPI spec URL, and ungated direct-API onboarding (approval is required to send sensitive merchant data via the API).",
     "evidenceIds": [
       "rainforest-docs-25",
       "rainforest-docs-26",
       "rainforest-docs-5",
-      "rainforest-docs-7",
+      "rainforest-docs-40",
       "rainforest-docs-20",
       "rainforest-docs-21",
       "rainforest-docs-31",
-      "rainforest-docs-16",
+      "rainforest-docs-17",
       "rainforest-probe-1"
     ],
     "support": {
@@ -4090,12 +4103,16 @@
           "quote": "Create a merchant with an initial merchant application."
         },
         {
-          "evidenceId": "rainforest-docs-7",
-          "quote": "the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant] endpoint."
+          "evidenceId": "rainforest-docs-40",
+          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant](https://docs.rainforestpay.com/reference/update_merchant) endpoint."
         },
         {
-          "evidenceId": "rainforest-docs-16",
-          "quote": "full end-to-end sandbox testing, realtime API logs"
+          "evidenceId": "rainforest-docs-17",
+          "quote": "Utilizing our embedded component or API, submit for real-time onboarding processing payments in minutes."
+        },
+        {
+          "evidenceId": "rainforest-probe-1",
+          "quote": "Append .md to any documentation page URL to get it"
         }
       ]
     }
@@ -4103,27 +4120,42 @@
   {
     "productId": "rainforest",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Rainforest issues long-lived server API keys and short-lived component session credentials, capped at 24 hours. None of it documents permission scopes, restricted key roles, or least-privilege API credentials an agent could be given. Component sessions are a time-limited credential for embedded UI components, which is an adjacent feature, not scoped API credentials for an agent.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Rainforest's own component sessions are short-lived credentials (max 24 hours) whose statements of permissions and constraints define which resources and actions the session can access, so the product does ship a scoped, least-privilege credential mechanism. However, sessions are documented for embedded components, and the long-lived server API keys have no documented scoping, so issuing scoped API credentials to an agent is only partly evidenced. Missing for 10: documented scoping or permissions on API keys, evidence that session credentials authorize general API calls by an agent or server process, agent-specific credential guidance, and independent corroboration.",
+    "evidenceIds": [
+      "rainforest-docs-55",
+      "rainforest-docs-24",
+      "rainforest-docs-25"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "rainforest-docs-55",
+          "quote": "A **statement** consists of a set of **permissions** and **constraints** that defines what **resources** and **actions** this session can access."
+        },
+        {
+          "evidenceId": "rainforest-docs-24",
+          "quote": "A session is a short-lived credential with a maximum lifetime of 24 hours (86,400 seconds)."
+        }
+      ]
     }
   },
   {
     "productId": "rainforest",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only evidence of an official SDK is a Tap to Phone SDK page (docs-33), which covers only device-based contactless payments. There is no evidence of general-purpose API client libraries; the OpenAPI spec is a building block, not an SDK, and the probe found no hosted spec file. Missing for 10: official server-side API client SDKs in multiple languages, documented SDK installation and usage guides, SDK coverage of core payin/onboarding/merchant APIs, independent corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Rainforest documents an official SDK, but only for Tap to Phone payments on iOS and Android. It also ships a JavaScript bundle framework for its embedded components. The OpenAPI 3.1.0 spec is a building block for generating clients, not an official SDK, so it earns no credit, and no general-purpose server-side SDKs are evidenced. Missing for 10: official server-side SDKs for the core API (e.g., Node/Python), SDK reference docs and versioning, independent or hands-on corroboration.",
     "evidenceIds": [
-      "rainforest-docs-33"
+      "rainforest-docs-47",
+      "rainforest-docs-33",
+      "rainforest-docs-44"
     ],
     "support": {
       "relation": "direct",
@@ -4131,8 +4163,16 @@
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
         {
+          "evidenceId": "rainforest-docs-47",
+          "quote": "Rainforest currently supports processing Tap to Phone payments utilizing the Rainforest SDK on iOS and Android devices."
+        },
+        {
           "evidenceId": "rainforest-docs-33",
           "quote": "Tap to Phone enables merchants to accept contactless payments directly on a compatible device."
+        },
+        {
+          "evidenceId": "rainforest-docs-44",
+          "quote": "This framework allows you to collect sensitive data without exposing your platform to card data, reducing your PCI DSS scope."
         }
       ]
     }
@@ -4141,13 +4181,16 @@
     "productId": "rainforest",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Rainforest's own docs describe webhooks that notify the platform when a resource's status changes, and say you can subscribe to events for specific resources. A dedicated guide covers receiving webhooks from private networks, so subscribing to events via outbound HTTP callbacks is a documented first-party capability. Missing for 10: documented endpoint registration steps, signature verification and retry/delivery details, and independent or hands-on corroboration.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Rainforest's own docs describe outbound webhooks that notify the platform of status changes on resources. Users can configure them for payment, merchant, deposit and chargeback lifecycle events, and dedicated guides cover receiving them on-prem and through no-code tools, so a programmatic consumer can subscribe to events. missing for 10: documented registration mechanics (API or portal endpoint setup), signature verification and retry/delivery semantics, independent or hands-on corroboration.",
     "evidenceIds": [
-      "rainforest-docs-8",
       "rainforest-docs-22",
-      "rainforest-docs-32"
+      "rainforest-docs-48",
+      "rainforest-docs-8",
+      "rainforest-docs-49",
+      "rainforest-docs-32",
+      "rainforest-docs-51"
     ],
     "support": {
       "relation": "direct",
@@ -4155,16 +4198,24 @@
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": [
         {
-          "evidenceId": "rainforest-docs-8",
-          "quote": "You can subscribe to events for the following resources"
-        },
-        {
           "evidenceId": "rainforest-docs-22",
           "quote": "Rainforest utilizes webhooks to notify the platform when an event occurs, which indicates a change of status on a resource in the Rainforest ecosystem."
         },
         {
-          "evidenceId": "rainforest-docs-32",
-          "quote": "This guide is for Rainforest platforms running their software inside a private network, with no public inbound HTTPS endpoint available to receive webhooks."
+          "evidenceId": "rainforest-docs-48",
+          "quote": "Configure Rainforest to send webhook notifications for any payment, merchant, or deposit events"
+        },
+        {
+          "evidenceId": "rainforest-docs-8",
+          "quote": "You can subscribe to events for the following resources"
+        },
+        {
+          "evidenceId": "rainforest-docs-49",
+          "quote": "Webhooks can be configured to receive updates on every status change that occurs through the lifecycle of a chargeback."
+        },
+        {
+          "evidenceId": "rainforest-docs-51",
+          "quote": "It covers three patterns for receiving Rainforest webhooks to an on-prem service."
         }
       ]
     }
@@ -4175,11 +4226,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Rainforest publishes its own API reference with per-endpoint pages (e.g., reference/create_merchant) and an OpenAPI 3.1.0 specification, but nothing in the pack shows the reference is interactive or offers runnable 'try it' examples. Standard OpenAPI paths returned 404 on probe. The sandbox environment is a separate feature and earns no credit here. missing for 10: evidence of interactive in-browser request execution, runnable code examples in the reference, a publicly fetchable OpenAPI spec, independent or hands-on corroboration.",
+    "rationale": "Rainforest publishes its own API reference section, with endpoint pages such as create_merchant under /reference/. It also documents an OpenAPI 3.1.0 specification of its API, so the reference half of the story is evidenced. Nothing in the pack shows the reference is interactive or offers runnable 'try it' examples, and the probe found no openapi.json at the common paths. missing for 10: evidence of an interactive try-it console, runnable code examples within the reference, independent or hands-on corroboration.",
     "evidenceIds": [
       "rainforest-docs-5",
       "rainforest-docs-26",
-      "rainforest-probe-2"
+      "rainforest-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -4203,9 +4254,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Rainforest has a dedicated OpenAPI reference page stating it supports OpenAPI Specifications of its API at version 3.1.0, a machine-readable spec format. The probe's 404s only cover guessed default paths, so they do not contradict a spec published elsewhere. missing for 10: an explicit download URL or file confirmed retrievable, independent or hands-on corroboration of the spec's completeness.",
+    "rationale": "Rainforest's docs have a dedicated reference page (reference/openapi.md) stating it supports OpenAPI Specifications of the Rainforest API, version 3.1.0, a machine-readable spec for the API. The probe's 404s were at guessed common paths, not the documented page, so they do not contradict the claim. missing for 10: an explicit documented download URL or file for the spec, independent or hands-on confirmation that the spec can be fetched.",
     "evidenceIds": [
-      "rainforest-docs-26"
+      "rainforest-docs-26",
+      "rainforest-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -4215,6 +4267,10 @@
         {
           "evidenceId": "rainforest-docs-26",
           "quote": "Rainforest supports OpenAPI Specifications (OAS) of the Rainforest API, version 3.1.0."
+        },
+        {
+          "evidenceId": "rainforest-docs-53",
+          "quote": "Rainforest supports [OpenAPI Specifications (OAS)](https://www.openapis.org/) of the Rainforest API, version 3.1.0."
         }
       ]
     }
@@ -4222,24 +4278,24 @@
   {
     "productId": "rainforest",
     "storyId": "api-sandbox",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Rainforest documents a dedicated sandbox environment with test cards and ACH accounts that produce deterministic approved or declined outcomes. Its marketing claims \"full end-to-end sandbox testing,\" and the going-live docs describe phased integration ahead of production. The isolation from production is implied by the separate sandbox environment rather than spelled out. Missing for 10: explicit documentation of sandbox/production data and credential separation, independent or hands-on corroboration.",
+    "rationale": "Rainforest documents its own sandbox environment, marketed as \"full end-to-end sandbox testing\". It provides test card and bank account numbers with deterministic approved or declined outcomes, and the going-live docs describe distinct integration phases. The evidence never explicitly states that sandbox data and credentials are isolated from production, so coverage is partial. missing for 10: explicit documentation of separate sandbox vs. production environments, keys and data isolation, independent or hands-on corroboration.",
     "evidenceIds": [
+      "rainforest-docs-16",
       "rainforest-docs-9",
       "rainforest-docs-27",
-      "rainforest-docs-16",
       "rainforest-docs-10"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
       "citations": [
         {
           "evidenceId": "rainforest-docs-16",
-          "quote": "full end-to-end sandbox testing, realtime API logs, and more"
+          "quote": "full end-to-end sandbox testing"
         },
         {
           "evidenceId": "rainforest-docs-9",
@@ -4258,7 +4314,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is an API-first payments platform, so API versioning and deprecation policy is a fair question to ask of it. The evidence pack documents no API versioning scheme and no deprecation policy. The OpenAPI 3.1.0 mention refers to the specification format, not to versioning of the Rainforest API itself.",
+    "rationale": "Rainforest is a payments API platform, so API versioning and a deprecation policy are a fair question to ask of it. However, the evidence only shows that the API is described with OpenAPI Specification 3.1.0. That is the version of the spec format, not a versioning scheme for the Rainforest API itself. Nothing in the pack documents API versions, version pinning, or a deprecation or sunset policy.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4273,11 +4329,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Rainforest documents a buy-rate pricing model where the platform controls what it bills merchants. Billing Profiles set per-merchant fees and rates, which covers markup and per-seller pricing. Amount splits on payins are documented but not explicitly tied to a platform fee. Missing for 10: documented reporting of platform payments revenue separate from processing costs, explicit per-transaction application-fee mechanics, independent or hands-on corroboration.",
+    "rationale": "Rainforest's buy-rate model lets the platform set what it bills merchants and keep the margin. Every merchant is assigned a Billing Profile that sets its fees and rates, which covers per-seller pricing. Amount splits can route a fixed or rate-based allocation to the platform on a payin, which works as an application fee. Missing for 10: any documented reporting that shows platform payments revenue separately from processing costs (the only revenue material is a pre-sales revenue calculator), detail on billing-profile configuration, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "rainforest-docs-12",
       "rainforest-docs-13",
+      "rainforest-docs-12",
       "rainforest-docs-36",
+      "rainforest-docs-52",
       "rainforest-docs-28"
     ],
     "support": {
@@ -4294,12 +4351,12 @@
           "quote": "Every merchant is assigned a Billing Profile to determine the fees and rates that are billed to the merchant."
         },
         {
-          "evidenceId": "rainforest-docs-12",
-          "quote": "We lead with a buy-rate, interchange-plus pricing model, and have no revenue split."
+          "evidenceId": "rainforest-docs-52",
+          "quote": "Each split routes a defined amount or rate-based allocation to the platform or specified merchant."
         },
         {
-          "evidenceId": "rainforest-docs-28",
-          "quote": "Configure the payin to apply the amount splits"
+          "evidenceId": "rainforest-docs-12",
+          "quote": "We lead with a buy-rate, interchange-plus pricing model, and have no revenue split."
         }
       ]
     }
@@ -4310,7 +4367,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a payments platform API, such as batch refunds or bulk merchant updates, but the evidence never mentions any bulk or batch endpoint or portal action. It only documents single-resource operations like creating or updating a merchant, plus general data export, which is a different capability.",
+    "rationale": "Bulk actions across many merchants, payments or payment methods are a fair question for a payments platform API, so the axis applies. The evidence pack documents no bulk or batch endpoints or portal bulk actions, only single-resource operations such as the Update merchant endpoint. Data export and amount splits are adjacent features, not bulk operations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4325,13 +4382,30 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest documents event webhooks and a guide to wiring those webhooks into Zapier, but Zapier provides the rule and action engine. Rainforest itself has no documented feature for defining event-triggered rules. Webhooks are a developer building block and Zapier is an external workaround, so neither counts toward this story.",
-    "evidenceIds": [],
+    "rationale": "Rainforest documents outbound webhooks that notify the platform when payment, merchant, deposit or chargeback events occur. It also documents a no-code workflow that relies on Zapier, an external tool. The pack shows no in-product facility for users to define rules that automatically trigger actions on events, so webhooks are a developer building block and Zapier is a user-side workaround, and neither earns credit.",
+    "evidenceIds": [
+      "rainforest-docs-22",
+      "rainforest-docs-23",
+      "rainforest-docs-50"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "rainforest-docs-22",
+          "quote": "Rainforest utilizes webhooks to notify the platform when an event occurs"
+        },
+        {
+          "evidenceId": "rainforest-docs-23",
+          "quote": "Zapier is an online tool that allows you to automate workflows without having to write any code."
+        },
+        {
+          "evidenceId": "rainforest-docs-50",
+          "quote": "You can configure a workflow to notify your support staff via email, Slack, or other apps when Rainforest sends webhooks."
+        }
+      ]
     }
   },
   {
@@ -4340,7 +4414,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs or workflows is a fair question for a payments platform, but the evidence never documents a first-party scheduler or recurring workflow feature. The merchant deposit-frequency setting is an adjacent payout-cadence control, and the Zapier integration is a third-party automation tool, so neither earns credit for this story.",
+    "rationale": "Scheduling recurring jobs or workflows is a fair question for a payments platform, for example scheduled or recurring billing runs, but the evidence shows no product-native scheduler. The nearby evidence does not count: stored payment methods for future payments are a one-off reuse primitive, deposit frequency is an adjacent payout setting, and the Zapier workflows are a third-party, event-triggered workaround rather than a recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4355,7 +4429,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is an embedded payments platform. Its evidence covers webhooks and a Zapier no-code integration, but nothing about versioning, reviewing, or rolling back automations. Zapier workflows are a user-side external tool, and webhooks are an adjacent feature, so neither earns credit for this story.",
+    "rationale": "Rainforest is an embedded payments platform, and a platform of this kind could plausibly offer automation or rules versioning, so the axis applies. The evidence shows no first-party automation objects with versioning, review, or rollback. The Zapier no-code workflow guidance describes a third-party tool built on Rainforest webhooks, which is a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4370,11 +4444,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Rainforest's pricing page describes a buy-rate, interchange-plus model with no revenue split and says platforms control what they bill merchants. Per-merchant Billing Profiles set the fees and rates merchants are charged, so the sell-rate side is documented. Interchange-plus implies costs are passed through at interchange level, but no reporting, statement or API exposing per-transaction interchange costs is evidenced, and no actual buy-rate figures are published. Missing for 10: published buy-rate figures, documented interchange-level cost reporting for managing the spread, independent corroboration.",
+    "rationale": "Rainforest documents a buy-rate, interchange-plus pricing model with no revenue split. The platform controls what it bills merchants, and merchant Billing Profiles set the fees and rates sellers are charged, which covers the buy-rate and sell-rate parts of the story. The interchange-plus model implies interchange pass-through, but no evidence shows per-transaction interchange cost reporting for managing the spread. missing for 10: documented interchange-level cost reporting or visibility, published buy-rate figures, independent corroboration of margin management in practice.",
     "evidenceIds": [
       "rainforest-docs-12",
       "rainforest-docs-13",
-      "rainforest-docs-36"
+      "rainforest-docs-36",
+      "rainforest-docs-38"
     ],
     "support": {
       "relation": "direct",
@@ -4402,7 +4477,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is an embedded payments platform that pays out to merchants, so international seller payouts are a fair question for it. The evidence covers deposit frequency, ACH validation via Plaid, and US-centric payment methods. Nothing documents local-currency payouts, FX handling, or settlement to non-US local bank rails.",
+    "rationale": "Rainforest is a payments platform that deposits funds to merchants, so international seller payouts are a fair axis to ask about. The evidence covers only deposit frequency, ACH bank validation via Plaid, and amount splits. Nothing documents local-currency payouts, FX handling, or settlement to non-US local bank rails.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4417,12 +4492,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Rainforest markets its own pre-built embeddable components, including a reporting component that plausibly covers transaction history. Its Component Studio lets platforms configure and design those components for their own integration, and the docs show deposit (payout) settings managed through the merchant API. However, no evidence describes a dedicated embedded balances or payouts view, and no evidence shows the depth of white-label branding. Missing for 10: explicit embeddable balances component, embeddable payouts/deposit history component, documented transaction-history API or report contents, detail on white-label branding controls, independent corroboration.",
+    "rationale": "Rainforest markets pre-built embeddable components that include reporting and chargebacks, and documents that components accept custom CSS props and can be designed in a Component Studio, which supports embedding under the platform's brand. Payouts appear only as deposits configured via the Update merchant API, and nothing documents a seller-facing balance view or the specific contents of the reporting component. Missing for 10: documented balance component or API, embeddable payouts/deposit-history surface, detailed docs on what the reporting component shows as transaction history, independent corroboration.",
     "evidenceIds": [
       "rainforest-docs-15",
+      "rainforest-docs-46",
       "rainforest-docs-39",
-      "rainforest-docs-11",
-      "rainforest-docs-7"
+      "rainforest-docs-40",
+      "rainforest-docs-55"
     ],
     "support": {
       "relation": "direct",
@@ -4434,12 +4510,16 @@
           "quote": "pre-built, embeddable components for payments, reporting, chargebacks, merchant onboarding, and more"
         },
         {
+          "evidenceId": "rainforest-docs-46",
+          "quote": "Props are used for business logic and to pass custom CSS styling to the components"
+        },
+        {
           "evidenceId": "rainforest-docs-39",
           "quote": "Head over to our Component Studio to configure and design the Rainforest components for your platform integration"
         },
         {
-          "evidenceId": "rainforest-docs-7",
-          "quote": "the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant] endpoint"
+          "evidenceId": "rainforest-docs-40",
+          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant](https://docs.rainforestpay.com/reference/update_merchant) endpoint."
         }
       ]
     }
@@ -4450,7 +4530,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence includes a generic list of payment methods (card, PayPal, Venmo, ACH, Apple Pay) and onboarding methods that reference SSNs and US bank routing numbers. Nothing documents supported onboarding countries, region-specific local payment methods, or local-currency settlement, so there is no coverage map. This is an applicable axis for a payments platform, but the pack offers no evidence that Rainforest delivers it.",
+    "rationale": "The evidence lists accepted payment methods (card, PayPal, Venmo, ACH, Apple Pay), but nothing documents supported onboarding countries, local payment methods by region, or local-currency settlement. Onboarding references to SSNs and ACH bank validation imply a single-market setup rather than a published geographic coverage map. A flat payment-method list is not a country/currency coverage map, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4465,7 +4545,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no balance holds, escrow-like retention of seller funds, or release on a schedule or trigger. Updating a merchant's deposit frequency (docs-7) only sets a recurring payout cadence. It is an adjacent control, not a hold-until-delivery or dispute-window mechanism. Amount splits cover a different funds-routing capability.",
+    "rationale": "Holding seller funds is a fair axis for an embedded-payments platform like Rainforest, but the pack never documents an escrow-like hold, a release triggered by delivery or dispute windows, or the limits of such holds. The only related evidence is adjustable merchant deposit frequency and amount splits; these are an adjacent payout-schedule control and a routing feature, not held balances with release on a schedule or trigger.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4478,19 +4558,23 @@
     "productId": "rainforest",
     "storyId": "in-person-omnichannel",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Rainforest documents in-person acceptance on its own stack: a 'Process payments with a device' guide and a Tap to Phone SDK for contactless payments on compatible devices. The evidence does not say these in-person payments settle into the same merchant balances, deposits and reporting as online payins, so unification is only implied by the shared platform. Missing for 10: explicit documentation that in-person payments share seller balances, deposits and reporting with online payments; details on terminal hardware support; independent or hands-on corroboration.",
+    "rationale": "Rainforest documents its own in-person options: a Tap to Phone SDK for iOS and Android that lets merchants take contactless payments, plus a 'Process payments with a device' guide alongside online payments. The pack never states that these in-person payments settle into the same merchant balances, deposits and reporting as online payins, so that half of the story is only implied. missing for 10: explicit documentation of shared settlement and balances for in-person and online payments, unified reporting across channels, terminal hardware details, independent or hands-on corroboration.",
     "evidenceIds": [
-      "rainforest-docs-2",
+      "rainforest-docs-47",
       "rainforest-docs-33",
-      "rainforest-docs-1"
+      "rainforest-docs-2"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As a founder with offline sellers, in-person works on the same stack — terminals or tap-to-pay SDKs that settle into the same seller balances and reporting as online payments",
       "citations": [
+        {
+          "evidenceId": "rainforest-docs-47",
+          "quote": "Rainforest currently supports processing Tap to Phone payments utilizing the Rainforest SDK on iOS and Android devices."
+        },
         {
           "evidenceId": "rainforest-docs-33",
           "quote": "Tap to Phone enables merchants to accept contactless payments directly on a compatible device."
@@ -4505,16 +4589,29 @@
   {
     "productId": "rainforest",
     "storyId": "liability-responsibility-split",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Rainforest is a payfac-style payments platform, so a documented liability split is a fair question to ask. However, nothing in the evidence states who owns KYC/AML, card-network compliance, fraud losses, or seller misconduct. The nearby material (merchant underwriting verifications, reduced PCI scope from the payment component, data ownership) covers related features and never allocates responsibility between the platform and Rainforest.",
-    "evidenceIds": [],
+    "rationale": "Rainforest's docs explicitly state that it performs the KYC/KYB verifications the card brands require. They also note that its components reduce the platform's PCI DSS scope, which only implies part of the card-network compliance split. Nothing in the docs assigns ownership of AML, fraud losses, chargeback liability, or seller misconduct between platform and provider. missing for 10: explicit AML ownership, a documented card-network compliance responsibility split, fraud/chargeback loss liability allocation, seller misconduct responsibility, a consolidated responsibility matrix in the docs.",
+    "evidenceIds": [
+      "rainforest-docs-42",
+      "rainforest-docs-19",
+      "rainforest-docs-44"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an ops user, the responsibility split is explicit — who owns KYC/AML, card-network compliance, fraud losses, and seller misconduct between me and the provider, in the docs rather than the contract's fine print",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "rainforest-docs-42",
+          "quote": "Rainforest performs the Know Your Customer (KYC) and Know Your Business (KYB) verifications requirement by the card brands"
+        },
+        {
+          "evidenceId": "rainforest-docs-19",
+          "quote": "The payment component collects sensitive payment data from your user without exposing your platform to the sensitive payment data - increasing security and decreasing PCI DSS scope."
+        }
+      ]
     }
   },
   {
@@ -4523,7 +4620,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is an embedded payments platform, so questions about fund custody, yield on balances and segregation from the provider's own accounts are fair to ask of it. The evidence pack only covers deposit frequency settings, amount splits and billing profiles. None of it explains where in-flight or held funds sit, whether balances earn yield, or how platform and merchant funds are kept separate from Rainforest's own accounts.",
+    "rationale": "Rainforest is a payments platform that moves merchant funds, so where funds sit, whether they earn yield, and how they are segregated is a fair question for it. The evidence pack does not cover this. It documents deposit-frequency settings and amount splits that route money to the platform or merchants, but these are adjacent fund-flow controls. Nothing describes custody or FBO accounts, where in-flight or held funds are kept, yield on balances, or separation from Rainforest's own accounts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4538,7 +4635,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is a payments platform for software platforms and their merchants, so recovering refunds and chargebacks that exceed a seller's balance is a fair question. The pack mentions a chargebacks component and deposit frequency, but nothing documents debiting future earnings, pulling from the merchant's bank account, or a documented liability order when the balance goes negative.",
+    "rationale": "Rainforest is an embedded-payments platform for software platforms, so recovering refund and chargeback shortfalls from sellers is a fair question for it. The evidence covers chargeback status webhooks, a chargebacks component, deposit frequency and billing profiles. None of it documents debiting future earnings or a merchant's bank account when refunds or chargebacks exceed the balance, or a documented order of liability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4553,15 +4650,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Rainforest documents its API as an alternative to its UI paths for core workflows: payins (component or API), merchant onboarding (component, portal, or API) and merchant updates such as deposit frequency. It also publishes an OpenAPI 3.1.0 spec. However, there is no explicit UI/API parity claim, and direct-to-API onboarding of sensitive data is limited to platforms approved by Rainforest. Missing for 10: explicit statement of full API parity with the Platform Portal and components, evidence of API coverage for reporting, chargebacks and billing-profile management, ungated API onboarding, and independent hands-on corroboration.",
+    "rationale": "Rainforest offers its own API alongside its UI surfaces. Payins, merchant onboarding and merchant updates are all documented as API-accessible, and the API is described by an OpenAPI 3.1.0 spec. However, the docs never claim full UI/API parity, and direct-API onboarding of sensitive data is limited to platforms Rainforest approves. Component Studio design and configuration is only documented as a UI workflow. missing for 10: an explicit parity statement or endpoint coverage map, API access to Component Studio and portal configuration, unrestricted API onboarding, and independent hands-on corroboration.",
     "evidenceIds": [
       "rainforest-docs-20",
       "rainforest-docs-21",
-      "rainforest-docs-7",
-      "rainforest-docs-17",
-      "rainforest-docs-26",
       "rainforest-docs-31",
-      "rainforest-docs-5"
+      "rainforest-docs-40",
+      "rainforest-docs-26",
+      "rainforest-docs-17",
+      "rainforest-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -4577,16 +4674,16 @@
           "quote": "Rainforest offers two options to process payins: **Payment Component (Recommended)**... **Rainforest API**"
         },
         {
-          "evidenceId": "rainforest-docs-7",
-          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant] endpoint."
+          "evidenceId": "rainforest-docs-31",
+          "quote": "Platforms that are approved by Rainforest can send sensitive merchant onboarding data, including bank accounts and Social Security Numbers, to Rainforest via a direct to API integration."
+        },
+        {
+          "evidenceId": "rainforest-docs-40",
+          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant](https://docs.rainforestpay.com/reference/update_merchant) endpoint."
         },
         {
           "evidenceId": "rainforest-docs-26",
           "quote": "Rainforest supports OpenAPI Specifications (OAS) of the Rainforest API, version 3.1.0."
-        },
-        {
-          "evidenceId": "rainforest-docs-31",
-          "quote": "Platforms that are approved by Rainforest can send sensitive merchant onboarding data, including bank accounts and Social Security Numbers, to Rainforest via a direct to API integration."
         }
       ]
     }
@@ -4595,9 +4692,9 @@
     "productId": "rainforest",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Rainforest's own docs state that platforms keep full ownership of all payment and merchant data and may export it at any time, which directly addresses the portability and leaving part of the story. The evidence never names an export mechanism or any file format, so 'open formats' is unproven. The claim also sits on an unrelated JavaScript bundle page, with no dedicated export guide and no independent confirmation. Missing for 10: documented open export formats (e.g. CSV/JSON), a described bulk-export or offboarding mechanism, hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Rainforest's docs claim that platforms keep full ownership of all payment and merchant data and can export it at any time, which is a direct claim of data portability. However, no export mechanism, format, or offboarding process is documented. The claim also appears on an unrelated JavaScript-bundle page, which weakens confidence. missing for 10: documented export mechanism (bulk export/download endpoint or portal feature), explicit open formats (CSV/JSON), completeness of export scope, offboarding/migration guidance, independent corroboration.",
     "evidenceIds": [
       "rainforest-docs-34"
     ],
@@ -4619,7 +4716,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is a hosted payments platform, so whether its source is available under an open license is a fair question for it. The evidence pack contains no mention of a public repository, published source code, or an open-source license. The OpenAPI specification and the data-export statement are adjacent openness features, not source code under an open license.",
+    "rationale": "Whether a payments platform's source is published under an open license is a fair openness question, so the axis applies. Nothing in the evidence shows Rainforest publishing its source or naming an open license. The OpenAPI 3.1.0 spec support and the llms.txt docs describe the API and documentation, not the product's source code, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4634,7 +4731,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is a hosted payments service, so asking whether its core can be self-hosted is a fair question, but nothing in the evidence shows a self-hostable or on-premises deployment of Rainforest itself. The on-premises guide covers platforms receiving webhooks inside their own private network, and data export is a separate data-portability capability; neither is self-hosting the product.",
+    "rationale": "Rainforest is a hosted payments-facilitation service. Self-hosting is a fair question for this kind of product, since some payment platforms ship self-hostable deployments, so the axis applies. Nothing in the evidence shows the core product can be self-hosted. The on-premises guide only covers receiving Rainforest webhooks inside a platform's private network, and data export is a separate capability; neither counts as self-hosting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4649,7 +4746,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Rainforest's managed payfac-as-a-service model, with buy-rate interchange-plus pricing, platform-controlled merchant billing and data ownership/export. Nothing documents a path to graduate into registered payment facilitation without replatforming. The economics and data-export features are adjacent and do not show the progression the story asks for.",
+    "rationale": "Rainforest is a payfac-as-a-service platform, so a graduation path to registered payment facilitation is a fair question for it. However, no evidence describes moving from the managed model to registered payfac status without replatforming. Buy-rate interchange-plus pricing, merchant billing control, and data export are adjacent economics and portability features, not a documented path up the stack.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4664,9 +4761,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Rainforest documents a per-merchant deposit frequency that can be changed for Active merchants through the Update merchant endpoint, so per-seller payout scheduling is a first-party capability. The evidence does not list which frequencies are supported, and it never mentions instant payouts. missing for 10: documented daily/weekly/monthly/manual frequency options, instant payouts to cards or real-time rails, independent or hands-on corroboration.",
+    "rationale": "Rainforest documents a per-merchant deposit frequency that can be changed for Active merchants through the Update merchant endpoint, so per-seller payout schedules are a first-party capability. The evidence does not say which frequency values exist, and nothing in the pack mentions instant payouts to cards or real-time rails. Missing for 10: documented daily/weekly/monthly/manual frequency options, instant payouts to cards or real-time rails, independent corroboration.",
     "evidenceIds": [
-      "rainforest-docs-7"
+      "rainforest-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -4674,8 +4771,8 @@
       "subject": "As an ops user, payouts run on the schedule each seller needs — daily, weekly, monthly, or manual, plus instant payouts to cards or real-time rails where supported, configurable per seller",
       "citations": [
         {
-          "evidenceId": "rainforest-docs-7",
-          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant] endpoint."
+          "evidenceId": "rainforest-docs-40",
+          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant](https://docs.rainforestpay.com/reference/update_merchant) endpoint."
         }
       ]
     }
@@ -4686,12 +4783,14 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Rainforest documents the money-movement pieces: amount splits configured on payins, merchant deposits with configurable frequency, per-merchant billing profiles, and an embeddable reporting component. Nothing in the evidence shows how legible that money is. The pack never documents per-seller or platform fee-account balances, a traceable chain from charge to split to payout, or penny-level reconciliation. missing for 10: per-seller and platform fee-account balance views, documented charge-to-split-to-payout traceability, reconciliation reports or exports tied to deposits, independent or hands-on corroboration.",
+    "rationale": "Rainforest documents amount splits that route a defined amount or rate to the platform or a merchant, merchant deposits (payouts) with deposit webhooks, a pre-built reporting component, and full data export. These are pieces of a legible platform ledger, but the docs never describe a per-seller or platform-fee balance view, or a trace linking a charge through its split to a specific payout. missing for 10: balances by seller and by platform fee account, charge→split→payout traceability, penny-level reconciliation reports or settlement files, depth of the reporting component, independent corroboration.",
     "evidenceIds": [
+      "rainforest-docs-52",
       "rainforest-docs-28",
-      "rainforest-docs-7",
-      "rainforest-docs-36",
-      "rainforest-docs-15"
+      "rainforest-docs-40",
+      "rainforest-docs-48",
+      "rainforest-docs-15",
+      "rainforest-docs-34"
     ],
     "support": {
       "relation": "direct",
@@ -4699,20 +4798,20 @@
       "subject": "As a finance lead, the platform's money is legible — balances by seller and by my own fee accounts, every movement traceable from charge through split to payout, reconcilable to the penny",
       "citations": [
         {
-          "evidenceId": "rainforest-docs-28",
-          "quote": "Configure the payin to apply the amount splits"
+          "evidenceId": "rainforest-docs-52",
+          "quote": "Each split routes a defined amount or rate-based allocation to the platform or specified merchant."
         },
         {
-          "evidenceId": "rainforest-docs-7",
-          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant] endpoint."
-        },
-        {
-          "evidenceId": "rainforest-docs-36",
-          "quote": "Every merchant is assigned a Billing Profile to determine the fees and rates that are billed to the merchant."
+          "evidenceId": "rainforest-docs-48",
+          "quote": "Configure Rainforest to send webhook notifications for any payment, merchant, or deposit events"
         },
         {
           "evidenceId": "rainforest-docs-15",
           "quote": "pre-built, embeddable components for payments, reporting, chargebacks, merchant onboarding, and more"
+        },
+        {
+          "evidenceId": "rainforest-docs-34",
+          "quote": "Platforms using Rainforest retain full ownership of all payment and merchant data and may export it at any time."
         }
       ]
     }
@@ -4723,7 +4822,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document ongoing per-merchant fraud or credit-risk signals, alerts on anomalous sellers, or tools to pause payouts or offboard merchants. The nearest items are adjacent and earn no credit: onboarding-time underwriting verifications, webhooks on merchant application status such as 'Needs Information', and the ability to change deposit frequency for Active merchants.",
+    "rationale": "The evidence covers onboarding-time KYC/KYB checks, generic merchant, deposit and chargeback status webhooks, and changing deposit frequency for active merchants. None of these is ongoing portfolio risk monitoring. There is no documented per-sub-merchant fraud or credit-risk signal, no anomalous-seller alerting, and no payout-hold or offboarding tool; these are only adjacent features.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4738,7 +4837,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is a SaaS payments platform, so choosing a data storage region or residency is a fair question for it. The evidence pack documents no region or residency selection. The closest items are data ownership and export (docs-34) and a webhook guide for platforms on private networks (docs-32), and neither lets a user choose where data is stored.",
+    "rationale": "Rainforest is an embedded-payments SaaS platform, so choosing a data region or residency is a fair question for it. However, nothing in the evidence documents region selection or data residency controls. The data-ownership and export statement is an adjacent capability and does not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4753,7 +4852,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is a payments SaaS that handles merchant and payment data, so an AI-training opt-out or a no-training policy is a fair question to ask of it. The evidence pack never mentions AI model training, opt-outs, or data-use restrictions. The data-ownership-and-export statement is an adjacent data-rights claim, not a training prevention control.",
+    "rationale": "Rainforest is a SaaS payments platform that holds payment and merchant data, so whether that data can be excluded from AI model training is a fair privacy question. The evidence pack contains no AI-training policy or opt-out control. The statement that platforms retain ownership of their data and can export it is a related data-ownership feature, not a training opt-out, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4768,7 +4867,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair axis for a payments platform that stores payment and merchant data. The pack contains no documented retention settings, retention periods, or deletion endpoints. The closest item says platforms own their data and can export it, which is adjacent (ownership and export, not retention or deletion control), and the 24-hour session lifetime concerns credentials, not data retention.",
+    "rationale": "Data retention and deletion is a fair question for a payments platform that stores merchant and payment data, so the axis applies. The pack only shows adjacent items: data ownership with export (docs-34) and a 24-hour session credential lifetime (docs-24). Neither is a documented retention-period setting or a data deletion capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4783,7 +4882,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair question for an embedded-payments SaaS that ships JavaScript components, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out. The data-ownership and export statement is a different capability and earns no credit here.",
+    "rationale": "Rainforest is a payments platform that ships SDKs, embeddable components, and a JS bundle, so a telemetry or usage-tracking opt-out is a fair question for it. However, nothing in the evidence documents such an opt-out. The data-ownership and export statement is a related but different privacy feature and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4796,18 +4895,19 @@
     "productId": "rainforest",
     "storyId": "programmatic-seller-onboarding",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Rainforest documents three seller-onboarding paths: an embeddable Merchant Onboarding Component, the Platform Portal, and a direct API. The API path accepts bank accounts and SSNs, and Plaid validates bank accounts in real time, with pre-submission underwriting verifications available. However, direct-to-API submission of sensitive data is limited to platforms approved by Rainforest, and terms acceptance is never evidenced. missing for 10: documented terms-of-service acceptance capture, explicit KYB business-verification detail, a merchant-facing hosted onboarding link (the portal is operator-side), ungated API access for sensitive data, independent corroboration.",
+    "rationale": "Rainforest documents three seller-onboarding paths: an embeddable Merchant Onboarding Component (recommended), the Platform Portal, and a direct API with a create-merchant endpoint. It also runs KYC/KYB verification and validates bank accounts through Plaid. Direct API submission of sensitive data is limited to platforms Rainforest has approved, and terms acceptance is never documented. missing for 10: documented terms-of-service acceptance capture, a true hosted/redirect onboarding flow for sellers (the portal is for platforms entering data on merchants' behalf), unrestricted direct-API access, independent corroboration",
     "evidenceIds": [
       "rainforest-docs-21",
-      "rainforest-docs-31",
       "rainforest-docs-5",
+      "rainforest-docs-31",
+      "rainforest-docs-42",
       "rainforest-docs-29",
-      "rainforest-docs-30",
       "rainforest-docs-15",
       "rainforest-docs-35",
-      "rainforest-docs-17"
+      "rainforest-docs-17",
+      "rainforest-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -4819,20 +4919,24 @@
           "quote": "Rainforest offers three options to onboard merchants: **Merchant Onboarding Component (Recommended)**... **Rainforest Platform Portal**... **Rainforest API**"
         },
         {
+          "evidenceId": "rainforest-docs-5",
+          "quote": "Create a merchant with an initial merchant application."
+        },
+        {
           "evidenceId": "rainforest-docs-31",
           "quote": "Platforms that are approved by Rainforest can send sensitive merchant onboarding data, including bank accounts and Social Security Numbers, to Rainforest via a direct to API integration."
+        },
+        {
+          "evidenceId": "rainforest-docs-42",
+          "quote": "Rainforest performs the Know Your Customer (KYC) and Know Your Business (KYB) verifications requirement by the card brands and provides you with an approved, declined, or manual review response within minutes."
         },
         {
           "evidenceId": "rainforest-docs-29",
           "quote": "Rainforest utilizes a third-party partner, Plaid, for real-time validation."
         },
         {
-          "evidenceId": "rainforest-docs-5",
-          "quote": "Create a merchant with an initial merchant application."
-        },
-        {
-          "evidenceId": "rainforest-docs-15",
-          "quote": "pre-built, embeddable components for payments, reporting, chargebacks, merchant onboarding, and more."
+          "evidenceId": "rainforest-docs-17",
+          "quote": "Utilizing our embedded component or API, submit for real-time onboarding processing payments in minutes."
         }
       ]
     }
@@ -4840,48 +4944,48 @@
   {
     "productId": "rainforest",
     "storyId": "progressive-onboarding",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Rainforest documents a per-merchant 'Needs Information' application status, which signals additional requirements for a seller. It also lets platforms configure real-time verifications to run before submission, a limited form of tuning onboarding friction. Nothing shows progressive onboarding, where a seller starts selling on minimal data and the rest is collected before a payout threshold. missing for 10: minimum-to-start / deferred KYC tiers, payout-threshold-gated requirement collection, detailed requirements-due fields and deadlines per seller, independent corroboration.",
-    "evidenceIds": [
-      "rainforest-docs-37",
-      "rainforest-docs-30",
-      "rainforest-docs-5"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Rainforest runs one up-front merchant application that gets an approved, declined or manual-review outcome. Nothing documents letting sellers start selling on minimal information and collecting the rest before payout thresholds. The 'Needs Information' application status and the option to run verifications before submission are adjacent features, not tunable progressive onboarding with per-seller requirements-due states.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an ops user, onboarding friction is tunable — collect the minimum to start selling and gather the rest before payout thresholds, with clear requirements-due states per seller",
-      "citations": [
-        {
-          "evidenceId": "rainforest-docs-37",
-          "quote": "Merchant application moves to the **Needs Information** status and requires additional verification for merchant onboarding"
-        },
-        {
-          "evidenceId": "rainforest-docs-30",
-          "quote": "Configuring these verifications to run before submission reduces data entry errors and potentially expedites the application approval process."
-        },
-        {
-          "evidenceId": "rainforest-docs-5",
-          "quote": "Create a merchant with an initial merchant application."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "rainforest",
     "storyId": "reconciliation-reporting-exports",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack does not document settlement or balance reports, per seller or rolled up, delivered as files or APIs on a schedule. The closest items are adjacent rather than reconciliation reporting: an embeddable 'reporting' UI component, a general claim that data can be exported at any time, configurable deposit (payout) frequency, and status-change webhooks. None of these shows that scheduled reconciliation reports are delivered to a finance stack.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Rainforest documents deposit (settlement) handling per merchant: deposit webhooks, configurable deposit frequency through the API, and a pre-built reporting component. This gives a programmatic signal for settlement events, but there is no documented settlement or balance report product delivered as files or APIs. missing for 10: per-seller and rolled-up settlement/balance reports, scheduled file delivery (e.g., SFTP/CSV), a reporting API built for finance-stack consumption, and independent corroboration.",
+    "evidenceIds": [
+      "rainforest-docs-48",
+      "rainforest-docs-40",
+      "rainforest-docs-15"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, reconciliation is automatable — settlement and balance reports per seller and rolled up, delivered as files or APIs my finance stack consumes on schedule",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "rainforest-docs-48",
+          "quote": "Configure Rainforest to send webhook notifications for any payment, merchant, or deposit events"
+        },
+        {
+          "evidenceId": "rainforest-docs-40",
+          "quote": "For **Active** merchants, the deposit frequency can be updated by setting the new deposit frequency on the [Update merchant](https://docs.rainforestpay.com/reference/update_merchant) endpoint."
+        },
+        {
+          "evidenceId": "rainforest-docs-15",
+          "quote": "pre-built, embeddable components for payments, reporting, chargebacks, merchant onboarding, and more"
+        }
+      ]
     }
   },
   {
@@ -4890,7 +4994,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Rainforest's marketing says it ships pre-built embeddable components for reporting, so sellers could plausibly see money data inside the platform. The only evidence is one thin homepage mention. The data-export claim covers the platform owning and exporting its own data, not sellers exporting for their bookkeepers, and the deposits doc only covers changing deposit frequency. Missing for 10: documented per-seller statements, payout/deposit reconciliation reports in the embedded experience, seller-facing exports for month-end close, and any hands-on corroboration.",
+    "rationale": "Rainforest's marketing names pre-built embeddable components for 'reporting', which could put money information in front of sellers. Nothing documents what that reporting covers: no per-seller statements, payout or deposit reconciliation reports, or seller-facing exports appear. The data-export claim covers platform data ownership rather than seller self-service, and the 'statement' doc refers to session permissions, so neither counts. missing for 10: documented per-seller statements, payout/deposit reconciliation reports in the embedded component, seller-facing exports for bookkeepers, component reference docs, independent corroboration.",
     "evidenceIds": [
       "rainforest-docs-15"
     ],
@@ -4901,7 +5005,7 @@
       "citations": [
         {
           "evidenceId": "rainforest-docs-15",
-          "quote": "Reduce development time and get to revenue faster with our pre-built, embeddable components for payments, reporting, chargebacks, merchant onboarding, and more."
+          "quote": "pre-built, embeddable components for payments, reporting, chargebacks, merchant onboarding, and more"
         }
       ]
     }
@@ -4910,12 +5014,13 @@
     "productId": "rainforest",
     "storyId": "split-payments-routing",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Rainforest documents an amount-splits feature configured on the payin, so the product itself offers some charge-splitting. The evidence does not show how far it goes: nothing confirms routing one charge to multiple sellers, taking a platform cut as part of the split, or reversing or adjusting a split later. Billing profiles set merchant fees, which is a related but different control, and are not credited here. Missing for 10: multi-seller routing, a platform cut within the split, post-hoc split reversal or adjustment, split objects as first-class API resources, and independent corroboration.",
+    "rationale": "Rainforest documents amount splits configured on a payin, and each split routes a fixed amount or a rate-based allocation to the platform (the developer's cut) or to a specified merchant. That covers splitting one charge across multiple sellers plus a platform cut. Nothing in the evidence shows reversing or adjusting a split after the fact, or splits existing as standalone first-class API objects. missing for 10: reversal or adjustment of splits after the charge, evidence that splits are first-class API resources, explicit multi-seller support on a single charge, independent or hands-on corroboration.",
     "evidenceIds": [
-      "rainforest-docs-6",
-      "rainforest-docs-28"
+      "rainforest-docs-52",
+      "rainforest-docs-28",
+      "rainforest-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -4923,12 +5028,12 @@
       "subject": "As a developer, I can split one charge among any set of parties — route funds to multiple sellers, take my cut, and reverse or adjust the split later, all as first-class API objects",
       "citations": [
         {
-          "evidenceId": "rainforest-docs-28",
-          "quote": "You can implement amount splits in three steps: Configure the payin to apply the amount splits"
+          "evidenceId": "rainforest-docs-52",
+          "quote": "Each split routes a defined amount or rate-based allocation to the platform or specified merchant."
         },
         {
-          "evidenceId": "rainforest-docs-6",
-          "quote": "You can implement amount splits in three steps"
+          "evidenceId": "rainforest-docs-28",
+          "quote": "You can implement amount splits in three steps: Configure the payin to apply the amount splits"
         }
       ]
     }
@@ -4939,9 +5044,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Rainforest's marketing names a pre-built embeddable component for chargebacks, so the platform has its own first-party chargeback handling. It is only a single glancing mention, and no docs describe how disputes work. Missing for 10: per-sub-merchant chargeback attribution, evidence submission via API or dashboard, automatic flow of dispute outcomes into seller balances or deposits, dispute webhooks, and any independent or hands-on corroboration.",
+    "rationale": "Rainforest documents its own chargeback handling: a pre-built embeddable chargebacks component and webhooks covering every status change in a chargeback's lifecycle. The evidence does not show how chargebacks are attributed to sub-merchants, how evidence is submitted, or how outcomes reach seller balances. missing for 10: documented attribution of chargebacks to the correct sub-merchant, evidence submission via API or dashboard, automatic posting of dispute outcomes to seller balances or deposits, independent or hands-on corroboration.",
     "evidenceIds": [
-      "rainforest-docs-15"
+      "rainforest-docs-15",
+      "rainforest-docs-49"
     ],
     "support": {
       "relation": "direct",
@@ -4951,6 +5057,10 @@
         {
           "evidenceId": "rainforest-docs-15",
           "quote": "pre-built, embeddable components for payments, reporting, chargebacks, merchant onboarding, and more"
+        },
+        {
+          "evidenceId": "rainforest-docs-49",
+          "quote": "Webhooks can be configured to receive updates on every status change that occurs through the lifecycle of a chargeback."
         }
       ]
     }
@@ -4961,7 +5071,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rainforest is a payfac-as-a-service platform, so seller 1099-K tax reporting is an applicable axis. Nothing in the evidence pack mentions 1099-K threshold tracking, tax form generation, delivery, filing, or a corrections workflow. Onboarding SSN collection and data export are adjacent features and earn no credit.",
+    "rationale": "Rainforest is a payfac-as-a-service platform, so seller tax reporting is a fair question for this kind of product. However, the evidence pack never mentions 1099-K threshold tracking, form generation, delivery, IRS filing, or a corrections workflow. SSN collection during onboarding and KYC/KYB checks are adjacent onboarding features, not tax reporting, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

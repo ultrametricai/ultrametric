@@ -1,17 +1,29 @@
 {
-  "hash": "2cf48a548fcbcd7857b06925bbd192cf17e9b2fa9e617baae6bcd56c2459aa79",
+  "hash": "6f16969763457bff30c49b2d031f53fd8d8e5201005dfa02cf60d93bdc41b3b8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Webhook delivery is a fair axis for a payments platform like Flutterwave, so the story applies. However, the evidence pack contains nothing about webhook signing, automatic retries, event logs, or replay. The cited material covers only SDKs, payment methods, transfers, and general API docs, so the verdict is none.",
-    "evidenceIds": [],
+    "rationale": "Flutterwave documents registrable outbound webhooks: your endpoint receives a POST when a payment, payout or other account event happens, and webhooks can be simulated in the sandbox with test keys. None of the story's reliability features are evidenced: no signature verification, no automatic retries, no event logs and no replay. missing for 10: signed webhook deliveries (signature/secret hash verification), automatic retry policy, webhook event logs, manual or automatic replay/resend, independent corroboration.",
+    "evidenceIds": [
+      "flutterwave-docs-35",
+      "flutterwave-docs-32"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can rely on signed webhook deliveries with automatic retries, event logs, and replay to keep my system consistent with payment state",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "flutterwave-docs-35",
+          "quote": "Receive a POST request from Flutterwave when a payment, payout, or other event happens on your account."
+        },
+        {
+          "evidenceId": "flutterwave-docs-32",
+          "quote": "Use test keys to simulate payments, transfers, and webhooks in the sandbox"
+        }
+      ]
     },
     "productId": "flutterwave",
     "storyId": "webhook-delivery-reliability"
