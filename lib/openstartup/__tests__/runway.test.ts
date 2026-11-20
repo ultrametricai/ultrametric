@@ -10,6 +10,7 @@ import {
   growthAdjustedRunwayMonths,
   hiringImpact,
   simpleRunwayMonths,
+  type HirePlan,
   type RunwayInputs,
 } from '../runway'
 
@@ -98,6 +99,51 @@ describe('defaultAliveReport (the essay’s question, answered)', () => {
     expect(r.monthsToProfitability).toBeNull()
   })
 
+  it('profitability that does not last: shrinking revenue turns profitable then runs out at month 6', () => {
+    // $10k cash, $40k revenue shrinking 10%/month (40,000×0.9^m), $30k flat expenses.
+    //   m1: 36,000.00 − 30,000 = +6,000.00 → 16,000.00 (profitable)
+    //   m2: 32,400.00 − 30,000 = +2,400.00 → 18,400.00 (profitable)
+    //   m3: 29,160.00 − 30,000 = −840.00   → 17,560.00 (unprofitable from here)
+    //   m4: 26,244.00 − 30,000 = −3,756.00 → 13,804.00
+    //   m5: 23,619.60 − 30,000 = −6,380.40 →  7,423.60
+    //   m6: 21,257.64 − 30,000 = −8,742.36 → −1,318.76 (cash below zero)
+    const input: RunwayInputs = { cash: 10_000, monthlyRevenue: 40_000, monthlyExpenses: 30_000, revenueGrowthPctMoM: -10 }
+    const r = defaultAliveReport(input)
+    expect(r.monthsToProfitability).toBe(1)
+    expect(r.monthsToZeroCash).toBe(6)
+    expect(r.status).toBe('default-dead')
+    expect(r.trajectory[5].endingCash).toBe(-1_318.76)
+    expect(growthAdjustedRunwayMonths(input)).toBe(6)
+  })
+
+  it('profitability that does not last: expenses growing 10%/month outrun flat revenue by month 6', () => {
+    // $10k cash, $40k flat revenue, $30k expenses growing 10%/month (30,000×1.1^m).
+    //   m1: 40,000 − 33,000.00 = +7,000.00  → 17,000.00 (profitable)
+    //   m2: 40,000 − 36,300.00 = +3,700.00  → 20,700.00
+    //   m3: 40,000 − 39,930.00 = +70.00     → 20,770.00
+    //   m4: 40,000 − 43,923.00 = −3,923.00  → 16,847.00 (unprofitable from here)
+    //   m5: 40,000 − 48,315.30 = −8,315.30  →  8,531.70
+    //   m6: 40,000 − 53,146.83 = −13,146.83 → −4,615.13 (cash below zero)
+    const r = defaultAliveReport({ cash: 10_000, monthlyRevenue: 40_000, monthlyExpenses: 30_000, revenueGrowthPctMoM: 0, expenseGrowthPctMoM: 10 })
+    expect(r.monthsToProfitability).toBe(1)
+    expect(r.monthsToZeroCash).toBe(6)
+    expect(r.status).toBe('default-dead')
+    expect(r.trajectory[5].endingCash).toBe(-4_615.13)
+  })
+
+  it('profitable, then unprofitable, with cash still positive at the horizon is default alive', () => {
+    // The shrinking-revenue company above, projected 5 months: profitable in m1–m2,
+    // unprofitable from m3, cash 16,000 → 18,400 → 17,560 → 13,804 → 7,423.60. Cash never
+    // goes below zero inside the horizon, so the report is default alive; the trough is the
+    // m5 balance of 7,423.60.
+    const r = defaultAliveReport({ cash: 10_000, monthlyRevenue: 40_000, monthlyExpenses: 30_000, revenueGrowthPctMoM: -10 }, { horizonMonths: 5 })
+    expect(r.status).toBe('default-alive')
+    expect(r.monthsToProfitability).toBe(1)
+    expect(r.monthsToZeroCash).toBeNull()
+    expect(r.minCash).toBe(7_423.6)
+    expect(r.trajectory).toHaveLength(5)
+  })
+
   it('rejects invalid inputs and horizons', () => {
     expect(() => defaultAliveReport({ ...BASE, cash: -1 })).toThrow(RangeError)
     expect(() => defaultAliveReport({ ...BASE, revenueGrowthPctMoM: -100 })).toThrow(RangeError)
@@ -183,9 +229,97 @@ describe('hiringImpact (the essay’s overhiring warning, made concrete)', () =>
     expect(impact.becomesDefaultDead).toBe(false) // the base plan was already default dead
   })
 
+  it('hires starting after the first profitable month still count', () => {
+    // Base: $10k cash, $40k flat revenue, $30k flat expenses → +10,000/month, default alive.
+    // Three $15k/month hires from month 2: m1 is unchanged (cash 10,000 + 10,000 = 20,000);
+    // from m2 expenses are 30,000 + 3×15,000 = 75,000, net burn 35,000 →
+    // 20,000 − 35,000 = −15,000 at month 2.
+    const impact = hiringImpact({ cash: 10_000, monthlyRevenue: 40_000, monthlyExpenses: 30_000, revenueGrowthPctMoM: 0 }, [
+      { monthlyCost: 15_000, startMonth: 2, count: 3 },
+    ])
+    expect(impact.base.status).toBe('default-alive')
+    expect(impact.withHires.monthsToZeroCash).toBe(2)
+    expect(impact.withHires.trajectory[1].endingCash).toBe(-15_000)
+    expect(impact.withHires.status).toBe('default-dead')
+    expect(impact.becomesDefaultDead).toBe(true)
+  })
+
   it('rejects malformed plans', () => {
     expect(() => hiringImpact(BASE, [{ monthlyCost: 0, startMonth: 1 }])).toThrow(RangeError)
     expect(() => hiringImpact(BASE, [{ monthlyCost: 1000, startMonth: 0 }])).toThrow(RangeError)
     expect(() => hiringImpact(BASE, [{ monthlyCost: 1000, startMonth: 1, count: 0 }])).toThrow(RangeError)
+  })
+})
+
+describe('properties over randomized scenarios', () => {
+  // Deterministic LCG so failures are reproducible (same generator as capTable.test.ts).
+  function lcg(seed: number): () => number {
+    let s = seed >>> 0
+    return () => {
+      s = (Math.imul(s, 1664525) + 1013904223) >>> 0
+      return s / 2 ** 32
+    }
+  }
+  const HORIZON = 60
+  const STATUS_RANK = { 'default-dead': 0, indeterminate: 1, 'default-alive': 2 } as const
+
+  // Reference projection over the full horizon with no early exit: the first month whose
+  // ending cash is below zero, or null. Same arithmetic as the model conventions.
+  function referenceZeroCashMonth(input: RunwayInputs, extra: (m: number) => number): number | null {
+    let cash = input.cash
+    for (let m = 1; m <= HORIZON; m++) {
+      const revenue = input.monthlyRevenue * (1 + input.revenueGrowthPctMoM / 100) ** m
+      const expenses = input.monthlyExpenses * (1 + (input.expenseGrowthPctMoM ?? 0) / 100) ** m + extra(m)
+      cash -= expenses - revenue
+      if (cash < 0) return m
+    }
+    return null
+  }
+
+  function scenario(seed: number): { input: RunwayInputs; hires: HirePlan[] } {
+    const rng = lcg(seed * 2654435761)
+    const input: RunwayInputs = {
+      cash: Math.round(rng() * 500_000),
+      monthlyRevenue: Math.round(rng() * 100_000),
+      monthlyExpenses: Math.round(rng() * 100_000),
+      revenueGrowthPctMoM: Math.round(rng() * 50 - 20), // −20..30
+      expenseGrowthPctMoM: Math.round(rng() * 30 - 10), // −10..20
+    }
+    const hires: HirePlan[] = []
+    const n = Math.floor(rng() * 4) // 0..3 hire lines
+    for (let i = 0; i < n; i++) {
+      hires.push({ monthlyCost: 1_000 + Math.round(rng() * 29_000), startMonth: 1 + Math.floor(rng() * 36), count: 1 + Math.floor(rng() * 3) })
+    }
+    return { input, hires }
+  }
+
+  const hireCost = (hires: HirePlan[]) => (m: number) =>
+    hires.reduce((s, h) => s + (m >= h.startMonth ? h.monthlyCost * (h.count ?? 1) : 0), 0)
+
+  it('the zero-cash month matches a full-horizon projection, and default alive never goes below zero (200 seeded cases)', () => {
+    for (let seed = 1; seed <= 200; seed++) {
+      const { input, hires } = scenario(seed)
+      for (const [report, extra] of [
+        [defaultAliveReport(input, { horizonMonths: HORIZON }), () => 0],
+        [hiringImpact(input, hires, { horizonMonths: HORIZON }).withHires, hireCost(hires)],
+      ] as const) {
+        expect(report.monthsToZeroCash, `seed ${seed}`).toBe(referenceZeroCashMonth(input, extra))
+        if (report.status === 'default-alive') {
+          expect(report.monthsToZeroCash, `seed ${seed}`).toBeNull()
+          for (const row of report.trajectory) expect(row.endingCash, `seed ${seed} m${row.month}`).toBeGreaterThanOrEqual(0)
+        }
+      }
+    }
+  })
+
+  it('adding hires never delays the zero-cash month or improves the status (200 seeded cases)', () => {
+    for (let seed = 1; seed <= 200; seed++) {
+      const { input, hires } = scenario(seed)
+      const { base, withHires } = hiringImpact(input, hires, { horizonMonths: HORIZON })
+      // null = cash never runs out inside the horizon, i.e. later than any month.
+      const zero = (m: number | null) => m ?? Infinity
+      expect(zero(withHires.monthsToZeroCash), `seed ${seed}`).toBeLessThanOrEqual(zero(base.monthsToZeroCash))
+      expect(STATUS_RANK[withHires.status], `seed ${seed}`).toBeLessThanOrEqual(STATUS_RANK[base.status])
+    }
   })
 })
