@@ -59,8 +59,10 @@ export interface TrajectoryMonth {
 export type AliveStatus = 'default-alive' | 'default-dead' | 'indeterminate'
 
 export interface DefaultAliveReport {
-  /** default-alive: reaches a profitable month with cash never having gone below zero.
-   * default-dead: cash goes below zero before the first profitable month.
+  /** default-alive: reaches a profitable month and cash never goes below zero inside the
+   * horizon. A company that turns profitable, later turns unprofitable, and still has cash
+   * >= 0 at the horizon is default-alive.
+   * default-dead: cash goes below zero inside the horizon, before or after a profitable month.
    * indeterminate: neither event inside the horizon (rare: near-zero growth, deep cash). */
   status: AliveStatus
   /** First month with revenue >= expenses; null if not reached in the horizon. */
@@ -95,7 +97,8 @@ export function simpleRunwayMonths(cash: number, netMonthlyBurn: number): number
 /**
  * The default-alive test of Paul Graham's "Default Alive or Default Dead?" (October 2015):
  * hold expenses on their stated path (constant by default), compound revenue at its current
- * growth rate, and ask whether the company reaches profitability before the cash runs out.
+ * growth rate, and ask whether the company reaches profitability and stays cash-positive
+ * through the horizon.
  * `extraMonthlyExpenses(month)` lets callers layer scenario costs (see hiringImpact) without
  * changing the base inputs.
  */
@@ -127,12 +130,18 @@ export function defaultAliveReport(
     trajectory.push({ month: m, revenue: round2(revenue), expenses: round2(expenses), netBurn: round2(netBurn), endingCash: round2(cash) })
     if (monthsToProfitability === null && revenue >= expenses) monthsToProfitability = m
     if (monthsToZeroCash === null && cash < 0) monthsToZeroCash = m
-    // Both questions answered: the report is decidable, stop projecting.
-    if (monthsToProfitability !== null && (monthsToZeroCash !== null || cash >= 0)) break
+    // Both events recorded: the report is decided. A profitable month with cash >= 0 decides
+    // it only if every later month stays profitable: with revenue >= expenses now and
+    // g >= ge, revenue·g^k >= expenses·ge^k for every k >= 0, so cash only rises from here
+    // (exact over the reals; float rounding can differ by under a cent). Shrinking revenue,
+    // faster-growing expenses, or scenario costs (opaque, and possibly starting later) can
+    // end profitability, so those cases project to the horizon.
+    if (monthsToProfitability !== null && monthsToZeroCash !== null) break
+    if (revenue >= expenses && g >= ge && options?.extraMonthlyExpenses === undefined) break
   }
 
   const status: AliveStatus =
-    monthsToProfitability !== null && (monthsToZeroCash === null || monthsToZeroCash > monthsToProfitability)
+    monthsToProfitability !== null && monthsToZeroCash === null
       ? 'default-alive'
       : monthsToZeroCash !== null
         ? 'default-dead'
