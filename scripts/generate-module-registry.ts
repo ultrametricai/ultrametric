@@ -16,6 +16,7 @@ import * as antiDilution from '../lib/openstartup/antiDilution'
 import * as capTable from '../lib/openstartup/capTable'
 import * as capTableDecimal from '../lib/openstartup/capTableDecimal'
 import * as capTableCodec from '../lib/openstartup/capTableCodec'
+import * as capTableSchedules from '../lib/openstartup/capTableSchedules'
 import * as convertibleNote from '../lib/openstartup/convertibleNote'
 import * as deFranchiseTax from '../lib/openstartup/deFranchiseTax'
 import * as deadlines from '../lib/openstartup/deadlines'
@@ -110,6 +111,18 @@ export const REGISTRY_ENTRIES: readonly RegistryEntryDef[] = [
         { kind: 'safe', name: 'Angel SAFE', amount: 500_000, cap: 5_000_000 },
       ],
     ],
+  },
+  {
+    id: 'capTableSchedules',
+    ns: capTableSchedules,
+    entry: capTableSchedules.vestedScheduleSharesEntry,
+    title: 'Decimal vesting schedules and note interest',
+    anchor: 'decimal-vesting-schedules-and-note-interest',
+    note: 'Decimal-string companion of capTableDecimal: periodic, tranche and milestone vesting with leaves of absence and acceleration (whole shares floor), plus noteAccruedInterest (actual/365, actual/360, 30/360; simple or annual compounding; 18-place output).',
+    exampleArgs: [{
+      shares: '4800000', start: '2026-01-15', months: 48, frequencyMonths: 1, cliffMonths: 12,
+      pauses: [{ start: '2026-03-01', end: '2026-05-01' }], asOf: '2028-01-15',
+    }],
   },
   {
     id: 'convertibleNote',
