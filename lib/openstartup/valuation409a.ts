@@ -60,7 +60,7 @@
 // ---------------------------------------------------------------------------
 
 import { z } from 'zod'
-import { roundPrice } from './capTable'
+import { roundPrice } from './rounding'
 import { entrySpec } from './entryValidation'
 import {
   WaterfallAnalysisInputsSchema,
@@ -305,8 +305,8 @@ export function opmAllocate(schedule: BreakpointSchedule, equityValue: number, p
   const tranches: OpmTranche[] = schedule.tranches.map((t, i) => ({
     fromEquityValue: t.fromEquityValue,
     toEquityValue: t.toEquityValue,
-    callAtFrom: calls[i],
-    value: calls[i] - (i + 1 < calls.length ? calls[i + 1] : 0),
+    callAtFrom: calls[i]!,
+    value: calls[i]! - (calls[i + 1] ?? 0),
     classFractions: t.classFractions,
   }))
   const byClass = new Map<string, number>(schedule.classes.map((c) => [c, 0]))
