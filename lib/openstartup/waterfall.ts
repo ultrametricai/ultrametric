@@ -211,7 +211,8 @@ export function allocateCentsCapped(totalDollars: number, weights: readonly numb
   const capCents = caps.map((c) => Math.round(c * 100))
   let open = weights.map((w, i) => (w > 0 && capCents[i] > 0 ? i : -1)).filter((i) => i >= 0)
   if (open.length === 0) open = capCents.map((c, i) => (c > 0 ? i : -1)).filter((i) => i >= 0)
-  for (let guard = 0; remaining > 0 && open.length > 0 && guard < 1000; guard++) {
+  // Each redistribution either spends the remainder or fills at least one row's cap.
+  while (remaining > 0 && open.length > 0) {
     const w = open.map((i) => (weights[i] > 0 ? weights[i] : capCents[i]))
     const parts = allocateCents(remaining / 100, w).map((x) => Math.round(x * 100))
     remaining = 0
@@ -222,6 +223,11 @@ export function allocateCentsCapped(totalDollars: number, weights: readonly numb
       remaining += parts[k] - take
     })
     open = open.filter((i) => out[i] < capCents[i])
+    // Rounding may leave less capacity in positive-weight rows than the escrow budget.
+    // Use remaining holder capacity only after those rows have been exhausted.
+    if (remaining > 0 && open.length === 0) {
+      open = capCents.map((c, i) => (out[i] < c ? i : -1)).filter((i) => i >= 0)
+    }
   }
   if (remaining > 0) throw new RangeError('allocateCentsCapped: caps are smaller than the total')
   return out.map((c) => c / 100)

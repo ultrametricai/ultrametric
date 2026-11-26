@@ -424,6 +424,28 @@ describe('review regressions (PR #777)', () => {
     expect(() => waterfallAnalysis({ common: [{ name: 'A', shares: 1 }], deductions: { escrow: { amount: 1, pctOfExit: 1 } } }, 10)).toThrow(/not both/)
   })
 
+  it('redistributes escrow cents when positive-weight holders exhaust their rounded totals', () => {
+    const input: WaterfallAnalysisInputs = {
+      common: Array.from({ length: 5 }, (_, i) => ({ name: `C${i}`, shares: 1 })),
+      series: [{
+        name: 'Preferred', shares: 4, originalIssuePrice: 0.00625,
+        holders: Array.from({ length: 4 }, (_, i) => ({ name: `P${i}`, shares: 1 })),
+      }],
+      deductions: { escrow: { amount: 0.02 } },
+    }
+    // Total proceeds round to four preferred cents and one common cent; the exact
+    // escrow weights belong entirely to common, so the second cent needs other capacity.
+    const report = waterfallAnalysis(input, 0.05)
+    expect(Math.round(report.rows.reduce((sum, row) => sum + row.total, 0) * 100)).toBe(5)
+    expect(Math.round(report.rows.reduce((sum, row) => sum + row.atClosing, 0) * 100)).toBe(3)
+    expect(Math.round(report.rows.reduce((sum, row) => sum + row.escrow, 0) * 100)).toBe(2)
+    for (const row of report.rows) {
+      expect(row.atClosing).toBeGreaterThanOrEqual(0)
+      expect(row.escrow).toBeGreaterThanOrEqual(0)
+      expect(Math.round((row.atClosing + row.escrow) * 100)).toBe(Math.round(row.total * 100))
+    }
+  })
+
   it('the equilibrium solver converts for a $0.50 gain just above the breakpoint', () => {
     const inputs: WaterfallAnalysisInputs = { common: [{ name: 'C', shares: 1_000_000 }], series: [{ name: 'P', shares: 1_000_000, originalIssuePrice: 10 }] }
     expect(conversionEquilibrium(inputs, 20_000_001).routes.P).toBe('convert')
