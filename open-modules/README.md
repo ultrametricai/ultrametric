@@ -637,7 +637,10 @@ specified published backsolve was reachable either; the backsolve test inverts t
 Journal forward example. The PWERM test replays an example its publisher labels as invented
 numbers. Elmore's Chaffe table sits 0.1 to 0.2 points below a Black-Scholes put for terms
 of two years or more at 25% to 50% volatility; those cells are not asserted. The OPM refuses
-exit deductions because it allocates total equity value. `grant409aSanity` remains the
+exit deductions and nonzero dividend yields because it allocates total equity value
+without interim dividend payments. PWERM rejects different exit times when note interest
+or preferred dividends accrue from dates, because the structure supplies one shared
+exit date. `grant409aSanity` remains the
 module for grant-timing and strike-floor checks against a real 409A FMV.
 
 **Sources.** Treas. Reg. § 1.409A-1(b)(5)(iv)(B)(1)–(2) via law rules

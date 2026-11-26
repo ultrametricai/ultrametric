@@ -16,9 +16,8 @@
 // `us-fed.independent-appraisal-presumption`); (ii) a formula price used as a nonlapse
 // restriction (rule `us-fed.binding-formula-presumption`); (iii) a good-faith written report
 // on illiquid start-up stock by a qualified person (rule `us-fed.illiquid-startup-presumption`).
-// A calculation run by software from user inputs is none of these. The presumption, rebuttable
-// only on a showing of gross unreasonableness, requires the appraiser or qualified person,
-// their judgment of inputs (volatility, term, scenarios, discounts), and the written report.
+// Each route has its own eligibility conditions. These allocation calculations do not
+// establish compliance with any route or substitute for the required supporting analysis.
 // Source text: 26 CFR 1.409A-1(b)(5)(iv)(B), read via the eCFR versioner API
 // (https://www.ecfr.gov/api/versioner/v1/full/2026-11-20/title-26.xml?section=1.409A-1;
 // the human eCFR page redirects automated clients to a bot check).
@@ -73,7 +72,7 @@ import {
 /** The label every result carries. */
 export const PROTOTYPE_LABEL =
   'Prototype allocation estimate computed from user inputs. Not a 409A valuation, not an independent appraisal, and not a strike price. ' +
-  'The Treas. Reg. § 1.409A-1(b)(5)(iv)(B)(2) presumption of reasonableness requires a qualifying independent appraisal or qualified-person report.'
+  'This calculation does not establish a Treas. Reg. § 1.409A-1(b)(5)(iv)(B)(2) presumption of reasonableness.'
 
 /** Law rules this module leans on (open-law/US-FED). */
 export const RULE_IDS_VALUATION_409A = {
@@ -196,13 +195,32 @@ export function blackScholesPut(spot: number, strike: number, p: OptionParams): 
  * excess of 32.3 percent").
  */
 export function dlomFinnerty(volatility: number, termYears: number, dividendYield = 0): number {
-  if (!(volatility > 0) || !(termYears > 0) || !(dividendYield >= 0)) throw new RangeError('volatility and termYears must be > 0; dividendYield >= 0')
+  if (!(volatility > 0) || !(termYears > 0) || !(dividendYield >= 0) || ![volatility, termYears, dividendYield].every(Number.isFinite)) throw new RangeError('volatility and termYears must be finite and > 0; dividendYield finite and >= 0')
   const s2t = volatility * volatility * termYears
-  // Log-space terms: expm1 keeps e^{x} − 1 − x accurate at small σ²T, and the large-σ²T form
-  // ln(e^{x} − 1) = x + ln(1 − e^{−x}) avoids overflow.
-  const logEm1 = s2t > 30 ? s2t + Math.log1p(-Math.exp(-s2t)) : Math.log(Math.expm1(s2t))
-  const logTwoEm1MinusX = s2t > 30 ? Math.LN2 + s2t + Math.log1p(-(s2t + 1) * Math.exp(-s2t)) : Math.log(2 * (Math.expm1(s2t) - s2t))
-  const vRootT = Math.sqrt(s2t + logTwoEm1MinusX - 2 * logEm1)
+  if (!Number.isFinite(s2t)) throw new RangeError('volatility squared times termYears exceeds the numeric range')
+  let variance: number
+  if (s2t < 0.1) {
+    // Cancel the log(x) terms algebraically. Expand 2(expm1(x)-x)/x² and
+    // expm1(x)/x about 1, avoiding subtraction of nearly equal exponentials.
+    let a = s2t / 3
+    let b = s2t / 2
+    let sumA = a
+    let sumB = b
+    for (let k = 2; k <= 12; k++) {
+      a *= s2t / (k + 2)
+      b *= s2t / (k + 1)
+      sumA += a
+      sumB += b
+    }
+    variance = s2t + Math.log1p(sumA) - 2 * Math.log1p(sumB)
+  } else if (s2t > 30) {
+    // Cancel the large x terms before evaluating the logarithms.
+    const tail = Math.exp(-s2t)
+    variance = Math.LN2 + Math.log1p(-(s2t + 1) * tail) - 2 * Math.log1p(-tail)
+  } else {
+    variance = s2t + Math.log(2 * (Math.expm1(s2t) - s2t)) - 2 * Math.log(Math.expm1(s2t))
+  }
+  const vRootT = Math.sqrt(variance)
   return Math.exp(-dividendYield * termYears) * (normCdf(vRootT / 2) - normCdf(-vRootT / 2))
 }
 
@@ -300,6 +318,7 @@ function classShares(schedule: BreakpointSchedule): Map<string, number> {
  */
 export function opmAllocate(schedule: BreakpointSchedule, equityValue: number, params: OptionParams): OpmAllocation {
   checkParams(params)
+  if ((params.dividendYield ?? 0) !== 0) throw new RangeError('OPM requires zero dividend yield; interim dividends are not allocated')
   if (!(equityValue > 0) || !Number.isFinite(equityValue)) throw new RangeError('equityValue must be > 0')
   const calls = schedule.tranches.map((t) => blackScholesCall(equityValue, t.fromEquityValue, params))
   const tranches: OpmTranche[] = schedule.tranches.map((t, i) => ({
@@ -385,6 +404,12 @@ export interface PwermResult {
  */
 export function pwermAllocate(inputs: WaterfallAnalysisInputs, scenarios: readonly PwermScenario[], probabilityTotal = 1): PwermResult {
   if (scenarios.length === 0) throw new RangeError('at least one scenario is required')
+  const dateBasedClaims = (inputs.notes ?? []).length > 0 || (inputs.series ?? []).some(
+    (series) => series.dividends?.cumulative && series.dividends.accruedAmount === undefined,
+  )
+  if (dateBasedClaims && new Set(scenarios.map((s) => s.yearsToExit)).size > 1) {
+    throw new RangeError('PWERM with date-based claims requires one exit time; scenario-specific accrual dates are not supported')
+  }
   let p = 0
   for (const s of scenarios) {
     if (!(s.probability >= 0 && s.probability <= 1)) throw new RangeError(`scenario ${s.name}: probability must be in [0, 1]`)
