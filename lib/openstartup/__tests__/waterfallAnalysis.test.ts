@@ -412,6 +412,8 @@ describe('review regressions (PR #777)', () => {
       expect(report.rows.reduce((sum, r) => sum + r.total, 0)).toBe(exit)
       expect(Object.values(conversionEquilibrium(inputs, exit).payouts).reduce((sum, value) => sum + value, 0)).toBeCloseTo(exit, 8)
     }
+  })
+
   it('accrual tranches accrue each issue date separately: 1,000,000 shares at $1, 8% simple, 365 and 0 days', () => {
     const series = {
       name: 'A',
