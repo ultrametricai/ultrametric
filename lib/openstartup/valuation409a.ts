@@ -433,12 +433,15 @@ export function pwermAllocate(inputs: WaterfallAnalysisInputs, scenarios: readon
   const out = scenarios.map((s) => {
     const r = waterfallAnalysis(s.exitDate === undefined ? inputs : { ...inputs, exitDate: s.exitDate }, s.exitValue)
     const pv = 1 / Math.pow(1 + s.discountRatePct / 100, s.yearsToExit)
-    for (const c of r.classes) value.set(c.class, (value.get(c.class) ?? 0) + s.probability * pv * c.total)
+    for (const c of r.classes) {
+      shares.set(c.class, c.shares)
+      value.set(c.class, (value.get(c.class) ?? 0) + s.probability * pv * c.total)
+    }
     return { name: s.name, kind: s.kind, probability: s.probability, presentValueFactor: pv, byClass: r.classes.map((c) => ({ class: c.class, exitProceeds: c.total })) }
   })
   return {
     scenarios: out,
-    classes: schedule.classes.map((c) => {
+    classes: [...value.keys()].sort().map((c) => {
       const n = shares.get(c) ?? 0
       const v = value.get(c) ?? 0
       return { class: c, shares: n, value: v, valuePerShare: n > 0 ? roundPrice(v / n) : null }
@@ -575,10 +578,13 @@ export function estimate409aPrototype(request: Prototype409aRequest): Prototype4
     schedule = r.schedule
     opm = r.allocation
     backsolveError = r.error
-    classes = pwerm.classes.map((c) => {
-      const o = opm?.classes.find((x) => x.class === c.class)
-      const value = c.value + po * (o?.value ?? 0)
-      return { class: c.class, shares: c.shares, value, valuePerShare: c.shares > 0 ? roundPrice(value / c.shares) : null }
+    const classNames = [...new Set([...pwerm.classes, ...opm.classes].map((c) => c.class))].sort()
+    classes = classNames.map((name) => {
+      const p = pwerm?.classes.find((c) => c.class === name)
+      const o = opm?.classes.find((c) => c.class === name)
+      const value = (p?.value ?? 0) + po * (o?.value ?? 0)
+      const shares = p?.shares ?? o?.shares ?? 0
+      return { class: name, shares, value, valuePerShare: shares > 0 ? roundPrice(value / shares) : null }
     })
   }
   const commonClass = request.commonClass ?? 'Common'

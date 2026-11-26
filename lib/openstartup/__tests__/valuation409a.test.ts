@@ -218,6 +218,28 @@ describe('PWERM (Axevil illustrative example, invented numbers per its page)', (
 })
 
 describe('review regressions (PR #780)', () => {
+  it('retains later-accrued dividend classes regardless of scenario order and across hybrid methods', () => {
+    const structure: WaterfallAnalysisInputs = {
+      exitDate: '2027-01-01',
+      common: [{ name: 'Common', shares: M }],
+      series: [{ name: 'Preferred', shares: M, originalIssuePrice: 1,
+        dividends: { annualRatePct: 10, cumulative: true, accruesFrom: '2026-01-01', survivesConversion: true } }],
+    }
+    const scenarios = [
+      { name: 'Now', kind: 'm&a' as const, probability: 0.5, exitValue: 2 * M, yearsToExit: 0, discountRatePct: 0, exitDate: '2026-01-01' },
+      { name: 'Later', kind: 'm&a' as const, probability: 0.5, exitValue: 2 * M, yearsToExit: 1, discountRatePct: 0, exitDate: '2027-01-01' },
+    ]
+    const forward = pwermAllocate(structure, scenarios)
+    expect(forward.classes).toEqual(pwermAllocate(structure, [...scenarios].reverse()).classes)
+    expect(forward.classes.find((c) => c.class === 'Preferred dividends')).toMatchObject({ value: 50_000, shares: 0, valuePerShare: null })
+    expect(forward.classes.reduce((sum, c) => sum + c.value, 0)).toBeCloseTo(2 * M, 6)
+    const hybrid = estimate409aPrototype({ structure,
+      method: { method: 'hybrid', scenarios: [scenarios[0]!], opm: { probability: 0.5, equityValue: 2 * M, option: CPA_OPTION } },
+      dlom: { method: 'none' } })
+    expect(hybrid.classes.find((c) => c.class === 'Preferred dividends')?.value).toBeGreaterThan(0)
+    expect(hybrid.classes.reduce((sum, c) => sum + c.value, 0)).toBeCloseTo(2 * M, 6)
+  })
+
   it('uses scenario dates for accrual without requiring a redundant global exit date', () => {
     const structure: WaterfallAnalysisInputs = {
       common: [{ name: 'Common', shares: M }],
