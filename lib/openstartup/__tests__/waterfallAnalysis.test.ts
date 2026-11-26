@@ -395,6 +395,25 @@ describe('options, unvested handling, notes and deductions (hand-derived)', () =
 })
 
 describe('review regressions (PR #777)', () => {
+  it('keeps a safe with zero rounded conversion shares as a finite cash-out claim', () => {
+    const inputs: WaterfallAnalysisInputs = {
+      common: [{ name: 'Common', shares: 100 }],
+      safes: [{ name: 'Small safe', amount: 1000, postMoneyCap: 1_000_000 }],
+    }
+    const schedule = waterfallBreakpoints(inputs)
+    expect(schedule.securities.find((s) => s.kind === 'safe')).toMatchObject({ shares: 0, mode: 'claim-only', joinsAtEquityValue: null })
+    for (const tranche of schedule.tranches) {
+      expect(Number.isFinite(tranche.fromEquityValue)).toBe(true)
+      expect(tranche.toEquityValue === null || Number.isFinite(tranche.toEquityValue)).toBe(true)
+    }
+    for (const exit of [500, 10_000]) {
+      const report = waterfallAnalysis(inputs, exit)
+      expect(report.rows.find((r) => r.kind === 'safe')).toMatchObject({ decision: 'cash-out', total: Math.min(exit, 1000) })
+      expect(report.rows.reduce((sum, r) => sum + r.total, 0)).toBe(exit)
+      expect(Object.values(conversionEquilibrium(inputs, exit).payouts).reduce((sum, value) => sum + value, 0)).toBeCloseTo(exit, 8)
+    }
+  })
+
   it('converting notes count in the safe Liquidity Capitalization: 1,000,000 common + 1,000,000 note shares, 10% safe → 222,222', () => {
     const s = waterfallBreakpoints({
       exitDate: '2026-01-01',

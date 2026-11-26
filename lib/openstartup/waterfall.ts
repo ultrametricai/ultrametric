@@ -1019,7 +1019,7 @@ function resolveSecurities(inputs: WaterfallAnalysisInputs): { securities: Secur
         name: safe.name,
         class: 'Safes',
         kind: 'safe',
-        mode: 'convertible',
+        mode: conv[i].shares > 0 ? 'convertible' : 'claim-only',
         shares: conv[i].shares,
         residualShares: conv[i].shares,
         claim: safe.amount,
@@ -1262,7 +1262,7 @@ function decisionAt(s: SecuritySummary, equity: number): AnalysisDecision {
     case 'participating':
       return 'participate'
     case 'claim-only':
-      return 'repay'
+      return s.kind === 'safe' ? 'cash-out' : 'repay'
     case 'convertible':
       if (joined) return 'convert'
       return s.kind === 'safe' ? 'cash-out' : s.kind === 'note' ? 'repay' : 'preference'
