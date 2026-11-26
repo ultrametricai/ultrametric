@@ -31,12 +31,8 @@ retain the four-place prices used in the published worked examples. Differences
 in new-investor share allocations from those examples are intentional precision
 behavior, tested separately. The shared calendar helper is in `calendar.ts`.
 
-`lib/openstartup/capTableSchedules.ts` uses the same decimal-string contract for
-vesting and note interest. `vestedScheduleShares` covers periodic (monthly,
-quarterly, semiannual, annual), tranche and milestone schedules with cliffs, leaves
-of absence that extend the schedule, and single- or double-trigger acceleration.
-`noteAccruedInterest` accrues simple or annually compounded interest on actual/365,
-actual/360 or 30/360 day counts. Each convention cites its source in the file.
+The [decimal vesting schedules and note interest](#decimal-vesting-schedules-and-note-interest)
+module uses the same decimal-string contract.
 
 Consume these sources at an exact public commit and verify their content hashes.
 Upgrade the pin through a reviewed change with parity tests; local alterations to
@@ -58,6 +54,7 @@ lines; edit the map, rerun the script.
 | --- | --- | --- | --- | --- |
 | [Cap table](#cap-table) | Issuance, pools, SAFE conversion, priced-round PPS, dilution waterfall | Incorporate the company · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed funding · Close a priced equity round · Issue employee equity awards · Convert fundraising instruments at the priced round · Handle a co-founder departure | YC Post-Money Safe User Guide (Appendix II) | verified + property-tested |
 | [Vesting mechanics](#vesting-mechanics) | Cliff/periodic/back-loaded schedules, acceleration, departures | Incorporate the company · Sign the founder agreement & split equity · Issue employee equity awards · Hire first employee · Hire an executive · Handle a co-founder departure | Cooley GO; Amazon 5/15/40/40; FAST grid | verified + property-tested |
+| [Decimal vesting schedules and note interest](#decimal-vesting-schedules-and-note-interest) | Decimal-string vesting, leaves, milestones, acceleration and note interest | Issue employee equity awards · Handle a co-founder departure · Raise on a convertible note | Cooley GO; NASPP; New York Fed; FINRA | verified + property-tested |
 | [83(b) election math](#83b-election-math) | Tax-at-grant vs tax-at-vesting, forfeiture cost | Incorporate the company · Sign the founder agreement & split equity · Change the company legal form · Recover from a missed 83(b) deadline | Rev. Proc. 2012-29 (all six examples) | verified |
 | [QSBS (§ 1202)](#qsbs--1202) | Eligibility checklist, holding clock, exclusion %, per-issuer cap | Incorporate the company · Change the company legal form | IRC § 1202 (re-derived caps) | verified, checklist-shaped |
 | [Offer / equity-comp scenarios](#offer--equity-comp-scenarios) | Grant %, spread, exit scenarios | Issue employee equity awards · Hire first employee · Hire an executive | Holloway equity guide; Rewarding Talent | verified, pre-tax by design |
@@ -215,6 +212,58 @@ Forbes, 2022-02-08
 (https://www.forbes.com/sites/brucebrumberg/2022/02/08/amazon-apple-google-restricted-stock-grants-evolve-to-retain-top-talent/)
 · Index Ventures, Rewarding Talent (https://www.indexventures.com/rewarding-talent/) ·
 law rule `us-fed.83b-filing-period`.
+
+### Decimal vesting schedules and note interest
+
+`lib/openstartup/capTableSchedules.ts` calculates whole vested shares and accrued
+note interest from supplied contract terms. Dates use `YYYY-MM-DD` in UTC. Invalid
+inputs raise `RangeError`; the grant and note documents determine which terms apply.
+
+| Function | Required inputs | Returns |
+| --- | --- | --- |
+| `vestedScheduleShares` | `shares` (integer string), `start`, `asOf` | `vested` and `unvested` integer strings, `nextVestDate` or `null` |
+| `noteAccruedInterest` | `principal` (decimal string), `ratePct` (number), `start`, `asOf` | `days` (number), `interest` and `total` decimal strings with 18 places |
+
+For vesting, supply either `months` or `tranches: [{ date, shares }]`.
+Periodic schedules accept `frequencyMonths` of 1, 3, 6 or 12 (default 1), with a
+duration divisible by that frequency, and optional `cliffMonths` (default 0).
+Calendar anniversaries clamp to the last day of short months. Completed periods
+vest with cumulative whole-share flooring; the cliff releases the accrued amount.
+Explicit tranches leave any unscheduled remainder unvested.
+
+`milestones: [{ id, shares }]` reserve shares from a periodic grant or supplement
+explicit tranches within the grant total. `achievedMilestones: [{ id, date }]`
+supplies the achievement dates. A milestone-only grant can omit both `months` and
+`tranches`. `pauses: [{ start, end }]` suspend the time-based clock from the start
+date inclusive to the end date exclusive and extend later vest dates.
+
+`accelerations: [{ date, pct }]` apply in date order to then-unvested shares,
+flooring each percentage calculation. The caller supplies the date on which the
+required single or double trigger has occurred. This module takes accelerated
+shares from the end of the schedule; later scheduled vesting continues up to the
+grant total. Optional `terminatedAt` stops accrual, including milestones and
+acceleration, at that date. `nextVestDate` reports the next increase supported by
+the supplied events, or `null` when none remains before termination.
+
+For interest, `dayCount` selects `actual_365` (default), `actual_360` or the
+FINRA `30_360` convention. `compounding` selects `simple` (default) or `annual`.
+Simple interest is principal × annual rate × days / basis. Annual compounding
+capitalizes interest on clamped start-date anniversaries using each period's day
+count and accrues a final simple stub. `stopAtMaturity: true` requires
+`maturityDate` and caps the accrual date there. Dates on or before `start` return
+zero interest. Arithmetic uses 60 significant digits before rounding the output.
+
+**Sources and tests.** The module cites the
+[Cooley vesting convention](https://www.cooleygo.com/founder-basics-founders-stock/),
+[acceleration definitions](https://www.cooleygo.com/what-are-single-and-double-trigger-acceleration-and-how-do-they-work/),
+[NASPP leave policies](https://www.naspp.com/blog/equity-awards-and-leave-of-absence-policies)
+and [Cooley interest definitions](https://www.cooleygo.com/convertible-debt/).
+`capTableSchedules.test.ts` replays the
+[New York Fed actual/360 example](https://www.newyorkfed.org/markets/reference-rates/additional-information-about-reference-rates)
+and [FINRA day-count examples](https://www.finra.org/rules-guidance/rulebooks/finra-rules/11620),
+and compares monthly schedules with `vestedMonthlyShares` across generated inputs.
+Anniversary compounding and acceleration allocation are module conventions;
+these calculations do not determine trigger eligibility or authorize external actions.
 
 ### 83(b) election math
 

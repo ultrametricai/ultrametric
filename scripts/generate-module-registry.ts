@@ -117,7 +117,7 @@ export const REGISTRY_ENTRIES: readonly RegistryEntryDef[] = [
     ns: capTableSchedules,
     entry: capTableSchedules.vestedScheduleSharesEntry,
     title: 'Decimal vesting schedules and note interest',
-    anchor: 'vesting-mechanics',
+    anchor: 'decimal-vesting-schedules-and-note-interest',
     note: 'Decimal-string companion of capTableDecimal: periodic, tranche and milestone vesting with leaves of absence and acceleration (whole shares floor), plus noteAccruedInterest (actual/365, actual/360, 30/360; simple or annual compounding; 18-place output).',
     exampleArgs: [{
       shares: '4800000', start: '2026-01-15', months: 48, frequencyMonths: 1, cliffMonths: 12,
