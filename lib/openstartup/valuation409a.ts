@@ -300,6 +300,8 @@ function classShares(schedule: BreakpointSchedule): Map<string, number> {
  */
 export function opmAllocate(schedule: BreakpointSchedule, equityValue: number, params: OptionParams): OpmAllocation {
   checkParams(params)
+  // With a dividend yield the calls sum to E·e^{−qT}, leaving value unallocated.
+  if ((params.dividendYield ?? 0) !== 0) throw new RangeError('the OPM allocation takes dividendYield 0; dividend payments are not allocated')
   if (!(equityValue > 0) || !Number.isFinite(equityValue)) throw new RangeError('equityValue must be > 0')
   const calls = schedule.tranches.map((t) => blackScholesCall(equityValue, t.fromEquityValue, params))
   const tranches: OpmTranche[] = schedule.tranches.map((t, i) => ({
@@ -369,6 +371,9 @@ export interface PwermScenario {
   /** Headline exit value in the scenario (the waterfall applies its deductions). */
   exitValue: number
   yearsToExit: number
+  /** ISO exit date for this scenario. Required when the structure accrues by date (notes, or
+   * cumulative dividends without accruedAmount), so each scenario accrues its own claims. */
+  exitDate?: string
   /** Annual discount rate, percent (PV = value ÷ (1 + r)^t). An input. */
   discountRatePct: number
 }
@@ -392,11 +397,16 @@ export function pwermAllocate(inputs: WaterfallAnalysisInputs, scenarios: readon
     p += s.probability
   }
   if (Math.abs(p - probabilityTotal) > 1e-9) throw new RangeError(`scenario probabilities must sum to ${probabilityTotal} (got ${p})`)
+  const accruesByDate =
+    (inputs.notes ?? []).length > 0 || (inputs.series ?? []).some((x) => x.dividends?.cumulative && x.dividends.accruedAmount === undefined)
+  if (accruesByDate && scenarios.some((s) => s.exitDate === undefined)) {
+    throw new RangeError('the structure accrues interest or dividends by date: give every scenario an exitDate')
+  }
   const schedule = waterfallBreakpoints(inputs)
   const shares = classShares(schedule)
   const value = new Map<string, number>(schedule.classes.map((c) => [c, 0]))
   const out = scenarios.map((s) => {
-    const r = waterfallAnalysis(inputs, s.exitValue)
+    const r = waterfallAnalysis(s.exitDate === undefined ? inputs : { ...inputs, exitDate: s.exitDate }, s.exitValue)
     const pv = 1 / Math.pow(1 + s.discountRatePct / 100, s.yearsToExit)
     for (const c of r.classes) value.set(c.class, (value.get(c.class) ?? 0) + s.probability * pv * c.total)
     return { name: s.name, kind: s.kind, probability: s.probability, presentValueFactor: pv, byClass: r.classes.map((c) => ({ class: c.class, exitProceeds: c.total })) }
@@ -466,6 +476,7 @@ const ScenarioSchema = z.object({
   exitValue: z.number(),
   yearsToExit: z.number(),
   discountRatePct: z.number(),
+  exitDate: z.string().optional(),
 })
 const CalibrationSchema = z.object({ class: z.string(), pricePerShare: z.number() })
 

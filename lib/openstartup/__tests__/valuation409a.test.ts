@@ -206,6 +206,23 @@ describe('PWERM (Axevil illustrative example, invented numbers per its page)', (
   })
 })
 
+describe('review regressions (PR #780)', () => {
+  it('the OPM refuses a dividend yield (the calls would leave value unallocated)', () => {
+    expect(() => opmAllocate(waterfallBreakpoints(COTOPAXI), 40 * M, { ...CPA_OPTION, dividendYield: 0.05 })).toThrow(/dividendYield/)
+  })
+  it('PWERM scenarios accrue claims to their own exit dates', () => {
+    const withNote: WaterfallAnalysisInputs = {
+      exitDate: '2026-01-01',
+      common: [{ name: 'Common', shares: 1_000_000 }],
+      notes: [{ name: 'Note', principal: 1_000_000, annualRatePct: 10, issuedOn: '2026-01-01' }],
+    }
+    const scen = (exitDate?: string) => ({ name: 'Sale', kind: 'm&a' as const, probability: 1, exitValue: 2 * M, yearsToExit: 0, discountRatePct: 0, ...(exitDate ? { exitDate } : {}) })
+    expect(() => pwermAllocate(withNote, [scen()])).toThrow(/exitDate/)
+    // 365 days at 10% simple: the note takes $1,100,000 and common the remaining $900,000.
+    expect(pwermAllocate(withNote, [scen('2027-01-01')]).scenarios[0].byClass.find((c) => c.class === 'Common')?.exitProceeds).toBe(900_000)
+  })
+})
+
 describe('hybrid', () => {
   it('weights the PWERM scenarios and the OPM scenario by probability', () => {
     const scen = [{ name: 'IPO', kind: 'ipo' as const, probability: 0.3, exitValue: 120 * M, yearsToExit: 1, discountRatePct: 20 }]
