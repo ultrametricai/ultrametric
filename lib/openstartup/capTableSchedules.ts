@@ -110,7 +110,7 @@ type Prepared = {
   achieved: { id: string; date: string }[];
   pauses: { startDay: number; endDay: number }[];
   accelerations: { date: string; ratio: [bigint, bigint] }[];
-  terminatedAt?: string;
+  terminatedAt: string | undefined;
 };
 
 function prepare(input: VestedScheduleInput): Prepared {
