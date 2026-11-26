@@ -263,9 +263,13 @@ describe('noteAccruedInterest', () => {
   })
 
   it('compounds annually on start anniversaries with a simple stub', () => {
-    // 10,000 × 1.08² × (1 + 0.08 × 181/365) − 10,000 = 2,126.7252602739726...
+    // The first period spans 29 February 2024 (366 days):
+    // 10,000 × (1 + 0.08 × 366/365) × (1 + 0.08 × 365/365) × (1 + 0.08 × 181/365) − 10,000
     expect(noteAccruedInterest({ principal: '10000', ratePct: 8, start: '2024-01-15', asOf: '2026-07-15', compounding: 'annual' }))
-      .toEqual({ days: 912, interest: '2126.725260273972602740', total: '12126.725260273972602740' })
+      .toEqual({ days: 912, interest: '2129.186290260836930006', total: '12129.186290260836930006' })
+    // Without a leap day every period is exactly one year: 10,000 × 1.08² × (1 + 0.08 × 181/365).
+    expect(noteAccruedInterest({ principal: '10000', ratePct: 8, start: '2025-01-15', asOf: '2027-07-15', compounding: 'annual' }))
+      .toEqual({ days: 911, interest: '2126.725260273972602740', total: '12126.725260273972602740' })
     // 30/360 stub: 10,000 × 1.08² × (1 + 0.08 × 150/360) − 10,000 = 2,052.80.
     expect(noteAccruedInterest({ principal: '10000', ratePct: 8, start: '2024-01-15', asOf: '2026-06-15', compounding: 'annual', dayCount: '30_360' }))
       .toEqual({ days: 870, interest: '2052.800000000000000000', total: '12052.800000000000000000' })

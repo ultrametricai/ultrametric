@@ -336,10 +336,10 @@ function days30360(from: string, to: string): number {
  *
  * Simple: interest = principal × rate × days / basis. Annual compounding applies the Cooley
  * GO primer's definition (interest "turned into principal on a regular basis",
- * https://www.cooleygo.com/convertible-debt/) with the anniversary of start as the regular
- * basis: interest = principal × (1 + rate)^years × (1 + rate × stub / basis) − principal,
- * where years counts whole clamped anniversaries and stub is the day count from the last
- * anniversary. Interest is calculated at 60 significant digits and returned to 18 places;
+ * https://www.cooleygo.com/convertible-debt/) with each clamped anniversary of start as the
+ * regular basis: every annual period and the final stub accrue balance × rate ×
+ * periodDays / basis under the chosen day count, and each completed period's interest is
+ * added to the balance. A 366-day period therefore accrues rate × 366/365 on actual/365. Interest is calculated at 60 significant digits and returned to 18 places;
  * total = principal + interest. The note's own text controls these terms.
  * Throws RangeError for invalid inputs.
  */
@@ -365,10 +365,16 @@ export function noteAccruedInterest(input: NoteInterestInput): NoteInterestResul
   if ((input.compounding ?? "simple") === "simple") {
     interest = principal.times(rate).times(days).div(basis);
   } else {
-    let years = 0;
-    while (addMonthsClamped(input.start, 12 * (years + 1)) <= end) years++;
-    const stub = count(addMonthsClamped(input.start, 12 * years), end);
-    interest = principal.times(rate.plus(1).pow(years)).times(rate.times(stub).div(basis).plus(1)).minus(principal);
+    let balance = principal;
+    let from = input.start;
+    for (let year = 1; ; year++) {
+      const anniversary = addMonthsClamped(input.start, 12 * year);
+      const to = anniversary <= end ? anniversary : end;
+      balance = balance.times(rate.times(count(from, to)).div(basis).plus(1));
+      if (to === end) break;
+      from = to;
+    }
+    interest = balance.minus(principal);
   }
   const rounded = interest.toFixed(18);
   return { days, interest: rounded, total: principal.plus(rounded).toFixed(18) };
