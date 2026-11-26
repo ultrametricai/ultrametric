@@ -696,7 +696,9 @@ of two years or more at 25% to 50% volatility; those cells are not asserted. The
 exit deductions and nonzero dividend yields because it allocates total equity value
 without interim dividend payments. PWERM rejects different exit times when note interest
 or preferred dividends accrue from dates, because the structure supplies one shared
-exit date. `grant409aSanity` remains the
+exit date. IPO scenarios require a structure whose preferred shares, safes and notes
+have already been converted under the applicable terms. Backsolve rejects calibration
+classes with separately allocated dividend entitlements. `grant409aSanity` remains the
 module for grant-timing and strike-floor checks against a real 409A FMV.
 
 **Sources.** Treas. Reg. § 1.409A-1(b)(5)(iv)(B)(1)–(2) via law rules

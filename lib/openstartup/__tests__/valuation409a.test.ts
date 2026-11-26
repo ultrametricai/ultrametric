@@ -211,7 +211,7 @@ describe('PWERM (Axevil illustrative example, invented numbers per its page)', (
     }
     const r = pwermAllocate(knav, [
       { name: 'Low', kind: 'm&a', probability: 0.5, exitValue: 100 * M, yearsToExit: 0, discountRatePct: 0 },
-      { name: 'High', kind: 'ipo', probability: 0.5, exitValue: 200 * M, yearsToExit: 0, discountRatePct: 0 },
+      { name: 'High', kind: 'm&a', probability: 0.5, exitValue: 200 * M, yearsToExit: 0, discountRatePct: 0 },
     ])
     expect(r.scenarios[0].byClass.find((c) => c.class === 'Preference')?.exitProceeds).toBe(60 * M)
     expect(r.scenarios[1].byClass.find((c) => c.class === 'Preference')?.exitProceeds).toBe(100 * M)
@@ -220,14 +220,14 @@ describe('PWERM (Axevil illustrative example, invented numbers per its page)', (
 
 describe('hybrid', () => {
   it('weights the PWERM scenarios and the OPM scenario by probability', () => {
-    const scen = [{ name: 'IPO', kind: 'ipo' as const, probability: 0.3, exitValue: 120 * M, yearsToExit: 1, discountRatePct: 20 }]
+    const scen = [{ name: 'Sale', kind: 'm&a' as const, probability: 0.3, exitValue: 120 * M, yearsToExit: 1, discountRatePct: 20 }]
     const r = estimate409aPrototype({
       structure: COTOPAXI,
       method: { method: 'hybrid', scenarios: scen, opm: { probability: 0.7, option: CPA_OPTION, equityValue: 40 * M } },
       dlom: { method: 'finnerty', volatility: 0.8, termYears: 3 },
     })
     const opmCommon = 1_923_585.0 / 2_000_000
-    // The IPO scenario's common proceeds come from the waterfall, discounted one year at 20%.
+    // The sale scenario's common proceeds come from the waterfall, discounted one year at 20%.
     const ipoCommon = (r.pwerm?.scenarios[0].byClass.find((c) => c.class === 'Common')?.exitProceeds ?? NaN) / 2_000_000
     expect(r.common.allocatedValuePerShareMarketable).toBeCloseTo(0.3 * (ipoCommon / 1.2) + 0.7 * opmCommon, 3)
     expect(r.common.allocatedValuePerShareAfterDlom).toBeCloseTo(r.common.allocatedValuePerShareMarketable * (1 - dlomFinnerty(0.8, 3)), 3)
@@ -267,6 +267,19 @@ describe('prototype labelling and invariants', () => {
     const option = { ...CPA_OPTION, dividendYield: 0.05 }
     expect(() => opmAllocate(waterfallBreakpoints(COTOPAXI), 100 * M, option)).toThrow(/zero dividend yield/)
     expect(() => estimate409aPrototype({ ...request, method: { method: 'opm-backsolve', calibration: { class: 'Series B', pricePerShare: 2 }, option } })).toThrow(/zero dividend yield/)
+  })
+
+  it('rejects IPO scenarios with unresolved conversion terms instead of paying liquidation preferences', () => {
+    const structure: WaterfallAnalysisInputs = { common: [{ name: 'Common', shares: M }], series: [{ name: 'Preferred', shares: M, originalIssuePrice: 10 }] }
+    const scenarios = [{ name: 'IPO', kind: 'ipo' as const, probability: 1, exitValue: 12 * M, yearsToExit: 1, discountRatePct: 0 }]
+    expect(() => pwermAllocate(structure, scenarios)).toThrow(/already-converted/)
+    expect(() => estimate409aPrototype({ structure, method: { method: 'hybrid', scenarios: scenarios.map((s) => ({ ...s, probability: 0.5 })), opm: { probability: 0.5, equityValue: 12 * M, option: CPA_OPTION } }, dlom: { method: 'none' } })).toThrow(/already-converted/)
+    const converted = { common: [{ name: 'Common', shares: M }, { name: 'Former preferred', class: 'Former preferred', shares: M }] }
+    expect(pwermAllocate(converted, scenarios).classes.map((c) => c.value)).toEqual([6 * M, 6 * M])
+  })
+
+  it('rejects backsolve calibration when the class has a separately allocated dividend entitlement', () => {
+    expect(() => estimate409aPrototype({ ...request, method: { method: 'opm-backsolve', calibration: { class: 'Series A', pricePerShare: (16_908_325 + 3_541_751) / 15_000_000 }, option: CPA_OPTION } })).toThrow(/separately allocated dividend/)
   })
 
   it('rejects different PWERM exit times when claims accrue using one shared exit date', () => {

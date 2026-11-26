@@ -356,6 +356,9 @@ export function opmBacksolveEquityValue(
 ): { equityValue: number; calibrationError: number; iterations: number } {
   checkParams(params)
   if (!schedule.classes.includes(calibration.class)) throw new RangeError(`calibration class ${calibration.class} is not in the schedule`)
+  if (schedule.securities.some((s) => s.id === `${calibration.class} dividends` && s.kind === 'preferred' && s.mode === 'claim-only')) {
+    throw new RangeError('backsolve does not support calibration classes with separately allocated dividend claims')
+  }
   if (!(calibration.pricePerShare > 0)) throw new RangeError('calibration pricePerShare must be > 0')
   const n = classShares(schedule).get(calibration.class) ?? 0
   if (!(n > 0)) throw new RangeError(`calibration class ${calibration.class} has no shares`)
@@ -412,6 +415,9 @@ export function pwermAllocate(inputs: WaterfallAnalysisInputs, scenarios: readon
   }
   let p = 0
   for (const s of scenarios) {
+    if (s.kind === 'ipo' && ((inputs.series ?? []).length > 0 || (inputs.safes ?? []).length > 0 || (inputs.notes ?? []).length > 0)) {
+      throw new RangeError('IPO scenarios require an already-converted structure; scenario-specific conversion terms are not supported')
+    }
     if (!(s.probability >= 0 && s.probability <= 1)) throw new RangeError(`scenario ${s.name}: probability must be in [0, 1]`)
     if (!(s.yearsToExit >= 0) || !(s.discountRatePct > -100) || !(s.exitValue >= 0)) throw new RangeError(`scenario ${s.name}: invalid term, rate or exit value`)
     p += s.probability
