@@ -203,6 +203,30 @@ export function allocateCents(totalDollars: number, weights: readonly number[]):
   return base.map((c) => c / 100)
 }
 
+/** allocateCents with a per-row ceiling: rows over their cap give the excess back to rows
+ * with room, repeated until every row fits (the caps must sum to at least the total). */
+export function allocateCentsCapped(totalDollars: number, weights: readonly number[], caps: readonly number[]): number[] {
+  const out = weights.map(() => 0)
+  let remaining = Math.round(totalDollars * 100)
+  const capCents = caps.map((c) => Math.round(c * 100))
+  let open = weights.map((w, i) => (w > 0 && capCents[i] > 0 ? i : -1)).filter((i) => i >= 0)
+  if (open.length === 0) open = capCents.map((c, i) => (c > 0 ? i : -1)).filter((i) => i >= 0)
+  for (let guard = 0; remaining > 0 && open.length > 0 && guard < 1000; guard++) {
+    const w = open.map((i) => (weights[i] > 0 ? weights[i] : capCents[i]))
+    const parts = allocateCents(remaining / 100, w).map((x) => Math.round(x * 100))
+    remaining = 0
+    open.forEach((i, k) => {
+      const room = capCents[i] - out[i]
+      const take = Math.min(room, parts[k])
+      out[i] += take
+      remaining += parts[k] - take
+    })
+    open = open.filter((i) => out[i] < capCents[i])
+  }
+  if (remaining > 0) throw new RangeError('allocateCentsCapped: caps are smaller than the total')
+  return out.map((c) => c / 100)
+}
+
 // ---------------------------------------------------------------------------
 // Safe conversion shares — the §C.1 simultaneous solve
 // ---------------------------------------------------------------------------
@@ -774,6 +798,9 @@ export interface WaterfallTranche {
   toExitValue: number | null
   /** Residual tranches: the as-converted shares sharing it (fractions are shares / total). */
   participatingShares: number | null
+  /** Residual tranches: the per-common-share value at the tranche's lower bound (it can
+   * exceed the previous tranche's top when no shares participate over an interval). */
+  fromCommonValuePerShare: number | null
   /** Securities sharing the tranche and their fractions (sum to 1). */
   participants: TrancheParticipant[]
   /** The same fractions summed by class. */
@@ -966,11 +993,15 @@ function resolveSecurities(inputs: WaterfallAnalysisInputs): { securities: Secur
   if (safes.length > 0) {
     // Liquidity Capitalization (User Guide §C.1): issued and outstanding capital stock on an
     // as-converted basis plus issued and outstanding options, excluding the unissued pool.
-    // Every outstanding option counts here, vested or not, in or out of the money.
+    // Every outstanding option counts here, vested or not, in or out of the money. Notes with
+    // change-of-control conversion shares count as Converting Securities (the guide's Appendix
+    // II Q4 convention of one fixed solve, as for the safes themselves).
     const optionsOutstanding = (inputs.options ?? []).reduce((a, o) => a + o.shares, 0)
+    const noteConversionShares = (inputs.notes ?? []).reduce((a, n) => a + (n.conversionShares ?? 0), 0)
     const outstanding =
       inputs.common.reduce((a, h) => a + h.shares, 0) +
       optionsOutstanding +
+      noteConversionShares +
       securities.filter((s) => s.kind === 'preferred').reduce((a, s) => a + s.residualShares, 0)
     const conv = safeLiquidityShares(safes, outstanding)
     safes.forEach((safe, i) => {
@@ -1072,7 +1103,7 @@ export function waterfallBreakpoints(inputs: WaterfallAnalysisInputs): Breakpoin
   const breakpoints: WaterfallBreakpoint[] = []
   const toExit = (e: number) => equityToExit(e, deductions)
 
-  const pushTranche = (phase: WaterfallTranche['phase'], from: number, to: number | null, weights: Map<string, number>, participatingShares: number | null) => {
+  const pushTranche = (phase: WaterfallTranche['phase'], from: number, to: number | null, weights: Map<string, number>, participatingShares: number | null, fromV: number | null = null) => {
     const total = [...weights.values()].reduce((a, b) => a + b, 0)
     const participants = [...weights.entries()]
       .filter(([, w]) => w > 0)
@@ -1087,6 +1118,7 @@ export function waterfallBreakpoints(inputs: WaterfallAnalysisInputs): Breakpoin
       fromExitValue: toExit(from),
       toExitValue: to === null ? null : toExit(to),
       participatingShares,
+      fromCommonValuePerShare: fromV,
       participants,
       classFractions: classes.filter((c) => byClass.has(c)).map((c) => ({ class: c, fraction: byClass.get(c) as number })),
     })
@@ -1107,7 +1139,7 @@ export function waterfallBreakpoints(inputs: WaterfallAnalysisInputs): Breakpoin
   for (const tier of tiers) {
     const members = securities.filter((s) => s.tier === tier && s.claim > 0)
     const total = members.reduce((a, s) => a + s.claim, 0)
-    pushTranche('preference', cum, cum + total, new Map(members.map((s) => [s.id, s.claim])), null)
+    pushTranche('preference', cum, cum + total, new Map(members.map((s) => [s.id, s.claim])), null, null)
     cum += total
     addBreakpoint(cum, null, `rank ${tier} claims paid in full (${members.map((s) => s.name).join(', ')})`)
   }
@@ -1150,13 +1182,13 @@ export function waterfallBreakpoints(inputs: WaterfallAnalysisInputs): Breakpoin
     const shares = [...active.values()].reduce((a, b) => a + b, 0)
     if (k >= pending.length) {
       if (!(shares > 0)) throw new RangeError('no security shares the residual: add a common holder or a convertible')
-      pushTranche('residual', cum, null, new Map(active), shares)
+      pushTranche('residual', cum, null, new Map(active), shares, v)
       break
     }
     const next = pending[k].v
     if (shares > 0 && next > v) {
       const size = (next - v) * shares
-      pushTranche('residual', cum, cum + size, new Map(active), shares)
+      pushTranche('residual', cum, cum + size, new Map(active), shares, v)
       cum += size
     }
     v = next
@@ -1198,7 +1230,7 @@ export function commonValuePerShareAt(schedule: BreakpointSchedule, equityValue:
     if (equityValue <= t.fromEquityValue) break
     if (t.phase !== 'residual' || !t.participatingShares) continue
     const top = t.toEquityValue === null ? equityValue : Math.min(equityValue, t.toEquityValue)
-    v += (top - t.fromEquityValue) / t.participatingShares
+    v = (t.fromCommonValuePerShare ?? 0) + (top - t.fromEquityValue) / t.participatingShares
   }
   return v
 }
@@ -1329,6 +1361,9 @@ export function waterfallAnalysis(inputs: WaterfallAnalysisInputs, exitValue: nu
 
   // Escrow
   const esc = inputs.deductions?.escrow
+  if (esc && esc.amount !== undefined && esc.pctOfExit !== undefined) {
+    throw new RangeError('deductions.escrow: give amount or pctOfExit, not both')
+  }
   const escrowAmount = Math.min(
     equity,
     nonNeg(esc?.amount, 'deductions.escrow.amount') + (nonNeg(esc?.pctOfExit, 'deductions.escrow.pctOfExit') / 100) * exitValue,
@@ -1336,12 +1371,18 @@ export function waterfallAnalysis(inputs: WaterfallAnalysisInputs, exitValue: nu
   const escrowCents = round2(escrowAmount)
   let closing: number[]
   if (escrowCents === 0) closing = totals
-  else if ((esc?.allocation ?? 'waterfall') === 'pro-rata') closing = allocateCents(round2(equityCents - escrowCents), totals)
   else {
-    const atClose = holderAmounts(schedule, allocateAtEquityValue(schedule, Math.max(0, equity - escrowAmount)))
-    closing = allocateCents(round2(equityCents - escrowCents), atClose.map((p) => p.amount))
-    // Largest-remainder rounding can leave a holder a cent above its total; move it to escrow.
-    closing = closing.map((c, i) => Math.min(c, totals[i]))
+    // Each holder's escrow share: its total less its closing payment (exact), allocated in
+    // whole cents capped at the holder's total so closing + escrow = total for every row and
+    // the escrow cents sum to escrowHeld.
+    let weights: number[]
+    if ((esc?.allocation ?? 'waterfall') === 'pro-rata') weights = totals
+    else {
+      const atClose = holderAmounts(schedule, allocateAtEquityValue(schedule, Math.max(0, equity - escrowAmount)))
+      weights = parts.map((p, i) => Math.max(0, p.amount - atClose[i].amount))
+    }
+    const escrowCentsByRow = allocateCentsCapped(escrowCents, weights, totals)
+    closing = totals.map((t, i) => round2(t - escrowCentsByRow[i]))
   }
 
   const v = commonValuePerShareAt(schedule, equity)
@@ -1532,7 +1573,8 @@ export function conversionEquilibrium(inputs: WaterfallAnalysisInputs, equityVal
     for (const s of choosers) {
       const asClaim = evaluate({ ...routes, [s.id]: 'claim' })[s.id]
       const asConvert = evaluate({ ...routes, [s.id]: 'convert' })[s.id]
-      const best = asConvert > asClaim + 1e-7 * Math.max(1, asClaim) ? 'convert' : 'claim'
+      // Strictly better by more than a micro-dollar (floating-point noise), per the greater-of rule.
+      const best = asConvert > asClaim + 1e-6 ? 'convert' : 'claim'
       if (best !== routes[s.id]) {
         routes[s.id] = best
         changed = true

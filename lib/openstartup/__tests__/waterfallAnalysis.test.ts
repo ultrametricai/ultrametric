@@ -394,6 +394,44 @@ describe('options, unvested handling, notes and deductions (hand-derived)', () =
   })
 })
 
+describe('review regressions (PR #777)', () => {
+  it('converting notes count in the safe Liquidity Capitalization: 1,000,000 common + 1,000,000 note shares, 10% safe → 222,222', () => {
+    const s = waterfallBreakpoints({
+      exitDate: '2026-01-01',
+      common: [{ name: 'Common', shares: 1_000_000 }],
+      notes: [{ name: 'Note', principal: 100_000, annualRatePct: 0, issuedOn: '2026-01-01', conversionShares: 1_000_000 }],
+      safes: [{ name: 'Safe', amount: 100_000, postMoneyCap: 1_000_000 }],
+    })
+    expect(s.securities.find((x) => x.name === 'Safe')?.shares).toBe(222_222)
+  })
+
+  it('option-only tables keep the starting share value: 100 options at $1, $100 exit → v = $2, 50 shares withheld', () => {
+    const r = waterfallAnalysis({ common: [], options: [{ name: 'O', shares: 100, exercisePrice: 1 }] }, 100)
+    expect(r.commonValuePerShare).toBe(2)
+    expect(r.rows[0].sharesWithheld).toBeCloseTo(50, 9)
+  })
+
+  it('escrow rows reconcile to escrowHeld in cents', () => {
+    const r = waterfallAnalysis(
+      { common: [1500, 1500, 900, 500, 500, 200].map((n, i) => ({ name: `H${i}`, shares: n })), deductions: { escrow: { amount: 0.01 } } },
+      0.26,
+    )
+    expect(Math.round(r.rows.reduce((a, x) => a + x.escrow, 0) * 100)).toBe(1)
+    for (const row of r.rows) expect(Math.round((row.atClosing + row.escrow) * 100)).toBe(Math.round(row.total * 100))
+  })
+
+  it('escrow takes amount or pctOfExit, not both', () => {
+    expect(() => waterfallAnalysis({ common: [{ name: 'A', shares: 1 }], deductions: { escrow: { amount: 1, pctOfExit: 1 } } }, 10)).toThrow(/not both/)
+  })
+
+  it('the equilibrium solver converts for a $0.50 gain just above the breakpoint', () => {
+    const inputs: WaterfallAnalysisInputs = { common: [{ name: 'C', shares: 1_000_000 }], series: [{ name: 'P', shares: 1_000_000, originalIssuePrice: 10 }] }
+    expect(conversionEquilibrium(inputs, 20_000_001).routes.P).toBe('convert')
+    expect(conversionEquilibrium(inputs, 19_999_999).routes.P).toBe('claim')
+    expect(waterfallAnalysis(inputs, 20_000_001).rows.find((x) => x.holder === 'P')?.total).toBe(10_000_000.5)
+  })
+})
+
 // ---------------------------------------------------------------------------
 // Invariants over seeded random structures
 // ---------------------------------------------------------------------------
