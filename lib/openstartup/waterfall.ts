@@ -52,7 +52,7 @@
 // ---------------------------------------------------------------------------
 
 import { z } from 'zod'
-import { floorShares, roundPrice } from './capTable'
+import { floorShares, roundPrice } from './rounding'
 import { accruedSimpleInterest, daysBetween } from './convertibleNote'
 import { entrySpec } from './entryValidation'
 
@@ -197,7 +197,7 @@ export function allocateCents(totalDollars: number, weights: readonly number[]):
     .map((x, i) => ({ i, frac: x - Math.floor(x + 1e-9) }))
     .sort((a, b) => b.frac - a.frac || a.i - b.i)
   for (let k = 0; rem > 0 && order.length > 0; k = (k + 1) % order.length) {
-    base[order[k].i] += 1
+    base[order[k]!.i]! += 1
     rem--
   }
   return base.map((c) => c / 100)
@@ -209,24 +209,24 @@ export function allocateCentsCapped(totalDollars: number, weights: readonly numb
   const out = weights.map(() => 0)
   let remaining = Math.round(totalDollars * 100)
   const capCents = caps.map((c) => Math.round(c * 100))
-  let open = weights.map((w, i) => (w > 0 && capCents[i] > 0 ? i : -1)).filter((i) => i >= 0)
+  let open = weights.map((w, i) => (w > 0 && capCents[i]! > 0 ? i : -1)).filter((i) => i >= 0)
   if (open.length === 0) open = capCents.map((c, i) => (c > 0 ? i : -1)).filter((i) => i >= 0)
   // Each redistribution either spends the remainder or fills at least one row's cap.
   while (remaining > 0 && open.length > 0) {
-    const w = open.map((i) => (weights[i] > 0 ? weights[i] : capCents[i]))
+    const w = open.map((i) => (weights[i]! > 0 ? weights[i]! : capCents[i]!))
     const parts = allocateCents(remaining / 100, w).map((x) => Math.round(x * 100))
     remaining = 0
     open.forEach((i, k) => {
-      const room = capCents[i] - out[i]
-      const take = Math.min(room, parts[k])
-      out[i] += take
-      remaining += parts[k] - take
+      const room = capCents[i]! - out[i]!
+      const take = Math.min(room, parts[k]!)
+      out[i]! += take
+      remaining += parts[k]! - take
     })
-    open = open.filter((i) => out[i] < capCents[i])
+    open = open.filter((i) => out[i]! < capCents[i]!)
     // Rounding may leave less capacity in positive-weight rows than the escrow budget.
     // Use remaining holder capacity only after those rows have been exhausted.
     if (remaining > 0 && open.length === 0) {
-      open = capCents.map((c, i) => (out[i] < c ? i : -1)).filter((i) => i >= 0)
+      open = capCents.map((c, i) => (out[i]! < c ? i : -1)).filter((i) => i >= 0)
     }
   }
   if (remaining > 0) throw new RangeError('allocateCentsCapped: caps are smaller than the total')
@@ -313,11 +313,11 @@ function tierTotals(
 ): { claims: number; residual: number; residualShares: number } {
   let claims = 0
   if (state.preferredRoute === 'preference' || state.preferredRoute === 'participate') claims += preference
-  for (let i = 0; i < safes.length; i++) if (!state.safeConverts[i]) claims += safes[i].amount
+  for (let i = 0; i < safes.length; i++) if (!state.safeConverts[i]) claims += safes[i]!.amount
   const residual = Math.max(0, price - claims)
   let residualShares = commonShares
   if (preferred && state.preferredRoute !== 'preference' && state.preferredRoute !== 'none') residualShares += preferred.shares
-  for (let i = 0; i < safes.length; i++) if (state.safeConverts[i]) residualShares += safeShares[i]
+  for (let i = 0; i < safes.length; i++) if (state.safeConverts[i]) residualShares += safeShares[i]!
   return { claims, residual, residualShares }
 }
 
@@ -374,7 +374,7 @@ export function liquidityWaterfall(inputs: WaterfallInputs, price: number): Wate
   for (let iter = 0; iter < 100; iter++) {
     const nextSafe = safes.map((safe, i) => {
       const asConvert = tierTotals({ ...state, safeConverts: state.safeConverts.map((v, j) => (j === i ? true : v)) }, price, commonShares, preferred, preference, safeShares, safes)
-      const convertValue = asConvert.residualShares > 0 ? (safeShares[i] / asConvert.residualShares) * asConvert.residual : 0
+      const convertValue = asConvert.residualShares > 0 ? (safeShares[i]! / asConvert.residualShares) * asConvert.residual : 0
       const asCash = tierTotals({ ...state, safeConverts: state.safeConverts.map((v, j) => (j === i ? false : v)) }, price, commonShares, preferred, preference, safeShares, safes)
       const cashValue = asCash.claims > 0 ? (safe.amount / asCash.claims) * Math.min(price, asCash.claims) : 0
       return convertValue > cashValue
@@ -413,7 +413,7 @@ export function liquidityWaterfall(inputs: WaterfallInputs, price: number): Wate
     residualParticipants.push({ kind: 'preferred', index: -1, shares: preferred.shares })
   }
   safes.forEach((_, i) => {
-    if (state.safeConverts[i]) residualParticipants.push({ kind: 'safe', index: i, shares: safeShares[i] })
+    if (state.safeConverts[i]) residualParticipants.push({ kind: 'safe', index: i, shares: safeShares[i]! })
   })
   const residualShares = residualParticipants.reduce((s, p) => s + p.shares, 0)
   const residualPayouts = allocateCents(residual, residualParticipants.map((p) => p.shares))
@@ -421,11 +421,11 @@ export function liquidityWaterfall(inputs: WaterfallInputs, price: number): Wate
   // --- Assemble rows ---
   const prefPayoutOf = (kind: 'preferred' | 'safe', index: number): number => {
     const k = claimants.findIndex((c) => c.kind === kind && c.index === index)
-    return k >= 0 ? preferencePayouts[k] : 0
+    return k >= 0 ? preferencePayouts[k]! : 0
   }
   const residPayoutOf = (kind: 'holder' | 'preferred' | 'safe', index: number): number => {
     const k = residualParticipants.findIndex((p) => p.kind === kind && p.index === index)
-    return k >= 0 ? residualPayouts[k] : 0
+    return k >= 0 ? residualPayouts[k]! : 0
   }
 
   const rows: ProceedsRow[] = inputs.holders.map((h, i) => {
@@ -459,7 +459,7 @@ export function liquidityWaterfall(inputs: WaterfallInputs, price: number): Wate
     const p = prefPayoutOf('safe', i)
     const r = residPayoutOf('safe', i)
     rows.push({
-      name: safes[i].name,
+      name: safes[i]!.name,
       kind: 'safe',
       shares: state.safeConverts[i] ? c.shares : null,
       decision: state.safeConverts[i] ? 'convert' : 'cash-out',
@@ -473,7 +473,7 @@ export function liquidityWaterfall(inputs: WaterfallInputs, price: number): Wate
       liquidityPrice: c.liquidityPrice,
       allConvertPerShare,
       asConvertedValue: round2(c.shares * allConvertPerShare),
-      cashOutAmount: safes[i].amount,
+      cashOutAmount: safes[i]!.amount,
       decision: state.safeConverts[i] ? 'convert' : 'cash-out',
     }
   })
@@ -1019,20 +1019,20 @@ function resolveSecurities(inputs: WaterfallAnalysisInputs): { securities: Secur
         name: safe.name,
         class: 'Safes',
         kind: 'safe',
-        mode: conv[i].shares > 0 ? 'convertible' : 'claim-only',
-        shares: conv[i].shares,
-        residualShares: conv[i].shares,
+        mode: conv[i]!.shares > 0 ? 'convertible' : 'claim-only',
+        shares: conv[i]!.shares,
+        residualShares: conv[i]!.shares,
         claim: safe.amount,
         tier: seniority,
         exercisePrice: null,
-        holders: [{ name: safe.name, shares: conv[i].shares }],
+        holders: [{ name: safe.name, shares: conv[i]!.shares }],
       })
     })
   }
 
   for (const n of inputs.notes ?? []) {
     if (!inputs.exitDate) throw new RangeError(`note ${n.name}: notes need inputs.exitDate for accrued interest`)
-    const accrued = accruedSimpleInterest(n.principal, n.annualRatePct, n.issuedOn, inputs.exitDate, { basisDays: n.basisDays })
+    const accrued = accruedSimpleInterest(n.principal, n.annualRatePct, n.issuedOn, inputs.exitDate, n.basisDays === undefined ? undefined : { basisDays: n.basisDays })
     const multiple = n.repaymentMultiple ?? 1
     if (!(multiple > 0)) throw new RangeError(`note ${n.name}: repaymentMultiple must be > 0`)
     const conversion = n.conversionShares ?? 0
@@ -1183,7 +1183,7 @@ export function waterfallBreakpoints(inputs: WaterfallAnalysisInputs): Breakpoin
     addBreakpoint(cum, v, p.label)
   }
   for (const s of securities) if (active.has(s.id)) s.joinsAtEquityValue = cum
-  while (k < pending.length && pending[k].v <= v + EPS) apply(pending[k++])
+  while (k < pending.length && pending[k]!.v <= v + EPS) apply(pending[k++]!)
   while (true) {
     const shares = [...active.values()].reduce((a, b) => a + b, 0)
     if (k >= pending.length) {
@@ -1191,14 +1191,14 @@ export function waterfallBreakpoints(inputs: WaterfallAnalysisInputs): Breakpoin
       pushTranche('residual', cum, null, new Map(active), shares, v)
       break
     }
-    const next = pending[k].v
+    const next = pending[k]!.v
     if (shares > 0 && next > v) {
       const size = (next - v) * shares
       pushTranche('residual', cum, cum + size, new Map(active), shares, v)
       cum += size
     }
     v = next
-    while (k < pending.length && pending[k].v <= v + EPS * Math.max(1, v)) apply(pending[k++])
+    while (k < pending.length && pending[k]!.v <= v + EPS * Math.max(1, v)) apply(pending[k++]!)
   }
 
   return {
@@ -1385,10 +1385,10 @@ export function waterfallAnalysis(inputs: WaterfallAnalysisInputs, exitValue: nu
     if ((esc?.allocation ?? 'waterfall') === 'pro-rata') weights = totals
     else {
       const atClose = holderAmounts(schedule, allocateAtEquityValue(schedule, Math.max(0, equity - escrowAmount)))
-      weights = parts.map((p, i) => Math.max(0, p.amount - atClose[i].amount))
+      weights = parts.map((p, i) => Math.max(0, p.amount - atClose[i]!.amount))
     }
     const escrowCentsByRow = allocateCentsCapped(escrowCents, weights, totals)
-    closing = totals.map((t, i) => round2(t - escrowCentsByRow[i]))
+    closing = totals.map((t, i) => round2(t - escrowCentsByRow[i]!))
   }
 
   const v = commonValuePerShareAt(schedule, equity)
@@ -1402,16 +1402,16 @@ export function waterfallAnalysis(inputs: WaterfallAnalysisInputs, exitValue: nu
       kind: p.sec.kind,
       shares: p.holder.shares,
       decision,
-      total: totals[i],
-      atClosing: closing[i],
-      escrow: round2(totals[i] - closing[i]),
+      total: totals[i]!,
+      atClosing: closing[i]!,
+      escrow: round2(totals[i]! - closing[i]!),
     }
     if (p.sec.mode === 'option') {
       const k = p.sec.exercisePrice as number
       const exercised = decision === 'exercise'
       if (mode === 'gross') {
         row.exerciseCost = exercised ? round2(p.holder.shares * k) : 0
-        row.grossProceeds = round2(totals[i] + row.exerciseCost)
+        row.grossProceeds = round2(totals[i]! + row.exerciseCost)
       } else {
         row.sharesWithheld = exercised && v > 0 ? (p.holder.shares * k) / v : 0
       }
@@ -1422,7 +1422,7 @@ export function waterfallAnalysis(inputs: WaterfallAnalysisInputs, exitValue: nu
   if (carveCents > 0 && recipients.length > 0) {
     const carveParts = allocateCents(carveCents, recipients.map((r) => r.weight))
     recipients.forEach((r, i) =>
-      rows.push({ holder: r.name, security: 'Management carve-out', class: 'Carve-out', kind: 'carve-out', shares: 0, decision: 'carve-out', total: carveParts[i], atClosing: carveParts[i], escrow: 0 }),
+      rows.push({ holder: r.name, security: 'Management carve-out', class: 'Carve-out', kind: 'carve-out', shares: 0, decision: 'carve-out', total: carveParts[i]!, atClosing: carveParts[i]!, escrow: 0 }),
     )
   }
 
@@ -1500,7 +1500,7 @@ export function waterfallSweep(
       exitValue,
       equityValue: round2(equity),
       commonValuePerShare: roundPrice(commonValuePerShareAt(schedule, equity)),
-      byClass: schedule.classes.map((c, i) => ({ class: c, total: cents[i] })),
+      byClass: schedule.classes.map((c, i) => ({ class: c, total: cents[i]! })),
     }
   })
   return { points, schedule, needsReview: true }
@@ -1568,7 +1568,7 @@ export function conversionEquilibrium(inputs: WaterfallAnalysisInputs, equityVal
         if (f(mid) < remaining) lo = mid
         else hi = mid
       }
-      for (const s of securities) pay[s.id] += shareOf(s, hi)
+      for (const s of securities) pay[s.id] = (pay[s.id] ?? 0) + shareOf(s, hi)
     }
     return pay
   }
@@ -1580,7 +1580,7 @@ export function conversionEquilibrium(inputs: WaterfallAnalysisInputs, equityVal
       const asClaim = evaluate({ ...routes, [s.id]: 'claim' })[s.id]
       const asConvert = evaluate({ ...routes, [s.id]: 'convert' })[s.id]
       // Strictly better by more than a micro-dollar (floating-point noise), per the greater-of rule.
-      const best = asConvert > asClaim + 1e-6 ? 'convert' : 'claim'
+      const best = asConvert! > asClaim! + 1e-6 ? 'convert' : 'claim'
       if (best !== routes[s.id]) {
         routes[s.id] = best
         changed = true

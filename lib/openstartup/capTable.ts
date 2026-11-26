@@ -30,19 +30,10 @@
 import { z } from 'zod'
 import { entrySpec } from './entryValidation'
 
-export const PRICE_DECIMALS = 4
+import { PRICE_DECIMALS, floorShares, roundPrice } from './rounding'
 
-/** Floor to whole shares, with an epsilon nudge so float noise like 588235.249999999
- * (an exact .25 in decimal) does not floor one share low. */
-export function floorShares(x: number): number {
-  return Math.floor(x + 1e-7)
-}
-
-/** Round a price per share to PRICE_DECIMALS decimals (YC guide style: $1.1144). */
-export function roundPrice(x: number): number {
-  const f = 10 ** PRICE_DECIMALS
-  return Math.round(x * f) / f
-}
+// The rounding helpers live in rounding.ts (no module imports) and stay exported from here.
+export { PRICE_DECIMALS, floorShares, roundPrice }
 
 // ---------------------------------------------------------------------------
 // Types
