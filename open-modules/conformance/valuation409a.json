@@ -1,0 +1,148 @@
+{
+  "module": "valuation409a",
+  "entrypoint": "estimate409aPrototype",
+  "implementation": {
+    "file": "lib/openstartup/valuation409a.ts",
+    "sha256": "39790c46df7f47c2e310220f699704bb641a92670df8585127d2edda10c44bcb"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "cpa-journal-2020-forward-opm",
+      "description": "Forward OPM on the CPA Journal Cotopaxi Tech structure at $40,000,000 total equity, 3.0 years, 80% volatility, 2.0% risk-free: the Exhibit 4 call values at the seven breakpoints and the Exhibit 6 class totals (Series B $10,873,779, Series A $16,908,325, common $1,923,585, options $759,759, Warrants I $4,907,048, Warrants II $1,085,754, Series A dividend $3,541,751). The result is a prototype estimate, not a valuation.",
+      "source": "Frank Kiepura, \"Valuing Securities Using the Option Pricing Method\", The CPA Journal, September 2020, Exhibits 1-6 (https://www.cpajournal.com/2020/09/09/valuing-securities-using-the-option-pricing-method/)",
+      "tolerance": 0.5,
+      "inputs": [
+        {
+          "structure": {
+            "common": [
+              {
+                "name": "Common",
+                "shares": 2000000
+              }
+            ],
+            "options": [
+              {
+                "name": "Options",
+                "shares": 1000000,
+                "exercisePrice": 0.75
+              },
+              {
+                "name": "Warrants I",
+                "kind": "warrant",
+                "shares": 10000000,
+                "exercisePrice": 2,
+                "class": "Warrants I"
+              },
+              {
+                "name": "Warrants II",
+                "kind": "warrant",
+                "shares": 3000000,
+                "exercisePrice": 3,
+                "class": "Warrants II"
+              }
+            ],
+            "series": [
+              {
+                "name": "Series B",
+                "shares": 5000000,
+                "originalIssuePrice": 1.5,
+                "seniority": 1,
+                "participation": "participating"
+              },
+              {
+                "name": "Series A",
+                "shares": 15000000,
+                "originalIssuePrice": 1.3,
+                "seniority": 2,
+                "dividends": {
+                  "annualRatePct": 10,
+                  "cumulative": true,
+                  "accruedAmount": 6000000,
+                  "survivesConversion": true
+                }
+              }
+            ]
+          },
+          "method": {
+            "method": "opm-forward",
+            "equityValue": 40000000,
+            "option": {
+              "volatility": 0.8,
+              "termYears": 3,
+              "riskFreeRate": 0.02
+            }
+          },
+          "dlom": {
+            "method": "none"
+          }
+        }
+      ],
+      "expected": {
+        "prototype": true,
+        "notAValuation": true,
+        "notAStrikePrice": true,
+        "needsReview": true,
+        "opmEquityValue": 40000000,
+        "opm": {
+          "tranches": [
+            {
+              "callAtFrom": 40000000
+            },
+            {
+              "callAtFrom": 33935184
+            },
+            {
+              "callAtFrom": 30393433
+            },
+            {
+              "callAtFrom": 22895835
+            },
+            {
+              "callAtFrom": 21481600
+            },
+            {
+              "callAtFrom": 20422584
+            },
+            {
+              "callAtFrom": 17279014
+            },
+            {
+              "callAtFrom": 13029043
+            }
+          ]
+        },
+        "classes": [
+          {
+            "class": "Common",
+            "value": 1923585
+          },
+          {
+            "class": "Options",
+            "value": 759759
+          },
+          {
+            "class": "Warrants I",
+            "value": 4907048
+          },
+          {
+            "class": "Warrants II",
+            "value": 1085754
+          },
+          {
+            "class": "Series B",
+            "value": 10873779
+          },
+          {
+            "class": "Series A",
+            "value": 16908325
+          },
+          {
+            "class": "Series A dividends",
+            "value": 3541751
+          }
+        ]
+      }
+    }
+  ]
+}
