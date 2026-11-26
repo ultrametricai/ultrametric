@@ -796,6 +796,212 @@
       }
     },
     {
+      "id": "capTableSchedules",
+      "title": "Decimal vesting schedules and note interest",
+      "file": "lib/openstartup/capTableSchedules.ts",
+      "readme": "open-modules/README.md#vesting-mechanics",
+      "status": "verified + property-tested",
+      "exports": [
+        "noteAccruedInterest",
+        "vestedScheduleShares"
+      ],
+      "entrypoint": {
+        "function": "vestedScheduleShares",
+        "signature": "vestedScheduleShares(input)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of vestedScheduleShares",
+          "prefixItems": [
+            {
+              "title": "input",
+              "type": "object",
+              "properties": {
+                "shares": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9]\\d{0,29})$"
+                },
+                "start": {
+                  "type": "string"
+                },
+                "months": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1200
+                },
+                "frequencyMonths": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "const": 1
+                    },
+                    {
+                      "type": "number",
+                      "const": 3
+                    },
+                    {
+                      "type": "number",
+                      "const": 6
+                    },
+                    {
+                      "type": "number",
+                      "const": 12
+                    }
+                  ]
+                },
+                "cliffMonths": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1200
+                },
+                "tranches": {
+                  "maxItems": 1200,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string"
+                      },
+                      "shares": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9]\\d{0,29})$"
+                      }
+                    },
+                    "required": [
+                      "date",
+                      "shares"
+                    ]
+                  }
+                },
+                "milestones": {
+                  "maxItems": 1000,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "shares": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9]\\d{0,29})$"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "shares"
+                    ]
+                  }
+                },
+                "achievedMilestones": {
+                  "maxItems": 1000,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "date": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "date"
+                    ]
+                  }
+                },
+                "pauses": {
+                  "maxItems": 100,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string"
+                      },
+                      "end": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "start",
+                      "end"
+                    ]
+                  }
+                },
+                "accelerations": {
+                  "maxItems": 100,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string"
+                      },
+                      "pct": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 100
+                      }
+                    },
+                    "required": [
+                      "date",
+                      "pct"
+                    ]
+                  }
+                },
+                "asOf": {
+                  "type": "string"
+                },
+                "terminatedAt": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "shares",
+                "start",
+                "asOf"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "note": "Decimal-string companion of capTableDecimal: periodic, tranche and milestone vesting with leaves of absence and acceleration (whole shares floor), plus noteAccruedInterest (actual/365, actual/360, 30/360; simple or annual compounding; 18-place output).",
+        "example": {
+          "args": [
+            {
+              "shares": "4800000",
+              "start": "2026-01-15",
+              "months": 48,
+              "frequencyMonths": 1,
+              "cliffMonths": 12,
+              "pauses": [
+                {
+                  "start": "2026-03-01",
+                  "end": "2026-05-01"
+                }
+              ],
+              "asOf": "2028-01-15"
+            }
+          ],
+          "resultShape": {
+            "vested": "string",
+            "unvested": "string",
+            "nextVestDate": "string"
+          }
+        }
+      }
+    },
+    {
       "id": "convertibleNote",
       "title": "Convertible notes",
       "file": "lib/openstartup/convertibleNote.ts",

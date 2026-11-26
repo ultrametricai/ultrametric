@@ -31,6 +31,13 @@ retain the four-place prices used in the published worked examples. Differences
 in new-investor share allocations from those examples are intentional precision
 behavior, tested separately. The shared calendar helper is in `calendar.ts`.
 
+`lib/openstartup/capTableSchedules.ts` uses the same decimal-string contract for
+vesting and note interest. `vestedScheduleShares` covers periodic (monthly,
+quarterly, semiannual, annual), tranche and milestone schedules with cliffs, leaves
+of absence that extend the schedule, and single- or double-trigger acceleration.
+`noteAccruedInterest` accrues simple or annually compounded interest on actual/365,
+actual/360 or 30/360 day counts. Each convention cites its source in the file.
+
 Consume these sources at an exact public commit and verify their content hashes.
 Upgrade the pin through a reviewed change with parity tests; local alterations to
 the consumed calculation files should fail the consumer's integrity check. The
