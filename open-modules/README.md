@@ -694,10 +694,9 @@ Journal forward example. The PWERM test replays an example its publisher labels 
 numbers. Elmore's Chaffe table sits 0.1 to 0.2 points below a Black-Scholes put for terms
 of two years or more at 25% to 50% volatility; those cells are not asserted. The OPM refuses
 exit deductions and nonzero dividend yields because it allocates total equity value
-without interim dividend payments. PWERM rejects different exit times when note interest
-or preferred dividends accrue from dates, because the structure supplies one shared
-exit date. IPO scenarios require a structure whose preferred shares, safes and notes
-have already been converted under the applicable terms. Backsolve rejects calibration
+without interim dividend payments. PWERM requires an explicit `exitDate` per scenario
+when claims accrue by date. IPO scenarios require an already-converted structure;
+scenario-specific conversion terms are unsupported. Backsolve rejects calibration
 classes with separately allocated dividend entitlements. `grant409aSanity` remains the
 module for grant-timing and strike-floor checks against a real 409A FMV.
 

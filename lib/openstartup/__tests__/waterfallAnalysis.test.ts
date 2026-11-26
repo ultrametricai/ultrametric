@@ -414,6 +414,17 @@ describe('review regressions (PR #777)', () => {
     }
   })
 
+  it('accrual tranches accrue each issue date separately: 1,000,000 shares at $1, 8% simple, 365 and 0 days', () => {
+    const series = {
+      name: 'A',
+      shares: 2_000_000,
+      originalIssuePrice: 1,
+      dividends: { annualRatePct: 8, cumulative: true, accrualTranches: [{ shares: 1_000_000, accruesFrom: '2025-01-01' }, { shares: 1_000_000, accruesFrom: '2026-01-01' }] },
+    }
+    expect(accruedSeriesDividends(series, '2026-01-01')).toBeCloseTo(80_000, 6)
+    expect(() => accruedSeriesDividends({ ...series, shares: 3_000_000 }, '2026-01-01')).toThrow(/sum/)
+  })
+
   it('converting notes count in the safe Liquidity Capitalization: 1,000,000 common + 1,000,000 note shares, 10% safe → 222,222', () => {
     const s = waterfallBreakpoints({
       exitDate: '2026-01-01',
