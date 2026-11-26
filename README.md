@@ -125,6 +125,7 @@ module computes for, written from the committed module-to-process map by
 | [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios | Issue employee equity awards · Hire first employee · Hire an executive |
 | [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes | Issue employee equity awards · Offboard employee |
 | [409A](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing | Close a priced equity round · Get a 409A valuation · Issue employee equity awards |
+| [409A prototype allocation](open-modules/README.md#409a-prototype-allocation) | OPM backsolve and forward, PWERM, hybrid and DLOM as a labeled prototype estimate | Get a 409A valuation |
 
 ### Fundraising & exits
 

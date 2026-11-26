@@ -2995,6 +2995,920 @@
       }
     },
     {
+      "id": "valuation409a",
+      "title": "409A prototype allocation",
+      "file": "lib/openstartup/valuation409a.ts",
+      "readme": "open-modules/README.md#409a-prototype-allocation",
+      "status": "prototype estimate — never a valuation",
+      "exports": [
+        "blackScholesCall",
+        "blackScholesPut",
+        "dlomChaffe",
+        "dlomFinnerty",
+        "estimate409aPrototype",
+        "normCdf",
+        "opmAllocate",
+        "opmBacksolveEquityValue",
+        "pwermAllocate",
+        "resolveDlom"
+      ],
+      "entrypoint": {
+        "function": "estimate409aPrototype",
+        "signature": "estimate409aPrototype(request)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of estimate409aPrototype",
+          "prefixItems": [
+            {
+              "title": "request",
+              "type": "object",
+              "properties": {
+                "structure": {
+                  "type": "object",
+                  "properties": {
+                    "exitDate": {
+                      "type": "string"
+                    },
+                    "common": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "shares": {
+                            "type": "number"
+                          },
+                          "class": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "shares"
+                        ]
+                      }
+                    },
+                    "options": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "option",
+                              "warrant"
+                            ]
+                          },
+                          "shares": {
+                            "type": "number"
+                          },
+                          "exercisePrice": {
+                            "type": "number"
+                          },
+                          "vestedShares": {
+                            "type": "number"
+                          },
+                          "class": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "shares",
+                          "exercisePrice"
+                        ]
+                      }
+                    },
+                    "series": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "shares": {
+                            "type": "number"
+                          },
+                          "originalIssuePrice": {
+                            "type": "number"
+                          },
+                          "preferenceMultiple": {
+                            "type": "number"
+                          },
+                          "conversionRatio": {
+                            "type": "number"
+                          },
+                          "participation": {
+                            "type": "string",
+                            "enum": [
+                              "non-participating",
+                              "participating",
+                              "capped"
+                            ]
+                          },
+                          "participationCapMultiple": {
+                            "type": "number"
+                          },
+                          "seniority": {
+                            "type": "number"
+                          },
+                          "dividends": {
+                            "type": "object",
+                            "properties": {
+                              "annualRatePct": {
+                                "type": "number"
+                              },
+                              "cumulative": {
+                                "type": "boolean"
+                              },
+                              "accruesFrom": {
+                                "type": "string"
+                              },
+                              "compounding": {
+                                "type": "string",
+                                "enum": [
+                                  "simple",
+                                  "annual"
+                                ]
+                              },
+                              "basisDays": {
+                                "anyOf": [
+                                  {
+                                    "type": "number",
+                                    "const": 360
+                                  },
+                                  {
+                                    "type": "number",
+                                    "const": 365
+                                  }
+                                ]
+                              },
+                              "declaredUnpaid": {
+                                "type": "number"
+                              },
+                              "accruedAmount": {
+                                "type": "number"
+                              },
+                              "survivesConversion": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "annualRatePct",
+                              "cumulative"
+                            ]
+                          },
+                          "holders": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "shares": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "name",
+                                "shares"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "shares",
+                          "originalIssuePrice"
+                        ]
+                      }
+                    },
+                    "safes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "postMoneyCap": {
+                            "type": "number"
+                          },
+                          "seniority": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "amount",
+                          "postMoneyCap"
+                        ]
+                      }
+                    },
+                    "notes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "principal": {
+                            "type": "number"
+                          },
+                          "annualRatePct": {
+                            "type": "number"
+                          },
+                          "issuedOn": {
+                            "type": "string"
+                          },
+                          "basisDays": {
+                            "anyOf": [
+                              {
+                                "type": "number",
+                                "const": 360
+                              },
+                              {
+                                "type": "number",
+                                "const": 365
+                              }
+                            ]
+                          },
+                          "repaymentMultiple": {
+                            "type": "number"
+                          },
+                          "conversionShares": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "principal",
+                          "annualRatePct",
+                          "issuedOn"
+                        ]
+                      }
+                    },
+                    "unvestedAtExit": {
+                      "type": "string",
+                      "enum": [
+                        "accelerate",
+                        "cancel"
+                      ]
+                    },
+                    "exerciseMode": {
+                      "type": "string",
+                      "enum": [
+                        "gross",
+                        "net"
+                      ]
+                    },
+                    "deductions": {
+                      "type": "object",
+                      "properties": {
+                        "debtPayoff": {
+                          "type": "number"
+                        },
+                        "transactionExpenses": {
+                          "type": "number"
+                        },
+                        "carveOut": {
+                          "type": "object",
+                          "properties": {
+                            "fixed": {
+                              "type": "number"
+                            },
+                            "pctOfNet": {
+                              "type": "number"
+                            },
+                            "recipients": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "weight": {
+                                    "type": "number"
+                                  }
+                                },
+                                "required": [
+                                  "name",
+                                  "weight"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "recipients"
+                          ]
+                        },
+                        "escrow": {
+                          "type": "object",
+                          "properties": {
+                            "amount": {
+                              "type": "number"
+                            },
+                            "pctOfExit": {
+                              "type": "number"
+                            },
+                            "allocation": {
+                              "type": "string",
+                              "enum": [
+                                "waterfall",
+                                "pro-rata"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "unissuedPoolShares": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "common"
+                  ]
+                },
+                "method": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "opm-forward"
+                        },
+                        "equityValue": {
+                          "type": "number"
+                        },
+                        "option": {
+                          "type": "object",
+                          "properties": {
+                            "volatility": {
+                              "type": "number"
+                            },
+                            "termYears": {
+                              "type": "number"
+                            },
+                            "riskFreeRate": {
+                              "type": "number"
+                            },
+                            "dividendYield": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "volatility",
+                            "termYears",
+                            "riskFreeRate"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "equityValue",
+                        "option"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "opm-backsolve"
+                        },
+                        "calibration": {
+                          "type": "object",
+                          "properties": {
+                            "class": {
+                              "type": "string"
+                            },
+                            "pricePerShare": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "class",
+                            "pricePerShare"
+                          ]
+                        },
+                        "option": {
+                          "type": "object",
+                          "properties": {
+                            "volatility": {
+                              "type": "number"
+                            },
+                            "termYears": {
+                              "type": "number"
+                            },
+                            "riskFreeRate": {
+                              "type": "number"
+                            },
+                            "dividendYield": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "volatility",
+                            "termYears",
+                            "riskFreeRate"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "calibration",
+                        "option"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "pwerm"
+                        },
+                        "scenarios": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": [
+                                  "ipo",
+                                  "m&a",
+                                  "dissolution",
+                                  "other"
+                                ]
+                              },
+                              "probability": {
+                                "type": "number"
+                              },
+                              "exitValue": {
+                                "type": "number"
+                              },
+                              "yearsToExit": {
+                                "type": "number"
+                              },
+                              "discountRatePct": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "kind",
+                              "probability",
+                              "exitValue",
+                              "yearsToExit",
+                              "discountRatePct"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "scenarios"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "hybrid"
+                        },
+                        "scenarios": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": [
+                                  "ipo",
+                                  "m&a",
+                                  "dissolution",
+                                  "other"
+                                ]
+                              },
+                              "probability": {
+                                "type": "number"
+                              },
+                              "exitValue": {
+                                "type": "number"
+                              },
+                              "yearsToExit": {
+                                "type": "number"
+                              },
+                              "discountRatePct": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "kind",
+                              "probability",
+                              "exitValue",
+                              "yearsToExit",
+                              "discountRatePct"
+                            ]
+                          }
+                        },
+                        "opm": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "probability": {
+                                  "type": "number"
+                                },
+                                "option": {
+                                  "type": "object",
+                                  "properties": {
+                                    "volatility": {
+                                      "type": "number"
+                                    },
+                                    "termYears": {
+                                      "type": "number"
+                                    },
+                                    "riskFreeRate": {
+                                      "type": "number"
+                                    },
+                                    "dividendYield": {
+                                      "type": "number"
+                                    }
+                                  },
+                                  "required": [
+                                    "volatility",
+                                    "termYears",
+                                    "riskFreeRate"
+                                  ]
+                                },
+                                "equityValue": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "probability",
+                                "option",
+                                "equityValue"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "probability": {
+                                  "type": "number"
+                                },
+                                "option": {
+                                  "type": "object",
+                                  "properties": {
+                                    "volatility": {
+                                      "type": "number"
+                                    },
+                                    "termYears": {
+                                      "type": "number"
+                                    },
+                                    "riskFreeRate": {
+                                      "type": "number"
+                                    },
+                                    "dividendYield": {
+                                      "type": "number"
+                                    }
+                                  },
+                                  "required": [
+                                    "volatility",
+                                    "termYears",
+                                    "riskFreeRate"
+                                  ]
+                                },
+                                "backsolve": {
+                                  "type": "object",
+                                  "properties": {
+                                    "class": {
+                                      "type": "string"
+                                    },
+                                    "pricePerShare": {
+                                      "type": "number"
+                                    }
+                                  },
+                                  "required": [
+                                    "class",
+                                    "pricePerShare"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "probability",
+                                "option",
+                                "backsolve"
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "scenarios",
+                        "opm"
+                      ]
+                    }
+                  ]
+                },
+                "commonClass": {
+                  "type": "string"
+                },
+                "dlom": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "none"
+                        }
+                      },
+                      "required": [
+                        "method"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "finnerty"
+                        },
+                        "volatility": {
+                          "type": "number"
+                        },
+                        "termYears": {
+                          "type": "number"
+                        },
+                        "dividendYield": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "volatility",
+                        "termYears"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "chaffe"
+                        },
+                        "volatility": {
+                          "type": "number"
+                        },
+                        "termYears": {
+                          "type": "number"
+                        },
+                        "riskFreeRate": {
+                          "type": "number"
+                        },
+                        "dividendYield": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "volatility",
+                        "termYears",
+                        "riskFreeRate"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "stated"
+                        },
+                        "fraction": {
+                          "type": "number"
+                        },
+                        "source": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "fraction",
+                        "source"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "structure",
+                "method",
+                "dlom"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "note": "Prototype estimate: every result carries notAValuation, notAStrikePrice and needsReview. Volatility, term, risk-free rate, scenarios and the DLOM method are inputs.",
+        "example": {
+          "args": [
+            {
+              "structure": {
+                "common": [
+                  {
+                    "name": "Common",
+                    "shares": 2000000
+                  }
+                ],
+                "options": [
+                  {
+                    "name": "Options",
+                    "shares": 1000000,
+                    "exercisePrice": 0.75
+                  },
+                  {
+                    "name": "Warrants I",
+                    "kind": "warrant",
+                    "shares": 10000000,
+                    "exercisePrice": 2,
+                    "class": "Warrants I"
+                  },
+                  {
+                    "name": "Warrants II",
+                    "kind": "warrant",
+                    "shares": 3000000,
+                    "exercisePrice": 3,
+                    "class": "Warrants II"
+                  }
+                ],
+                "series": [
+                  {
+                    "name": "Series B",
+                    "shares": 5000000,
+                    "originalIssuePrice": 1.5,
+                    "seniority": 1,
+                    "participation": "participating"
+                  },
+                  {
+                    "name": "Series A",
+                    "shares": 15000000,
+                    "originalIssuePrice": 1.3,
+                    "seniority": 2,
+                    "dividends": {
+                      "annualRatePct": 10,
+                      "cumulative": true,
+                      "accruedAmount": 6000000,
+                      "survivesConversion": true
+                    }
+                  }
+                ]
+              },
+              "method": {
+                "method": "opm-forward",
+                "equityValue": 40000000,
+                "option": {
+                  "volatility": 0.8,
+                  "termYears": 3,
+                  "riskFreeRate": 0.02
+                }
+              },
+              "dlom": {
+                "method": "finnerty",
+                "volatility": 0.8,
+                "termYears": 3
+              }
+            }
+          ],
+          "resultShape": {
+            "prototype": "boolean",
+            "notAValuation": "boolean",
+            "notAStrikePrice": "boolean",
+            "needsReview": "boolean",
+            "label": "string",
+            "ruleIds": [
+              "string"
+            ],
+            "method": "string",
+            "opmEquityValue": "number",
+            "backsolveCalibrationError": "null",
+            "classes": [
+              {
+                "class": "string",
+                "shares": "number",
+                "value": "number",
+                "valuePerShare": "number"
+              },
+              {
+                "class": "string",
+                "shares": "number",
+                "value": "number",
+                "valuePerShare": "null"
+              }
+            ],
+            "opm": {
+              "equityValue": "number",
+              "params": {
+                "volatility": "number",
+                "termYears": "number",
+                "riskFreeRate": "number"
+              },
+              "tranches": [
+                {
+                  "fromEquityValue": "number",
+                  "toEquityValue": "number",
+                  "callAtFrom": "number",
+                  "value": "number",
+                  "classFractions": [
+                    {
+                      "class": "string",
+                      "fraction": "number"
+                    }
+                  ]
+                },
+                {
+                  "fromEquityValue": "number",
+                  "toEquityValue": "null",
+                  "callAtFrom": "number",
+                  "value": "number",
+                  "classFractions": [
+                    {
+                      "class": "string",
+                      "fraction": "number"
+                    }
+                  ]
+                }
+              ],
+              "classes": [
+                {
+                  "class": "string",
+                  "shares": "number",
+                  "value": "number",
+                  "valuePerShare": "number"
+                },
+                {
+                  "class": "string",
+                  "shares": "number",
+                  "value": "number",
+                  "valuePerShare": "null"
+                }
+              ]
+            },
+            "pwerm": "null",
+            "dlom": {
+              "method": "string",
+              "fraction": "number",
+              "note": "string"
+            },
+            "common": {
+              "class": "string",
+              "allocatedValuePerShareMarketable": "number",
+              "allocatedValuePerShareAfterDlom": "number"
+            },
+            "breakpoints": [
+              {
+                "equityValue": "number",
+                "events": [
+                  "string"
+                ]
+              }
+            ],
+            "notes": [
+              "string"
+            ]
+          }
+        }
+      }
+    },
+    {
       "id": "vesting",
       "title": "Vesting mechanics",
       "file": "lib/openstartup/vesting.ts",

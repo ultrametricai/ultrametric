@@ -60,6 +60,7 @@ lines; edit the map, rerun the script.
 | [Offer / equity-comp scenarios](#offer--equity-comp-scenarios) | Grant %, spread, exit scenarios | Issue employee equity awards · Hire first employee · Hire an executive | Holloway equity guide; Rewarding Talent | verified, pre-tax by design |
 | [ISO / NSO exercise tax](#iso--nso-exercise-tax) | NSO income, ISO/AMT outcomes, § 422(d) $100k, dispositions | Issue employee equity awards · Offboard employee | Pub 525; Treas. Reg. § 1.422-4(d) Ex. 1–3; Rev. Proc. 2024-40/2025-32 | verified; AMT is illustration-only |
 | [409A grant sanity](#409a-grant-sanity) | Strike floor, staleness, presumptions, refresh triggers, penalty illustration | Close a priced equity round · Get a 409A valuation · Issue employee equity awards | Treas. Reg. § 1.409A law rules | sanity model — never a valuation |
+| [409A prototype allocation](#409a-prototype-allocation) | OPM backsolve and forward, PWERM, hybrid, Finnerty and Chaffe DLOM, as a labeled prototype | Get a 409A valuation | CPA Journal OPM example (Sept 2020); Elmore (2017) DLOM exhibits; Hull Black-Scholes | prototype estimate — never a valuation |
 
 ### Fundraising & exits
 
@@ -643,6 +644,79 @@ rather than pass.
 `us-fed.binding-formula-presumption` · IRC § 409A(a)(1)(B) via
 `us-fed.409a-penalty-additions` · YC Post-Money Safe User Guide §B.6 (term-sheet
 convention) — PDF linked from https://www.ycombinator.com/documents.
+
+### 409A prototype allocation
+
+`lib/openstartup/valuation409a.ts` — computes the allocation arithmetic of a 409A-style
+report (OPM backsolve or forward, PWERM, hybrid, DLOM) from inputs the user supplies, as a
+prototype estimate. Every result carries `prototype`, `notAValuation`, `notAStrikePrice` and
+`needsReview`, and no output is named or shaped as a fair market value or an exercise price.
+The Treas. Reg. § 1.409A-1(b)(5)(iv)(B)(2) presumption of reasonableness attaches to an
+independent appraisal, a binding formula, or a qualified person's written report on
+illiquid start-up stock; a calculation run from user inputs is none of these.
+
+| Function | Inputs | Returns |
+| --- | --- | --- |
+| `estimate409aPrototype` | capital structure, method (`opm-forward`, `opm-backsolve`, `pwerm`, `hybrid`), DLOM choice, common class | per-class allocated value, the common class before and after DLOM, breakpoints, the prototype flags |
+| `opmAllocate` | breakpoint schedule, total equity value, volatility, term, risk-free rate | Black-Scholes call at each breakpoint, tranche values, per-class value and per-share value |
+| `opmBacksolveEquityValue` | breakpoint schedule, calibration class and price, option inputs | the total equity value at which the calibration class is allocated that price |
+| `pwermAllocate` | structure, scenarios (kind, probability, exit value, years, discount rate) | probability-weighted present value by class, with each scenario's waterfall |
+| `dlomFinnerty` / `dlomChaffe` / `resolveDlom` | volatility, term (and risk-free rate for Chaffe), or a stated figure with its source | the DLOM as a fraction in [0, 1) |
+| `blackScholesCall` / `blackScholesPut` / `normCdf` | spot, strike, option inputs | European option values |
+
+**Worked example.** Frank Kiepura's forward OPM in The CPA Journal (September 2020),
+replayed in `lib/openstartup/__tests__/valuation409a.test.ts`. The structure (Exhibit 1):
+Series B 5,000,000 shares with a $7.5M preference that then participates; a $6M accrued
+Series A dividend paid ahead of the Series A preference and kept on conversion; Series A
+15,000,000 shares with a $19.5M preference; 2,000,000 common; options 1,000,000 at $0.75;
+warrants 10,000,000 at $2.00 and 3,000,000 at $3.00. The waterfall module's breakpoints are
+$7.5M, $13.5M, $33M, $38.25M, $42.65M, $58.75M and $91.75M. At $40,000,000 total equity, 3.0
+years, 80% volatility and a 2.0% risk-free rate, the Black-Scholes calls at those strikes are
+$33,935,184, $30,393,433, $22,895,835, $21,481,600, $20,422,584, $17,279,014 and $13,029,043,
+so the first tranche is worth $40,000,000 − $33,935,184 = $6,064,816. Allocating every
+tranche by the participation fractions gives Exhibit 6 to the dollar: Series B $10,873,779
+($2.17), Series A $16,908,325 ($1.13), common $1,923,585 ($0.96), options $759,759, Warrants
+I $4,907,048, Warrants II $1,085,754 and the dividend $3,541,751. Run as a backsolve
+calibrated to the Series B figure, the module recovers the $40,000,000 equity value. The
+DLOM functions reproduce every cell of Elmore's Finnerty table (Exhibit 9; 75% volatility
+and one year give 16.3%) and the Chaffe table at r = 2% for terms up to one year
+(Exhibit 5; one year at 75% gives 28.0%).
+
+**Serves:** [Get a 409A valuation](https://ultrametric.ai/processes/get-a-409a-valuation) (n6 `estimate409aPrototype`)
+
+**Honesty boundaries.** A prototype estimate: volatility, term, risk-free rate, scenarios,
+probabilities, discount rates and the DLOM method are the user's inputs, while an appraiser
+selects and supports them in a report. Nothing is fetched from market data. The AICPA
+Accounting and Valuation Guide (2013) describes the OPM, backsolve, PWERM, hybrid and DLOM
+methods, but it is login-gated, so none of its worked examples is replayed. No fully
+specified published backsolve was reachable either; the backsolve test inverts the CPA
+Journal forward example. The PWERM test replays an example its publisher labels as invented
+numbers. Elmore's Chaffe table sits 0.1 to 0.2 points below a Black-Scholes put for terms
+of two years or more at 25% to 50% volatility; those cells are not asserted. The OPM refuses
+exit deductions because it allocates total equity value. `grant409aSanity` remains the
+module for grant-timing and strike-floor checks against a real 409A FMV.
+
+**Sources.** Treas. Reg. § 1.409A-1(b)(5)(iv)(B)(1)–(2) via law rules
+`us-fed.reasonable-method`, `us-fed.independent-appraisal-presumption`,
+`us-fed.binding-formula-presumption`, `us-fed.illiquid-startup-presumption`,
+`us-fed.staleness` (text read through the eCFR versioner API,
+https://www.ecfr.gov/api/versioner/v1/full/2026-11-20/title-26.xml?section=1.409A-1) · AICPA
+Accounting and Valuation Guide, "Valuation of Privately-Held-Company Equity Securities
+Issued as Compensation" (2013; method descriptions, login-gated) · Black and Scholes, "The
+Pricing of Options and Corporate Liabilities", Journal of Political Economy 81(3) (1973) ·
+Hull, Options, Futures, and Other Derivatives, 8th ed., pp. 315–316, as printed at
+https://tomasplihal.github.io/financial_derivatives/week_09.html · Frank Kiepura, "Valuing
+Securities Using the Option Pricing Method", The CPA Journal (September 2020), Exhibits 1–6
+— https://www.cpajournal.com/2020/09/09/valuing-securities-using-the-option-pricing-method/
+· Finnerty, "An Average-Strike Put Option Model of the Marketability Discount", Journal of
+Derivatives 19(4) (2012), and Chaffe, "Option Pricing as a Proxy for Discount for Lack of
+Marketability in Private Company Valuations", Business Valuation Review 12(4) (1993), both
+via John E. Elmore, Willamette Management Associates Insights (Winter 2017), Exhibits 5 and 9
+— https://vanguardecon.com/resources/DLOM_Using_Put_Options_2017.pdf · Axevil, "OPM backsolve
+vs PWERM" — https://axevil.com/learn/opm-backsolve-vs-pwerm · KNAV, "PWERM and hybrid methods
+for Allocation of Value" —
+https://uk.knavcpa.com/wp-content/uploads/2023/03/PWERM-AND-HYBRID-METHODS.pdf · West,
+"Better approximations to cumulative normal functions", Wilmott Magazine (2005).
 
 ### Offer / equity-comp scenarios
 

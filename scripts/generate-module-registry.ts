@@ -32,6 +32,7 @@ import * as round from '../lib/openstartup/round'
 import * as roundComposer from '../lib/openstartup/roundComposer'
 import * as runway from '../lib/openstartup/runway'
 import * as unitEconomics from '../lib/openstartup/unitEconomics'
+import * as valuation409a from '../lib/openstartup/valuation409a'
 import * as vesting from '../lib/openstartup/vesting'
 import * as waterfall from '../lib/openstartup/waterfall'
 
@@ -272,6 +273,30 @@ export const REGISTRY_ENTRIES: readonly RegistryEntryDef[] = [
     ns: unitEconomics,
     entry: unitEconomics.burnMultipleEntry,
     exampleArgs: [{ netBurn: 2_000_000, netNewArr: 1_000_000 }],
+  },
+  {
+    id: 'valuation409a',
+    ns: valuation409a,
+    entry: valuation409a.estimate409aPrototypeEntry,
+    note: 'Prototype estimate: every result carries notAValuation, notAStrikePrice and needsReview. Volatility, term, risk-free rate, scenarios and the DLOM method are inputs.',
+    exampleArgs: [
+      {
+        structure: {
+          common: [{ name: 'Common', shares: 2_000_000 }],
+          options: [
+            { name: 'Options', shares: 1_000_000, exercisePrice: 0.75 },
+            { name: 'Warrants I', kind: 'warrant', shares: 10_000_000, exercisePrice: 2, class: 'Warrants I' },
+            { name: 'Warrants II', kind: 'warrant', shares: 3_000_000, exercisePrice: 3, class: 'Warrants II' },
+          ],
+          series: [
+            { name: 'Series B', shares: 5_000_000, originalIssuePrice: 1.5, seniority: 1, participation: 'participating' },
+            { name: 'Series A', shares: 15_000_000, originalIssuePrice: 1.3, seniority: 2, dividends: { annualRatePct: 10, cumulative: true, accruedAmount: 6_000_000, survivesConversion: true } },
+          ],
+        },
+        method: { method: 'opm-forward', equityValue: 40_000_000, option: { volatility: 0.8, termYears: 3, riskFreeRate: 0.02 } },
+        dlom: { method: 'finnerty', volatility: 0.8, termYears: 3 },
+      },
+    ],
   },
   {
     id: 'vesting',

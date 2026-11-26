@@ -28,6 +28,7 @@ import * as round from '../lib/openstartup/round'
 import * as roundComposer from '../lib/openstartup/roundComposer'
 import * as runway from '../lib/openstartup/runway'
 import * as unitEconomics from '../lib/openstartup/unitEconomics'
+import * as valuation409a from '../lib/openstartup/valuation409a'
 import * as vesting from '../lib/openstartup/vesting'
 import * as waterfall from '../lib/openstartup/waterfall'
 
@@ -848,6 +849,71 @@ export const CONFORMANCE_MODULES: readonly ConformanceModuleDef[] = [
           '2030-01-15',
         ],
         expected: { vestedShares: 4_800_000, unvestedShares: 0 },
+      },
+    ],
+  },
+  {
+    id: 'valuation409a',
+    ns: valuation409a,
+    fn: 'estimate409aPrototype',
+    cases: [
+      {
+        name: 'cpa-journal-2020-forward-opm',
+        description:
+          'Forward OPM on the CPA Journal Cotopaxi Tech structure at $40,000,000 total equity, 3.0 years, 80% volatility, ' +
+          '2.0% risk-free: the Exhibit 4 call values at the seven breakpoints and the Exhibit 6 class totals ' +
+          '(Series B $10,873,779, Series A $16,908,325, common $1,923,585, options $759,759, Warrants I $4,907,048, ' +
+          'Warrants II $1,085,754, Series A dividend $3,541,751). The result is a prototype estimate, not a valuation.',
+        source:
+          'Frank Kiepura, "Valuing Securities Using the Option Pricing Method", The CPA Journal, September 2020, Exhibits 1-6 ' +
+          '(https://www.cpajournal.com/2020/09/09/valuing-securities-using-the-option-pricing-method/)',
+        tolerance: 0.5,
+        inputs: [
+          {
+            structure: {
+              common: [{ name: 'Common', shares: 2_000_000 }],
+              options: [
+                { name: 'Options', shares: 1_000_000, exercisePrice: 0.75 },
+                { name: 'Warrants I', kind: 'warrant', shares: 10_000_000, exercisePrice: 2, class: 'Warrants I' },
+                { name: 'Warrants II', kind: 'warrant', shares: 3_000_000, exercisePrice: 3, class: 'Warrants II' },
+              ],
+              series: [
+                { name: 'Series B', shares: 5_000_000, originalIssuePrice: 1.5, seniority: 1, participation: 'participating' },
+                { name: 'Series A', shares: 15_000_000, originalIssuePrice: 1.3, seniority: 2, dividends: { annualRatePct: 10, cumulative: true, accruedAmount: 6_000_000, survivesConversion: true } },
+              ],
+            },
+            method: { method: 'opm-forward', equityValue: 40_000_000, option: { volatility: 0.8, termYears: 3, riskFreeRate: 0.02 } },
+            dlom: { method: 'none' },
+          },
+        ],
+        expected: {
+          prototype: true,
+          notAValuation: true,
+          notAStrikePrice: true,
+          needsReview: true,
+          opmEquityValue: 40_000_000,
+          opm: {
+            tranches: [
+              { callAtFrom: 40_000_000 },
+              { callAtFrom: 33_935_184 },
+              { callAtFrom: 30_393_433 },
+              { callAtFrom: 22_895_835 },
+              { callAtFrom: 21_481_600 },
+              { callAtFrom: 20_422_584 },
+              { callAtFrom: 17_279_014 },
+              { callAtFrom: 13_029_043 },
+            ],
+          },
+          classes: [
+            { class: 'Common', value: 1_923_585 },
+            { class: 'Options', value: 759_759 },
+            { class: 'Warrants I', value: 4_907_048 },
+            { class: 'Warrants II', value: 1_085_754 },
+            { class: 'Series B', value: 10_873_779 },
+            { class: 'Series A', value: 16_908_325 },
+            { class: 'Series A dividends', value: 3_541_751 },
+          ],
+        },
       },
     ],
   },
