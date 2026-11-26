@@ -551,6 +551,9 @@ export interface DividendTerms {
   basisDays?: 360 | 365
   /** Dividends declared but unpaid, in dollars for the whole series (default 0). */
   declaredUnpaid?: number
+  /** Shares issued on different dates: each tranche accrues from its own date (the shares must
+   * sum to the series' shares). Replaces accruesFrom. */
+  accrualTranches?: { shares: number; accruesFrom: string }[]
   /** Cumulative dividends already accrued to the exit, in dollars for the whole series, as
    * stated by the caller; replaces the date-based accrual (accruesFrom is then not needed). */
   accruedAmount?: number
@@ -666,6 +669,7 @@ const DividendTermsSchema = z.object({
   basisDays: z.union([z.literal(360), z.literal(365)]).optional(),
   declaredUnpaid: z.number().optional(),
   accruedAmount: z.number().optional(),
+  accrualTranches: z.array(z.object({ shares: z.number(), accruesFrom: z.string() })).optional(),
   survivesConversion: z.boolean().optional(),
 })
 
@@ -855,12 +859,20 @@ export function accruedSeriesDividends(series: Pick<AnalysisSeries, 'name' | 'sh
   if (!(d.annualRatePct >= 0)) throw new RangeError(`series ${series.name}: dividends.annualRatePct must be >= 0`)
   if (!d.cumulative) return declared
   if (d.accruedAmount !== undefined) return nonNeg(d.accruedAmount, `series ${series.name}: dividends.accruedAmount`) + declared
-  if (!d.accruesFrom) throw new RangeError(`series ${series.name}: cumulative dividends need accruesFrom`)
+  const tranches = d.accrualTranches ?? (d.accruesFrom ? [{ shares: series.shares, accruesFrom: d.accruesFrom }] : [])
+  if (tranches.length === 0) throw new RangeError(`series ${series.name}: cumulative dividends need accruesFrom or accrualTranches`)
+  if (tranches.some((x) => !(x.shares > 0)) || Math.abs(tranches.reduce((a, x) => a + x.shares, 0) - series.shares) > EPS) {
+    throw new RangeError(`series ${series.name}: accrualTranches shares must be > 0 and sum to the series' shares`)
+  }
   if (!exitDate) throw new RangeError(`series ${series.name}: cumulative dividends need inputs.exitDate`)
-  const t = daysBetween(d.accruesFrom, exitDate) / (d.basisDays ?? 365)
   const r = d.annualRatePct / 100
-  const perShare = d.compounding === 'annual' ? series.originalIssuePrice * (Math.pow(1 + r, t) - 1) : series.originalIssuePrice * r * t
-  return perShare * series.shares + declared
+  let total = declared
+  for (const x of tranches) {
+    const t = daysBetween(x.accruesFrom, exitDate) / (d.basisDays ?? 365)
+    const perShare = d.compounding === 'annual' ? series.originalIssuePrice * (Math.pow(1 + r, t) - 1) : series.originalIssuePrice * r * t
+    total += perShare * x.shares
+  }
+  return total
 }
 
 /** Build the security list (claims, tiers, thresholds) from the analysis inputs. */
