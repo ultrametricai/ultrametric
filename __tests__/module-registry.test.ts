@@ -69,8 +69,8 @@ describe('open-modules/registry.json', () => {
   })
 
   it('covers every lib/openstartup module, both ways', () => {
-    // Shared validation and calendar helpers are exposed through calculation modules.
-    const infrastructure = new Set(['entryValidation.ts', 'calendar.ts'])
+    // Shared validation, calendar and rounding helpers are exposed through calculation modules.
+    const infrastructure = new Set(['entryValidation.ts', 'calendar.ts', 'rounding.ts'])
     const moduleFiles = fs
       .readdirSync(path.join(ROOT, 'lib', 'openstartup'))
       .filter((f) => f.endsWith('.ts') && !infrastructure.has(f))

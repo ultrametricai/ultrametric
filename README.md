@@ -134,7 +134,7 @@ module computes for, written from the committed module-to-process map by
 | [Priced round](open-modules/README.md#priced-round-mechanics) | Pro rata, pool sizing from a hiring plan, down rounds, secondaries | Close a priced equity round · Convert fundraising instruments at the priced round |
 | [Round composer](open-modules/README.md#priced-round-composer) | A priced round end to end, term sheet to post-close table | Close a priced equity round · Convert fundraising instruments at the priced round |
 | [Anti-dilution](open-modules/README.md#anti-dilution) | Weighted-average and full-ratchet adjustments | Close a priced equity round · Take a down round or recap |
-| [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed funding · Close a priced equity round |
+| [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder and per-class proceeds across stacked preferred, safes, notes and options; breakpoints and exit sweeps | Raise pre-seed funding · Close a priced equity round |
 
 ### Tax & compliance
 

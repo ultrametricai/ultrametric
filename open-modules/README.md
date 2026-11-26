@@ -69,7 +69,7 @@ lines; edit the map, rerun the script.
 | [Priced-round mechanics](#priced-round-mechanics) | Pro rata, pool-from-hiring-plan, down-round model, secondaries | Close a priced equity round · Convert fundraising instruments at the priced round | YC User Guide §E; Rewarding Talent; Springmeyer; Cooley GO | verified |
 | [Priced-round composer](#priced-round-composer) | The round end-to-end: term sheet → wires/issuance → post-close | Close a priced equity round · Convert fundraising instruments at the priced round | YC Appendix II Ex. 1, replayed end-to-end | verified by composition-equality |
 | [Anti-dilution](#anti-dilution) | NVCA weighted-average / full-ratchet conversion-price adjustments | Close a priced equity round · Take a down round or recap | NVCA model COD; Springmeyer worked example | verified + property-tested |
-| [Liquidity-event waterfall](#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed funding · Close a priced equity round | YC User Guide Appendix II Ex. 1 Q3/Q4; Cooley GO glossary | verified + property-tested |
+| [Liquidity-event waterfall](#liquidity-event-waterfall) | Per-holder and per-class proceeds at an exit value, breakpoints, exit-value sweeps | Raise pre-seed funding · Close a priced equity round | YC User Guide Appendix II Ex. 1 Q3/Q4; Equidam; Hustle Fund; CPA Journal (Sept 2020) | verified + property-tested |
 
 ### Tax & compliance
 
@@ -419,9 +419,9 @@ https://www.ycombinator.com/documents.
 
 ### Liquidity-event waterfall
 
-`lib/openstartup/waterfall.ts` — computes per-holder proceeds at a sale price, including
-each SAFE's cash-out-or-convert decision and one preferred series' preference-or-convert
-choice.
+`lib/openstartup/waterfall.ts` — computes per-holder and per-class proceeds at an exit
+value across stacked preferred series, safes, notes, options and warrants, with the
+breakpoint schedule that the 409A prototype's option-pricing method reuses.
 
 | Function | Inputs | Returns |
 | --- | --- | --- |
@@ -429,6 +429,11 @@ choice.
 | `safeLiquidityShares` | safes, outstanding shares | each safe's conversion shares and Liquidity Price |
 | `conversionIndifferencePrice` | series, other shares | the sale price where preference and conversion pay the same |
 | `allocateCents` | total dollars, weights | proportional whole-cent split that sums exactly |
+| `waterfallAnalysis` | common, options/warrants with exercise prices, preferred series (multiple, participation, cap, seniority, dividends, conversion ratio), safes, notes, debt, expenses, carve-out, escrow, exit value | per-holder rows in cents with decisions and escrow split, per-class totals and per-share values, the reconciliation |
+| `waterfallBreakpoints` | the same inputs | the equity values where each security starts or stops sharing, and each tranche's share fractions by security and class |
+| `waterfallSweep` | the same inputs, a list or range of exit values | per-class proceeds at each exit value |
+| `conversionEquilibrium` | the same inputs, an equity value | each convertible's best-response route solved directly (the cross-check on the breakpoint schedule) |
+| `accruedSeriesDividends` | a series' dividend terms, exit date | accrued cumulative (simple or annual) plus declared-but-unpaid dividends |
 
 **Worked example.** YC Post-Money Safe User Guide, Appendix II Example 1 Q3 (Feb 2023
 edition), replayed in `lib/openstartup/__tests__/waterfall.test.ts`. Outstanding equity:
@@ -443,19 +448,41 @@ $10,000,000 in exact cents (the display-rounded price would over-distribute by a
 $534). At $3,000,000 the figures are $0.2670, $149,991, and $299,982; both safes cash out
 and the remaining $2,000,000 goes pro rata to the 9,550,000 outstanding shares.
 
+The analysis engine replays the Hustle Fund "Waterfall modeling for startup exits" example
+in `lib/openstartup/__tests__/waterfallAnalysis.test.ts`: founders 5.4M and employees 0.6M
+common, a junior Seed (2M shares, $2M, 1x non-participating) and a senior Series A (2M
+shares, $6M, 1x participating capped at $12M total). The breakpoints are $6M (Series A's
+preference), $8M (Seed's preference), $16M (Seed converts: 8M residual shares × $1.00),
+$36M (Series A reaches its cap: 10M shares × $2.00 more) and $60M (Series A converts: 8M
+shares × $3.00 more). At a $45M exit the per-share level is $3.00 + $9M ÷ 8M = $4.125, so
+Seed takes 2M × $4.125 = $8.25M, founders $22.275M, employees $2.475M and Series A its
+$12M cap. The same file replays Equidam's four structures at five exits and the CPA
+Journal's seven breakpoints and per-range participation percentages.
+
 **Serves:** [Raise pre-seed funding](https://ultrametric.ai/processes/raise-pre-seed-funding) (n6 `liquidityWaterfall`) · [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round)
 
-**Honesty boundaries.** The sale price must be net of debt; creditors and convertible
-notes rank senior and are not modeled. Capped participation, stacked seniority, accruing
-dividends, escrows, and option strike netting are out of scope, and uncapped safes are
-rejected because their treatment needs an FMV input. In a mixed outcome, Conversion
-Amounts stay fixed from the all-safes-included solve (the guide's Appendix II Q4
+**Honesty boundaries.** `liquidityWaterfall` keeps its original scope: the sale price is
+net of debt, one preferred series, uncapped participation only. `waterfallAnalysis` adds the
+stacked terms, but its ordering conventions are inputs the documents control: the carve-out
+is paid from net proceeds ahead of notes and preferred, notes rank ahead of every preferred
+tier, safes default to the most junior preferred tier, and a note's change-of-control
+conversion shares come from the caller. Carve-out, escrow, note interest and gross/net
+exercise have no reachable published worked example, so their tests are hand-derived.
+Uncapped safes are rejected because their treatment needs an FMV input. In a mixed outcome,
+Conversion Amounts stay fixed from the all-safes-included solve (the guide's Appendix II Q4
 convention); a strict §C.1 recomputation excluding cashed-out safes is not performed.
 
 **Sources.** YC Post-Money Safe User Guide §A.3, §A.5–A.6, §C.1, Appendix II Example 1 —
 PDF linked from https://www.ycombinator.com/documents · Cooley GO glossary, "Preferred
 Stock" — https://www.cooleygo.com/glossary/preferred-stock/ · Brad Feld, "Term Sheet:
-Liquidation Preference" — https://feld.com/archives/2005/01/term-sheet-liquidation-preference/.
+Liquidation Preference" — https://feld.com/archives/2005/01/term-sheet-liquidation-preference/
+· NVCA Model Certificate of Incorporation, Art. Fourth B §1, §2.1, §2.2 —
+https://nvca.org/model-legal-documents/ · Equidam, "Liquidation preference" —
+https://www.equidam.com/liquidation-preference/ · Hustle Fund, "Waterfall modeling for
+startup exits" — https://www.hustlefund.vc/post/exit-waterfall-modeling · Frank Kiepura,
+"Valuing Securities Using the Option Pricing Method", The CPA Journal (Sept 2020), Exhibits
+1–3 — https://www.cpajournal.com/2020/09/09/valuing-securities-using-the-option-pricing-method/
+· CRV, "Liquidation Preference" — https://www.crv.com/content/liquidation-preference.
 
 ### Anti-dilution
 

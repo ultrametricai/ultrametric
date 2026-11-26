@@ -46,7 +46,7 @@
 // ---------------------------------------------------------------------------
 
 import { z } from 'zod'
-import { floorShares, roundPrice } from './capTable'
+import { floorShares, roundPrice } from './rounding'
 import { entrySpec } from './entryValidation'
 
 function round2(x: number): number {
@@ -209,7 +209,7 @@ export function noteConversionPrice(terms: NoteConversionTerms): NoteConversionP
     }
   }
   if (!(price > 0)) throw new RangeError('conversion price rounds to zero at 4 decimals — check the cap against the share count')
-  return { price, method, discountPrice, capPrice }
+  return { price, method, ...(discountPrice === undefined ? {} : { discountPrice }), ...(capPrice === undefined ? {} : { capPrice }) }
 }
 
 /**
